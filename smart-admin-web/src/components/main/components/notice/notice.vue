@@ -39,7 +39,7 @@
 </template>
 
 <script>
-// import { noticeApi } from '@/api/notice';
+import { noticeApi } from '@/api/notice';
 import { socketBaseUrl } from '@/lib/http';
 import InfiniteLoading from 'vue-infinite-loading';
 export default {
@@ -71,22 +71,19 @@ export default {
     };
   },
   mounted() {
-    // this.initWebSocket();
+    this.initWebSocket();
   },
   computed: {
     // 消息集合
     noticeList() {
-      // return this.$store.state.notice.noticeList;
-      return 1;
+      return this.$store.state.notice.noticeList;
     },
     // 消息数量
     noticeNumber() {
-      // return this.$store.state.notice.noticeNumber;
-      return 1;
+      return this.$store.state.notice.noticeNumber;
     },
     userInfo() {
-      // return this.$store.state.user.userLoginInfo;
-      return 1;
+      return this.$store.state.user.userLoginInfo;
     }
   },
   methods: {
@@ -134,31 +131,31 @@ export default {
       this.socket.send(JSON.stringify(data));
     },
     async getDetail(item) {
-      // try {
-      //   let result = await noticeApi.getNoticeDetail(item.id);
-      //   this.noticeDetail = result.data;
-      // } catch (error) {
-      //   //TODO zhuoda sentry
-      //   console.error(e);
-      // }
-      // if (this.detailModalOpen) {
-      //   this.detailModalOpen = false;
-      //   setTimeout(() => {
-      //     this.detailModalOpen = true;
-      //   }, 100);
-      // } else {
-      //   this.detailModalOpen = true;
-      // }
+      try {
+        let result = await noticeApi.getNoticeDetail(item.id);
+        this.noticeDetail = result.data;
+      } catch (error) {
+        //TODO zhuoda sentry
+        console.error(e);
+      }
+      if (this.detailModalOpen) {
+        this.detailModalOpen = false;
+        setTimeout(() => {
+          this.detailModalOpen = true;
+        }, 100);
+      } else {
+        this.detailModalOpen = true;
+      }
 
-      // try {
-      //   let result = await noticeApi.addNoticeRecord(item.id);
-      // } catch (error) {
-      //   //TODO zhuoda sentry
-      //   console.error(e);
-      // }
+      try {
+        let result = await noticeApi.addNoticeRecord(item.id);
+      } catch (error) {
+        //TODO zhuoda sentry
+        console.error(e);
+      }
     },
     scroll($state) {
-      // this.getNoticeList($state);
+      this.getNoticeList($state);
     },
     async getNoticeList($state) {
       const result = await noticeApi.getNoticeUnreadList({
@@ -177,11 +174,11 @@ export default {
     openNotice() {
       this.searchData.pageNum = 1;
       this.$store.commit('restNotice');
-      // this.getNoticeList();
+      this.getNoticeList();
       this.modalOpen = true;
     },
     modalClose() {
-      // this.getNoticeList();
+      this.getNoticeList();
       this.detailModalOpen = false;
       this.modalOpen = false;
     }

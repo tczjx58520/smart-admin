@@ -58,89 +58,39 @@ export default {
       state.isUpdatePrivilege = true;
       let routerPathArray = [];
       for (const privilege of privilegeList) {
-        state.privilegeMenuKeyList.push(privilege);
-        // if (privilege) {
-        routerPathArray.push(privilege);
-        // 去掉/之后第一个字母
-        // let pathArray = state.privilegeRouterPathMap;
-        // if (pathArray) {
-        // pathArray.push(privilege);
-        // } else {
-        // pathArray = [];
-        // pathArray.push(privilege);
-        // state.privilegeRouterPathMap = pathArray;
-        // }
-        // }
-        // 是菜单权限123
-        // if (privilege.type === PRIVILEGE_TYPE_ENUM.MENU.value) {
-        //   state.privilegeMenuKeyList.push(privilege.key);
-        //   if (privilege.url) {
-        //     routerPathArray.push(privilege.url);
-        //     // 去掉/之后第一个字母
-        //     let key = privilege.url.substr(1, 1);
-        //     let pathArray = state.privilegeRouterPathMap.get(key);
-        //     if (pathArray) {
-        //       pathArray.push(privilege.url);
-        //     } else {
-        //       pathArray = [];
-        //       pathArray.push(privilege.url);
-        //       state.privilegeRouterPathMap.set(key, pathArray);
-        //     }
-        //   }
-        // }
+        // 是菜单权限
+        if (privilege.type === PRIVILEGE_TYPE_ENUM.MENU.value) {
+          state.privilegeMenuKeyList.push(privilege.key);
+          if (privilege.url) {
+            routerPathArray.push(privilege.url);
+            // 去掉/之后第一个字母
+            let key = privilege.url.substr(1, 1);
+            let pathArray = state.privilegeRouterPathMap.get(key);
+            if (pathArray) {
+              pathArray.push(privilege.url);
+            } else {
+              pathArray = [];
+              pathArray.push(privilege.url);
+              state.privilegeRouterPathMap.set(key, pathArray);
+            }
+          }
+        }
         // 如果是功能点
-        // if (privilege.type === PRIVILEGE_TYPE_ENUM.POINTS.value) {
-        //   if (privilege.parentKey) {
-        //     let pointArray = state.privilegeFunctionPointsMap.get(privilege.parentKey);
-        //     if (pointArray) {
-        //       pointArray.push(privilege.key);
-        //     } else {
-        //       pointArray = [];
-        //       pointArray.push(privilege.key);
-        //       state.privilegeFunctionPointsMap.set(privilege.parentKey, pointArray);
-        //     }
-        //   }
-        // }
+        if (privilege.type === PRIVILEGE_TYPE_ENUM.POINTS.value) {
+          if (privilege.parentKey) {
+            let pointArray = state.privilegeFunctionPointsMap.get(privilege.parentKey);
+            if (pointArray) {
+              pointArray.push(privilege.key);
+            } else {
+              pointArray = [];
+              pointArray.push(privilege.key);
+              state.privilegeFunctionPointsMap.set(privilege.parentKey, pointArray);
+            }
+          }
+        }
       }
       localSave('userRouterPrivilege', JSON.stringify(routerPathArray));
     }
-    // setUserPrivilege (state, privilegeList) {
-    //   state.isUpdatePrivilege = true;
-    //   let routerPathArray = [];
-    //   for (const privilege of privilegeList) {
-    //     // 是菜单权限
-    //     if (privilege.type === PRIVILEGE_TYPE_ENUM.MENU.value) {
-    //       state.privilegeMenuKeyList.push(privilege.key);
-    //       if (privilege.url) {
-    //         routerPathArray.push(privilege.url);
-    //         // 去掉/之后第一个字母
-    //         let key = privilege.url.substr(1, 1);
-    //         let pathArray = state.privilegeRouterPathMap.get(key);
-    //         if (pathArray) {
-    //           pathArray.push(privilege.url);
-    //         } else {
-    //           pathArray = [];
-    //           pathArray.push(privilege.url);
-    //           state.privilegeRouterPathMap.set(key, pathArray);
-    //         }
-    //       }
-    //     }
-    //     // 如果是功能点
-    //     if (privilege.type === PRIVILEGE_TYPE_ENUM.POINTS.value) {
-    //       if (privilege.parentKey) {
-    //         let pointArray = state.privilegeFunctionPointsMap.get(privilege.parentKey);
-    //         if (pointArray) {
-    //           pointArray.push(privilege.key);
-    //         } else {
-    //           pointArray = [];
-    //           pointArray.push(privilege.key);
-    //           state.privilegeFunctionPointsMap.set(privilege.parentKey, pointArray);
-    //         }
-    //       }
-    //     }
-    //   }
-    //   localSave('userRouterPrivilege', JSON.stringify(routerPathArray));
-    // }
   },
   getters: {
     // 用户功能点权限
@@ -158,9 +108,9 @@ export default {
           .then(res => {
             localStorage.clear();
             const data = res.data;
-            commit('setToken', data.content.token);
+            commit('setToken', data.xaccessToken);
             // 保存用户登录
-            commit('setUserLoginInfo', data.content);
+            commit('setUserLoginInfo', data);
             resolve();
           })
           .catch(err => {

@@ -243,7 +243,7 @@ export default {
       'addTag',
       'setLocal',
       'setHomeRoute',
-      'closeTag',
+      'closeTag'
     ]),
     ...mapActions(['handleLogin']),
 
@@ -279,36 +279,11 @@ export default {
         //如果页面刷新，需要重新获取权限
         (async () => {
           this.$Spin.show();
-          const token = localStorage.getItem('token');
-          // let sessionResult = await loginApi.getSession(token);
-          let sessionResult = null;
-          await loginApi.getSession(token).then(res => {
-            if (res.ret === 200) {
-              sessionResult = res;
-            } else {
-              this.logout();
-            }
-          });
-          this.$store.commit('setToken', sessionResult.data.content.token);
-          // 保存用户登录123
-          this.$store.commit('setUserLoginInfo', {
-            userId: sessionResult.data.content.userId,
-            id: sessionResult.data.content.roleId,
-            loginName: sessionResult.data.content.userName,
-            nickName: sessionResult.data.content.userName,
-            actualName: sessionResult.data.content.userName,
-            phone: sessionResult.data.content.phone,
-            organizationOa: sessionResult.data.content.organizationOa,
-            organizationOaName: sessionResult.data.content.organizationOaName,
-            postOaName: sessionResult.data.content.postOaName,
-            postOa: sessionResult.data.content.postOa,
-            repositoryId: sessionResult.data.content.repositoryId
-            // isSuperMan: false
-          });
+          let sessionResult = await loginApi.getSession();
           //设置权限
           this.$store.commit(
             'setUserPrivilege',
-            sessionResult.data.content.rolesOa
+            sessionResult.data.privilegeList
           );
           this.isLoadedPrvileges = true;
           this.buildTopMenu();
@@ -325,9 +300,8 @@ export default {
       for (let topMenu of topMenuArray) {
         if (
           this.$store.state.user.userLoginInfo.isSuperMan ||
-          topMenu.meta.roles.some((role)=> {
-            return this.$store.state.user.privilegeMenuKeyList.includes(role)
-          })
+          this.$store.state.user.privilegeMenuKeyList.indexOf(topMenu.name) !==
+            -1
         ) {
           arr.push(topMenu);
         }
@@ -370,9 +344,9 @@ export default {
         if (!router.meta.hideInMenu) {
           //判断是否有权限
           if (
-            router.meta.roles.some(role => {
-                return this.$store.state.user.privilegeMenuKeyList.includes(role);
-              })
+            this.$store.state.user.userLoginInfo.isSuperMan ||
+            this.$store.state.user.privilegeMenuKeyList.indexOf(router.name) !==
+              -1
           ) {
             let menu = {
               name: router.name,
@@ -396,23 +370,22 @@ export default {
     recursion(children, parentMenu) {
       for (const router of children) {
           //验证权限
-        // if (this.$store.state.user.privilegeMenuKeyList.indexOf(router.name) ===-1) {
-        //   continue;
-        // }  
+        if (this.$store.state.user.privilegeMenuKeyList.indexOf(router.name) ===-1) {
+          continue;
+        }  
 
         //过滤非菜单
-        console.log(router, router.meta.roles.some(role => {
-          return this.$store.state.user.privilegeMenuKeyList.includes(role);
-        }));
         if (!router.meta.hideInMenu) {
           //验证权限
+          if (!this.$store.state.user.userLoginInfo.isSuperMan) {
             if (
-              !router.meta.roles.some(role => {
-              return this.$store.state.user.privilegeMenuKeyList.includes(role);
-            })
+              this.$store.state.user.privilegeMenuKeyList.indexOf(
+                router.name
+              ) === -1
             ) {
               continue;
             }
+          }
           let menu = {
             name: router.name,
             meta: router.meta,

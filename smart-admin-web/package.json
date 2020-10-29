@@ -47,9 +47,7 @@
     "vue-slick": "^1.1.15",
     "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1",
-    "vxe-table": "^2.9.26",
     "wangeditor": "^3.1.1",
-    "xe-utils": "^2.8.0",
     "xlsx": "^0.13.3"
   },
   "devDependencies": {

@@ -2,15 +2,15 @@
   <div>
     <Form :model="formData" :rules="rules" @keydown.enter.native="login" ref="loginForm">
       <FormItem prop="loginName">
-        <Input placeholder="请输入用户名" v-model="formData.username"></Input>
+        <Input placeholder="请输入用户名" v-model="formData.loginName"></Input>
       </FormItem>
       <FormItem prop="loginPwd">
-        <Input placeholder="请输入密码" type="password" v-model="formData.passwd"></Input>
+        <Input placeholder="请输入密码" type="password" v-model="formData.loginPwd"></Input>
       </FormItem>
-      <!-- <FormItem prop="code">
+      <FormItem prop="code">
         <Input class="code-input" placeholder="请输入验证码" v-model="formData.code"></Input>
         <img :src="codeUrl" @click="verificationCode" class="codeUrl" v-if="codeUrl" />
-      </FormItem> -->
+      </FormItem>
       <FormItem class="remember">
         <Checkbox>记住密码</Checkbox>
       </FormItem>
@@ -61,8 +61,8 @@ export default {
       // 防止重复提交 按钮加载状态
       btnLoading: false,
       formData: {
-        // code: '',
-        // codeUuid: '',
+        code: '',
+        codeUuid: '',
         loginName: 'demo',
         loginPwd: '123456'
       },
@@ -72,23 +72,23 @@ export default {
   computed: {
     rules() {
       return {
-        username: this.loginNameRules,
-        passwd: this.loginPwdRules,
-        // code: this.codedRules
+        loginName: this.loginNameRules,
+        loginPwd: this.loginPwdRules,
+        code: this.codedRules
       };
     }
   },
   mounted() {
-    // this.verificationCode();
+    this.verificationCode();
   },
   methods: {
     // 获取验证码
-    // async verificationCode() {
-    //   let result = await loginApi.getVerificationCode();
-    //   let datas = result.data;
-    //   this.formData.codeUuid = datas.uuid;
-    //   this.codeUrl = datas.code;
-    // },
+    async verificationCode() {
+      let result = await loginApi.getVerificationCode();
+      let datas = result.data;
+      this.formData.codeUuid = datas.uuid;
+      this.codeUrl = datas.code;
+    },
     // 登录
     login() {
       this.$refs.loginForm.validate(valid => {
@@ -101,31 +101,21 @@ export default {
     async loginSuccess() {
       try {
         this.btnLoading = true;
-        let Form = new FormData();
-        Form.append('username', this.formData.username);
-        Form.append('passwd', this.formData.passwd);
-        let loginResult = await loginApi.login(Form);
-        let loginInfo = loginResult.data.content;
+        let loginResult = await loginApi.login(this.formData);
+        let loginInfo = loginResult.data;
         localStorage.clear();
-        this.$store.commit('setToken', loginInfo.token);
+        this.$store.commit('setToken', loginInfo.xaccessToken);
         // 保存用户登录
         this.$store.commit('setUserLoginInfo', {
-          userId: loginInfo.userId,
-          // id: loginInfo.roleId,
-          loginName: loginInfo.userName2,
-          nickName: loginInfo.userName2,
-          actualName: loginInfo.userName2,
+          id: loginInfo.id,
+          loginName: loginInfo.loginName,
+          nickName: loginInfo.nickName,
+          actualName: loginInfo.actualName,
           phone: loginInfo.phone,
-          organizationOa: loginInfo.organizationOa,
-          organizationOaName: loginInfo.organizationOaName,
-          postOaName: loginInfo.postOaName,
-          postOa: loginInfo.postOa,
-          // isSuperMan: false
-          repositoryId: loginInfo.repositoryId
+          isSuperMan: loginInfo.isSuperMan
         });
         //设置权限
-        localStorage.setItem('token', loginInfo.token);
-        this.$store.commit('setUserPrivilege', loginInfo.rolesOa);
+        this.$store.commit('setUserPrivilege', loginInfo.privilegeList);
         this.btnLoading = false;
         // 跳转到首页
         this.$router.push({
@@ -135,7 +125,7 @@ export default {
         //TODO zhuoda sentry
         console.error(e);
         this.btnLoading = false;
-        // this.verificationCode();
+        this.verificationCode();
       }
     }
   }

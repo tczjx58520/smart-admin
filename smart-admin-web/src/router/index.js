@@ -10,7 +10,7 @@ import config from '@/config';
 
 const { homeName } = config;
 
-Vue.use(Router);
+Vue.use(Router); 
 const router = new Router({
   // routes: routers,
   routes: buildRouters(routers)
@@ -78,34 +78,21 @@ router.beforeEach((to, from, next) => {
       return;
     }
 
-    // 如果是超管，直接放行
+    //如果是超管，直接放行
     if (store.state.user.userLoginInfo.isSuperMan) {
       next();
       return;
     }
 
     // 去掉/之后第一个字母
-    // let key = to.path.substr(1, 1);
-    // let pathArray = storeSelf.state.user.privilegeRouterPathMap.get(key);
-    // if (!(pathArray && pathArray.indexOf(to.path) >= 0)) {
-    //   next({
-    //     name: 'Error401'
-    //   });
-    // } else {
-    //   next();
-    // }
-    let junglerole = localStorage.getItem('userRouterPrivilege');
-    if (
-      to.meta.roles.some(role => {
-        // console.log(storeSelf.state.user.privilegeMenuKeyList);
-        return junglerole.includes(role);
-      })
-    ) {
-      next();
-    } else {
+    let key = to.path.substr(1, 1);
+    let pathArray = storeSelf.state.user.privilegeRouterPathMap.get(key);
+    if (!(pathArray && pathArray.indexOf(to.path) >= 0)) {
       next({
         name: 'Error401'
       });
+    } else {
+      next();
     }
   }
 });
@@ -119,7 +106,7 @@ router.afterEach(to => {
 function buildRouters (routerArray) {
   let lineRouters = [];
   for (let routerItem of routerArray) {
-    // 如果是顶层菜单
+    //如果是顶层菜单
     if (routerItem.meta.topMenu) {
       // for (let children of routerItem.children) {
       let lineRouterArray = convertRouterTree2Line(routerItem.children);
@@ -134,23 +121,24 @@ function buildRouters (routerArray) {
 }
 
 function convertRouterTree2Line (routerArray) {
-  // 一级,比如 人员管理
+  //一级,比如 人员管理
   let topArray = [];
   for (let router1Item of routerArray) {
     let level2Array = [];
-    // 二级，比如员工管理
+    //二级，比如员工管理
     if (router1Item.children) {
       for (let level2Item of router1Item.children) {
+
         let level2ItemCopy = {};
         for (let property in level2Item) {
-          if (property !== 'children') {
+          if ('children' !== property) {
             level2ItemCopy[property] = level2Item[property];
           }
         }
 
-        // 三级，
+        //三级，
         if (level2Item.children) {
-          level2Array.push(...level2Item.children);
+          level2Array.push(...level2Item.children)
         }
 
         level2ItemCopy.children = [];
@@ -160,7 +148,7 @@ function convertRouterTree2Line (routerArray) {
 
     let newTopRouterItem = {};
     for (let property in router1Item) {
-      if (property !== 'children') {
+      if ('children' !== property) {
         newTopRouterItem[property] = router1Item[property];
       }
     }
@@ -216,7 +204,7 @@ function recursionCheckRouter (routerArray) {
   }
 }
 
-// 如果是开发环境，需要检测router的规范性
+//如果是开发环境，需要检测router的规范性
 if (process.env.NODE_ENV === 'development') {
   recursionCheckRouter(routers);
   delete tempCheckObj.checkRouterNameMap;
@@ -224,7 +212,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const topMenuArray = routers.filter(e => e.meta.topMenu);
-console.log('顶部路由=====', topMenuArray);
 export { topMenuArray };
 
 export default router;
+
