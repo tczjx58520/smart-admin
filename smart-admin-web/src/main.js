@@ -17,16 +17,20 @@ import './themes/index.less';
 import '@/assets/icons/iconfont.css';
 import 'slick-carousel/slick/slick.css';
 import { Decimal } from 'decimal.js';
+// import 'xe-utils';
+// import VXETable from 'vxe-table';
+// import 'vxe-table/lib/style.css';
 // 枚举管理
 import Enum from 'vue-enum';
 import enumInfo from '@/constants';
 // 处理table操作按钮
 import tableAction from './lib/table-action';
 
-//时间
-import moment from 'moment'; 
+// 时间
+import moment from 'moment';
 
-
+import judge from './lib/Jurisdiction';
+Vue.prototype.$judge = judge;
 Vue.prototype.$tableAction = tableAction;
 Vue.use(Enum, { enumInfo });
 Vue.use(ViewUI, {
@@ -35,16 +39,18 @@ Vue.use(ViewUI, {
 Vue.use(JsonViewer);
 Vue.use(vClickOutside);
 
-
+// eslint-disable-next-line no-extend-native
 Number.prototype.toFixed = function (length) {
   let x = new Decimal(this);
   return x.toFixed(length);
 };
 
-//时间处理
-moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn'); 
-Vue.prototype.$moment = moment;//赋值使用
+// 时间处理
+moment.locale('zh-cn'); // 设置语言 或 moment.lang('zh-cn');
+Vue.prototype.$moment = moment;// 赋值使用
 
+// 编辑表格
+// Vue.use(VXETable);
 
 /**
  * @description 注册admin内置插件
@@ -65,7 +71,7 @@ importDirective(Vue);
 // Vue.directive('clickOutside', clickOutside);
 
 window._ = _;
-
+Vue.prototype._ = _;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

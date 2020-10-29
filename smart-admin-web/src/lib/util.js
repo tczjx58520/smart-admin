@@ -139,8 +139,7 @@ const getDate = (timeStamp, startType) => {
       minutes +
       ':' +
       second;
-  }
-  else resStr = month + '-' + date + ' ' + hours + ':' + minutes;
+  } else resStr = month + '-' + date + ' ' + hours + ':' + minutes;
   return resStr;
 };
 
@@ -174,8 +173,7 @@ export const getRelativeTime = timeStamp => {
   // 多于23小时59分钟59秒，少于等于29天59分钟59秒
   else if (diff > 86399 && diff <= 2623859) { resStr = Math.floor(diff / 86400) + '天' + dirStr; }
   // 多于29天59分钟59秒，少于364天23小时59分钟59秒，且传入的时间戳早于当前
-  else if (diff > 2623859 && diff <= 31567859 && IS_EARLY) { resStr = getDate(timeStamp); }
-  else resStr = getDate(timeStamp, 'year');
+  else if (diff > 2623859 && diff <= 31567859 && IS_EARLY) { resStr = getDate(timeStamp); } else resStr = getDate(timeStamp, 'year');
   return resStr;
 };
 
@@ -495,21 +493,19 @@ export const utils = {
   }
 };
 
-
 export const dateTimeRangeConvert = (timerange) => {
   // timerange
   let arr = [];
   if (timerange[0] === '') {
     arr.push(null);
   } else {
-    arr.push(moment(timerange[0]).format("YYYY-MM-DD 00:00:00"));
+    arr.push(moment(timerange[0]).format('YYYY-MM-DD 00:00:00'));
   }
 
   if (timerange[1] === '') {
     arr.push(null);
   } else {
-    arr.push(moment(timerange[1]).format("YYYY-MM-DD 23:59:59"));
+    arr.push(moment(timerange[1]).format('YYYY-MM-DD 23:59:59'));
   }
   return arr;
-}
-
+};
