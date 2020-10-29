@@ -1,9 +1,12 @@
 import { home } from './module/home';
 import { error } from './module/error';
-import { business } from './module/business';
-import { support } from './module/support';
-import { system } from './module/system';
-
+// import { business } from './module/business';
+// import { support } from './module/support';
+// import { system } from './module/system';
+import { systemSetting } from './module/systemSetting';
+import { performance } from './module/performance';
+import { salary } from './module/salary';
+import { flow } from './module/flow';
 /**
  *
  * meta除了原生参数外可配置的参数:
@@ -36,8 +39,12 @@ export const login = {
 export const routers = [
   login,
   ...home,
-  ...error,
-  ...business, 
-  ...system,
-  ...support
+  // ...error,
+  // ...business,
+  // ...system,
+  // ...support,
+  ...systemSetting,
+  ...performance,
+  ...salary,
+  ...flow
 ];

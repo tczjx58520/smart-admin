@@ -1,58 +1,65 @@
 import { postAxios, getAxios } from '@/lib/http';
 export const roleApi = {
   // 添加角色
-  addRole: (remark, roleName) => {
-    const data = {
-      remark: remark,
-      roleName: roleName
-    };
-    return postAxios('/role/add', data);
+  addRole: (data, data2) => {
+    let Form = new FormData();
+    if (data.rolename !== undefined && data.rolename !== null && data.rolename !== '') {
+      Form.append('rolename', data.rolename);
+    }
+    if (data.description !== undefined && data.description !== null && data.description !== '') {
+      Form.append('description', data.description);
+    }
+    if (data.createPersonId !== undefined && data.createPersonId !== null && data.createPersonId !== '') {
+      Form.append('createPersonId', data.createPersonId);
+    }
+    if (data2 !== undefined && data2 !== null && data2 !== '') {
+      Form.append('authority', data2);
+    }
+    return postAxios('/role/addrole', Form);
   },
   // 删除角色
-  deleteRole: id => {
-    return getAxios('/role/delete/' + id);
+  deleteRole: data => {
+    let Form = new FormData();
+    Form.append('roleid', data.roleid);
+    Form.append('operatId', data.operatId);
+    return postAxios('/role/deleterole', Form);
   },
   // 修改角色
-  updateRole: (id, remark, roleName) => {
-    const data = {
-      id: id,
-      remark: remark,
-      roleName: roleName
-    };
-    return postAxios('/role/update', data);
+  updateRole: (data, data2) => {
+    let Form = new FormData();
+    if (data.rolename !== undefined && data.rolename !== null && data.rolename !== '') {
+      Form.append('roleName', data.rolename);
+    }
+    if (data.operatId !== undefined && data.operatId !== null && data.operatId !== '') {
+      Form.append('operatId', data.operatId);
+    }
+    // if (data.description !== undefined && data.description !== null && data.description !== '') {
+    //   Form.append('description', data.description);
+    // }
+    if (data2 !== undefined && data2 !== null && data2 !== '') {
+      Form.append('authority', data2);
+    }
+    Form.append('roleid', data.roleid);
+    return postAxios('/role/updaterole', Form);
   },
-  // 获取角色数据
-  getRoleDetail: id => {
-    return getAxios('/role/get/' + id);
+  // 获取权限列表
+  getRoleDetail: () => {
+    return postAxios('/role/getauthoritydetaillist');
   },
   // 加载角色列表
-  getAllRole: () => {
-    return getAxios('role/getAll');
+  getAllRole: (data) => {
+    let Form = new FormData();
+    if (data.deptid !== undefined && data.deptid !== null && data.deptid !== '') {
+      Form.append('deptid', data.deptid);
+    }
+    return postAxios('/role/getrolelist', Form);
   },
-  // 根据角色名字获取对应成员列表
-  getListEmployee: data => {
-    return postAxios('/role/listEmployee', data);
-  },
-  // 根据角色id获取角色成员-员工列表
-  getAllListEmployee: id => {
-    return getAxios('/role/listAllEmployee/' + id);
-  },
-  // 从角色成员列表中移除员工
-  deleteEmployeeRole: param => {
-    return getAxios('/role/removeEmployee?employeeId=' + param.employeeId + '&roleId=' + param.roleId);
-  },
-  // 从角色成员列表中批量移除员工
-  deleteEmployeeList: data => {
-    return postAxios('/role/removeEmployeeList', data);
-  },
-
-  // 添加角色成员方法
-  addEmployeeListRole: data => {
-    return postAxios('/role/addEmployeeList', data);
-  },
-  // 通过员工id获取所有角色以及员工具有的角色
-  getRoles: id => {
-    return getAxios('/role/getRoles/' + id);
-  },
-
+  // 根据id获取角色
+  getDetailById: (data) => {
+    let Form = new FormData();
+    if (data !== undefined && data !== null && data !== '') {
+      Form.append('detailId', data);
+    }
+    return postAxios('/role/getDetailById', Form);
+  }
 };
