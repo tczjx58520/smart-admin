@@ -148,7 +148,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {
@@ -184,13 +183,15 @@ export default {
       this.formValidate.serviceIdNameList = [];
       console.log('this.memberId======================>', this.memberId, this.type);
       if (this.type === 1) {
-        if (this.memberId.Countersign_permission_persons !== null && this.memberId.Countersign_permission_persons !== undefined) {
-          this.formValidate.serviceIdList = this.memberId.Countersign_permission_persons.split(',').map(Number);
+        console.log(this.memberId.countersignPermissionPersons);
+        if (this.memberId.countersignPermissionPersons !== null && this.memberId.countersignPermissionPersons !== undefined) {
+          this.formValidate.serviceIdList = this.memberId.countersignPermissionPersons.split(',').map(Number);
           this.formValidate.serviceIdNameList = this.memberId.Countersign_permission_personsNames.split(',');
         }
       } else if (this.type === 3) {
-        if (this.memberId.Auto_distribution_organize !== null && this.memberId.Auto_distribution_organize !== undefined) {
-          this.formValidate.serviceIdList = this.memberId.Auto_distribution_organize.split(',').map(Number);
+        console.log(this.memberId.autoDistributionPersons);
+        if (this.memberId.autoDistributionPersons !== null && this.memberId.autoDistributionPersons !== undefined) {
+          this.formValidate.serviceIdList = this.memberId.autoDistributionPersons.split(',').map(Number);
           this.formValidate.serviceIdNameList = this.memberId.Auto_distribution_organizeNames.split(',');
         }
       } else if (this.type === 4) {
@@ -200,16 +201,17 @@ export default {
             this.formValidate.serviceIdList.push(Number(item.key));
             this.formValidate.serviceIdNameList.push(item.label);
           }
+          console.log(this.formValidate.serviceIdList, this.formValidate.serviceIdNameList);
         }
       } else {
-        if (this.memberId.distribution_permission_persons !== null && this.memberId.distribution_permission_persons !== undefined) {
+        console.log(this.memberId.distributionPermissionPersons);
+        if (this.memberId.distributionPermissionPersons !== null && this.memberId.distributionPermissionPersons !== undefined) {
           console.log();
-          this.formValidate.serviceIdList = this.memberId.distribution_permission_persons.split(',').map(Number);
+          this.formValidate.serviceIdList = this.memberId.distributionPermissionPersons.split(',').map(Number);
           // 解决再次点击不操作保存丢失姓名
           this.formValidate.serviceIdNameList = this.memberId.distribution_permission_personsNames.split(',');
         }
       }
-      console.log('this.formValidate.serviceIdList======================>', this.formValidate.serviceIdList);
       this.getemplist();
       this.getroleList();
     }

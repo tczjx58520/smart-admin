@@ -305,7 +305,6 @@ export default {
           align: 'center',
           fixed: 'right',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             return h('div', [
               h('Button', {
                 props: {
@@ -402,7 +401,7 @@ export default {
     async getGongList () {
       try {
         this.Gongloading = true;
-        this.Gongsearchform.empId = this.$store.state.user.userId;
+        this.Gongsearchform.empId = this.$store.state.user.userLoginInfo.userId;
         let result = await salarycountApi.getsalaryList(this.Gongsearchform);
         this.Gongloading = false;
         this.Gongdata = result.data.content.list;

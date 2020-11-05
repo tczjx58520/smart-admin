@@ -77,7 +77,7 @@ export default {
     }
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -133,7 +133,7 @@ export default {
       this.$refs['form'].resetFields();
     },
     handsave () {
-      this.addformbase.createId = this.$store.state.user.userId;
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.$refs['form'].validate((valid) => {
         console.log('valid======>', valid);
         if (valid) {

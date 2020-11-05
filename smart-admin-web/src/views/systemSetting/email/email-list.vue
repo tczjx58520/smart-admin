@@ -181,7 +181,7 @@ export default {
       for (const i in delmap) {
         let data = {};
         data.noticeId = delmap[i];
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         noticeApi.deleteNotice(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);

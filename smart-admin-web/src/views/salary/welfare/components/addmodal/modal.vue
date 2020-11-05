@@ -75,7 +75,7 @@ export default {
     }
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -203,7 +203,7 @@ export default {
     },
     handsave () {
       console.log(this.addformbase);
-      this.addformbase.createId = this.$store.state.user.userId;
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       if (this.addformbase.suitType === '2') {
         this.addformbase.suitTarget = this.addformbase.empListIds;
       } else {

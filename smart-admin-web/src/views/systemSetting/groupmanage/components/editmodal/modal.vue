@@ -75,7 +75,7 @@ export default {
     }
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+
   },
   data () {
     const validatePass = (rule, value, callback) => {

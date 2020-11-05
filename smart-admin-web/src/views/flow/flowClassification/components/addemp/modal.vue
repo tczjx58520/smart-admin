@@ -79,9 +79,7 @@ export default {
     groupId: null,
     memberId: {
       type: null,
-      default: () => {
-        return [];
-      }
+      default: null
     }
   },
   created () {
@@ -148,7 +146,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {
@@ -180,8 +177,11 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      if (this.memberId !== null) {
+      if (this.memberId) {
+        console.log('this.memberId=====', this.memberId);
         this.formValidate.serviceIdList = this.memberId.split(',').map(Number);
+      } else {
+        this.formValidate.serviceIdList = [];
       }
       console.log('父传子====================>', this.formValidate.serviceIdList);
       this.reset();

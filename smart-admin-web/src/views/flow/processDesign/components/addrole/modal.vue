@@ -37,7 +37,7 @@ export default {
     memberId: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },

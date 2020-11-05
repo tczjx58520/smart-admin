@@ -251,7 +251,7 @@ export default {
       for (const i in this.moreGong) {
         let data = {};
         data.basicId = this.moreGong[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         socialSecurityFundApi.delGong(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);
@@ -299,7 +299,7 @@ export default {
       for (const i in this.moreShe) {
         let data = {};
         data.basicId = this.moreShe[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         socialSecurityFundApi.delShe(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);

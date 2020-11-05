@@ -118,7 +118,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             return h('div', [
               h('Button', {
                 style: {
@@ -252,7 +251,7 @@ export default {
       for (const i in this.moreGong) {
         let data = {};
         data.accountId = this.moreGong[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         collectAccountsApi.delcollectAccounts(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);

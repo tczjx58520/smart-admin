@@ -19,7 +19,9 @@
               </Form>
               <Divider />
             <!-- 步骤表格start===================================== -->
-            <Table :columns="stepcolumns" :data="stepdata" max-height="calc(70vh)" @on-selection-change="selects" :loading="table_loading" ref="tablesMain"></Table>
+            <!-- <Table border :columns="stepcolumns" :data="stepdata" max-height="calc(70vh)" highlight-row @on-current-change="selects" :loading="table_loading" ref="tablesMain"></Table> -->
+            <p>选择岗位</p>
+            <Table border :columns="stepcolumns" :data="stepdata" :loading="table_loading" highlight-row ref="tablesMain" @on-current-change="selects"></Table>
             </Card>
         </div>
         <div slot="footer">
@@ -33,8 +35,8 @@
 </template>
 <script>
 import Tables from '@/components/tables';
-import { roleApi } from '@/api/role';
 import { salaryEntryApi } from '@/api/salaryentry';
+import { positionApi } from '@/api/position';
 export default {
   name: 'addrolerule',
   components: {
@@ -49,7 +51,7 @@ export default {
     memberId: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+
   },
   mounted () {
   },
@@ -59,19 +61,19 @@ export default {
         {
           id: 1,
           Name: this.$t('processDesign_view.sponsor')
-        },
-        {
-          id: 2,
-          Name: this.$t('processDesign_view.organiser')
-        },
-        {
-          id: 3,
-          Name: this.$t('processDesign_view.sponsorhimself')
-        },
-        {
-          id: 4,
-          Name: this.$t('processDesign_view.allHandledPersons')
         }
+        // {
+        //   id: 2,
+        //   Name: this.$t('processDesign_view.organiser')
+        // },
+        // {
+        //   id: 3,
+        //   Name: this.$t('processDesign_view.sponsorhimself')
+        // },
+        // {
+        //   id: 4,
+        //   Name: this.$t('processDesign_view.allHandledPersons')
+        // }
       ],
       orgList: [
         {
@@ -85,10 +87,6 @@ export default {
         {
           id: 3,
           Name: this.$t('processDesign_view.affiliatedOrganizationsAndSuperiorOrganizations')
-        },
-        {
-          id: 4,
-          Name: this.$t('processDesign_view.affiliatedOrganizationsAndAllSuperiorOrganizations')
         }
       ],
       addformbase: {},
@@ -104,25 +102,16 @@ export default {
       },
       stepcolumns: [
         {
-          type: 'selection',
-          width: 60,
-          align: 'center'
+          title: this.$t('PositionName'),
+          key: 'postName'
         },
         {
-          title: this.$t('role_view.roleName'),
-          key: 'roleName'
-        },
-        {
-          title: this.$t('role_view.description'),
-          key: 'description'
+          title: this.$t('Remark'),
+          key: 'remarks'
         },
         {
           title: this.$t('CreatePerson'),
-          key: 'createPersonName'
-        },
-        {
-          title: this.$t('CreateTime'),
-          key: 'createTime'
+          key: 'createName'
         }
       ],
       stepdata: [],
@@ -167,12 +156,13 @@ export default {
     },
     selects (param) {
       console.log('param', param);
-      this.selected = param.map(item => {
-        return {
-          label: item.roleName,
-          key: item.id
-        };
-      })
+      this.selected = param
+      // this.selected = param.map(item => {
+      //   return {
+      //     label: item.roleName,
+      //     key: item.id
+      //   };
+      // })
       ;
     },
     getlist () {
@@ -181,26 +171,53 @@ export default {
     // 获取岗位信息
     async getbaseclassification () {
       this.table_loading = true;
-      await roleApi.getAllRole(this.searchForm).then(res => {
-        console.log('roleresult=>', res.data.content);
+      // await roleApi.getAllRole(this.searchForm).then(res => {
+      //   console.log('roleresult=>', res.data.content);
+      //   this.table_loading = false;
+      //   this.stepdata = this.selectFromId(res.data.content, this.formValidate.serviceIdList);
+      // });
+      this.table_loading = true;
+      await positionApi.postList(this.searchForm).then(res => {
+        this.stepdata = this.selectFromId(res.data.content.list, this.formValidate.serviceIdList);
+        this.pageTotal = res.data.content.totalCount;
         this.table_loading = false;
-        this.stepdata = this.selectFromId(res.data.content, this.formValidate.serviceIdList);
       });
     },
     cancel () {
       this.$emit('updateStat', false);
     },
     async handsave () {
+      console.log(this.addformbase.personnel, this.addformbase.organization);
+      if (!this.addformbase.personnel) {
+        this.$Message['warning']({
+          background: true,
+          content: '请选择人员类型'
+        });
+        return false;
+      }
+      if (!this.addformbase.organization) {
+        this.$Message['warning']({
+          background: true,
+          content: '请选择组织类型'
+        });
+        return false;
+      }
+      const person = this.personList[this.addformbase.personnel - 1].Name;
+      const organization = this.orgList[this.addformbase.organization - 1].Name;
       this.modal_loading = true;
+      const fin = `[${person}] [${organization}] [${this.selected.postName}]`;
+      const array = [
+        { value: 1, label: fin }
+      ];
       try {
         setTimeout(() => {
           this.modal_loading = false;
-          this.$emit('updateStat', false, this.selected, this.addformbase);
+          this.$emit('updateStat', false, array, this.addformbase);
         }, 1000);
       } catch (error) {
         setTimeout(() => {
           this.modal_loading = false;
-          this.$emit('updateStat', false, this.selected, this.addformbase);
+          this.$emit('updateStat', false, array, this.addformbase);
         }, 1000);
       }
     },

@@ -154,7 +154,7 @@ export default {
     async addOrUpdateEmail () {
       // 富文本
       this.form.content = this.editor.txt.html();
-      this.form.createId = this.$store.state.user.userId;
+      this.form.createId = this.$store.state.user.userLoginInfo.userId;
       if (this.form.time2 !== null && this.form.time2 !== undefined && this.form.time2 !== '') {
         this.form.beginTime = this.form.time2[0];
         this.form.endTime = this.form.time2[1];
@@ -209,7 +209,7 @@ export default {
       this.isShowSaveButtonLoading = true;
       this.$Spin.show();
       try {
-        this.form.operatId = this.$store.state.user.userId;
+        this.form.operatId = this.$store.state.user.userLoginInfo.userId;
         let res = await noticeApi.updateNotice(this.form);
         this.isShowSaveButtonLoading = false;
         this.$Spin.hide();

@@ -148,7 +148,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {

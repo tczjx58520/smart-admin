@@ -156,7 +156,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {
@@ -170,7 +169,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 2) {
               return h('div', [
                 h('Button', {

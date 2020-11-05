@@ -68,8 +68,8 @@ export default {
   methods: {
     convertTreeCheck (tree) {
       if (this.type === 1) {
-        if (this.memberId.Countersign__permission_organize) {
-          let myflag = this.memberId.Countersign__permission_organize.split(',');
+        if (this.memberId.countersignPermissionOrganize) {
+          let myflag = this.memberId.countersignPermissionOrganize.split(',');
           tree.forEach((item) => {
             // 读取 map 的键值映射
             if (myflag.indexOf(String(item.id)) >= 0) {
@@ -95,9 +95,8 @@ export default {
           });
         }
       } else {
-        if (this.memberId.distribution__permission_organize) {
-          console.log('this.memberId.distribution__permission_organize', this.memberId.distribution__permission_organize);
-          let myflag = this.memberId.distribution__permission_organize.split(',');
+        if (this.memberId.distributionPermissionOrganize) {
+          let myflag = this.memberId.distributionPermissionOrganize.split(',');
           console.log('myflag========', myflag);
           tree.forEach((item) => {
           // 读取 map 的键值映射

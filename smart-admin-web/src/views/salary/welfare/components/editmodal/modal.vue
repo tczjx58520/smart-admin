@@ -72,7 +72,7 @@ export default {
     editinfo: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -212,7 +212,7 @@ export default {
     },
     handsave () {
       console.log(this.addformbase);
-      this.addformbase.operatId = this.$store.state.user.userId;
+      this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.welfareSetId = this.addformbase.id;
       if (this.addformbase.suitType === '2') {
         this.addformbase.suitTarget = this.addformbase.empListIds;

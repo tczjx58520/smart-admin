@@ -76,7 +76,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.type === 1) {
               return h('div', {}
               );
@@ -187,7 +186,7 @@ export default {
       for (const i in this.moreGong) {
         let data = {};
         data.optionId = this.moreGong[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         salaryOptionApi.delsalaryOption(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);

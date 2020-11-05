@@ -110,7 +110,7 @@ export default {
     editinfo: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },

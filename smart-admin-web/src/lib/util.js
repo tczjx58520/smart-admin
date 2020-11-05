@@ -326,6 +326,9 @@ export const utils = {
     if (format === dateFormat.YMDHMS) {
       resultDate = year + '-' + month + '-' + day + ' ' + h + ':' + m + ':' + s;
     }
+    if (format === 'receipt') {
+      resultDate = String(year) + String(month) + String(day) + String(h) + String(m);
+    }
     return resultDate;
   },
   // 获取周一和周日日期，返回两种格式时间
@@ -508,4 +511,17 @@ export const dateTimeRangeConvert = (timerange) => {
     arr.push(moment(timerange[1]).format('YYYY-MM-DD 23:59:59'));
   }
   return arr;
+};
+// 生成唯一id
+export const generateUUID = () => {
+  let d = new Date().getTime();
+  if (window.performance && typeof window.performance.now === 'function') {
+    d += performance.now(); // use high-precision timer if available
+  }
+  let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    let r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+  return uuid;
 };

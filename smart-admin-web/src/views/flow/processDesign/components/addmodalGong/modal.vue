@@ -1,55 +1,223 @@
 <template>
-        <Modal v-model="mymoadlStat" class="add" width="1020" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
-        <div slot="header" style="text-align:left;color:#fff;">
-            <span>{{ $t('salaryEntry_view.newSalaryEntry') }}</span>
+  <Modal
+    v-model="mymoadlStat"
+    class="add"
+    width="1020"
+    :closable="false"
+    :mask-closable="false"
+    :transfer="false"
+    :styles="{ top: '10px' }"
+  >
+    <div slot="header" style="text-align: left; color: #fff">
+      <span>{{ $t("salaryEntry_view.newSalaryEntry") }}</span>
+    </div>
+    <div>
+      <Card dis-hover>
+        <Form
+          ref="form"
+          :model="addformbase"
+          label-position="right"
+          :label-width="120"
+          :rules="ruleValidate"
+        >
+          <FormItem
+            :label="$t('processDesign_view.newProcess')"
+            prop="flowName"
+          >
+            <Input v-model="addformbase.flowName"></Input>
+          </FormItem>
+          <FormItem :label="$t('processDesign_view.category')" prop="category">
+            <Select v-model="addformbase.category" style="width: 100%">
+              <Option
+                v-for="item in categoryList"
+                :value="item.id"
+                :key="item.id"
+                >{{ item.categoryName }}</Option
+              >
+            </Select>
+          </FormItem>
+          <FormItem
+            :label="$t('processDesign_view.businessDocuments')"
+            prop="receiptType"
+          >
+            <Select v-model="addformbase.receiptType" style="width: 100%">
+              <Option
+                v-for="item in businessList"
+                :value="item.id"
+                :key="item.id"
+                >{{ item.businessName }}</Option
+              >
+            </Select>
+          </FormItem>
+          <FormItem :label="$t('processDesign_view.processType')">
+            <RadioGroup v-model="addformbase.type">
+              <Radio :label="1">
+                {{ $t("processDesign_view.fixedProcess") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('zhstz')">
+            <RadioGroup v-model="addformbase.recallNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('cxstz')">
+            <RadioGroup v-model="addformbase.cancelNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('thstz')">
+            <RadioGroup v-model="addformbase.returnNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('jjstz')">
+            <RadioGroup v-model="addformbase.refuseNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('zzstz')">
+            <RadioGroup v-model="addformbase.breakNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <FormItem :label="$t('jsstz')">
+            <RadioGroup v-model="addformbase.endNotice">
+              <Radio :label="1">
+                {{ $t("bzzbr") }}
+              </Radio>
+              <Radio :label="2">
+                {{ $t("fqrjdqzbr") }}
+              </Radio>
+              <Radio :label="3">
+                {{ $t("syzbr") }}
+              </Radio>
+              <Radio :label="4">
+                {{ $t("btz") }}
+              </Radio>
+            </RadioGroup>
+          </FormItem>
+          <!-- 搁置 -->
+          <FormItem :label="$t('file')">
+            <Checkbox v-model="addformbase.type2"></Checkbox>
+          </FormItem>
+        </Form>
+        <div style="margin: 20px 0" v-if="addformbase.type === 1">
+          <Button
+            style="margin-right: 15px"
+            @click="additem"
+            icon="md-add"
+            type="info"
+            >{{ $t("Create") }}</Button
+          >
         </div>
-        <div>
-            <Card dis-hover>
-                <Form ref="form" :model="addformbase" label-position="right" :label-width="100" :rules="ruleValidate">
-                    <FormItem :label="$t('processDesign_view.newProcess')" prop="newProcess">
-                        <Input v-model="addformbase.categoryName"></Input>
-                    </FormItem>
-                    <FormItem :label="$t('processDesign_view.category')" prop="category">
-                        <Select v-model="addformbase.category" style="width:100%">
-                            <Option v-for="item in categoryList" :value="item.id" :key="item.id">{{ item.categoryName }}</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem :label="$t('processDesign_view.businessDocuments')" prop="businessDocuments">
-                        <Select v-model="addformbase.business" style="width:100%">
-                            <Option v-for="item in businessList" :value="item.id" :key="item.id">{{ item.businessName }}</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem :label="$t('processDesign_view.processType')" prop="processType">
-                        <RadioGroup v-model="addformbase.processType">
-                            <Radio :label="$t('processDesign_view.fixedProcess')">
-                            </Radio>
-                            <Radio :label="$t('processDesign_view.freeSequenceFlow')">
-                            </Radio>
-                        </RadioGroup>
-                    </FormItem>
-                </Form>
-                <div style="margin:20px 0;" v-if="addformbase.processType === $t('processDesign_view.fixedProcess')">
-              <Button style="margin-right:15px;" @click="additem" icon="md-add" type="info">{{ $t('Create') }}</Button>
-            </div>
-            <!-- 步骤表格start===================================== -->
-            <Table :columns="stepcolumns" :data="stepdata" v-if="addformbase.processType === $t('processDesign_view.fixedProcess')"></Table>
-            </Card>
-        </div>
-        <div slot="footer">
-            <ButtonGroup>
-                <Button type="primary" size="large" :loading="modal_loading" @click="handsave">{{ $t('Save') }}</Button>
-                <Button type="error" size="large"  @click="cancel">{{ $t('Close') }}</Button>
-            </ButtonGroup>
-        </div>
-        <addShe :modalstat = "visiable" :editinfo="rowinfo" :stepinfo="stepdata" @updateStat = "updateStat_step"></addShe>
-    </Modal>
-    <!-- 设置步骤弹窗======================= -->
+        <!-- 步骤表格start===================================== -->
+        <Table
+          border
+          :columns="stepcolumns"
+          :data="stepdata"
+          v-if="addformbase.type === 1"
+        ></Table>
+      </Card>
+    </div>
+    <div slot="footer">
+      <ButtonGroup>
+        <Button
+          type="primary"
+          size="large"
+          :loading="modal_loading"
+          @click="handsave"
+          >{{ $t("Save") }}</Button
+        >
+        <Button type="error" size="large" @click="cancel">{{
+          $t("Close")
+        }}</Button>
+      </ButtonGroup>
+    </div>
+    <addShe
+      :modalstat="visiable"
+      :receiptType="addformbase.receiptType"
+      :editinfo="rowinfo"
+      :stepinfo="mystepdata"
+      :actionName="stepName"
+      @updateStat="updateStat_step"
+    ></addShe>
+  </Modal>
+  <!-- 设置步骤弹窗======================= -->
 </template>
 <script>
 import Tables from '@/components/tables';
 import addShe from '../addmodalShe/modal';
 import { FlowCategoryApi } from '@/api/flowClassification';
-import { salaryEntryApi } from '@/api/salaryentry';
+import { FlowApi } from '@/api/flow';
+import { generateUUID } from '@/lib/util';
+const defaultEvent = {
+  flowName: '',
+  category: null,
+  receiptType: null,
+  type: 1,
+  recallNotice: 1,
+  cancelNotice: 1,
+  returnNotice: 1,
+  refuseNotice: 1,
+  breakNotice: 1,
+  endNotice: 1
+};
 export default {
   name: 'addGong',
   components: {
@@ -63,36 +231,36 @@ export default {
     },
     editinfo: null
   },
-  created () {
-    console.log('moadlStat=======>', this.modalstat);
-  },
-  mounted () {
-  },
+  created () {},
+  mounted () {},
   data () {
     return {
       visiable: false,
       table_loading: true,
-      addformbase: {},
+      addformbase: Object.assign({}, defaultEvent),
       modal_loading: false,
       mymoadlStat: this.modalstat,
       ruleValidate: {
-        newProcess: [
-          { required: true, message: 'The newProcess cannot be empty', trigger: 'blur' }
-        ],
-        processClassification: [
-          { required: true, message: 'The processClassification cannot be empty', trigger: 'blur' }
+        flowName: [
+          {
+            required: true,
+            message: 'The flowName cannot be empty',
+            trigger: 'blur'
+          }
         ],
         category: [
-          { required: true, message: 'The processClassification cannot be empty', trigger: 'blur' }
+          {
+            required: true,
+            message: 'The category cannot be empty',
+            trigger: 'blur'
+          }
         ],
-        businessDocuments: [
-          { required: true, message: 'The processClassification cannot be empty', trigger: 'blur' }
-        ],
-        processNumber: [
-          { required: true, message: 'The processClassification cannot be empty', trigger: 'blur' }
-        ],
-        processType: [
-          { required: true, message: 'The processClassification cannot be empty', trigger: 'blur' }
+        receiptType: [
+          {
+            required: true,
+            message: 'The receiptType cannot be empty',
+            trigger: 'blur'
+          }
         ]
       },
       searchForm: {
@@ -115,13 +283,25 @@ export default {
         },
         {
           title: this.$t('processDesign_view.stepName'),
-          key: 'stepName'
+          key: 'actionName'
           // width: 100
         },
         {
           title: this.$t('processDesign_view.condition'),
-          key: 'condition'
-          // width: 100
+          key: 'condition',
+          render: (h, params) => {
+            let name = '';
+            name = params.row.stepNextConditions && params.row.stepNextConditions.map((item, index) => {
+              let name = '';
+              for (const value of item.myformlua) {
+                name += value.label;
+              }
+              return name;
+            }).join(',');
+            return h('div', [
+              h('span', name)
+            ]);
+          }
         },
         {
           title: '操作',
@@ -130,36 +310,72 @@ export default {
           align: 'center',
           className: 'action-hide',
           render: (h, params) => {
-            return this.$tableAction(h, [
-              {
-                title: '步骤设置',
-                action: () => {
-                  this.visiable = true;
-                  this.rowinfo = params.row;
-                }
-              },
-              {
-                title: '删除',
-                action: () => {
-                  this.$Modal.confirm({
-                    title: '友情提醒',
-                    content: '确定要删除吗？',
-                    onOk: () => {
-                      console.log('删除');
-                      this.stepdata.splice(params.index, 1);
+            if (params.row._index === 0) {
+              return this.$tableAction(h, [
+                {
+                  title: '步骤设置',
+                  action: () => {
+                    if (this.addformbase.receiptType) {
+                      this.visiable = true;
+                      this.rowinfo = params.row;
+                      const temp = this.stepdata.slice(0);
+                      this.mystepdata = temp.slice(params.row._index + 1);
+                    } else {
+                      this.$Message.warning(this.$t('qxzdjlx'));
                     }
-                  });
+                  }
                 }
-              }
-            ]);
+              ]);
+            } else if (params.row._index === this.stepdata.length - 1) {
+              return null;
+            } else {
+              return this.$tableAction(h, [
+                {
+                  title: '步骤设置',
+                  action: () => {
+                    if (this.addformbase.receiptType) {
+                      this.visiable = true;
+                      this.rowinfo = params.row;
+                      const temp = this.stepdata.slice(0);
+                      this.stepName = params.row.actionName;
+                      console.log('this.stepName====', this.actionName, params.row.actionName);
+                      this.mystepdata = temp.slice(params.row._index + 1);
+                    } else {
+                      this.$Message.warning(this.$t('qxzdjlx'));
+                    }
+                  }
+                },
+                {
+                  title: '删除',
+                  action: () => {
+                    this.$Modal.confirm({
+                      title: '友情提醒',
+                      content: '确定要删除吗？',
+                      onOk: () => {
+                        this.stepdata.splice(params.index, 1);
+                      }
+                    });
+                  }
+                }
+              ]);
+            }
           }
         }
       ],
       stepdata: [
-        { stepName: this.$t('processDesign_view.start') },
-        { stepName: this.$t('processDesign_view.finish') }
+        {
+          actionName: this.$t('processDesign_view.start'),
+          myid: this.generateUUID()
+        },
+        {
+          actionName: this.$t('processDesign_view.finish'),
+          myid: this.generateUUID()
+        }
       ],
-      rowinfo: null
+      mystepdata: [],
+      rowinfo: null,
+      // 传递姓名
+      stepName: ''
     };
   },
   watch: {
@@ -169,11 +385,80 @@ export default {
         this.getbaseclassification();
       }
     }
-
   },
   methods: {
-    updateStat_step (stat) {
+    generateUUID,
+    updateStat_step (stat, val1, val2, val3) {
       this.visiable = stat;
+      if (val1 && val2 && val3) {
+        for (const value of val2) {
+          value.actionSerialId = this.rowinfo.myid;
+          value.nextSerialId = value.myid;
+        }
+        for (const value of val3) {
+          value.actionSerialId = this.rowinfo.myid;
+          value.fieldName = value.value;
+        }
+        Object.assign(this.stepdata[this.rowinfo._index], val1);
+        this.$set(this.stepdata[this.rowinfo._index], 'stepNextConditions', this._.cloneDeep(val2));
+        for (let i = 0; i < this.stepdata[this.rowinfo._index].stepNextConditions.length; i++) {
+          // 装全部计算公式容器
+          let temp = '';
+          const element = this.stepdata[this.rowinfo._index].stepNextConditions[i];
+          for (let j = 0; j < element.myformlua.length; j++) {
+            const item = element.myformlua[j];
+            let flag = '';
+            if (item.label === '(') {
+              flag = '(';
+            } else if (item.label === ')') {
+              flag = ')';
+            } else {
+              if (item.calcCadition3) {
+                switch (item.calcCadition3) {
+                  case 1:
+                    flag += '&&';
+                    break;
+                  case 2:
+                    flag += '||';
+                    break;
+                  case 3:
+                    flag += '!';
+                    break;
+                }
+              }
+              flag = flag + `value${j}`;
+              switch (item.calcCadition2) {
+                case 1:
+                  flag += `<${item.calcCadition4}`;
+                  break;
+                case 2:
+                  flag += `>${item.calcCadition4}`;
+                  break;
+                case 3:
+                  flag += `.equals(\"${item.calcCadition4}\")`;
+                  break;
+                case 4:
+                  flag += `<=${item.calcCadition4}`;
+                  break;
+                case 5:
+                  flag += `>=${item.calcCadition4}`;
+                  break;
+                case 6:
+                  flag += `!=${item.calcCadition4}`;
+                  break;
+              }
+            }
+            // 装每条计算公式
+            temp += flag;
+            element.formula = temp;
+            element.contentId = element.myformlua.map(item => { return item.calcCadition1; }).join(',');
+          }
+        }
+        this.stepdata[this.rowinfo._index].flowContents = val3.slice(0);
+        this.stepdata[this.rowinfo._index].attachmentPermission = this.stepdata[this.rowinfo._index].attachmentPermission.join(',');
+        this.stepdata[this.rowinfo._index].countersignAttachmentPermission = this.stepdata[this.rowinfo._index].countersignAttachmentPermission.join(',');
+        this.stepdata[this.rowinfo._index].allowAction = this.stepdata[this.rowinfo._index].allowAction.join(',');
+      }
     },
     // 添加步骤
     additem () {
@@ -193,105 +478,51 @@ export default {
           });
         },
         onOk: () => {
-          console.log('this.value==============>', this.value);
-          let obj =
-        { stepName: this.value };
           const length = this.stepdata.length - 1;
+          let obj = { actionName: this.value, myid: this.generateUUID() };
           this.stepdata.splice(length, 0, obj);
           this.value = '';
         },
         onCancel: () => {
-          this.$Message.warning('cacel');
+          this.$Message.warning('cancel');
         }
       });
     },
     // 获取基础信息
     async getbaseclassification () {
-      await FlowCategoryApi.getGroup(this.searchForm).then(res => {
+      await FlowCategoryApi.getGroup(this.searchForm).then((res) => {
         this.categoryList = res.data.content.list;
       });
-    },
-    getmydate (e, scope) {
-      // row.grantDate = e;
-      this.data[scope.index].grantDate = e;
-      console.log('value============>', this.data);
-    },
-    getmyyearAndMonth (e, scope) {
-      // row.grantDate = e;
-      this.data[scope.index].yearAndMonth = e;
-      console.log('value============>', this.data);
-    },
-    getcurrentdate () {
-      let myDate = new Date(); // 获取当前年份(2位)
-      let year = myDate.getFullYear(); // 获取完整的年份(4位,1970-????)
-      let month = myDate.getMonth(); // 获取当前月份(0-11,0代表1月)
-      if (month + 1 < 10) {
-        month = '0' + (month + 1);
-      }
-      return year + '-' + month;
-    },
-    getpredate () {
-      let myDate = new Date(); // 获取当前年份(2位)
-      let year = myDate.getFullYear(); // 获取完整的年份(4位,1970-????)
-      let month = myDate.getMonth(); // 获取当前月份(0-11,0代表1月)
-      if (month + 1 < 10) {
-        month = '0' + (month + 1);
-      }
-      let dayNow = year + '-' + month;
-      let arr = dayNow.split('-');
-      let peryear = arr[0]; // 获取当前日期的年份
-      let premonth = arr[1]; // 获取当前日期的月份
-      let year2 = peryear;
-      let month2 = parseInt(month) - 1;
-      if (month2 === 0) {
-        year2 = parseInt(year2) - 1;
-        month2 = 12;
-      }
-      if (month2 < 10) {
-        month2 = '0' + month2;
-      }
-      return year2 + '-' + month2;
     },
     cancel () {
       this.$emit('updateStat', false);
     },
     async handsave () {
       this.modal_loading = true;
-      console.log('this.baseinfo=============================>', this.baseinfo);
+      const temp = this._.cloneDeep(this.stepdata);
+      for (let i = 0; i < temp.length; i++) {
+        let item = temp[i];
+        item.roleruleList = JSON.stringify(item.roleruleList);
+        item.serialNumber = i;
+        if (i === temp.length - 1) {
+          break;
+        }
+        for (let j = 0; j < item.stepNextConditions.length; j++) {
+          let element = item.stepNextConditions[j];
+          element.actionSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.actionSerialId; });
+          element.nextSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.nextSerialId; });
+          element.myformlua = JSON.stringify(element.myformlua);
+        }
+        for (let j = 0; j < item.flowContents.length; j++) {
+          let element = item.flowContents[j];
+          element.actionSerialNumber = i;
+        }
+      }
+      const data = JSON.stringify(this.addformbase);
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      const data2 = JSON.stringify(temp);
+      await FlowApi.addFlow(data, data2);
       // 把输入的值插入json
-      for (let i = 0; i < this.baseinfo.length; i++) {
-        // this.baseinfo[i].salaryOptionvalue = [];
-        let count = 0;
-        for (const key in this.baseinfo[i]) {
-          count++;
-          if (count > 14) {
-            this.baseinfo[i].salaryOptionJson[count - 15].optionMoney = this.baseinfo[i][key];
-          }
-          if (key === '实发工资') {
-            this.baseinfo[i].actualSalary = this.baseinfo[i][key];
-          }
-          if (key === '应发工资') {
-            this.baseinfo[i].shouldSalary = this.baseinfo[i][key];
-          }
-        }
-      }
-      for (let j = 0; j < this.baseinfo.length; j++) {
-        if (this.baseinfo[j].isEnter === 0) {
-          this.baseinfo[j].createId = this.$store.state.user.userId;
-          this.baseinfo[j].empId = this.baseinfo[j].id;
-          this.baseinfo[j].salaryOptionJson = JSON.stringify(this.baseinfo[j].salaryOptionJson);
-          await salaryEntryApi.addentryList(this.baseinfo[j]).then(res => {
-            this.$Message.success('新建成功');
-          });
-        } else {
-          this.baseinfo[j].salaryId = this.baseinfo[j].salaryinfo.id;
-          this.baseinfo[j].operatId = this.$store.state.user.userId;
-          this.baseinfo[j].salaryOptionJson = JSON.stringify(this.baseinfo[j].salaryOptionJson);
-          await salaryEntryApi.updateentryList(this.baseinfo[j]).then(res => {
-            this.$Message.success('修改成功');
-          });
-        }
-      }
       this.modal_loading = false;
       this.$emit('updateStat', false);
     }
@@ -299,16 +530,16 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-    .add /deep/ .ivu-modal-header {
-        background-color: #2d8cf0;
-    }
-    .add /deep/ .ivu-modal-content {
-        background-color: #eee;
-    }
-    .add /deep/ .ivu-modal-footer {
-        border: none;
-    }
-    .add /deep/ .ivu-table-wrapper{
-      overflow: visible;
-    }
+.add /deep/ .ivu-modal-header {
+  background-color: #2d8cf0;
+}
+.add /deep/ .ivu-modal-content {
+  background-color: #eee;
+}
+.add /deep/ .ivu-modal-footer {
+  border: none;
+}
+.add /deep/ .ivu-table-wrapper {
+  overflow: visible;
+}
 </style>

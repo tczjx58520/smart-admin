@@ -136,7 +136,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             return h('div', [
               h(
                 'Button',
@@ -223,7 +222,7 @@ export default {
       for (const i in this.moreWelfare) {
         let data = {};
         data.id = this.moreWelfare[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         FlowCategoryApi.delGroup(data).then((res) => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);
@@ -279,6 +278,7 @@ export default {
     },
     // 弹窗组件
     created () {
+      console.log(12312312);
       this.visiable = true;
     },
     updateStat (stat) {

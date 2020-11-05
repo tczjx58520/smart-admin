@@ -71,7 +71,14 @@ module.exports = {
             }
           }
         })
-      ]
+      ],
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000
+      }
+    },
+    performance: {
+      hints: false
     }
   }
 };

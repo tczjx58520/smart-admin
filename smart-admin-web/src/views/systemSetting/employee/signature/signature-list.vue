@@ -174,7 +174,7 @@ export default {
       saveItem: {
         postName: '',
         remarks: '',
-        operatId: this.$store.state.user.userId
+        operatId: this.$store.state.user.userLoginInfo.userId
       },
       savePic: {
         type: 1
@@ -242,7 +242,7 @@ export default {
                       signatureId: params.row.id,
                       signatureName: params.row.signatureName,
                       empId: params.row.empId,
-                      operatId: this.$store.state.user.userId
+                      operatId: this.$store.state.user.userLoginInfo.userId
                     };
                     this.editEmpId = params.row.empName;
                     this.isShowEditModal = true;
@@ -271,7 +271,7 @@ export default {
                       onOk: () => {
                         console.log('删除');
                         this.deleteItem.signatureId = params.row.id;
-                        this.deleteItem.operatId = this.$store.state.user.userId;
+                        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                         this.deletePositionById(this.deleteItem);
                       }
                     });
@@ -337,7 +337,7 @@ export default {
           signatureId: row.id,
           signatureName: row.signatureName,
           empId: row.empId,
-          operatId: this.$store.state.user.userId
+          operatId: this.$store.state.user.userLoginInfo.userId
         };
         this.editEmpId = row.empName;
         this.isShowEditModal = true;
@@ -518,7 +518,7 @@ export default {
     getlist () {
       console.log('123', 123);
       console.log('userLoginInfo', this.$store.state.user.userLoginInfo);
-      console.log('userId', this.$store.state.user.userId);
+      console.log('userId', this.$store.state.user.userLoginInfo.userId);
       this.searchFrom.signatureName = this.value1;
       this.searchFrom.pageNum = 1;
       signatureApi.groupList(this.searchFrom).then(res => {
@@ -539,7 +539,7 @@ export default {
       try {
         this.isShowdeleteLoading = true;
         this.deleteItem.postId = this.ids;
-        this.deleteItem.operatId = this.$store.state.user.userId;
+        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
         let result = await signatureApi.deleteSignature(this.deleteItem);
         this.isShowdeleteLoading = false;
         this.$Message.success('删除成功');
@@ -695,7 +695,7 @@ export default {
       this.$refs['saveRef'].resetFields();
       this.addEmpId = '';
       this.file = [];
-      this.saveItem['createId'] = this.$store.state.user.userId;
+      this.saveItem['createId'] = this.$store.state.user.userLoginInfo.userId;
       this.isShowAddModal = false;
     },
     // 根据ID删除岗位

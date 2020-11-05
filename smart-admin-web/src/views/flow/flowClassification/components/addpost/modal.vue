@@ -55,7 +55,7 @@ export default {
     memberId: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+
   },
   mounted () {
   },
@@ -104,10 +104,16 @@ export default {
       if (this.modalstat) {
         // this.formValidate.serviceIdList = this.memberId.Countersign_permission_persons.split(',').map(Number);
         // this.formValidate.serviceIdNameList = this.memberId.Countersign_permission_personsNames.split(',');
-        for (const i in this.memberId.postlist) {
-          let item = this.memberId.postlist[i];
-          this.formValidate.serviceIdList.push(Number(item.key));
-          this.formValidate.serviceIdNameList.push(item.label);
+        // for (const i in this.memberId.postlist) {
+        //   let item = this.memberId.postlist[i];
+        //   this.formValidate.serviceIdList.push(Number(item.key));
+        //   this.formValidate.serviceIdNameList.push(item.label);
+        // }
+        if (this.memberId) {
+          console.log('this.memberId=====', this.memberId);
+          this.formValidate.serviceIdList = this.memberId.split(',').map(Number);
+        } else {
+          this.formValidate.serviceIdList = [];
         }
         this.getbaseclassification();
       }

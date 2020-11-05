@@ -64,7 +64,7 @@ export default {
     editinfo: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
     this.getindicator();
@@ -290,7 +290,7 @@ export default {
       this.modal_loading = true;
       console.log(this.addformbase);
       this.addformbase.taskId = this.addformbase.id;
-      this.addformbase.operatId = this.$store.state.user.userId;
+      this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
       console.log(this.addformbase);
       // this.$refs['form'].validate((valid) => {
       //   if (valid) {

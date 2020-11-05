@@ -104,7 +104,7 @@ export default {
     }
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+
   },
   mounted () {
 

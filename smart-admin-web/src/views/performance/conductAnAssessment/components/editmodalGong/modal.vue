@@ -39,7 +39,7 @@ export default {
     editinfo: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -165,7 +165,7 @@ export default {
       console.log(this.mydata);
       for (const i in this.mydata) {
         this.mydata[i].taskId = this.mydata[i].itemScoreVos[0].taskId;
-        this.mydata[i].operatId = this.$store.state.user.userId;
+        this.mydata[i].operatId = this.$store.state.user.userLoginInfo.userId;
         this.mydata[i].itemScoreJson = JSON.stringify(this.mydata[i].itemScoreVos);
         if (this.mydata[i].flag) {
           await assessmentTaskApi.manualscore(this.mydata[i]).then(res => {

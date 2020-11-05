@@ -203,7 +203,7 @@ export default {
 
       // data.groupId = this.groupId;
       // data.empIds = this.formValidate.serviceIdList.join(',');
-      // data.operatId = this.$store.state.user.userId;
+      // data.operatId = this.$store.state.user.userLoginInfo.userId;
       // groupApi.addGroupPerson(data).then(res => {
       //   if (res.ret === 200) {
       //     this.$Message.success(this.$t('addSuccess'));

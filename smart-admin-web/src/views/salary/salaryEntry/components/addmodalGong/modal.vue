@@ -66,7 +66,7 @@ export default {
     editinfo: true
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -120,7 +120,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {
@@ -283,7 +282,6 @@ export default {
           key: 'stat',
           width: '100',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.stat === 1) {
               return h('span', this.$t('Open'));
             } else {
@@ -451,7 +449,7 @@ export default {
       }
       for (let j = 0; j < this.baseinfo.length; j++) {
         if (this.baseinfo[j].isEnter === 0) {
-          this.baseinfo[j].createId = this.$store.state.user.userId;
+          this.baseinfo[j].createId = this.$store.state.user.userLoginInfo.userId;
           this.baseinfo[j].empId = this.baseinfo[j].id;
           this.baseinfo[j].salaryOptionJson = JSON.stringify(this.baseinfo[j].salaryOptionJson);
           await salaryEntryApi.addentryList(this.baseinfo[j]).then(res => {
@@ -459,7 +457,7 @@ export default {
           });
         } else {
           this.baseinfo[j].salaryId = this.baseinfo[j].salaryinfo.id;
-          this.baseinfo[j].operatId = this.$store.state.user.userId;
+          this.baseinfo[j].operatId = this.$store.state.user.userLoginInfo.userId;
           this.baseinfo[j].salaryOptionJson = JSON.stringify(this.baseinfo[j].salaryOptionJson);
           await salaryEntryApi.updateentryList(this.baseinfo[j]).then(res => {
             this.$Message.success('修改成功');

@@ -86,7 +86,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.confirmStat === 0) {
               return h('div', [
                 h('Button', {
@@ -294,7 +293,7 @@ export default {
         let data = {};
         data.pageNum = 1;
         data.pageSize = 10;
-        data.empId = this.$store.state.user.userId;
+        data.empId = this.$store.state.user.userLoginInfo.userId;
         data.loginRepositoryId = this.$store.state.user.userLoginInfo.repositoryId;
         let res = await usermanagelApi.queryList(data);
         console.log('res=========', res.data.content.list[0].password === this.value);
@@ -387,7 +386,7 @@ export default {
     async getGongList () {
       try {
         this.Gongloading = true;
-        this.Gongsearchform.empId = this.$store.state.user.userId;
+        this.Gongsearchform.empId = this.$store.state.user.userLoginInfo.userId;
         let result = await salaryQueryApi.getsalaryList(this.Gongsearchform);
         this.Gongloading = false;
         this.Gongdata = result.data.content.list;
@@ -421,9 +420,9 @@ export default {
     async getSheList () {
       try {
         this.Sheloading = true;
-        this.Shesearchform.empId = this.$store.state.user.userId;
+        this.Shesearchform.empId = this.$store.state.user.userLoginInfo.userId;
         this.Shesearchform.organizeId = this.$store.state.user.userLoginInfo.organizationOa;
-        // this.Shesearchform.empId = this.$store.state.user.userId;
+        // this.Shesearchform.empId = this.$store.state.user.userLoginInfo.userId;
         let result = await welfareApi.getmywelfare(this.Shesearchform);
         this.Sheloading = false;
         this.Shedata = result.data.content.list;

@@ -356,7 +356,7 @@ export default {
         const id = this.moreaction[i].id;
         let data = {};
         data.taskId = id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         await assessmentTaskApi.delassessmentTask(data).then(res => {
           if (res.ret === 200) {
             console.log(res.msg);

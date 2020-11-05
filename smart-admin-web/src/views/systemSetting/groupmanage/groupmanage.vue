@@ -236,7 +236,7 @@ export default {
           for (const i in this.moreGroup) {
             let data = {};
             data.groupId = this.moreGroup[i].id;
-            data.operatId = this.$store.state.user.userId;
+            data.operatId = this.$store.state.user.userLoginInfo.userId;
             groupApi.delGroup(data).then(res => {
               if (res.ret === 200) {
                 this.$Message.success(res.msg);
@@ -258,7 +258,7 @@ export default {
       let data = {};
       data.groupId = this.addgroup_member;
       data.empIds = this.moreMember.map(item => { return item.empId; });
-      data.operatId = this.$store.state.user.userId;
+      data.operatId = this.$store.state.user.userLoginInfo.userId;
       groupApi.delGroupPerson(data).then(res => {
         if (res.ret === 200) {
           this.$Message.success(res.msg);
@@ -275,7 +275,7 @@ export default {
     },
     handlersaveGroup () {
       this.modal_loading = true;
-      this.addgroup.createId = this.$store.state.user.userId;
+      this.addgroup.createId = this.$store.state.user.userLoginInfo.userId;
       groupApi.addGroup(this.addgroup).then(res => {
         if (res.ret === 200) {
           this.$Message.success(res.msg);

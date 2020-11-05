@@ -48,7 +48,7 @@ export default {
     editinfo: null
   },
   created () {
-    // console.log('moadlStat=======>', this.modalstat);
+    //
   },
   data () {
     return {
@@ -105,7 +105,7 @@ export default {
         if (valid) {
           console.log(1231231);
           console.log(this.$refs.mytree.checkedData);
-          this.addformbase.createPersonId = this.$store.state.user.userId;
+          this.addformbase.createPersonId = this.$store.state.user.userLoginInfo.userId;
           const authority = this.$refs.mytree.checkedData;
           roleApi.addRole(this.addformbase, authority).then(res => {
             this.$Message.success(this.$t('addSuccess'));

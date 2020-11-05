@@ -71,7 +71,7 @@ export default {
     editinfo: null
   },
   created () {
-    // console.log('moadlStat=======>', this.modalstat);
+    // 
   },
   data () {
     return {
@@ -157,7 +157,7 @@ export default {
                       console.log('删除');
                       this.mydataList.splice(params.index, 1);
                       // this.deleteItem.postId = params.row.id;
-                      // this.deleteItem.operatId = this.$store.state.user.userId;
+                      // this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                       // this.deletePositionById(this.deleteItem);
                     }
                   });
@@ -173,7 +173,7 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      // console.log('moadlStat=======>', this.modalstat);
+      // 
       if (this.mymoadlStat === true) {
         console.log('editinfo==============', this.editinfo);
         this.addformbase = this.editinfo;
@@ -217,7 +217,7 @@ export default {
       this.modal_loading = true;
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.addformbase.operatId = this.$store.state.user.userId;
+          this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.itemJson = JSON.stringify(this.mydataList);
           this.addformbase.collectId = this.addformbase.id;
           indicatorSetApi.updateIndicator(this.addformbase).then(res => {

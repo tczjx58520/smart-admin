@@ -149,7 +149,7 @@ export default {
       $('.department-wrap').hide();
     },
     handleSave () {
-      this.formdata.createId = this.$store.state.user.userId;
+      this.formdata.createId = this.$store.state.user.userLoginInfo.userId;
       console.log('this.formdata===>', this.formdata);
       this.$refs.myForm.validate((valid) => {
         if (valid) {
@@ -180,7 +180,7 @@ export default {
           console.log(this.$refs.mytree.getSelectedNodes());
           let data = {};
           data.organizeId = nodeinfo.id;
-          data.operatId = this.$store.state.user.userId;
+          data.operatId = this.$store.state.user.userLoginInfo.userId;
           organization.delOrganization(data).then(res => {
             if (res.ret === 200) {
               this.$Message.info('dele ok');
@@ -245,7 +245,7 @@ export default {
     },
     // 改写的组织架构
     // 渲染部门树形图功能按钮
-    renderDepartmentTreeButton(h, { root, node, data }) {
+    renderDepartmentTreeButton (h, { root, node, data }) {
       console.log(root, node, data);
       let newName = data.title;
       if (newName.length > 8) {
@@ -316,12 +316,12 @@ export default {
                 )
               ])
             ]
-          ),
+          )
         ]
       );
     },
-     // 选中部门 更新员工table
-    loadEmployeeTable(event, root, node, data) {
+    // 选中部门 更新员工table
+    loadEmployeeTable (event, root, node, data) {
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
       let target = event.target;
       let tagName = target.tagName;
@@ -332,7 +332,7 @@ export default {
         target.style.backgroundColor = '#5cadff';
         target.style.color = '#ffffff';
       }
-    },
+    }
   }
 };
 </script>

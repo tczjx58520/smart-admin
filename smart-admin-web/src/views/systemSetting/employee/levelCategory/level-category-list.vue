@@ -147,7 +147,7 @@ export default {
         categoryName: '',
         isEffective: '1',
         isDetail: '2',
-        operatId: this.$store.state.user.userId
+        operatId: this.$store.state.user.userLoginInfo.userId
       },
       saveItemInt: {},
       // table表头
@@ -165,7 +165,6 @@ export default {
           title: this.$t('isEffective'),
           key: 'isEffective',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.isEffective === 1) {
               return h('span', this.$t('yes'));
             } else {
@@ -177,7 +176,6 @@ export default {
           title: this.$t('isDetail'),
           key: 'isDetail',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             if (params.row.isDetail === 1) {
               return h('span', this.$t('yes'));
             } else {
@@ -234,7 +232,7 @@ export default {
                         categoryName: params.row.categoryName,
                         isEffective: params.row.isEffective.toString(),
                         isDetail: params.row.isDetail.toString(),
-                        operatId: this.$store.state.user.userId
+                        operatId: this.$store.state.user.userLoginInfo.userId
                       };
                       this.isShowEditModal = true;
                     }
@@ -256,7 +254,7 @@ export default {
                         onOk: () => {
                           console.log('删除');
                           this.deleteItem.categoryId = params.row.id;
-                          this.deleteItem.operatId = this.$store.state.user.userId;
+                          this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                           this.deletePositionById(this.deleteItem);
                         }
                       });
@@ -306,7 +304,7 @@ export default {
                         categoryName: params.row.categoryName,
                         isEffective: params.row.isEffective.toString(),
                         isDetail: params.row.isDetail.toString(),
-                        operatId: this.$store.state.user.userId
+                        operatId: this.$store.state.user.userLoginInfo.userId
                       };
                       this.isShowEditModal = true;
                     }
@@ -328,7 +326,7 @@ export default {
                         onOk: () => {
                           console.log('删除');
                           this.deleteItem.categoryId = params.row.id;
-                          this.deleteItem.operatId = this.$store.state.user.userId;
+                          this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                           this.deletePositionById(this.deleteItem);
                         }
                       });
@@ -395,7 +393,7 @@ export default {
         categoryName: row.categoryName,
         isEffective: row.isEffective.toString(),
         isDetail: row.isDetail.toString(),
-        operatId: this.$store.state.user.userId
+        operatId: this.$store.state.user.userLoginInfo.userId
       };
       this.isShowEditModal = true;
     },
@@ -434,7 +432,7 @@ export default {
     getlist () {
       console.log('123', 123);
       console.log('userLoginInfo', this.$store.state.user.userLoginInfo);
-      console.log('userId', this.$store.state.user.userId);
+      console.log('userId', this.$store.state.user.userLoginInfo.userId);
       this.searchFrom.categoryName = this.value1;
       this.searchFrom.pageNum = 1;
       levelCategoryApi.levelCategoryList(this.searchFrom).then(res => {
@@ -455,7 +453,7 @@ export default {
       try {
         this.isShowdeleteLoading = true;
         this.deleteItem.postId = this.ids;
-        this.deleteItem.operatId = this.$store.state.user.userId;
+        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
         let result = await levelCategoryApi.deleteLevelCategory(this.deleteItem);
         this.isShowdeleteLoading = false;
         this.$Message.success('删除成功');
@@ -605,7 +603,7 @@ export default {
       Object.assign(this.saveItem, this.saveItemInt);
       // 清空form规则检查
       this.$refs['saveRef'].resetFields();
-      this.saveItem['createId'] = this.$store.state.user.userId;
+      this.saveItem['createId'] = this.$store.state.user.userLoginInfo.userId;
       this.isShowAddModal = false;
     },
     // 根据ID删除岗位

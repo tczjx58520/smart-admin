@@ -1,27 +1,12 @@
 <template>
   <div>
-    <!-- <Card class="warp-card" dis-hover>
-      <Form class="tools" inline>
-        <FormItem>
-          <Button
-            @click="refresh"
-            icon="md-refresh"
-            type="primary"
-            v-privilege="'task-refresh'"
-          >刷新任务</Button>
-        </FormItem>
-        <FormItem>
-          <Button @click="addModal=true" icon="md-add" type="primary" v-privilege="'task-add'">添加任务</Button>
-        </FormItem>
-      </Form>
-
-    </Card> -->
     <!-- 添加任务 -->
     <div style="display:flex">
         <div style="width:20%;height: calc(80vh)">
             <Card class="warp-card" dis-hover>
                 <Tree
                   :data="treedata"
+                  :render="renderDepartmentTreeButton"
                   style="height: calc(80vh);overflow-x: scroll"
                   @on-select-change="filterorg"
                 ></Tree>
@@ -32,14 +17,11 @@
                 <Row :gutter="16">
                     <Form :model="searchform" class="tools" inline ref="searchform" :label-width="65" label-position="left">
                       <Col span="5">
-                      <FormItem prop="person" :label="$t('usermanage_view.userName')" style="width:100%">
-                        <Input placeholder="请输入用户名" type="text" v-model="searchform.employeename" style="width:100%" />
+                      <FormItem prop="person" :label="$t('lcmc')" style="width:100%">
+                        <Input placeholder="流程名称" type="text" v-model="searchform.flowName" style="width:100%" />
                       </FormItem>
                       </Col>
                       <Col span="5">
-                      <FormItem prop="person" :label="$t('usermanage_view.userName')" style="width:100%">
-                        <Input placeholder="请输入用户名" type="text" v-model="searchform.employeename" style="width:100%" />
-                      </FormItem>
                       </Col>
                       <Col span="4">
                       <FormItem>
@@ -76,8 +58,11 @@
                 show-total style="margin:24px 0;text-align:right;"></Page> -->
             </Card>
             <!-- 新建弹窗 -->
-            <addGong :modalstat = "visiable" :editinfo="editinfo" @updateStat = "updateStat"></addGong>
+            <addGong v-if="refreshModal" :modalstat = "visiable" :editinfo="editinfo" @updateStat = "updateStat"></addGong>
             <!-- 新建结束============= -->
+            <!-- <stepDialog :modalstat = "visiable_step" :editinfo="editinfo" @updateStat = "updateStat_step" /> -->
+            <viewProcessDialog v-if="refreshModal" :modalstat = "visiable_view" :editinfo="editinfo" @updateStat = "updateStat_view"></viewProcessDialog>
+            <editProcessDialog v-if="refreshModal" :modalstat = "visiable_edit" :editinfo="editinfo" :IsCopy="IsCopy" @updateStat = "updateStat_edit"></editProcessDialog>
         </div>
     </div>
     <!-- 任务日志 -->
@@ -86,29 +71,30 @@
 
 <script>
 import Tables from '@/components/tables';
-import { salaryEntryApi } from '@/api/salaryentry';
+import $ from 'jquery';
 import { organization } from '@/api/organization';
 import addGong from './components/addmodalGong/modal';
-import { usermanagelApi } from '@/api/usermanage';
+import { FlowApi } from '@/api/flow';
+import viewProcessDialog from './components/view_dialog/view_process_dialog';
+import editProcessDialog from './components/edit-dialog/edit-dialog';
 export default {
   name: 'processDesign',
   components: {
     Tables,
-    addGong
+    addGong,
+    viewProcessDialog,
+    editProcessDialog
   },
   props: {},
   data () {
     return {
+      IsCopy: false,
       editinfo: [],
       treedata: [],
       searchform: {
-        employeename: '',
-        account: '',
-        roleId: '',
-        stat: '',
         pageNum: 1,
         pageSize: 10,
-        loginRepositoryId: this.$store.state.user.userLoginInfo.repositoryId
+        flowName: ''
       },
       pageTotal: 0,
       // table是否loading
@@ -118,74 +104,177 @@ export default {
         {
           type: 'selection',
           width: 60,
+          align: 'center'
+        },
+        {
+          title: this.$t('lx'),
+          key: 'type',
+          width: '100',
+          render: (h, params) => {
+            if (params.row.type === 1) {
+              return h('div', [
+                h('span', this.$t('processDesign_view.fixedProcess'))
+              ]);
+            } else {
+              return h('div', [
+                h('span', this.$t('processDesign_view.fixedProcess'))
+              ]);
+            }
+          }
+        },
+        {
+          title: this.$t('lcmc'),
+          key: 'flowName'
+        },
+        {
+          title: this.$t('zt'),
+          key: 'stat ',
+          width: '100',
           align: 'center',
-          fixed: 'left'
-        },
-        {
-          title: this.$t('usermanage_view.userName'),
-          key: 'personName',
-          width: '100',
-          fixed: 'left'
-        },
-        {
-          title: this.$t('usermanage_view.account'),
-          key: 'account',
-          width: '100'
-        },
-        {
-          title: this.$t('usermanage_view.role'),
-          key: 'roleOaName ',
-          width: '100'
-        },
-        {
-          title: this.$t('usermanage_view.Organization'),
-          key: 'organizationOaName'
-        },
-        {
-          title: this.$t('usermanage_view.position'),
-          key: 'postOaName'
-        },
-        {
-          title: this.$t('salaryEntry_view.approvalStatus'),
-          key: 'judgeStat',
-          render: (h, params) => {
-            if (params.row.judgeStat === 0) {
-              return h('span', '未审核');
-            } else if (params.row.judgeStat === 1) {
-              return h('span', '审核成功');
-            } else {
-              return h('span', '审核失败');
-            }
-          }
-        },
-        {
-          title: this.$t('salaryEntry_view.EntercurrentMonth'),
-          key: 'isEnter',
-          render: (h, params) => {
-            if (params.row.isEnter === 0) {
-              return h('span', this.$t('no'));
-            } else {
-              return h('span', this.$t('yes'));
-            }
-          }
-        },
-        {
-          title: this.$t('usermanage_view.stat'),
-          key: 'stat',
-          width: '100',
           render: (h, params) => {
             if (params.row.stat === 1) {
-              return h('span', this.$t('Open'));
+              return h('div', [
+                h('span', this.$t('Open'))
+              ]);
             } else {
-              return h('span', this.$t('Forbid'));
+              return h('div', [
+                h('span', this.$t('Forbid2'))
+              ]);
             }
+          }
+        },
+        {
+          title: this.$t('cz'),
+          key: 'action',
+          className: 'action-hide',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['1-5-2']
+                  }
+                ],
+                on: {
+                  click: () => {
+                    const data = {
+                      id: params.row.id,
+                      stat: params.row.stat === 1 ? 2 : 1
+                    };
+                    FlowApi.changeFlowStat(data).then(res => {
+                      this.getTaskList();
+                    });
+                  }
+                }
+              }, params.row.stat === 1 ? this.$t('Open') : this.$t('Forbid2')),
+              h('Button', {
+                props: {
+                  type: 'info',
+                  size: 'small'
+                },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['1-5-2']
+                  }
+                ],
+                on: {
+                  click: () => {
+                    // console.log('params=====', params);
+                    this.visiable_view = true;
+                    this.editinfo = params.row;
+                  }
+                }
+              }, this.$t('View')),
+              h('Button', {
+                props: {
+                  type: 'info',
+                  size: 'small'
+                },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['1-5-2']
+                  }
+                ],
+                on: {
+                  click: () => {
+                    // console.log('params=====', params);
+                    this.visiable_edit = true;
+                    this.IsCopy = false;
+                    this.editinfo = params.row;
+                  }
+                }
+              }, this.$t('Edit')),
+              h('Button', {
+                props: {
+                  type: 'info',
+                  size: 'small'
+                },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['1-5-2']
+                  }
+                ],
+                on: {
+                  click: () => {
+                    this.visiable_edit = true;
+                    this.IsCopy = true;
+                    this.editinfo = params.row;
+                  }
+                }
+              }, this.$t('Copy')),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['1-5-3']
+                  }
+                ],
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '友情提醒',
+                      content: '确定要删除吗？',
+                      onOk: () => {
+                        const data = {
+                          id: params.row.id,
+                          operatId: this.$store.state.user.userLoginInfo.userId
+                        };
+                        FlowApi.delFlow(data).then(res => {
+                          this.$Message.success(this.$t('sccg'));
+                          this.getTaskList();
+                        });
+                      }
+                    });
+                  }
+                }
+              }, this.$t('Delete'))
+            ]);
           }
         }
       ],
       // table数据
       data: [],
       visiable: false,
-      moreemp: []
+      visiable_view: false,
+      visiable_edit: false,
+      visiable_step: false,
+      moreemp: [],
+      refreshModal: true
     };
   },
   mounted () {
@@ -193,9 +282,95 @@ export default {
     this.getorganizationtreedata();
   },
   methods: {
+    // 渲染部门树形图功能按钮
+    renderDepartmentTreeButton (h, { root, node, data }) {
+      let newName = data.title;
+      if (newName.length > 8) {
+        newName = data.title.substring(0, 8) + '...';
+      }
+      let icon = '';
+      if (data.parentId === 0) {
+        icon = 'md-cube';
+      } else {
+        icon = 'md-menu';
+      }
+      return h(
+        'div',
+        {
+          props: {
+            placement: 'right'
+          },
+          style: { fontSize: '12px' }
+        },
+        [
+          h(
+            'span',
+            {
+              style: {
+                display: 'inline-block'
+              }
+            },
+            [
+              h('span', [
+                h(
+                  'div',
+                  {
+                    props: {
+                      // content:'123',
+                      // placement: 'top'
+                    },
+                    style: { fontSize: '12px' }
+                  },
+                  [
+                    h('Icon', {
+                      props: {
+                        type: icon
+                      },
+                      style: {
+                        marginRight: '8px'
+                      }
+                    }),
+                    h(
+                      'Button',
+                      {
+                        props: Object.assign({}),
+                        class: ['departmentSelect'],
+                        style: {
+                          border: 'none',
+                          background: '#ffffff',
+                          padding: '4px 5px'
+                        },
+                        on: {
+                          click: event => {
+                            this.loadEmployeeTable(event, root, node, data);
+                          }
+                        }
+                      },
+                      newName
+                    )
+                  ]
+                )
+              ])
+            ]
+          )
+        ]
+      );
+    },
+    // 选中部门 更新员工table
+    loadEmployeeTable (event, root, node, data) {
+      $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
+      let target = event.target;
+      let tagName = target.tagName;
+      if (tagName !== 'BUTTON') {
+        target.parentNode.style.backgroundColor = '#5cadff';
+        target.parentNode.style.color = '#ffffff';
+      } else {
+        target.style.backgroundColor = '#5cadff';
+        target.style.color = '#ffffff';
+      }
+    },
     myselected (selection) {
       this.moreemp = selection;
-      console.log('this.moreemp===========>', this.moreemp);
     },
     del () {
       console.log('删除');
@@ -209,7 +384,6 @@ export default {
       this.getTaskList();
     },
     filterorg (a, b) {
-      console.log('b=================>', b);
       this.searchform.organizationOa = b.id;
       this.getTaskList();
     },
@@ -246,7 +420,6 @@ export default {
       const result = await organization.organizationlist().then(res => {
         return res;
       });
-      console.log('result', result);
       const map = {
         title: 'organizeName',
         parentId: 'parentId',
@@ -259,15 +432,7 @@ export default {
     // 查询任务调度列表
     async getTaskList () {
       this.loading = true;
-      let myDate = new Date(); // 获取当前年份(2位)
-      let year = myDate.getFullYear(); // 获取完整的年份(4位,1970-????)
-      let month = myDate.getMonth(); // 获取当前月份(0-11,0代表1月)
-      if (month + 1 < 10) {
-        month = '0' + (month + 1);
-      }
-      let dayNow = year + '-' + month;
-      this.searchform.yearAndMonth = dayNow;
-      const result = await usermanagelApi.querySalaryList(this.searchform);
+      const result = await FlowApi.getFlow(this.searchform);
       this.loading = false;
       this.data = result.data.content.list;
       this.pageTotal = result.data.content.totalCount;
@@ -291,11 +456,59 @@ export default {
     },
     updateStat (state) {
       this.visiable = state;
+      this.refreshModal = false;
+      setTimeout(() => {
+        this.refreshModal = true;
+      }, 300);
       this.getTaskList();
+    },
+    updateStat_view (state) {
+      this.visiable_view = state;
+      this.refreshModal = false;
+      setTimeout(() => {
+        this.refreshModal = true;
+      }, 300);
+    },
+    updateStat_edit (state) {
+      this.visiable_edit = state;
+      this.refreshModal = false;
+      setTimeout(() => {
+        this.refreshModal = true;
+      }, 300);
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.ivu-tree-children {
+  cursor: pointer;
+  width: 100%;
+}
+.option-department {
+  font-size: 14px;
+  padding: 5px;
+  cursor: pointer;
+}
+.option-department:hover {
+  background-color: rgba(5, 170, 250, 0.2);
+}
+.departmentWrap {
+  position: absolute;
+  background-color: #ffffff;
+  padding: 5px;
+  border: 1px solid #dedede;
+  width: 100%;
+  z-index: 9;
+  display: none;
+  height: 250px;
+  overflow-y: scroll;
+}
+.departmentSelect {
+  background: #ffffff;
+  color: black;
+}
+/deep/.ivu-tree-title-selected {
+  background: #ffffff;
+}
 </style>

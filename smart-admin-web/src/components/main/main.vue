@@ -106,6 +106,7 @@ import minLogo from '@/assets/images/logo-min.png';
 import maxLogo from '@/assets/images/logo.png';
 import { loginApi } from '@/api/login';
 import './main.less';
+import cookie from '@/lib/cookie';
 export default {
   name: 'Main',
   components: {
@@ -118,13 +119,13 @@ export default {
     User,
     ABackTop
   },
-  data() {
+  data () {
     return {
-      //是否加载完了权限
-      isLoadedPrvileges:false,
-      //用户所拥有的顶级菜单数组
+      // 是否加载完了权限
+      isLoadedPrvileges: false,
+      // 用户所拥有的顶级菜单数组
       userTopMenuArray: [],
-      //当前顶级菜单名字
+      // 当前顶级菜单名字
       currentTopMenuName: '',
       currentTopMenuTitle: '',
       // 是否折叠
@@ -144,48 +145,48 @@ export default {
   },
   computed: {
     ...mapGetters(['errorCount', 'userMenuPrivilege']),
-    tagNavList() {
+    tagNavList () {
       return this.$store.state.app.tagNavList;
     },
-    tagRouter() {
+    tagRouter () {
       return this.$store.state.app.tagRouter;
     },
-    keepAliveIncludes() {
+    keepAliveIncludes () {
       return this.$store.state.app.keepAliveIncludes;
     },
-    cacheList() {
+    cacheList () {
       const list = [
         'ParentView',
         ...(this.tagNavList.length
           ? this.tagNavList
-              .filter(item => !(item.meta && item.meta.noKeepAlive))
-              .map(item => item.name)
+            .filter(item => !(item.meta && item.meta.noKeepAlive))
+            .map(item => item.name)
           : [])
       ];
       return list;
     },
-    local() {
+    local () {
       return this.$store.state.app.local;
     },
-    hasReadErrorPage() {
+    hasReadErrorPage () {
       return this.$store.state.app.hasReadErrorPage;
     },
-    unreadCount() {
+    unreadCount () {
       return this.$store.state.user.unreadCount;
     },
-    key() {
+    key () {
       return this.$route.name;
     }
   },
   watch: {
-    searchKeyWord(val) {
+    searchKeyWord (val) {
       if (val) {
         this.searchListResult = this.searchList.filter(
           item => item.title.indexOf(val) >= 0
         );
       }
     },
-    $route(newRoute) {
+    $route (newRoute) {
       const { name, query, params, meta } = newRoute;
       this.addTag({
         route: {
@@ -199,7 +200,7 @@ export default {
       this.setBreadCrumb(newRoute);
       // this.pushKeepAliveIncludes(newRoute);
       this.setTagNavList(getNewTagList(this.tagNavList, newRoute));
-      //更新左侧目录打开
+      // 更新左侧目录打开
       this.$refs.sideMenu.updateOpenName(newRoute.name);
       // 如果param参数 存在 noKeepAlive切位true
       let isParamNoKeepAlive = params && params.noKeepAlive === true;
@@ -207,17 +208,17 @@ export default {
       let isQueryNoKeepAlive = query && query.noKeepAlive === true;
       // 如果router meta 存在 noKeepAlive
       let isMetaNoKeepAlive = meta && meta.noKeepAlive === true;
-      //如果存在noKeepAlive且已经缓存了，需要去掉
+      // 如果存在noKeepAlive且已经缓存了，需要去掉
       if (isParamNoKeepAlive || isMetaNoKeepAlive || isQueryNoKeepAlive) {
         // 去掉keep-alive
         this.deleteKeepAliveIncludes(name);
         return;
       }
-      //默认缓存住所有
+      // 默认缓存住所有
       this.pushKeepAliveIncludes(name);
     }
   },
-  mounted() {
+  mounted () {
     /**
      * 初始化设置面包屑导航和标签导航
      */
@@ -228,7 +229,7 @@ export default {
     this.buildTopMenu();
     // 设置初始语言
     this.setLocal(this.$i18n.locale);
-    //初始化左侧菜单
+    // 初始化左侧菜单
     this.initSideMenu();
     this.jumpRouter();
   },
@@ -243,11 +244,11 @@ export default {
       'addTag',
       'setLocal',
       'setHomeRoute',
-      'closeTag',
+      'closeTag'
     ]),
     ...mapActions(['handleLogin']),
 
-    jumpRouter() {
+    jumpRouter () {
       const { name, params, query, meta } = this.$route;
       this.addTag({
         route: {
@@ -264,9 +265,18 @@ export default {
         });
       }
     },
+    logout () {
+      this.$Spin.show();
+      let token = cookie.getToken();
+      localStorage.clear();
+      cookie.clearToken();
 
-    initSideMenu() {
-      //如果是登录跳转过来
+      loginApi.logout(token);
+      location.reload();
+    },
+    initSideMenu () {
+      const _self = this;
+      // 如果是登录跳转过来
       if (this.$store.state.user.isUpdatePrivilege) {
         this.isLoadedPrvileges = true;
         this.$Spin.show();
@@ -274,9 +284,8 @@ export default {
         this.$refs.sideMenu.updateActiveName(this.$route.name);
         this.jumpRouter();
         this.$Spin.hide();
-        
       } else {
-        //如果页面刷新，需要重新获取权限
+        // 如果页面刷新，需要重新获取权限
         (async () => {
           this.$Spin.show();
           const token = localStorage.getItem('token');
@@ -288,6 +297,9 @@ export default {
             } else {
               this.logout();
             }
+          }).catch(() => {
+            this.$Message.info('This is a info tip');
+            this.logout();
           });
           this.$store.commit('setToken', sessionResult.data.content.token);
           // 保存用户登录123
@@ -305,7 +317,7 @@ export default {
             repositoryId: sessionResult.data.content.repositoryId
             // isSuperMan: false
           });
-          //设置权限
+          // 设置权限
           this.$store.commit(
             'setUserPrivilege',
             sessionResult.data.content.rolesOa
@@ -313,20 +325,20 @@ export default {
           this.isLoadedPrvileges = true;
           this.buildTopMenu();
           this.buildMenuTree();
-          //刷新以后手动更新左侧菜单打开和选中
+          // 刷新以后手动更新左侧菜单打开和选中
           this.$refs.sideMenu.updateActiveName(this.$route.name);
           this.jumpRouter();
           this.$Spin.hide();
         })();
       }
     },
-    buildTopMenu() {
+    buildTopMenu () {
       let arr = [];
       for (let topMenu of topMenuArray) {
         if (
           this.$store.state.user.userLoginInfo.isSuperMan ||
-          topMenu.meta.roles.some((role)=> {
-            return this.$store.state.user.privilegeMenuKeyList.includes(role)
+          topMenu.meta.roles.some((role) => {
+            return this.$store.state.user.privilegeMenuKeyList.includes(role);
           })
         ) {
           arr.push(topMenu);
@@ -341,7 +353,7 @@ export default {
       }
       this.userTopMenuArray = arr;
     },
-    handleChangeTopMenu(name) {
+    handleChangeTopMenu (name) {
       this.currentTopMenuName = name;
       for (let topMenu of this.userTopMenuArray) {
         if (topMenu.name === name) {
@@ -350,7 +362,7 @@ export default {
       }
       this.initSideMenu();
     },
-    getCurrentTopMenuChild() {
+    getCurrentTopMenuChild () {
       if (this.userTopMenuArray.length === 0) {
         return [];
       } else {
@@ -362,61 +374,57 @@ export default {
         return [];
       }
     },
-    buildMenuTree() {
+    buildMenuTree () {
       let privilegeTree = [];
       let routerArray = this.getCurrentTopMenuChild();
       for (const router of routerArray) {
-        //过滤非菜单
+        // 过滤非菜单
         if (!router.meta.hideInMenu) {
-          //判断是否有权限
+          // 判断是否有权限
           if (
             router.meta.roles.some(role => {
-                return this.$store.state.user.privilegeMenuKeyList.includes(role);
-              })
+              return this.$store.state.user.privilegeMenuKeyList.includes(role);
+            })
           ) {
             let menu = {
               name: router.name,
               meta: router.meta,
-              icon: _.isUndefined(router.meta.icon) ? '' : router.meta.icon,
+              icon: this._.isUndefined(router.meta.icon) ? '' : router.meta.icon,
               children: []
             };
             this.menuNameMatchedMap.set(menu.name, [menu.name]);
             privilegeTree.push(menu);
-            //存在孩子节点，开始递归
+            // 存在孩子节点，开始递归
             if (router.children && router.children.length > 0) {
               this.recursion(router.children, menu);
             }
           }
         }
       }
-      console.log('privilegeTree',privilegeTree)
       this.menuList = privilegeTree;
     },
 
-    recursion(children, parentMenu) {
+    recursion (children, parentMenu) {
       for (const router of children) {
-          //验证权限
+        // 验证权限
         // if (this.$store.state.user.privilegeMenuKeyList.indexOf(router.name) ===-1) {
         //   continue;
-        // }  
+        // }
 
-        //过滤非菜单
-        console.log(router, router.meta.roles.some(role => {
-          return this.$store.state.user.privilegeMenuKeyList.includes(role);
-        }));
+        // 过滤非菜单
         if (!router.meta.hideInMenu) {
-          //验证权限
-            if (
-              !router.meta.roles.some(role => {
+          // 验证权限
+          if (
+            !router.meta.roles.some(role => {
               return this.$store.state.user.privilegeMenuKeyList.includes(role);
             })
-            ) {
-              continue;
-            }
+          ) {
+            continue;
+          }
           let menu = {
             name: router.name,
             meta: router.meta,
-            icon: _.isUndefined(router.meta.icon) ? '' : router.meta.icon,
+            icon: this._.isUndefined(router.meta.icon) ? '' : router.meta.icon,
             children: []
           };
           this.searchList.push({
@@ -427,7 +435,7 @@ export default {
           let menuNameArray = this.menuNameMatchedMap.get(parentMenu.name);
           this.menuNameMatchedMap.set(menu.name, [...menuNameArray, menu.name]);
           parentMenu.children.push(menu);
-          //存在孩子节点，开始递归
+          // 存在孩子节点，开始递归
           if (router.children && router.children.length > 0) {
             this.recursion(router.children, menu);
           }
@@ -435,7 +443,7 @@ export default {
       }
     },
     // 自适应左侧导航宽度
-    setCollapsed() {
+    setCollapsed () {
       let setWidth = () => {
         let width = document.body.offsetWidth;
         if (width < 1340) {
@@ -447,7 +455,7 @@ export default {
       setWidth();
       window.onresize = () => setWidth();
     },
-    turnToPage(route) {
+    turnToPage (route) {
       let { name, params, query } = {};
       if (typeof route === 'string') name = route;
       else {
@@ -465,17 +473,17 @@ export default {
         query
       });
     },
-    handleCollapsedChange(state) {
+    handleCollapsedChange (state) {
       this.collapsed = state;
     },
-    handleCloseTag(res, type, route) {
+    handleCloseTag (res, type, route) {
       let keepRouter = route ? route.name : null;
       if (type !== 'others') {
         if (type === 'all') {
           this.turnToPage(this.$config.homeName);
           this.clearKeepAliveIncludes(this.$config.homeName);
         } else {
-          //如果是关闭单个tag，则从keepAliveIncludes将关闭的那个移除掉
+          // 如果是关闭单个tag，则从keepAliveIncludes将关闭的那个移除掉
           this.deleteKeepAliveIncludes(route.name);
           if (routeEqual(this.$route, route)) {
             this.closeTag(route);
@@ -487,11 +495,11 @@ export default {
       }
       this.setTagNavList(res);
     },
-    handleClick(item) {
+    handleClick (item) {
       this.turnToPage(item);
     },
     // 跳转路由
-    toRoute(name) {
+    toRoute (name) {
       this.$router.push({ name });
       this.searchKeyWord = '';
     }

@@ -2,14 +2,7 @@
   <div style="height: 200px;overflow-y:scroll;">
     <Row>
       <Col span="24">
-        <Input
-          @on-change="filterEmployee"
-          placeholder="请输入员工名称"
-          style="max-width: 200px"
-          v-if="!isDepartment"
-          v-model="searchKeywords"
-        />
-        <Tree :data="treeData" show-checkbox multiple @on-check-change="selectmyorg"></Tree>
+        <Tree :data="treeData" check-strictly show-checkbox multiple @on-check-change="selectmyorg" ref='tree'></Tree>
       </Col>
     </Row>
   </div>
@@ -30,7 +23,8 @@ export default {
     isDepartment: {
       type: Boolean,
       default: false
-    }
+    },
+    memberId: null
   },
   data () {
     return {
@@ -47,7 +41,16 @@ export default {
     };
   },
   computed: {},
-  watch: {},
+  watch: {
+    isDepartment: {
+      handler () {
+        if (this.isDepartment) {
+          this.convertTreeCheck(this.treeData);
+        }
+        this.selected = [];
+      }
+    }
+  },
   filters: {},
   created () {},
   mounted () {
@@ -61,6 +64,34 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    convertTreeCheck (tree) {
+      if (this.memberId) {
+        let myflag = this.memberId.split(',');
+        tree.forEach((item) => {
+          // 读取 map 的键值映射
+          if (myflag.indexOf(String(item.id)) >= 0) {
+            this.$refs.tree.handleCheck({ checked: true, nodeKey: item.nodeKey });
+          } else {
+            this.$refs.tree.handleCheck({ checked: false, nodeKey: item.nodeKey });
+          }
+          let children = item.children;
+          // 如果有子节点，递归
+          if (children) {
+            children = this.convertTreeCheck(children);
+          }
+        });
+      } else {
+        tree.forEach((item) => {
+          // 读取 map 的键值映射
+          this.$refs.tree.handleCheck({ checked: false, nodeKey: item.nodeKey });
+          let children = item.children;
+          // 如果有子节点，递归
+          if (children) {
+            children = this.convertTreeCheck(children);
+          }
+        });
+      }
+    },
     selectmyorg (list, currentselect) {
       console.log(list, currentselect, this.selected.indexOf(currentselect));
       if (currentselect.checked) {

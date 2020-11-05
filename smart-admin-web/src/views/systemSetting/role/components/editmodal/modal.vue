@@ -67,7 +67,7 @@ export default {
     }
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   data () {
     return {
@@ -101,7 +101,7 @@ export default {
     },
     handsave () {
       const authority = this.$refs.mytree.checkedData;
-      this.addformbase.operatId = this.$store.state.user.userId;
+      this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
       this.$refs['form'].validate((valid) => {
         if (valid) {
           roleApi.updateRole(this.addformbase, authority).then(res => {

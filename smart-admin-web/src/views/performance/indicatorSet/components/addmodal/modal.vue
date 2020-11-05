@@ -71,7 +71,7 @@ export default {
     copyfile: null
   },
   created () {
-    // console.log('moadlStat=======>', this.modalstat);
+    //
   },
   data () {
     return {
@@ -157,7 +157,7 @@ export default {
                       console.log('删除');
                       this.mydataList.splice(params.index, 1);
                       // this.deleteItem.postId = params.row.id;
-                      // this.deleteItem.operatId = this.$store.state.user.userId;
+                      // this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                       // this.deletePositionById(this.deleteItem);
                     }
                   });
@@ -173,7 +173,7 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      // console.log('moadlStat=======>', this.modalstat);
+      //
       if (this.mymoadlStat === true) {
         if (this.copyfile) {
         } else {
@@ -229,7 +229,7 @@ export default {
       }
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          this.addformbase.createId = this.$store.state.user.userId;
+          this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.itemJson = JSON.stringify(this.mydataList);
           indicatorSetApi.addindicator(this.addformbase).then(res => {
             this.$Message.success(this.$t('addSuccess'));

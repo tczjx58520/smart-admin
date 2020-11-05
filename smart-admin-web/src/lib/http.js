@@ -32,25 +32,25 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   res => {
     if (res.config.responseType === 'blob') {
-      let isReturnJson = res.headers && res.headers['content-type'] && res.headers['content-type'].indexOf("json") > -1;
-      //后端返回错误信息
+      let isReturnJson = res.headers && res.headers['content-type'] && res.headers['content-type'].indexOf('json') > -1;
+      // 后端返回错误信息
       if (isReturnJson) {
-        let reader = new FileReader()
+        let reader = new FileReader();
         reader.onload = function (event) {
-          let content = reader.result
-          let parseRes = JSON.parse(content) // 错误信息
+          let content = reader.result;
+          let parseRes = JSON.parse(content); // 错误信息
           return validateResponseCode({
             data: parseRes
           });
-        }
+        };
         reader.readAsText(res.data);
-        return true
+        return true;
       } else {
-        //下载文件
+        // 下载文件
         download(res);
       }
     } else {
-      //正常json请求
+      // 正常json请求
       return validateResponseCode(res);
     }
   },
@@ -97,11 +97,11 @@ function blobToText (blob) {
           reject();
         }
       } catch (e) {
-        //TODO handle the exception
+        // TODO handle the exception
         reject();
       }
-    }
-  })
+    };
+  });
 }
 
 export const postAxios = (url, data) => {
@@ -133,11 +133,11 @@ function download (res) {
     if (e.target.result.indexOf('Result') != -1 && JSON.parse(e.target.result).Result == false) {
       // 进行错误处理
     } else {
-      let fileName = "download";
+      let fileName = 'download';
       let contentDisposition = res.headers['Content-Disposition'];
-      contentDisposition = contentDisposition ? contentDisposition : res.headers['content-disposition'];
+      contentDisposition = contentDisposition || res.headers['content-disposition'];
       if (contentDisposition) {
-        fileName = window.decodeURI(contentDisposition.split('=')[1], "UTF-8");
+        fileName = window.decodeURI(contentDisposition.split('=')[1], 'UTF-8');
       }
       executeDownload(data, fileName);
     }
@@ -148,7 +148,7 @@ function download (res) {
 //  模拟点击a 标签进行下载
 function executeDownload (data, fileName) {
   if (!data) {
-    return
+    return;
   }
   let url = window.URL.createObjectURL(new Blob([data]));
   let link = document.createElement('a');

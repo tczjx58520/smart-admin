@@ -224,7 +224,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const topMenuArray = routers.filter(e => e.meta.topMenu);
-console.log('顶部路由=====', topMenuArray);
 export { topMenuArray };
 
 export default router;

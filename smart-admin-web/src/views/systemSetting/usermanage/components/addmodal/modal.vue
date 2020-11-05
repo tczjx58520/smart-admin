@@ -101,7 +101,7 @@ export default {
     copyfile: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+
   },
   mounted () {
   },
@@ -219,7 +219,7 @@ export default {
     async modalstat () {
       this.mymoadlStat = this.modalstat;
       await this.getBaseList();
-      console.log('moadlStat=======>', this.modalstat);
+
       console.log('this.copyfile==================>', this.copyfile);
       if (this.copyfile) {
         this.addformbase.firstname = this.copyfile.firstName;

@@ -122,7 +122,7 @@ export default {
       // 添加保存的数据
       saveItem: {
         levelName: '',
-        createId: this.$store.state.user.userId
+        createId: this.$store.state.user.userLoginInfo.userId
       },
       saveItemInt: {},
       // table表头
@@ -192,7 +192,7 @@ export default {
                       categoryId: params.row.categoryId,
                       levelName: params.row.levelName,
                       partCategory: part,
-                      operatId: this.$store.state.user.userId
+                      operatId: this.$store.state.user.userLoginInfo.userId
                     };
                     this.getcategory();
                     this.cateChange2(params.row.categoryId);
@@ -222,7 +222,7 @@ export default {
                       onOk: () => {
                         console.log('删除');
                         this.deleteItem.levelId = params.row.id;
-                        this.deleteItem.operatId = this.$store.state.user.userId;
+                        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
                         this.deletePositionById(this.deleteItem);
                       }
                     });
@@ -300,7 +300,7 @@ export default {
           categoryId: row.categoryId,
           levelName: row.levelName,
           partCategory: part,
-          operatId: this.$store.state.user.userId
+          operatId: this.$store.state.user.userLoginInfo.userId
         };
         this.getcategory();
         this.cateChange2(row.categoryId);
@@ -323,7 +323,7 @@ export default {
         categoryId: row.row.categoryId,
         levelName: row.row.levelName,
         partCategory: part,
-        createId: this.$store.state.user.userId
+        createId: this.$store.state.user.userLoginInfo.userId
       };
       this.getcategory();
       this.cateChange(row.row.categoryId);
@@ -412,7 +412,7 @@ export default {
       try {
         this.isShowdeleteLoading = true;
         this.deleteItem.postId = this.ids;
-        this.deleteItem.operatId = this.$store.state.user.userId;
+        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
         let result = await levelApi.deleteLevel(this.deleteItem);
         this.isShowdeleteLoading = false;
         this.$Message.success('删除成功');
@@ -561,9 +561,9 @@ export default {
       this.$refs['saveRef'].resetFields();
       this.saveItem = {
         levelName: '',
-        createId: this.$store.state.user.userId
+        createId: this.$store.state.user.userLoginInfo.userId
       };
-      // this.saveItem['createId'] = this.$store.state.user.userId;
+      // this.saveItem['createId'] = this.$store.state.user.userLoginInfo.userId;
       this.isShowAddModal = false;
     },
     // 根据ID删除岗位

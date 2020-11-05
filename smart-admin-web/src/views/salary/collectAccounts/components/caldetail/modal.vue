@@ -61,7 +61,7 @@ export default {
     optionList: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },
@@ -214,11 +214,11 @@ export default {
     },
     handsave () {
       console.log(this.addformbase);
-      this.addformbase.createId = this.$store.state.user.userId;
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.$refs['form'].validate((valid) => {
         if (valid) {
           if (this.addformbase.formulaId) {
-            this.addformbase.operatId = this.$store.state.user.userId;
+            this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
             collectAccountsApi.updatecalculationFormula(this.addformbase).then(res => {
               if (res.ret === 200) {
                 this.$emit('updateStat', false);

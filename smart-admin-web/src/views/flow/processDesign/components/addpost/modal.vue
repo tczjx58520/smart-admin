@@ -40,7 +40,6 @@
 <script>
 import Tables from '@/components/tables';
 import { positionApi } from '@/api/position';
-import { salaryEntryApi } from '@/api/salaryentry';
 export default {
   name: 'addpost',
   components: {
@@ -55,7 +54,7 @@ export default {
     memberId: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
   },

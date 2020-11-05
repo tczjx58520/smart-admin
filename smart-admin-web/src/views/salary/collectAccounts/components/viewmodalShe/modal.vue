@@ -82,7 +82,7 @@ export default {
     editinfo: null
   },
   created () {
-    console.log('moadlStat=======>', this.modalstat);
+    
   },
   mounted () {
     this.getBaseInfo();
@@ -214,7 +214,7 @@ export default {
     handsave () {
       this.modal_loading = true;
       console.log(this.addformbase);
-      this.addformbase.operatId = this.$store.state.user.userId;
+      this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.salaryOptionIds = this.allitems.join(',');
       if (this.socialSecurity === false) {
         delete this.addformbase['socialSecurityId'];

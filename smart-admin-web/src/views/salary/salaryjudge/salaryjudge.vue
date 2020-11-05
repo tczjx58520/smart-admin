@@ -79,7 +79,6 @@ export default {
           title: this.$t('welfare_view.suitable'),
           key: 'userName',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.suitType);
             if (params.row.suitType === 2) {
               return h('span', this.$t('welfare_view.personnel'));
             } else {
@@ -97,7 +96,6 @@ export default {
           width: 200,
           align: 'center',
           render: (h, params) => {
-            console.log('params渲染==========》', params.row.stat);
             return h('div', [
               h('Button', {
                 style: {
@@ -169,7 +167,7 @@ export default {
       for (const i in this.moreWelfare) {
         let data = {};
         data.judgeId = this.moreWelfare[i].id;
-        data.operatId = this.$store.state.user.userId;
+        data.operatId = this.$store.state.user.userLoginInfo.userId;
         salaryjudgeApi.deljudge(data).then(res => {
           if (res.ret === 200) {
             this.$Message.success(res.msg);

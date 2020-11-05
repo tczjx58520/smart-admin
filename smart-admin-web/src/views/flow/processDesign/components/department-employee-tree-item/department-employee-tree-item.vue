@@ -84,7 +84,6 @@ export default {
   methods: {
     // 点击选中当前部门或成员
     selectItem () {
-      console.log('this.itemData', this.itemData);
       if (
         (!this.isDepartment && this.itemData.isEmployee) ||
         this.isDepartment
