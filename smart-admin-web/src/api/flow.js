@@ -72,6 +72,32 @@ export const FlowApi = {
       Form.append('stat', data.stat);
     }
     return postAxios('/flow/updateFlowInfo', Form);
+  },
+  // 发起流程
+  addFlowRecord: data => {
+    let Form = new FormData();
+    if (data.stat !== undefined && data.stat !== null && data.stat !== '') {
+      Form.append('stat', data.stat);
+    }
+    if (data.receiptId !== undefined && data.receiptId !== null && data.receiptId !== '') {
+      Form.append('receiptId', data.receiptId);
+    }
+    if (data.flowNumber !== undefined && data.flowNumber !== null && data.flowNumber !== '') {
+      Form.append('flowNumber', data.flowNumber);
+    }
+    if (data.initiatePersonId !== undefined && data.initiatePersonId !== null && data.initiatePersonId !== '') {
+      Form.append('initiatePersonId', data.initiatePersonId);
+    }
+    if (data.flowCategory !== undefined && data.flowCategory !== null && data.flowCategory !== '') {
+      Form.append('flowCategory', data.flowCategory);
+    }
+    if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
+      Form.append('flowId', data.flowId);
+    }
+    if (data.picIds !== undefined && data.picIds !== null && data.picIds !== '') {
+      Form.append('picIds', data.picIds);
+    }
+    return postAxios('/flowRecord/addFlowRecord', Form);
   }
 }
 ;

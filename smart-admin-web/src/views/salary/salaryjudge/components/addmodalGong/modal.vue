@@ -67,7 +67,7 @@ export default {
     viewinfo: null
   },
   created () {
-    
+
   },
   mounted () {
   },

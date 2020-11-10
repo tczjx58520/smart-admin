@@ -130,7 +130,11 @@ export default {
       this.myvalue = value;
     },
     updateStat_select (state, value) {
-      this.$router.push({ path: '/flow/actionflowStart', query: { receiptType: value.type, receiptLabel: value.flowName } });
+      console.log(value);
+      if (value) {
+        this.$router.push({ path: '/flow/actionflowStart', query: { receiptType: value.type, receiptLabel: value.flowName, flowId: value.id, flowCategory: value.category } });
+      }
+      this.visiable_select = state;
     }
   }
 };

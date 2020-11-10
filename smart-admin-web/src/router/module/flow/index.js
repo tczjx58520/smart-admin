@@ -4,6 +4,7 @@ import Main from '@/components/main';
 import { flowClassification } from './flowClassification';
 import { processDesign } from './processDesign';
 import { flowStart } from './flowStart';
+import { toDoFlow } from './unDoFlow';
 // 业务
 export const flow = [
   {
@@ -19,7 +20,8 @@ export const flow = [
     children: [
       ...flowClassification,
       ...processDesign,
-      ...flowStart
+      ...flowStart,
+      ...toDoFlow
     ]
   }
 ];

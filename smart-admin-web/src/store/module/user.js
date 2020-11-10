@@ -1,8 +1,6 @@
 import cookie from '@/lib/cookie.js';
 import { loginApi } from '@/api/login';
 import { localSave, localRead } from '@/lib/local';
-import { getType } from '@/lib/util';
-import { PRIVILEGE_TYPE_ENUM } from '@/constants/privilege';
 
 const localReadRouterPrivilege = () => {
   let map = new Map();
@@ -31,6 +29,7 @@ export default {
     token: cookie.getToken(),
     // session信息
     userLoginInfo: {},
+    transInfo: {},
     isUpdatePrivilege: false,
     // key为router name, value为 key的集合,用于v-privilege，页面功能点判断
     privilegeFunctionPointsMap: new Map(),
@@ -48,6 +47,9 @@ export default {
     setToken (state, token) {
       state.token = token;
       cookie.setToken(token);
+    },
+    setTransInfo (state, info) {
+      state.transInfo = info;
     },
     // 保存用户登录信息
     setUserLoginInfo (state, userLoginInfo) {

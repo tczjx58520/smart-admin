@@ -14,6 +14,20 @@
         >
           <ListItem>
             <div style="padding: 10px 60px; width: 300px">
+              <h3>已选审批名称</h3>
+            </div>
+            <div>
+              <Input
+                style="width: 500px"
+                v-model="selectName"
+                readonly
+                size="large"
+                placeholder="large size"
+              />
+            </div>
+          </ListItem>
+          <ListItem>
+            <div style="padding: 10px 60px; width: 300px">
               <h3>流程编号</h3>
             </div>
             <div>
@@ -31,7 +45,11 @@
               <h3>重要等级</h3>
             </div>
             <div>
-              <Select v-model="addformbase.important" style="width: 500px" size="large">
+              <Select
+                v-model="addformbase.important"
+                style="width: 500px"
+                size="large"
+              >
                 <Option
                   v-for="item in cityList"
                   :value="item.value"
@@ -42,18 +60,36 @@
             </div>
           </ListItem>
           <!-- 测试 -->
-          <ListItem v-for="(item,index) in formList" :key="index">
+          <ListItem v-for="(item, index) in formList" :key="index">
             <div style="padding: 10px 60px; width: 300px">
               <h3>{{ item.label }}</h3>
             </div>
             <div>
               <Input
+                v-if="item.value === 'applyPersonId'"
                 style="width: 500px"
                 v-model="addformbase.applyPersonName"
                 readonly
                 size="large"
-                placeholder="large size"
-                @click.native="selectemp"
+                placeholder="选择内容"
+              />
+              <Cascader
+                v-else-if="item.value === 'organizeId'"
+                style="width: 500px"
+                size="large"
+                :data="orgValue"
+                v-model="addformbase.actuallyOrganizeId"
+                filterable
+                change-on-select
+                @on-change="getSelectValue"
+              ></Cascader>
+              <Input
+                v-else
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                readonly
+                size="large"
+                placeholder="选择内容"
               />
             </div>
           </ListItem>
@@ -80,6 +116,31 @@
               </Input>
             </div>
           </ListItem>
+          <ListItem style="flex-wrap: wrap;">
+            <div style="padding: 10px 60px; width: 300px"><h3>薪酬明细</h3></div>
+            <div>
+            <Table :columns="columns" :data="data" max-height="500" size="small" style="width:1000px;">
+              <template slot-scope="scope" slot="personName">
+                <span type="text"> {{ scope.row.empName }} </span>
+              </template>
+              <template slot-scope="scope" slot="organizationOaName">
+                <span>{{ scope.row.organizeName }}</span>
+              </template>
+              <template slot-scope="scope" slot="yearAndMonth">
+                <span style="width: 180px">{{ scope.row.yearAndMonth }}</span>
+              </template>
+              <template slot-scope="scope" slot="grantDate">
+                <span style="width: 180px">{{ scope.row.grantDate }}</span>
+              </template>
+              <template slot-scope="scope" slot="basicAccumulationFund">
+                <span>{{ scope.row.basicAccumulationFund.basicMoney }}</span>
+              </template>
+              <template slot-scope="scope" slot="basicSocialSecurity">
+                <span>{{ scope.row.basicSocialSecurity.basicMoney }}</span>
+              </template>
+            </Table>
+            </div>
+          </ListItem>
         </List>
         <div class="button-warp">
           <div class="button-group">
@@ -91,6 +152,9 @@
               @click="handsave"
               >{{ $t("salaryjudge_view.submitForApproval") }}</Button
             >
+            <Button type="warning" style="margin-right: 15px" size="large" @click="cancel">{{
+              $t("cgx")
+            }}</Button>
             <Button type="error" size="large" @click="cancel">{{
               $t("Close")
             }}</Button>
@@ -122,11 +186,22 @@ export default {
   },
   created () {},
   mounted () {
+    if (!this.$store.state.user.transInfo.id) {
+      this.$router.go(-1);
+      this.$router.closeCurrentPage();
+    } else {
+      this.addformbase = Object.assign(
+        this.addformbase,
+        this.$store.state.user.transInfo
+      );
+      this.getOrgValue();
+      console.log(this.addformbase);
+    }
     this.getEditLabel();
   },
   computed: {
     myheigth () {
-      return window.innerHeight - '240' + 'px';
+      return window.innerHeight - 240 + 'px';
     },
     receiptNumber () {
       const str = utils.getDateStr(0, 'receipt');
@@ -142,39 +217,6 @@ export default {
         callback();
       }
     };
-    const validatePass2 = (rule, value, callback) => {
-      if (
-        this.addformbase.month === '' &&
-        this.addformbase.month === null &&
-        this.addformbase.month === undefined
-      ) {
-        callback(new Error('Please enter your month'));
-      } else {
-        callback();
-      }
-    };
-    const validatePass3 = (rule, value, callback) => {
-      if (
-        this.addformbase.organizationOaName === '' &&
-        this.addformbase.organizationOaName === null &&
-        this.addformbase.organizationOaName === undefined
-      ) {
-        callback(new Error('Please enter'));
-      } else {
-        callback();
-      }
-    };
-    const validatePass4 = (rule, value, callback) => {
-      if (
-        this.addformbase.empList === '' &&
-        this.addformbase.empList === null &&
-        this.addformbase.empList === undefined
-      ) {
-        callback(new Error('Please enter'));
-      } else {
-        callback();
-      }
-    };
     let baseUrl = process.env.VUE_APP_URL;
     return {
       myupLoadUrl: baseUrl + '/upload/uploadpic',
@@ -184,8 +226,9 @@ export default {
       mymoadlStat: this.modalstat,
       addformbase: {
         important: 1,
-        picPath: '',
-        organizeName: ''
+        actuallyOrganizeId: [],
+        applyPersonId: this.$store.state.user.userLoginInfo.userId,
+        applyPersonName: this.$store.state.user.userLoginInfo.nickName
       },
       ruleValidate: {
         title: [
@@ -194,15 +237,6 @@ export default {
             message: 'The title cannot be empty',
             trigger: 'blur'
           }
-        ],
-        payDate: [
-          { required: true, validator: validatePass2, trigger: 'blur' }
-        ],
-        organizationOa: [
-          { required: true, validator: validatePass3, trigger: 'blur' }
-        ],
-        personnel: [
-          { required: true, validator: validatePass4, trigger: 'blur' }
         ]
       },
       cityList: [
@@ -212,10 +246,92 @@ export default {
       ],
       // 新建员工弹窗
       visiable_emp: false,
-      formList: []
+      formList: [],
+      selectName: this.$store.state.user.transInfo.title,
+      columns: [
+        {
+          title: this.$t('usermanage_view.userName'),
+          width: '200',
+          slot: 'personName',
+          fixed: 'left'
+        },
+        {
+          title: this.$t('usermanage_view.Organization'),
+          slot: 'organizationOaName',
+          fixed: 'left'
+        },
+        {
+          title: '公积金基数',
+          slot: 'basicAccumulationFund'
+        },
+        {
+          title: '社保基数',
+          slot: 'basicSocialSecurity'
+        },
+        {
+          title: '发薪日期',
+          slot: 'yearAndMonth'
+        },
+        {
+          title: '薪酬日期',
+          key: 'grantDate'
+        },
+        {
+          title: this.$t('salaryEntry_view.confirmStatus'),
+          key: 'confirmStat',
+          width: '100',
+          render: (h, params) => {
+            if (params.row.confirmStat === 0) {
+              return h(
+                'span',
+                {
+                  style: {
+                    color: '#ed4014'
+                  }
+                },
+                this.$t('no')
+              );
+            } else {
+              return h(
+                'span',
+                {
+                  style: {
+                    color: '#ed4014'
+                  }
+                },
+                this.$t('yes')
+              );
+            }
+          }
+        }
+      ],
+      data: this.$store.state.user.transInfo.empSalaryVos,
+      orgValue: [],
+      selectOrg: ''
     };
   },
   methods: {
+    getSelectValue (val, selectedData) {
+      const length = selectedData.length;
+      this.selectOrg = selectedData[length - 1].label;
+      console.log(this.selectOrg);
+    },
+    deepLoop (list) {
+      for (let i = 0; i < list.length; i++) {
+        list[i].label = list[i].organizeName;
+        list[i].value = list[i].id;
+        if (list[i].children.length > 0) {
+          this.deepLoop(list[i].children);
+        }
+      }
+    },
+    getOrgValue () {
+      organization.organizationlist().then((res) => {
+        console.log(res.data.content);
+        this.deepLoop(res.data.content);
+        this.orgValue = res.data.content;
+      });
+    },
     getEditLabel () {
       let process = [];
       const data = this.$route.query.receiptType;
@@ -239,24 +355,20 @@ export default {
       });
       let name = result.organizeName;
       let id = result.id;
-      console.log('res=============', result);
       this.addformbase.organizeName = name;
       this.addformbase.organizeId = id;
     },
-    LinktoPic () {
-      console.log(this.addformbase.picPath);
-      if (this.addformbase.picPath !== '') {
+    LinktoPic (e) {
+      console.log(e, '123', e.target);
+      if (this.addformbase.picPath) {
         window.open(this.addformbase.picPath);
       }
     },
     mysuccess (response, file, fileList) {
       let id = response.data.content.picId;
       let picIds = response.data.content.picId;
-      // picIds.push(response.data.content.picId);
       let picapath = response.data.content.picPath[0];
-      console.log('picIds===============', picIds, response.data.content);
       this.$nextTick(() => {
-        this.addformbase.picPath = picapath;
         this.$set(this.addformbase, 'picPath', picapath);
         this.addformbase.picIds = picIds;
         console.log(this.addformbase);
@@ -331,16 +443,41 @@ export default {
     },
     handsave () {
       this.modal_loading = true;
-      console.log(this.addformbase);
+      if (this.$store.state.user.transInfo.empSalaryVos.length === 0) {
+        this.$Message.error('此单据无审批数据');
+        this.modal_loading = false;
+        return false;
+      }
+      if (this.addformbase.actuallyOrganizeId.length === 0) {
+        this.$Message.error('请选择发放单位');
+        this.modal_loading = false;
+        return false;
+      }
+      this.addformbase.organizeId = this.addformbase.actuallyOrganizeId[this.addformbase.actuallyOrganizeId.length - 1];
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
-      console.log('this.addformbase===========', this.addformbase);
+      this.addformbase.flowNumber = this.receiptNumber;
+      this.addformbase.salaryJudgeId = this.addformbase.id;
       salaryjudgeApi.addapproveApplication(this.addformbase).then((res) => {
         if (res.ret === 200) {
-          this.$emit('updateStat', false);
-          this.$Message.success(res.msg);
-          this.modal_loading = false;
+          console.log('res======================', res.data.receiptId, 'color:red;');
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            if (res.data.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$store.commit('setTransInfo', '');
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
         } else {
-          this.$Message.success(res.msg);
+          this.$Message.error(res.msg);
           this.modal_loading = false;
         }
       });

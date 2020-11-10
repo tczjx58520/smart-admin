@@ -1035,7 +1035,7 @@ export default {
         if (this.receiptType && this.mymoadlStat) {
           this.getPostValue();
           this.getOrgValue();
-          // this.getReceiptContent();
+          this.getReceiptContent();
           this.selected_step = this.addformbase.stepNextConditionVos && this.addformbase.stepNextConditionVos;
           console.log('this.selected_step======', this.selected_step);
         }
