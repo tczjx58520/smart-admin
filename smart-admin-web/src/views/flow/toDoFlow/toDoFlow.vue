@@ -46,18 +46,9 @@
               </Select>
             </FormItem>
           </Col>
-          <Col span="4">
+          <Col span="5">
             <FormItem prop="person" :label="$t('fqsj')" style="width: 100%">
-              <Input
-                placeholder="请输入用户名"
-                type="text"
-                v-model="searchform.empName"
-                clearable
-                readonly
-                style="width: 100%"
-                @click.native="selectemp2"
-                @on-clear="clearemp"
-              />
+              <DatePicker type="daterange" placeholder="Select date" v-model="searchform.timeRange" style="width: 200px" @on-change="setTime"></DatePicker>
             </FormItem>
           </Col>
           <Col span="4">
@@ -353,6 +344,13 @@ export default {
     this.getbaseclassification();
   },
   methods: {
+    setTime (val, type) {
+      console.log(val);
+      if (val.length > 0) {
+        this.searchform.beginTime = val[0];
+        this.searchform.endTime = val[1];
+      }
+    },
     searchToDoList () {
       this.getUserLoginLogPage();
     },

@@ -97,6 +97,9 @@ export const FlowApi = {
     if (data.picIds !== undefined && data.picIds !== null && data.picIds !== '') {
       Form.append('picIds', data.picIds);
     }
+    if (data.importanceLevel !== undefined && data.importanceLevel !== null && data.importanceLevel !== '') {
+      Form.append('importanceLevel', data.importanceLevel);
+    }
     return postAxios('/flowRecord/addFlowRecord', Form);
   }
 }

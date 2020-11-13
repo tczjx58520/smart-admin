@@ -24,7 +24,7 @@
                       <div style="padding:10px 60px;width:300px;"><h3>附件</h3> </div>
                       <div>
                         <Input style="width:500px" size="large" readonly v-model="addformbase.picPath" placeholder="附件地址" @click.native="LinktoPic">
-                          <Upload :action="myupLoadUrl" :data="{ type: 3 }" slot="append" :on-success="mysuccess">
+                          <Upload :action="myupLoadUrl" :data="{ type: 4 }" slot="append" :on-success="mysuccess">
                               <Button icon="ios-cloud-upload-outline">上传附件</Button>
                           </Upload>
                         </Input>
@@ -67,7 +67,7 @@ export default {
     calcinfo: null
   },
   created () {
-    
+
   },
   mounted () {
   },

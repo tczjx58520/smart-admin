@@ -2,7 +2,7 @@
   <div>
     <div>
       <Card dis-hover class="add">
-        <h2 slot="title" style="text-align: center">薪酬发放申请审批单</h2>
+        <h2 slot="title" style="text-align: center">{{ titleFilter() }}</h2>
         <List
           ref="listDom"
           border
@@ -12,9 +12,9 @@
             overflow: 'auto',
           }"
         >
-          <ListItem>
+          <ListItem v-if="$route.query.receiptType === '1'">
             <div style="padding: 10px 60px; width: 300px">
-              <h3>已选审批名称</h3>
+              <h3>已选薪酬表</h3>
             </div>
             <div>
               <Input
@@ -46,7 +46,7 @@
             </div>
             <div>
               <Select
-                v-model="addformbase.important"
+                v-model="addformbase.importanceLevel"
                 style="width: 500px"
                 size="large"
               >
@@ -107,7 +107,7 @@
               >
                 <Upload
                   :action="myupLoadUrl"
-                  :data="{ type: 3 }"
+                  :data="{ type: 4 }"
                   slot="append"
                   :on-success="mysuccess"
                 >
@@ -152,7 +152,7 @@
               @click="handsave"
               >{{ $t("salaryjudge_view.submitForApproval") }}</Button
             >
-            <Button type="warning" style="margin-right: 15px" size="large" @click="cancel">{{
+            <Button type="warning" style="margin-right: 15px" size="large" @click="handsave_drafts">{{
               $t("cgx")
             }}</Button>
             <Button type="error" size="large" @click="cancel">{{
@@ -223,9 +223,10 @@ export default {
       visiable: false,
       isShowTree: false,
       modal_loading: false,
+      modal_loading2: false,
       mymoadlStat: this.modalstat,
       addformbase: {
-        important: 1,
+        importanceLevel: 1,
         actuallyOrganizeId: [],
         applyPersonId: this.$store.state.user.userLoginInfo.userId,
         applyPersonName: this.$store.state.user.userLoginInfo.nickName
@@ -311,6 +312,14 @@ export default {
     };
   },
   methods: {
+    titleFilter () {
+      const type = this.$route.query.receiptType;
+      if (type === '1') {
+        return '薪酬发放申请审批单';
+      } else {
+        return '自定义流程';
+      }
+    },
     getSelectValue (val, selectedData) {
       const length = selectedData.length;
       this.selectOrg = selectedData[length - 1].label;
@@ -441,6 +450,44 @@ export default {
         organizeName: ''
       };
     },
+    handsave_drafts () {
+      this.modal_loading2 = true;
+      if (this.addformbase.actuallyOrganizeId.length > 0) {
+        this.addformbase.organizeId = this.addformbase.actuallyOrganizeId[this.addformbase.actuallyOrganizeId.length - 1];
+        this.addformbase.organizeIds = this.addformbase.actuallyOrganizeId;
+      } else {
+        this.addformbase.organizeId = '';
+        this.addformbase.organizeIds = '';
+      }
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
+      this.addformbase.salaryJudgeId = this.addformbase.id;
+      salaryjudgeApi.addapproveApplication(this.addformbase).then((res) => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          this.addformbase.stat = 5; // 5草稿箱状态
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('测试地址=================', res.data);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading2 = false;
+              this.$store.commit('setTransInfo', '');
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading2 = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
+      });
+    },
     handsave () {
       this.modal_loading = true;
       if (this.$store.state.user.transInfo.empSalaryVos.length === 0) {
@@ -454,12 +501,12 @@ export default {
         return false;
       }
       this.addformbase.organizeId = this.addformbase.actuallyOrganizeId[this.addformbase.actuallyOrganizeId.length - 1];
+      this.addformbase.organizeIds = this.addformbase.actuallyOrganizeId;
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
       this.addformbase.salaryJudgeId = this.addformbase.id;
       salaryjudgeApi.addapproveApplication(this.addformbase).then((res) => {
         if (res.ret === 200) {
-          console.log('res======================', res.data.receiptId, 'color:red;');
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.flowCategory = this.$route.query.flowCategory;

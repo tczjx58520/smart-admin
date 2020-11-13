@@ -72,13 +72,28 @@ export const salaryjudgeApi = {
   // 新建薪酬发放审批申请单
   addapproveApplication: data => {
     let Form = new FormData();
-    Form.append('organizeId', data.organizeId);
-    Form.append('allShould', data.allShould);
-    Form.append('allActual', data.allActual);
-    Form.append('createId', data.createId);
-    Form.append('applyPersonId', data.applyPersonId);
-    Form.append('salaryJudgeId', data.salaryJudgeId);
-    if (data.picIds !== undefined && data.picIds !== '' && data.picIds !== null) {
+    if (data.organizeId !== undefined && data.organizeId !== '' && data.organizeId) {
+      Form.append('organizeId', data.organizeId);
+    }
+    if (data.organizeIds !== undefined && data.organizeIds !== '' && data.organizeIds) {
+      Form.append('organizeIds', data.organizeIds);
+    }
+    if (data.allShould !== undefined && data.allShould !== '' && data.allShould) {
+      Form.append('allShould', data.allShould);
+    }
+    if (data.allActual !== undefined && data.allActual !== '' && data.allActual) {
+      Form.append('allActual', data.allActual);
+    }
+    if (data.createId !== undefined && data.createId !== '' && data.createId) {
+      Form.append('createId', data.createId);
+    }
+    if (data.applyPersonId !== undefined && data.applyPersonId !== '' && data.applyPersonId) {
+      Form.append('applyPersonId', data.applyPersonId);
+    }
+    if (data.salaryJudgeId !== undefined && data.salaryJudgeId !== '' && data.salaryJudgeId) {
+      Form.append('salaryJudgeId', data.salaryJudgeId);
+    }
+    if (data.picIds !== undefined && data.picIds !== '' && data.picIds) {
       Form.append('picIds', data.picIds);
     }
     return postAxios('/salaryJudgeApply/addJudgeApply', Form);

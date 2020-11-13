@@ -5,6 +5,12 @@ import { flowClassification } from './flowClassification';
 import { processDesign } from './processDesign';
 import { flowStart } from './flowStart';
 import { toDoFlow } from './unDoFlow';
+import { workDelegation } from './workDelegation';
+import { flowWatch } from './flowWatch';
+import { recall } from './recall';
+import { drafts } from './drafts';
+import { standingbook } from './standingbook';
+import { timeout } from './timeout';
 // 业务
 export const flow = [
   {
@@ -21,7 +27,13 @@ export const flow = [
       ...flowClassification,
       ...processDesign,
       ...flowStart,
-      ...toDoFlow
+      ...toDoFlow,
+      ...workDelegation,
+      ...flowWatch,
+      ...recall,
+      ...drafts,
+      ...standingbook,
+      ...timeout
     ]
   }
 ];

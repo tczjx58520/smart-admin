@@ -6,7 +6,6 @@
     :closable="false"
     :mask-closable="false"
     :transfer="false"
-    :styles="{ top: '10px' }"
   >
     <div slot="header" style="text-align: center; color: #fff">
       <span>{{ this.editinfo && this.editinfo.flowNumber  }}</span>
@@ -129,7 +128,7 @@
         <Button size="large" @click="handlerEntrust">{{
           $t("wt")
         }}</Button>
-        <Button size="large" >{{
+        <Button size="large" @click="handlerstepaction(3)">{{
           $t("th")
         }}</Button>
         <Button size="large" @click="handlerDistribute">{{
@@ -138,18 +137,18 @@
         <Button size="large" @click="handlerCountersign">{{
           $t("hq")
         }}</Button>
-        <Button size="large" >{{
+        <Button size="large" @click="handlerstepaction(4)">{{
           $t("jj")
         }}</Button>
         <Button size="large" >{{
           $t("tjfj")
         }}</Button>
-        <Button size="large" >{{
+        <Button size="large" @click="handlerstepaction(5)">{{
           $t("blyj")
         }}</Button>
-        <!-- <Button size="large" >{{
-          $t("blmc")
-        }}</Button> -->
+        <Button size="large" @click="handlerstepaction(2)">{{
+          stepName
+        }}</Button>
         <Button type="error" size="large" @click="cancel">{{
           $t("Close")
         }}</Button>
@@ -160,6 +159,7 @@
     <entrust :modalstat="visiable_entrust" :actionInfo="actionInfo" @updateStat="updateStat_entrust" />
     <distribute :modalstat="visiable_distribute" :actionInfo="actionInfo" @updateStat="updateStat_distribute" />
     <processSteps :modalstat="visiable_processSteps" :actionInfo="actionInfo" @updateStat="updateStat_processSteps" />
+    <stepaction :modalstat="visiable_stepaction" :actionInfo="actionInfo" :stat="stat" @updateStat="updateStat_stepaction" />
   </Modal>
 </template>
 <script>
@@ -171,13 +171,15 @@ import countersign from '../handler-dialogs/countersign';
 import entrust from '../handler-dialogs/entrust';
 import distribute from '../handler-dialogs/distribute';
 import processSteps from '../handler-dialogs/processSteps';
+import stepaction from '../handler-dialogs/stepaction';
 export default {
   name: 'viewtaskDetail',
   components: {
     countersign,
     entrust,
     distribute,
-    processSteps
+    processSteps,
+    stepaction
   },
   props: {
     modalstat: {
@@ -208,7 +210,10 @@ export default {
       visiable_entrust: false,
       visiable_distribute: false,
       visiable_processSteps: false,
-      actionInfo: null
+      visiable_stepaction: false,
+      actionInfo: null,
+      stepName: '',
+      stat: null
     };
   },
   filters: {
@@ -240,6 +245,10 @@ export default {
     handlerprocessSteps () {
       this.visiable_processSteps = true;
     },
+    handlerstepaction (stat) {
+      this.stat = stat;
+      this.visiable_stepaction = true;
+    },
     updateStat_countersign (stat) {
       this.visiable_countersign = stat;
     },
@@ -251,6 +260,9 @@ export default {
     },
     updateStat_processSteps (stat) {
       this.visiable_processSteps = stat;
+    },
+    updateStat_stepaction (stat) {
+      this.visiable_stepaction = stat;
     },
     getDate (val, ymd) {
       const date = new Date(val);
@@ -296,6 +308,7 @@ export default {
         this.data1 = res.data.content[0].distributionRecordVos;
         this.data2 = res.data.content[0].countersignRecordVos;
         this.actionInfo = res.data.content;
+        this.stepName = this.actionInfo[0].handleRecordVos[0].actionName;
         this.getEditLabel(res.data.content[0].receiptType);
       });
     },
