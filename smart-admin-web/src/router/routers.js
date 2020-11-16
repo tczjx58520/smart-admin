@@ -7,6 +7,7 @@ import { systemSetting } from './module/systemSetting';
 import { performance } from './module/performance';
 import { salary } from './module/salary';
 import { flow } from './module/flow';
+import { workAttendance } from './module/workAttendance'
 /**
  *
  * meta除了原生参数外可配置的参数:
@@ -46,5 +47,6 @@ export const routers = [
   ...systemSetting,
   ...performance,
   ...salary,
-  ...flow
+  ...flow,
+  ...workAttendance
 ];
