@@ -2,11 +2,9 @@
     <div>
  <Card class="warp-card" dis-hover>
     <Tabs :animated="false">
-       
-<firstTable />
+<firstTable/>
 <secondTable/>
-<thirdTable/>
-<fourFrom/>
+<thirdFrom/>
     </Tabs>
     </Card>
     </div>
@@ -15,16 +13,15 @@
 <script>
 import firstTable from './components/firstTable'
 import secondTable from './components/secondTable'
-import thirdTable from './components/thirdTable'
-import fourFrom from './components/fourFrom'
+import thirdFrom from './components/thirdFrom'
+
 
 export default {
-    name: 'attendanceSetting',
+    name: 'holidayRecords',
     components: {
         firstTable,
         secondTable,
-        thirdTable,
-        fourFrom
+        thirdFrom
     },
     data() {
         return {

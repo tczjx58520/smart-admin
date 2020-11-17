@@ -84,7 +84,7 @@ export default {
     // 改写的组织架构
     // 渲染部门树形图功能按钮
     renderDepartmentTreeButton (h, { root, node, data }) {
-    //   console.log(root, node, data);
+      // console.log(root, node, data);
       let newName = data.title;
       if (newName.length > 8) {
         newName = data.title.substring(0, 8) + '...';
@@ -161,6 +161,8 @@ export default {
     // 选中部门 更新员工table
     loadEmployeeTable (event, root, node, data) {
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
+      // console.log(data)
+      this.$emit('chooseTreeData', data)
       let target = event.target;
       let tagName = target.tagName;
       if (tagName !== 'BUTTON') {
@@ -171,7 +173,6 @@ export default {
         target.style.color = '#ffffff';
       }
     }
-
     }
 }
 </script>

@@ -72,7 +72,7 @@ export default {
       const result = [];
       // 遍历 tree
       tree.forEach((item) => {
-        console.log(item);
+        // console.log(item);
         // 读取 map 的键值映射
         const title = item[ map.title ];
         const parentId = item[ map.parentId ];
@@ -102,7 +102,7 @@ export default {
       const result = await organization.organizationlist().then(res => {
         return res;
       });
-      console.log('result', result);
+      // console.log('result', result);
       const map = {
         title: 'organizeName',
         parentId: 'parentId',
@@ -114,7 +114,7 @@ export default {
     },
       // 渲染部门树形图功能按钮
     renderDepartmentTreeButton (h, { root, node, data }) {
-      console.log(root, node, data);
+      // console.log(root, node, data);
       let newName = data.title;
       if (newName.length > 8) {
         newName = data.title.substring(0, 8) + '...';
@@ -190,10 +190,10 @@ export default {
     },
     loadEmployeeTable (event, root, node, data) {
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
-      console.log('event', event)
-      console.log('root', root)
-      console.log('node', node)
-      console.log('data', data)
+      // console.log('event', event)
+      // console.log('root', root)
+      // console.log('node', node)
+      // console.log('data', data)
       let target = event.target;
       let tagName = target.tagName;
       
@@ -204,6 +204,8 @@ export default {
         target.style.backgroundColor = '#5cadff';
         target.style.color = '#ffffff';
       }
+      this.addformbase = data
+      // this.$emit('organizationData', data)
     },
     addorg (selection) {
       console.log('selection==========>', selection);
@@ -216,11 +218,16 @@ export default {
       this.$Message.info('Clicked ok');
     },
     handsave () {
-      this.modal_loading = true;
+      this.mymoadlStat = true;
       setTimeout(() => {
-        this.$emit('updateStat', false, this.addformbase, this.type);
-        this.modal_loading = false;
-      }, 1000);
+        // this.$emit('updateStat', false, this.addformbase, this.type);
+        // this.modal_loading = false;
+      // this.$emit('organizationData', data)
+      // console.log('this.addformbase', this.addformbase)
+        this.$emit('organizationData', this.addformbase)  
+      this.mymoadlStat= false
+      this.$emit('update:modalstat', false)  
+      }, 500);
     },
     cancel () {
       this.$emit('update:modalstat', false)  

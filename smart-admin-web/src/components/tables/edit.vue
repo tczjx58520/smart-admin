@@ -1,8 +1,8 @@
 <template>
   <div class="tables-edit-outer">
-    <div v-if="!isEditting" class="tables-edit-con">
-      <span class="value-con">{{ value }}</span>
-      <Button
+    <div v-if="!isEditting" @dblclick="startEdit" class="tables-edit-con">
+      <span class="value-con" >{{ value }}</span>
+      <!-- <Button
         v-if="editable"
         @click="startEdit"
         class="tables-edit-btn"
@@ -10,10 +10,12 @@
         type="text"
       >
         <Icon type="md-create"></Icon>
-      </Button>
+      </Button> -->
     </div>
     <div v-else class="tables-editting-con">
-      <Input :value="value" @input="handleInput" class="tables-edit-input"/>
+      <Input v-show="editType === 'input'" :value="value" @input="handleInput" class="tables-edit-input"/>
+      <DatePicker v-show="editType === 'date'" :value="value" type="date" placeholder="Select date" class="tables-edit-input" @input="handleInput"/>
+      <TimePicker v-show="editType === 'time'" type="time" :value="value"  class="tables-edit-input" @input="handleInput"  confirm/>
       <Button @click="saveEdit" style="padding: 6px 4px;" type="text">
         <Icon type="md-checkmark"></Icon>
       </Button>
@@ -47,11 +49,17 @@ export default {
     editable: {
       type: Boolean,
       require: true
-    }
+    },
+    // 编辑表格组件类型
+    editType: {
+      type: String,
+      require: true
+    },
   },
   computed: {
     // 判断是否处于编辑状态
     isEditting () {
+      // console.log('editType', this.editType)
       return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`;
     }
   },
@@ -63,6 +71,7 @@ export default {
       this.$emit('on-start-edit', this.params);
     },
     saveEdit () {
+      // console.log('this.params', this.params)
       this.$emit('on-save-edit', this.params);
     },
     canceltEdit () {

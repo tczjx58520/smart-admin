@@ -28,4 +28,12 @@ body {
 #app {
   .size;
 }
+
+.ivu-table-wrapper {
+  overflow: inherit !important;
+}
+
+.ivu-tabs {
+  overflow: inherit !important;
+}
 </style>

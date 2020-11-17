@@ -231,16 +231,20 @@ export default {
       this.$emit('on-page-size-change', e);
     },
     suportEdit (item, index) {
+      // console.log('item',item)
       item.render = (h, params) => {
+        // console.log('params', params)
         return h(TablesEdit, {
           props: {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
             edittingCellId: this.edittingCellId,
-            editable: this.editable
+            editable: this.editable,
+            editType: params.column.editType
           },
           on: {
             'input': val => {
+              // console.log('val', val)
               this.edittingText = val;
             },
             'on-start-edit': (params) => {
@@ -252,6 +256,7 @@ export default {
               this.$emit('on-cancel-edit', params);
             },
             'on-save-edit': (params) => {
+              // console.log('params', params)
               this.value[params.row.initRowIndex][params.column.key] = this.edittingText;
               this.$emit('input', this.value);
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }));
@@ -279,10 +284,12 @@ export default {
     handleColumns (columns) {
       this.insideColumns = columns.map((item, index) => {
         let res = item;
+        // console.log('res', res)
         if (res.editable) { res = this.suportEdit(res, index); }
         if (res.key === 'handle') { res = this.surportHandle(res); }
         return res;
       });
+      // console.log()
     },
     // 设置默认搜索关键词
     setDefaultSearchKey () {
@@ -340,3 +347,5 @@ export default {
   }
 };
 </script>
+
+

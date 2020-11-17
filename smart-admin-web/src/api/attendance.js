@@ -85,12 +85,72 @@ export const attendance = {
     }
   },
 
-  //  // 修改班组
-  //  modifyShiftSystem: data => {
-  //   let Form = new FormData();
-  //   if (data) {
-  //     return postAxios('/attendanceSet/modifyShiftSystem?createId=' + data.createId, data);
-  //   }
-  // },
+   // 排班设置查询
+   findScheduling: data => {
+    let Form = new FormData();
+    if (data) {
+      return postAxios('/attendanceSet/findScheduling?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+  },
 
+// 年假查询
+findAnnual: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceSet/findAnnual?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
+},
+
+  
+  // 年假修改
+  modifyAnnual: data => {
+    if (data) {
+      return postAxios('/attendanceSet/modifyAnnual', data);
+      }
+  },
+
+  // 调休假查询
+  findExchangeDay: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceSet/findExchangeDay?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
+},
+
+  // 自动年假设置
+  modifyAnnualSet: data => {
+    if (data) {
+      return postAxios('/attendanceSet/modifyAnnualSet', data);
+      }
+  },
+
+  // 自动年假查询
+  findAnnualSet: data => {
+      return postAxios('/attendanceSet/findAnnualSet');
+  },
+
+  // 上下班打卡
+  findPunchInfo: data => {
+    let Form = new FormData();
+    Form.append('employeeId', data);
+    return postAxios('/attendancePersonal/findPunchInfo', Form);
+  },
+
+  // 我的排班表
+  personalShift: data => {
+    let Form = new FormData();
+    Form.append('employeeId', data.employeeId);
+    Form.append('pageNum', data.pageNum);
+    Form.append('pageSize', data.pageSize);
+    return postAxios('/attendancePersonal/personalShift', Form);
+  },
+
+  // 我的假期
+  personalHoliday: data => {
+    let Form = new FormData();
+    Form.append('employeeId', data.employeeId);
+    Form.append('pageNum', data.pageNum);
+    Form.append('pageSize', data.pageSize);
+    return postAxios('/attendancePersonal/personalHoliday', Form);
+  },
 }

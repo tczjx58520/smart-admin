@@ -6,6 +6,9 @@ import { attendanceRecord } from './attendanceRecord'
 import { attendanceSetting } from './attendanceSetting'
 import { scheduleSetting } from './scheduleSetting'
 import { attendanceMachineRecords } from './attendanceMachineRecords'
+import { holidayRecords } from './holidayRecords'
+import { punchTheClock } from './punchTheClock'
+import { myAttendance } from './myAttendance'
 // 业务
 export const workAttendance = [
   {
@@ -23,7 +26,10 @@ export const workAttendance = [
       ...attendanceRecord,
       ...attendanceSetting,
       ...scheduleSetting,
-      ...attendanceMachineRecords
+      ...attendanceMachineRecords,
+      ...holidayRecords,
+      ...punchTheClock,
+      ...myAttendance
     ]
   }
 ];

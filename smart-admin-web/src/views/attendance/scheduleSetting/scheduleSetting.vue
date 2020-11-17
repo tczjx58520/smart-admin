@@ -2,7 +2,7 @@
     <div class="maincontent">
 <div class="leftTree">
      <div class="leftTitle">组织架构图</div>
-            <organizationTree />
+            <organizationTree @chooseTreeData="getTreeData"/>
         </div>
     <div class="rightRecord">
         <div class="rightTop">
@@ -49,6 +49,7 @@
 <script>
 import organizationTree from '@/components/organizationTree'
 import Tables from '@/components/tables';
+import { attendance } from '@/api/attendance'
 
 export default {
     name: 'scheduleSetting',
@@ -58,14 +59,10 @@ export default {
     },
     data() {
         return {
- searchform: {
-        employeename: '',
-        account: '',
-        roleId: '',
-        stat: '',
+      searchform: {
         pageNum: 1,
         pageSize: 10,
-        loginRepositoryId: this.$store.state.user.userLoginInfo.repositoryId
+        organizationId: this.$store.state.user.userLoginInfo.organizationOa
       },
       pageTotal: 0,
       // table是否loading
@@ -101,42 +98,6 @@ export default {
         {
           title: this.$t('usermanage_view.position'),
           key: 'postOaName'
-        },
-        {
-          title: this.$t('salaryEntry_view.approvalStatus'),
-          key: 'judgeStat',
-          render: (h, params) => {
-            if (params.row.judgeStat === 0) {
-              return h('span', '未审核');
-            } else if (params.row.judgeStat === 1) {
-              return h('span', '审核成功');
-            } else {
-              return h('span', '审核失败');
-            }
-          }
-        },
-        {
-          title: this.$t('salaryEntry_view.EntercurrentMonth'),
-          key: 'isEnter',
-          render: (h, params) => {
-            if (params.row.isEnter === 0) {
-              return h('span', this.$t('no'));
-            } else {
-              return h('span', this.$t('yes'));
-            }
-          }
-        },
-        {
-          title: this.$t('usermanage_view.stat'),
-          key: 'stat',
-          width: '100',
-          render: (h, params) => {
-            if (params.row.stat === 1) {
-              return h('span', this.$t('Open'));
-            } else {
-              return h('span', this.$t('Forbid'));
-            }
-          }
         }
       ],
       // table数据
@@ -144,7 +105,27 @@ export default {
       visiable: false,
         }
     },
+    mounted() {
+      this.getListData()
+    },
     methods: {
+    async getListData() {
+        try {
+        this.loading = true;
+        let result = await attendance.findScheduling(this.searchform);
+        this.loading = false;
+        console.log(result)
+        this.firstData = result.data.list;
+        this.fistTotal = result.data.totalCount;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+        this.loading = false;
+      }
+      },
+      getTreeData(val) {
+        console.log(val)
+      },
         myselected (selection) {
       this.moreemp = selection;
       console.log('this.moreemp===========>', this.moreemp);
