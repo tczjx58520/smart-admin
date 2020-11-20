@@ -1,15 +1,75 @@
 <template>
     <div>
-        <TabPane :label="$t('kqgl.wdjq')">
+        <TabPane :label="$t('kqgl.wdkq')">
             <div class="rightTop">
+               <div class="topItems">
+                   <div class="itemLeft">
+                       <div>img</div>
+                       <div class="leftTitle">{{$t('kqgl.ydts')}}</div>
+                   </div>
+                   <div class="itemRight">
+                       19
+                   </div>
+               </div>
+
+               <div class="topItems">
+                   <div class="itemLeft">
+                       <div>img</div>
+                       <div class="leftTitle">{{$t('kqgl.cuqingtsh')}}</div>
+                   </div>
+                   <div class="itemRight">
+                       19
+                   </div>
+               </div>
+
+               <div class="topItems">
+                   <div class="itemLeft">
+                       <div>img</div>
+                       <div class="leftTitle">{{$t('kqgl.chidaozaotui')}}</div>
+                   </div>
+                   <div class="itemRight">
+                       19
+                   </div>
+               </div>
+
+               <div class="topItems">
+                   <div class="itemLeft">
+                       <div>img</div>
+                       <div class="leftTitle">{{$t('kqgl.quekacishu')}}</div>
+                   </div>
+                   <div class="itemRight">
+                       19
+                   </div>
+               </div>
+
+               <div class="topItems">
+                   <div class="itemLeft">
+                       <div>img</div>
+                       <div class="leftTitle">{{$t('kqgl.waichucishu')}}</div>
+                   </div>
+                   <div class="itemRight">
+                       19
+                   </div>
+               </div>
+        </div>
+         <div class="rightTop">
                 <Button @click="resetFirstTable" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
+                <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.rqxz')}}</span>
+                   <span>
+                        <DatePicker type="month" v-model="year" placeholder="Select year" style="width: 200px"/>
+                   </span>
+               </div>
+               <div class="rightTopItem">
+                   <Button type="primary" @click.native="getFirstTableData">{{$t('Search')}}</Button>
+               </div>
         </div>
             <Tables
                     :columns="firstColumns"
                     :current="firstTable.pageNum"
                     :loading="firstLoading"
                     :page-size="firstTable.pageSize"
-                    :pageShow="true"
+                    :pageShow="false"
                     :total="fistTotal"
                     :value="firstData"
                     @on-change="firstChangePage"
@@ -48,27 +108,27 @@ export default {
             },
             fistTotal: 0,
             firstColumns: [
-                {
-          type: 'selection',
-          width: 50,
-          align: 'center'
-        },
         {
-          title: this.$t('kqgl.nj'),
+          title: this.$t('kqgl.rq'),
           key: 'annualLeaveTotalDays'
         },
         {
-          title: this.$t('kqgl.yxnj'),
-          key: 'annualLeaveUsedDays',
-          editable: true,
-          editType: 'input'
+          title: this.$t('kqgl.sb'),
+          key: 'annualLeaveUsedDays'
         },{
-          title: this.$t('kqgl.wxnj'),
+          title: this.$t('kqgl.xb'),
           key: 'annualLeaveRemainDays'
-        }, {
-          title: this.$t('kqgl.sytx'),
-          key: 'exchangeDayRemain'
+        },{
+          title: this.$t('kqgl.sb'),
+          key: 'annualLeaveUsedDays'
+        },{
+          title: this.$t('kqgl.xb'),
+          key: 'annualLeaveRemainDays'
+        },{
+          title: this.$t('kqgl.qkshuom'),
+          key: 'annualLeaveRemainDays'
         }
+
             ],
             firstData: [],
             modalstat: false,
@@ -161,6 +221,46 @@ export default {
     
 }
 
+.topItems{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 10%;
+    background: #079af7;
+    border-radius: 5px;
+    height: 70px;
+     color: #ffffff;
+}
+
+.topItems:nth-child(1) {
+        margin-left: 0
+}
+
+.topItems:nth-child(2) {
+    background:#e76740;
+}
+
+.topItems:nth-child(3) {
+    background:#47dba1;
+}
+
+.topItems:nth-child(4) {
+    background:#058be0;
+}
+
+.topItems:nth-child(5) {
+    background:#e05328;
+}
+
+.leftTitle {
+    padding-top: 5px;
+}
+
+.itemRight {
+    font-size: 30px;
+    color: #ffffff;
+}
 .rightTopItem{
     display: flex;
     align-items: center;
@@ -171,4 +271,5 @@ export default {
 .rightTopItemTitle {
     padding-right: 10px;
 }
+
 </style>

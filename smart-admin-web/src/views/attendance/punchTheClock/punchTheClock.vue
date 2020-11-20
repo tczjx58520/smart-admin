@@ -10,6 +10,7 @@
                     :value="firstData"
                     show-elevator
                   ></Tables>
+                  <firstFrom :modalstat.sync ='modalstat' :editData.sync='editData' @restList="restList"/>
     </div>
 </template>
 
@@ -17,17 +18,22 @@
 import { attendance } from '@/api/attendance'
 import Tables from '@/components/tables';
 import organization from '@/components/organization'
+import firstFrom from './components/firstFrom'
 
 
 export default {
     name: 'punchTheClock',
     components:{
       Tables,
-      organization
+      organization,
+      firstFrom
     },
     data() {
         return {
+          editData: {},
         employeeId: this.$store.state.user.userLoginInfo.userId,
+        // employeeId: 2,
+
             firstLoading: false,
             firstColumns: [
                 {
@@ -37,11 +43,11 @@ export default {
         },
         {
           title: this.$t('kqgl.bc'),
-          key: 'username'
+          key: 'shiftName'
         },
         {
           title: this.$t('kqgl.dengjilexing'),
-          key: 'annualLeaveTotalDays',
+          key: 'punchType',
           render: (h, params) => {
             if (params.row.whetherVocation === 0) {
               return h('span', this.$t('kqgl.sb'));
@@ -51,24 +57,59 @@ export default {
           }
         },{
           title: this.$t('kqgl.guidingshijian'),
-          key: 'annualLeaveUsedDays'
+          key: 'setTime'
         }, {
           title: this.$t('kqgl.ksdjsj'),
-          key: 'annualLeaveRemainDays'
+          key: 'punchStartTime'
         }, {
           title: this.$t('kqgl.jsdjsj'),
-          key: 'annualLeaveRemainDays'
+          key: 'punchEndTime'
+        }, {
+          title: this.$t('kqgl.shijidakashi'),
+          key: 'punchRealTime'
         }, {
           title: this.$t('kqgl.djzt'),
-          key: 'annualLeaveRemainDays',
+          key: 'punchStatus',
            render: (h, params) => {
-            if (params.row.whetherVocation === 0) {
-              return h('span', this.$t('kqgl.sb'));
-            } else {
-              return h('span', this.$t('kqgl.xb'));
+            if (params.row.punchStatus === 0) {
+              return h('span', this.$t('kqgl.zhengchang'));
+            } else if (params.row.punchStatus === 1){
+              return h('span', this.$t('kqgl.weidaka'));
+            } else if (params.row.punchStatus === 2){
+              return h('span',{style: { color: 'red'} }, this.$t('kqgl.chidao'));
+            } else if (params.row.punchStatus === 3){
+              return h('span',{style: { color: 'red'} }, this.$t('kqgl.zaotui'));
             }
           }
+        }, {
+          title: this.$t('kqgl.qkshuom'),
+          key: 'note'
+        },{
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
+          width: 200,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'info',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      this.Edit(params.row);
+                    }
+                  }
+                },
+                this.$t('kqgl.smqk')
+              )
+            ]);
+          }
         }
+
             ],
             firstData: [],
             modalstat: false,
@@ -79,13 +120,23 @@ export default {
         this.getFirstTableData()
     },
     methods: {
+      restList(val) {
+        if(val) {
+        this.getFirstTableData()
+
+        }
+      },
+      Edit(row) {
+        this.editData = row
+        this.modalstat = true
+      },
     async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findPunchInfo(this.employeeId);
         this.firstLoading = false;
         // console.log(result)
-        this.firstData = result.data.list;
+        this.firstData = result.data.data;
         this.fistTotal = result.data.totalCount;
       } catch (e) {
         // TODO zhuoda sentry

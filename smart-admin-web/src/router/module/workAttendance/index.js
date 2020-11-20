@@ -9,6 +9,12 @@ import { attendanceMachineRecords } from './attendanceMachineRecords'
 import { holidayRecords } from './holidayRecords'
 import { punchTheClock } from './punchTheClock'
 import { myAttendance } from './myAttendance'
+import { workOvertimeRegistration } from './workOvertimeRegistration'
+import { businessTravel } from './businessTravel'
+import { leaveRegister } from './leaveRegister'
+import { goOutRegister } from './goOutRegister'
+import { fillClock } from './fillClock'
+import { attendanceStatistical } from './attendanceStatistical'
 // 业务
 export const workAttendance = [
   {
@@ -29,7 +35,13 @@ export const workAttendance = [
       ...attendanceMachineRecords,
       ...holidayRecords,
       ...punchTheClock,
-      ...myAttendance
+      ...myAttendance,
+      ...workOvertimeRegistration,
+      ...businessTravel,
+      ...leaveRegister,
+      ...goOutRegister,
+      ...fillClock,
+      ...attendanceStatistical
     ]
   }
 ];

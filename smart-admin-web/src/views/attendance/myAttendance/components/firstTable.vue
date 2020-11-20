@@ -41,6 +41,7 @@ export default {
             firstLoading: false,
             firstTable:{
                 employeeId: this.$store.state.user.userLoginInfo.userId,
+        // employeeId: 2,
                 pageNum: 1,
                 pageSize: 10
             },
@@ -53,19 +54,25 @@ export default {
         },
         {
           title: this.$t('kqgl.rq'),
-          key: 'username'
+          key: 'date'
         },
         {
           title: this.$t('kqgl.bc'),
-          key: 'annualLeaveTotalDays',
+          key: 'shiftName',
           editable: true,
           editType: 'input'
         },{
           title: this.$t('kqgl.sb'),
-          key: 'annualLeaveUsedDays'
+          key: 'startWorkTimeMorning'
         }, {
           title: this.$t('kqgl.xb'),
-          key: 'annualLeaveRemainDays'
+          key: 'overWorkTimeMorning'
+        },{
+          title: this.$t('kqgl.sb'),
+          key: 'startWorkTimeAfternoon'
+        }, {
+          title: this.$t('kqgl.xb'),
+          key: 'overWorkTimeAfternoon'
         }
             ],
             firstData: [],

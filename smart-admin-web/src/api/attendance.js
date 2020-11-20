@@ -136,6 +136,13 @@ findAnnual: data => {
     return postAxios('/attendancePersonal/findPunchInfo', Form);
   },
 
+    // 上下班打卡修改情况
+    modifyPunchInfo: data => {
+      if (data) {
+        return postAxios('/attendancePersonal/modifyPunchInfo', data);
+        }
+    },
+
   // 我的排班表
   personalShift: data => {
     let Form = new FormData();
@@ -153,4 +160,107 @@ findAnnual: data => {
     Form.append('pageSize', data.pageSize);
     return postAxios('/attendancePersonal/personalHoliday', Form);
   },
+
+    // 加班登记
+    findWorkOvertime: data => {
+    let Form = new FormData();
+    Form.append('employeeId', data.employeeId);
+    Form.append('pageNum', data.pageNum);
+    Form.append('pageSize', data.pageSize);
+    return postAxios('/attendancePersonal/findWorkOvertime?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+  },
+
+    // 加班登记新建
+    addWorkOvertime: data => {
+      if (data) {
+        return postAxios('/attendancePersonal/addWorkOvertime', data);
+        }
+    },
+
+    // 出差登记
+    findBusniessOnTrip: data => {
+      let Form = new FormData();
+      Form.append('employeeId', data.employeeId);
+      Form.append('pageNum', data.pageNum);
+      Form.append('pageSize', data.pageSize);
+      return postAxios('/attendancePersonal/findBusniessOnTrip?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+    },
+  
+      // 出差登记新建
+      addBusniessOnTrip: data => {
+        if (data) {
+          return postAxios('/attendancePersonal/addBusniessOnTrip', data);
+          }
+      },
+
+      // 请假登记
+      findApplyLeave: data => {
+      let Form = new FormData();
+      Form.append('employeeId', data.employeeId);
+      Form.append('pageNum', data.pageNum);
+      Form.append('pageSize', data.pageSize);
+      return postAxios('/attendancePersonal/findApplyLeave?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+    },
+  
+      // 请假登记新建
+      addApplyLeave: data => {
+        if (data) {
+          return postAxios('/attendancePersonal/addApplyLeave', data);
+          }
+      },
+
+      // 销假登记
+      addTerminalLeave: data => {
+        if (data) {
+          return postAxios('/attendancePersonal/addTerminalLeave', data);
+          }
+      },
+
+      // 外出登记
+      findWorkOutside: data => {
+        let Form = new FormData();
+        Form.append('employeeId', data.employeeId);
+        Form.append('pageNum', data.pageNum);
+        Form.append('pageSize', data.pageSize);
+        return postAxios('/attendancePersonal/findWorkOutside?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+      },
+    
+        // 外出登记新建
+        addWorkOutside: data => {
+          if (data) {
+            return postAxios('/attendancePersonal/addWorkOutside', data);
+            }
+        },
+
+         // 外出统计
+         outsideStatistical: data => {
+    let Form = new FormData();
+    if (data) {
+      return postAxios('/attendanceStatistical/outsideStatistical?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+  },
+
+  // 请假统计
+  vocationStatistical: data => {
+    let Form = new FormData();
+    if (data) {
+      return postAxios('/attendanceStatistical/vocationStatistical?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+  },
+
+  // 出差统计
+  businessOnTripStatistical: data => {
+    let Form = new FormData();
+    if (data) {
+      return postAxios('/attendanceStatistical/businessOnTripStatistical?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+  },
+// 加班统计
+workOverTimeStatistical: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceStatistical/workOverTimeStatistical?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
+},
+
 }

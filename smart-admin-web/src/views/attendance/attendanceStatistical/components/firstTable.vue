@@ -1,8 +1,36 @@
 <template>
     <div>
-        <TabPane :label="$t('kqgl.wdjq')">
+        <TabPane :label="$t('kqgl.waichutongji')">
             <div class="rightTop">
                 <Button @click="resetFirstTable" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
+                <Button @click="resetFirstTable" type="primary" style="margin-right:15px;">{{ $t('kqgl.daying') }}</Button>
+               <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.rqxz')}}</span>
+                   <span>
+                        <DatePicker type="date" placeholder="Select year" style="width: 200px" @on-change="chooseDate"/>
+                   </span>
+               </div>
+
+
+               <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.sengqingren')}}</span>
+                   <span>
+                        <Input :value="createPersonName" type="text" @click.native="chooseEmp"/>
+                   </span>
+                    <selectEmp :modalstat.sync='empSata' @selectData='selectData'/>
+               </div>
+
+
+                <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.suoshuzhuzhi')}}</span>
+                   <span>
+                        <Input :value="organizationName" type="text" @click.native="selectOrg()"/>
+                   </span>
+                    <organization :modalstat.sync='modalstat' @organizationData="organizationData"/>
+               </div>
+                <div class="rightTopItem">
+                   <Button type="primary" @click.native="getFirstTableData">{{$t('Search')}}</Button>
+               </div>
         </div>
             <Tables
                     :columns="firstColumns"
@@ -10,11 +38,12 @@
                     :loading="firstLoading"
                     :page-size="firstTable.pageSize"
                     :pageShow="true"
+                    :editable='false'
                     :total="fistTotal"
                     :value="firstData"
                     @on-change="firstChangePage"
-                    @on-selection-change="selectFirst"
                     show-elevator
+                     show-sizer
                   ></Tables>
         </TabPane>
     </div>
@@ -24,61 +53,76 @@
 import { attendance } from '@/api/attendance'
 import Tables from '@/components/tables';
 import organization from '@/components/organization'
+import selectEmp from '@/components/selectEmp'
+
 
 
 export default {
-    name: 'secondTable',
+    name: 'firstTable',
     components:{
-      Tables,
-      organization
+Tables,
+organization,
+selectEmp
     },
     data() {
         return {
-          year: '',
+          createPersonName: '',
           organizationName: '',
-          selectData: '',
-          editData: null,
             firstLoading: false,
             firstTable:{
-                employeeId: this.$store.state.user.userLoginInfo.userId,
-                // employeeId: 2,
-                
+              organizationId:'',
+              createPersonName: '',
+                conditionTime: '',
                 pageNum: 1,
                 pageSize: 10
             },
             fistTotal: 0,
             firstColumns: [
-                {
-          type: 'selection',
-          width: 50,
-          align: 'center'
+        {
+          title: this.$t('kqgl.dengjiren'),
+          key: 'createPersonName'
         },
         {
-          title: this.$t('kqgl.nj'),
-          key: 'annualLeaveTotalDays'
-        },
-        {
-          title: this.$t('kqgl.yxnj'),
-          key: 'annualLeaveUsedDays',
-          editable: true,
-          editType: 'input'
+          title: this.$t('kqgl.shenqingshijian'),
+          key: 'applyTime'
         },{
-          title: this.$t('kqgl.wxnj'),
-          key: 'annualLeaveRemainDays'
+          title: this.$t('kqgl.kaishishijian'),
+          key: 'overWorkTimeMorning'
         }, {
-          title: this.$t('kqgl.sytx'),
-          key: 'exchangeDayRemain'
+          title: this.$t('kqgl.jieshushijian'),
+          key: 'startWorkTimeAfternoon'
+        },{
+          title: this.$t('kqgl.wiachushijian'),
+          key: 'overWorkTimeAfternoon'
+        },{
+          title: this.$t('kqgl.waichudidian'),
+          key: 'address'
+        },{
+          title: this.$t('kqgl.waichishiyou'),
+          key: 'reason'
         }
             ],
             firstData: [],
             modalstat: false,
-            modalState: ''
+            modalState: '',
+            empSata: false,
         }
     },
     mounted() {
         this.getFirstTableData()
     },
     methods: {
+      chooseDate(val) {
+        this.firstTable.conditionTime = val
+      },
+      selectData(val) {
+          // console.log('val', val)
+          this.firstTable.createPersonName = val.id
+          this.createPersonName = val.personName
+      },
+      chooseEmp() {
+          this.empSata = true
+      },
       organizationData(val) {
         this.organizationName = val.title
         this.firstTable.organizationId = val.id
@@ -92,32 +136,10 @@ export default {
 
         }
       },
-      Edit (row) {
-      // if (this.$judge(['1-4-2'])) {
-      //   this.editinfo = row;
-      //   this.visiable_edit = true;
-      // } else {
-      //   console.log('needroles');
-      // }
-      this.modalState = '修改'
-            this.editData = Object.assign({}, row)
-
-      // this.firstLoading = true;
-      this.modalstat = true
-
-    },
-    selectFirst (selection) {
-      this.selectData = selection;
-    },
-    GMTToStr(time){
-    let date = new Date(time)
-    let Str=date.getFullYear() 
-    return Str
-},
     async getFirstTableData () {
       try {
         this.firstLoading = true;
-        let result = await attendance.personalHoliday(this.firstTable);
+        let result = await attendance.outsideStatistical(this.firstTable);
         this.firstLoading = false;
         // console.log(result)
         this.firstData = result.data.list;
