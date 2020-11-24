@@ -141,11 +141,11 @@ export default {
           this.organazationName = val.title
       },
       changeStartTime(val) {
-          this.fromBaseData.startTime = val
+          this.fromBaseData.startTime = val+ ' 00:00:00'
           this.countTotalTime()
       },
       changeEndTime(val) {
-          this.fromBaseData.endTime = val
+          this.fromBaseData.endTime = val + ' 00:00:00'
           
           this.countTotalTime()
       },

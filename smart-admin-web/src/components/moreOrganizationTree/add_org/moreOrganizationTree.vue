@@ -4,8 +4,8 @@
             <span>{{ $t('processDesign_view.TipOrganization') }}</span>
             </div>
             <div>
-            <Card dis-hover>
-                <div class="department-wrap">
+            <Card dis-hover >
+                <div class="department-wrap" style="height: 600px">
                   <DepartmentEmployeeTree
                     :isDepartment="mymoadlStat"
                     :memberId="memberId"

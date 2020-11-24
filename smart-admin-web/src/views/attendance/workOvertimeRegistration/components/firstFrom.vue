@@ -24,11 +24,19 @@
                         <Input  v-model="employeeName" style="width: 34%" @click.native="chooseEmp"/>
                     </FormItem>
                     <selectEmp :modalstat.sync='empSata' @selectData='selectData'/>
-                    <div class="nomalDiv">
+                    <!-- <div class="nomalDiv">
                         <span class="zhi">{{$t('kqgl.jiabanshijianduan')}}</span>
                         <TimePicker type="time" :value="fromBaseData.startTime" confirm style="width: 20%" @on-change="changeStartTime"></TimePicker>
                         <div class="zhi">{{$t('kqgl.zhi')}}</div>
                         <TimePicker type="time" :value="fromBaseData.endTime" confirm style="width: 20%" @on-change="changeEndTime"></TimePicker>
+                        <div class="zhi">{{$t('kqgl.jiabanheji')}}</div>
+                        <Input  v-model="fromBaseData.totalTime" disabled style="width: 20%"/>
+                        <div class="zhi">{{$t('kqgl.xiaoshi')}}</div>
+                    </div> -->
+
+                    <div class="nomalDiv">
+                        <span class="zhi">{{$t('kqgl.jiabanshijianduan')}}</span>
+                        <DatePicker type="datetimerange" v-model="times" format="yyyy-MM-dd HH:mm:ss" style="width: 40%" @on-change="changeStartTime"></DatePicker>
                         <div class="zhi">{{$t('kqgl.jiabanheji')}}</div>
                         <Input  v-model="fromBaseData.totalTime" disabled style="width: 20%"/>
                         <div class="zhi">{{$t('kqgl.xiaoshi')}}</div>
@@ -104,6 +112,7 @@ export default {
       }
     };
     return {
+       times: [],
         orgStat: false,
         employeeName: this.$store.state.user.userLoginInfo.actualName,
         organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
@@ -143,6 +152,39 @@ export default {
     }
   },
   methods: {
+    changeStartTime(val) {
+          console.log(val)
+          this.fromBaseData.startTime = val[0]
+          this.fromBaseData.endTime = val[1]
+          this.countTotalTime(val[0], val[1])
+      },
+      datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
+        var dateSpan,
+            tempDate,
+            iDays;
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+        return iDays
+    },
+      countTotalTime(val, val2) {
+        const subDays = val.substring(0, 10)
+        const subDays2 = val2.substring(0, 10)
+        const diffdays = this.datedifference(subDays, subDays2)
+        let hours1 =Number(val.substring(11, 13)) 
+                let hours2 =Number(val2.substring(11, 13))
+                let minute1 =Number(val.substring(14, 16)) 
+                let minute2 =Number(val2.substring(14, 16))
+                 let second1 =Number(val.substring(17, 19)) 
+                let second2 =Number(val2.substring(17, 19))
+                console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
+                console.log(diffdays)
+                let diffHours = hours2 - hours1
+                let diffminutes = minute2 - minute1
+                this.fromBaseData.totalTime = diffHours + (diffminutes/60) + (Number(diffdays)*24)
+      },
       chooseOrg() {
           this.orgStat = true
       },
@@ -151,29 +193,29 @@ export default {
           this.fromBaseData.organazationId = val.id
           this.organazationName = val.title
       },
-      changeStartTime(val) {
-          this.fromBaseData.startTime = val
-          this.countTotalTime()
-      },
-      changeEndTime(val) {
-          this.fromBaseData.endTime = val
+      // changeStartTime(val) {
+      //     this.fromBaseData.startTime = val
+      //     this.countTotalTime()
+      // },
+      // changeEndTime(val) {
+      //     this.fromBaseData.endTime = val
           
-          this.countTotalTime()
-      },
-      countTotalTime() {
-          if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
-              let hours1 =Number(this.fromBaseData.startTime.substring(0, 2)) 
-                let hours2 =Number(this.fromBaseData.endTime.substring(0, 2))
-                let minute1 =Number(this.fromBaseData.startTime.substring(3, 5)) 
-                let minute2 =Number(this.fromBaseData.endTime.substring(3, 5))
-                 let second1 =Number(this.fromBaseData.startTime.substring(6, 8)) 
-                let second2 =Number(this.fromBaseData.endTime.substring(6, 8))
-                // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
-                let diffHours = hours2 - hours1
-                let diffminutes = minute2 - minute1
-                this.fromBaseData.totalTime = diffHours + diffminutes/60
-          }
-      },
+      //     this.countTotalTime()
+      // },
+      // countTotalTime() {
+      //     if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
+      //         let hours1 =Number(this.fromBaseData.startTime.substring(0, 2)) 
+      //           let hours2 =Number(this.fromBaseData.endTime.substring(0, 2))
+      //           let minute1 =Number(this.fromBaseData.startTime.substring(3, 5)) 
+      //           let minute2 =Number(this.fromBaseData.endTime.substring(3, 5))
+      //            let second1 =Number(this.fromBaseData.startTime.substring(6, 8)) 
+      //           let second2 =Number(this.fromBaseData.endTime.substring(6, 8))
+      //           // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
+      //           let diffHours = hours2 - hours1
+      //           let diffminutes = minute2 - minute1
+      //           this.fromBaseData.totalTime = diffHours + diffminutes/60
+      //     }
+      // },
       selectData(val) {
           console.log('val', val)
           this.fromBaseData.employeeId = val.id

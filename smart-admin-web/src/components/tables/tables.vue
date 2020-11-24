@@ -203,7 +203,9 @@ export default {
       // 搜索内容
       searchValue: '',
       // 搜索关键词
-      searchKey: ''
+      searchKey: '',
+      // 下拉框返回id数据
+      selectIdData: ''
     };
   },
   watch: {
@@ -234,18 +236,43 @@ export default {
       // console.log('item',item)
       item.render = (h, params) => {
         // console.log('params', params)
+        // console.log('selectData', params.column.selectData)
+        // console.log('this.insideTableData[params.index][params.column.key]', this.insideTableData[params.index][params.column.key])
+        let selectId
+        if(params.column.editType === 'select') {
+           selectId = params.column.selectData.find(item => {
+          
+        return  item.shiftName === this.insideTableData[params.index][params.column.key]
+          }
+          )
+        } else {
+           selectId = {
+            id: 1
+          } 
+        }
+        
+
+        // console.log('selectid', selectId)
         return h(TablesEdit, {
           props: {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
+            selectId: selectId.id,
             edittingCellId: this.edittingCellId,
             editable: this.editable,
-            editType: params.column.editType
+            editType: params.column.editType,
+            selectData: params.column.selectData
           },
           on: {
             'input': val => {
-              // console.log('val', val)
+              console.log('val', val)
               this.edittingText = val;
+            },
+            'select': val => {
+              this.selectIdData = val
+            },
+            'getnomalselect': val => {
+              this.selectIdData = val
             },
             'on-start-edit': (params) => {
               this.edittingCellId = `editting-${params.index}-${params.column.key}`;
@@ -256,10 +283,11 @@ export default {
               this.$emit('on-cancel-edit', params);
             },
             'on-save-edit': (params) => {
-              // console.log('params', params)
+              console.log('params', params)
               this.value[params.row.initRowIndex][params.column.key] = this.edittingText;
               this.$emit('input', this.value);
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }));
+              this.$emit('on-save-selectData', Object.assign(params, { value: this.selectIdData, value2: this.edittingText }))
               this.edittingCellId = '';
             }
           }

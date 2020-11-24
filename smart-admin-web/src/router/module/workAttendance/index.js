@@ -15,6 +15,8 @@ import { leaveRegister } from './leaveRegister'
 import { goOutRegister } from './goOutRegister'
 import { fillClock } from './fillClock'
 import { attendanceStatistical } from './attendanceStatistical'
+import { setAttendancePerson } from './setAttendancePerson'
+import { phoneAttendanceSetting } from './phoneAttendanceSetting'
 // 业务
 export const workAttendance = [
   {
@@ -41,7 +43,9 @@ export const workAttendance = [
       ...leaveRegister,
       ...goOutRegister,
       ...fillClock,
-      ...attendanceStatistical
+      ...attendanceStatistical,
+      ...setAttendancePerson,
+      ...phoneAttendanceSetting
     ]
   }
 ];

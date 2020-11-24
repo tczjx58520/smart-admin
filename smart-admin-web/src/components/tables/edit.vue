@@ -1,7 +1,9 @@
 <template>
   <div class="tables-edit-outer">
     <div v-if="!isEditting" @dblclick="startEdit" class="tables-edit-con">
-      <span class="value-con" >{{ value }}</span>
+      <!-- <span class="value-con" >{{ value }}</span> -->
+      <span class="value-con" v-show="editType !== 'nomalselect'">{{ value }}</span>
+      <span class="value-con" v-show="editType === 'nomalselect'">{{ value | valueFilter }}</span>
       <!-- <Button
         v-if="editable"
         @click="startEdit"
@@ -14,8 +16,18 @@
     </div>
     <div v-else class="tables-editting-con">
       <Input v-show="editType === 'input'" :value="value" @input="handleInput" class="tables-edit-input"/>
+      
       <DatePicker v-show="editType === 'date'" :value="value" type="date" placeholder="Select date" class="tables-edit-input" @input="handleInput"/>
+      
       <TimePicker v-show="editType === 'time'" type="time" :value="value"  class="tables-edit-input" @input="handleInput"  confirm/>
+      
+      <Select v-show="editType === 'select'" v-model="selectId" label-in-value  class="tables-edit-input" @on-change="handSelectChange">
+        <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.shiftName }}</Option>
+    </Select>
+    
+    <Select v-show="editType === 'nomalselect'" v-model="value"  class="tables-edit-input" @on-change="getSelectData">
+        <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.name }}</Option>
+    </Select>
       <Button @click="saveEdit" style="padding: 6px 4px;" type="text">
         <Icon type="md-checkmark"></Icon>
       </Button>
@@ -27,13 +39,28 @@
 </template>
 
 <script>
+var that = this
 export default {
   name: 'TablesEdit',
+  filters: {
+    valueFilter(val) {
+      const data = {
+        0: '是',
+        1: '否'
+      }
+      return data[val]
+    }
+  },
   props: {
     // 当前编辑的单元格值
     value: {
       type: [String, Number],
       require: true
+    },
+    // 当前编辑的下拉框值
+    selectId: {
+       type: [String, Number],
+      require: false
     },
     // 当前编辑的单元格id
     edittingCellId: {
@@ -55,6 +82,11 @@ export default {
       type: String,
       require: true
     },
+    //下拉组件数据
+    selectData: {
+      type: Array,
+      require: true
+    },
   },
   computed: {
     // 判断是否处于编辑状态
@@ -64,7 +96,17 @@ export default {
     }
   },
   methods: {
+    getSelectData(val) {
+      console.log(val)
+      this.$emit('getnomalselect', val);
+    },
+    handSelectChange(val) {
+      console.log(val, val)
+      this.$emit('input', val.label);
+      this.$emit('select', val.value)
+    },
     handleInput (val) {
+      console.log('val', val)
       this.$emit('input', val);
     },
     startEdit () {

@@ -93,6 +93,15 @@ export const attendance = {
     }
   },
 
+ // 排班设置修改
+ modifyScheduling: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceSet/modifyScheduling', data);
+  }
+},
+
+
 // 年假查询
 findAnnual: data => {
   let Form = new FormData();
@@ -263,4 +272,44 @@ workOverTimeStatistical: data => {
   }
 },
 
+// 设置考勤人员查询
+findAttendanceEmployeeSet: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceSet/findAttendanceEmployeeSet?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
+},
+// 手机考勤设置查询
+findAddressForMobile: data => {
+  let Form = new FormData();
+  if (data) {
+    return postAxios('/attendanceSet/findAddressForMobile?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
+},
+
+// 手机考勤设置修改
+modifyAttendanceEmployeeSet: data => {
+  if (data) {
+    return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
+    }
+},
+
+// 手机考勤设置新建
+addAddressForMobile: data => {
+  if (data) {
+    return postAxios('/attendanceSet/addAddressForMobile', data);
+    }
+},
+// 手机考勤设置删除
+removeAddressForMobile: data => {
+  if (data) {
+    return postAxios('/attendanceSet/removeAddressForMobile?createId=' + data.createId, data);
+    }
+},
+// 设置考勤人员修改
+modifyAttendanceEmployeeSet: data => {
+  if (data) {
+    return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
+    }
+},
 }

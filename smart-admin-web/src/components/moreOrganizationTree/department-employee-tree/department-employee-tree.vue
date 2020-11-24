@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 200px;overflow-y:scroll;">
+  <div style="height: 600px;overflow-y:scroll;">
     <Row>
       <Col span="24">
         <Tree :data="treeData" check-strictly show-checkbox multiple @on-check-change="selectmyorg" ref='tree'></Tree>
