@@ -51,6 +51,9 @@ export default {
   SystemSetting: 'SystemSetting',
   Organization: 'Organization',
   Journal: 'Journal',
+  attendance:"attendance",
+  jobStatus: 'jobStatus',
+  attendanceRecord: 'attendanceRecord',
   // 通用
   calc: 'calc',
   Search: 'Search',

@@ -26,6 +26,7 @@
       @on-row-click="onRowClick"
       @on-row-dblclick="onRowDblclick"
       @on-expand="onExpand"
+      @on-cell-click="onCellclick"
     >
       <slot name="header" slot="header"></slot>
       <slot name="footer" slot="footer"></slot>
@@ -203,7 +204,9 @@ export default {
       // 搜索内容
       searchValue: '',
       // 搜索关键词
-      searchKey: ''
+      searchKey: '',
+      // 下拉框返回id数据
+      selectIdData: ''
     };
   },
   watch: {
@@ -231,17 +234,46 @@ export default {
       this.$emit('on-page-size-change', e);
     },
     suportEdit (item, index) {
+      // console.log('item',item)
       item.render = (h, params) => {
+        // console.log('params', params)
+        // console.log('selectData', params.column.selectData)
+        // console.log('this.insideTableData[params.index][params.column.key]', this.insideTableData[params.index][params.column.key])
+        let selectId
+        if(params.column.editType === 'select') {
+           selectId = params.column.selectData.find(item => {
+          
+        return  item.shiftName === this.insideTableData[params.index][params.column.key]
+          }
+          )
+        } else {
+           selectId = {
+            id: 1
+          } 
+        }
+        
+
+        // console.log('selectid', selectId)
         return h(TablesEdit, {
           props: {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
+            selectId: selectId.id,
             edittingCellId: this.edittingCellId,
-            editable: this.editable
+            editable: this.editable,
+            editType: params.column.editType,
+            selectData: params.column.selectData
           },
           on: {
             'input': val => {
+              console.log('val', val)
               this.edittingText = val;
+            },
+            'select': val => {
+              this.selectIdData = val
+            },
+            'getnomalselect': val => {
+              this.selectIdData = val
             },
             'on-start-edit': (params) => {
               this.edittingCellId = `editting-${params.index}-${params.column.key}`;
@@ -252,9 +284,11 @@ export default {
               this.$emit('on-cancel-edit', params);
             },
             'on-save-edit': (params) => {
+              console.log('params', params)
               this.value[params.row.initRowIndex][params.column.key] = this.edittingText;
               this.$emit('input', this.value);
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }));
+              this.$emit('on-save-selectData', Object.assign(params, { value: this.selectIdData, value2: this.edittingText }))
               this.edittingCellId = '';
             }
           }
@@ -279,10 +313,12 @@ export default {
     handleColumns (columns) {
       this.insideColumns = columns.map((item, index) => {
         let res = item;
+        // console.log('res', res)
         if (res.editable) { res = this.suportEdit(res, index); }
         if (res.key === 'handle') { res = this.surportHandle(res); }
         return res;
       });
+      // console.log()
     },
     // 设置默认搜索关键词
     setDefaultSearchKey () {
@@ -334,9 +370,20 @@ export default {
     onRowDblclick (row, index) {
       this.$emit('on-row-dblclick', row, index);
     },
+    onCellclick(row, column, data, evnet, params) {
+      this.$emit('on-cell-click', row, column, data, evnet, params);
+    },
     onExpand (row, status) {
       this.$emit('on-expand', row, status);
     }
   }
 };
 </script>
+
+<style lang="less" scoped>
+.ivu-table .shawnselect {
+        background-color: #2db7f5;
+        color: #fff;
+    }
+</style>
+

@@ -5,6 +5,7 @@ module.exports = {
     "@vue/standard"
   ],
   rules: {
+    'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],
     "generator-star-spacing": "off", //生成器函数*的前后空格
     // allow debugger during development
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",

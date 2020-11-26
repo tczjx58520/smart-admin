@@ -28,4 +28,16 @@ body {
 #app {
   .size;
 }
+
+.ivu-table-wrapper {
+  overflow: inherit !important;
+}
+
+.ivu-tabs {
+  overflow: inherit !important;
+}
+
+.shawnselect {
+        background-color: #12aff8 !important;
+    }
 </style>
