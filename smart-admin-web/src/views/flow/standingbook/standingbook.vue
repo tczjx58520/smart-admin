@@ -26,31 +26,6 @@
               />
             </FormItem>
           </Col>
-          <!-- <Col span="4">
-            <FormItem
-              prop="type"
-              :label="$t('ssfl')"
-              style="width: 100%; margin-right: 15px"
-            >
-              <Select
-                v-model="searchform.categoryId"
-                style="width: 100%"
-                clearable
-              >
-                <Option
-                  v-for="item in categoryList"
-                  :value="item.id"
-                  :key="item.id"
-                  >{{ item.categoryName }}</Option
-                >
-              </Select>
-            </FormItem>
-          </Col>
-          <Col span="5">
-            <FormItem prop="person" :label="$t('fqsj')" style="width: 100%">
-              <DatePicker type="daterange" placeholder="Select date" v-model="searchform.timeRange" style="width: 200px" @on-change="setTime"></DatePicker>
-            </FormItem>
-          </Col> -->
           <Col span="4">
             <FormItem prop="origin" :label="$t('blr')" style="width: 100%">
               <Input
@@ -282,7 +257,7 @@ export default {
                     title: `${params.row.handlePersonName} / ${params.row.hours}`
                   }
                 },
-                `${params.row.handlePersonName} / ${params.row.hours}`
+                `${params.row.handlePersonName || '无'} ${params.row.handlePersonName ? '/' : ''}${params.row.hours || ''}`
               )
             ]);
           }
@@ -614,7 +589,7 @@ export default {
       this.getUserLoginLogPage();
     },
     searchAllList () {
-      delete this.searchform.stat
+      delete this.searchform.stat;
       this.getUserLoginLogPage();
     },
     searchSignCounter () {

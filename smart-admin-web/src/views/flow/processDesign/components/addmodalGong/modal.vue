@@ -429,22 +429,22 @@ export default {
               flag = flag + `value${j}`;
               switch (item.calcCadition2) {
                 case 1:
-                  flag += `<${item.calcCadition4}`;
+                  flag += `<${(item.calcCadition4)}`;
                   break;
                 case 2:
-                  flag += `>${item.calcCadition4}`;
+                  flag += `>${(item.calcCadition4)}`;
                   break;
                 case 3:
-                  flag += `.equals(\"${item.calcCadition4}\")`;
+                  flag += `.equals(\"${(item.calcCadition4)}\")`;
                   break;
                 case 4:
-                  flag += `<=${item.calcCadition4}`;
+                  flag += `<=${(item.calcCadition4)}`;
                   break;
                 case 5:
-                  flag += `>=${item.calcCadition4}`;
+                  flag += `>=${(item.calcCadition4)}`;
                   break;
                 case 6:
-                  flag += `!=${item.calcCadition4}`;
+                  flag += `!=${(item.calcCadition4)}`;
                   break;
               }
             }
@@ -500,22 +500,35 @@ export default {
     async handsave () {
       this.modal_loading = true;
       const temp = this._.cloneDeep(this.stepdata);
+      console.log('temp========', temp);
       for (let i = 0; i < temp.length; i++) {
         let item = temp[i];
-        item.roleruleList = JSON.stringify(item.roleruleList);
+        if (item.roleruleList && item.roleruleList.length > 0) {
+          item.roleruleList = JSON.stringify(item.roleruleList);
+        } else {
+          item.roleruleList = [];
+        }
         item.serialNumber = i;
         if (i === temp.length - 1) {
           break;
         }
-        for (let j = 0; j < item.stepNextConditions.length; j++) {
-          let element = item.stepNextConditions[j];
-          element.actionSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.actionSerialId; });
-          element.nextSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.nextSerialId; });
-          element.myformlua = JSON.stringify(element.myformlua);
+        if (item.stepNextConditions && item.stepNextConditions.length > 0) {
+          for (let j = 0; j < item.stepNextConditions.length; j++) {
+            let element = item.stepNextConditions[j];
+            element.actionSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.actionSerialId; });
+            element.nextSerialNumber = this._.findIndex(temp, (item) => { return item.myid === element.nextSerialId; });
+            element.myformlua = JSON.stringify(element.myformlua);
+          }
         }
-        for (let j = 0; j < item.flowContents.length; j++) {
-          let element = item.flowContents[j];
-          element.actionSerialNumber = i;
+        if (item.flowContents && item.flowContents.length > 0) {
+          for (let j = 0; j < item.flowContents.length; j++) {
+            let element = item.flowContents[j];
+            element.actionSerialNumber = i;
+          }
+        } else {
+          this.$Message.warning('存在未保存项目');
+          this.modal_loading = false;
+          return false;
         }
       }
       const data = JSON.stringify(this.addformbase);

@@ -44,19 +44,19 @@ export const unDoFlowApi = {
   // 处理步骤
   updateRecordDetail: (data) => {
     let Form = new FormData();
-    if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
-      Form.append('flowId', data.flowId);
+    if (data.id !== undefined && data.id !== null && data.id !== '') {
+      Form.append('id', data.id);
     }
     if (data.stat !== undefined && data.stat !== null && data.stat !== '') {
       Form.append('stat', data.stat);
     }
-    if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
-      Form.append('flowId', data.flowId);
+    if (data.actualPersonId !== undefined && data.actualPersonId !== null && data.actualPersonId !== '') {
+      Form.append('actualPersonId', data.actualPersonId);
     }
-    if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
-      Form.append('flowId', data.flowId);
+    if (data.handleResult !== undefined && data.handleResult !== null && data.handleResult !== '') {
+      Form.append('handleResult', data.handleResult);
     }
-    return postAxios('/flowRecord/getFlowDetail', Form);
+    return postAxios('/flowRecord/updateHandleRecord', Form);
   }
 }
 ;

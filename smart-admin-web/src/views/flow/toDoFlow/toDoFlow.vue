@@ -183,7 +183,8 @@ export default {
       searchform: {
         pageNum: 1,
         pageSize: 10,
-        signPersonId: this.$store.state.user.userLoginInfo.userId
+        empId: this.$store.state.user.userLoginInfo.userId,
+        stat: 1
       },
       originList: [],
       pageTotal: 0,
@@ -441,7 +442,9 @@ export default {
     refresh () {
       this.searchform = {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        empId: this.$store.state.user.userLoginInfo.userId,
+        stat: 1
       };
       this.getUserLoginLogPage();
     },

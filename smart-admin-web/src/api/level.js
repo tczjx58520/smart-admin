@@ -14,11 +14,8 @@ export const levelApi = {
     if (data.levelName) {
       Form.append('levelName', data.levelName);
     }
-    if (data.categoryId) {
-      Form.append('categoryId', data.categoryId);
-    }
-    if (data.partCategory) {
-      Form.append('partCategory', data.partCategory);
+    if (data.baseSalary) {
+      Form.append('baseSalary', data.baseSalary);
     }
     if (data.createId) {
       Form.append('createId', data.createId);
@@ -30,11 +27,8 @@ export const levelApi = {
     if (data.levelName) {
       Form.append('levelName', data.levelName);
     }
-    if (data.categoryId) {
-      Form.append('categoryId', data.categoryId);
-    }
-    if (data.partCategory) {
-      Form.append('partCategory', data.partCategory);
+    if (data.baseSalary) {
+      Form.append('baseSalary', data.baseSalary);
     }
     if (data.levelId) {
       Form.append('levelId', data.levelId);

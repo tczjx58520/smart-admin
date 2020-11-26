@@ -1,28 +1,48 @@
 <template>
   <div>
-     <Card dis-hover>
-       <div style="display: flex;align-items: center;">
-         <div style="margin-right: 15px">{{$t('PositionName')}}</div>
-       <div>
-         <Input v-model="value1" />
-       </div>
-       <div>
-      <Button type="primary" style="margin-left: 15px" @click="this.getlist">{{$t('Search')}}</Button>
-       </div>
-
-       </div>
-
-     </Card>
+    <Card dis-hover>
+      <div style="display: flex;align-items: center;">
+        <div style="margin-right: 15px">{{ $t("PositionName") }}</div>
+        <div>
+          <Input v-model="value1" />
+        </div>
+        <div>
+          <Button
+            type="primary"
+            style="margin-left: 15px"
+            @click="this.getlist"
+            >{{ $t("Search") }}</Button
+          >
+        </div>
+      </div>
+    </Card>
     <!-- Card 岗位管理内容区 start -->
     <Card class="warp-card" dis-hover>
       <!-- Form 搜索按钮区 start -->
-<div style="display: flex;align-items: center;margin-bottom: 15px">
-  <div style="margin-right: 15px"  @click="getlist"><Button>{{$t('Reflash')}}</Button> </div>
-  <div style="margin-right: 15px"><Button v-privilege="['1-5-1']" icon="md-add" type="warning" @click="newPosition">{{$t('Create')}}</Button> </div>
-<!--<div style="margin-right: 15px"><Button icon="md-close" type="error" @click="deletePost">{{$t('Delete')}}</Button> </div>-->
-</div>
+      <div style="display: flex;align-items: center;margin-bottom: 15px">
+        <div style="margin-right: 15px" @click="getlist">
+          <Button>{{ $t("Reflash") }}</Button>
+        </div>
+        <div style="margin-right: 15px">
+          <Button
+            v-privilege="['1-5-1']"
+            icon="md-add"
+            type="warning"
+            @click="newPosition"
+            >{{ $t("Create") }}</Button
+          >
+        </div>
+        <!--<div style="margin-right: 15px"><Button icon="md-close" type="error" @click="deletePost">{{$t('Delete')}}</Button> </div>-->
+      </div>
       <!-- Form 搜索按钮区 end -->
-      <Table :columns="columns" :data="data" @on-selection-change="selects" :loading="isShowTablesLoading" ref="tablesMain" @on-row-dblclick="Edit"></Table>
+      <Table
+        :columns="columns"
+        :data="data"
+        @on-selection-change="selects"
+        :loading="isShowTablesLoading"
+        ref="tablesMain"
+        @on-row-dblclick="Edit"
+      ></Table>
       <Page
         :current="searchFrom.pageNum"
         :page-size="searchFrom.pageSize"
@@ -42,18 +62,36 @@
       title="编辑岗位"
       v-model="isShowEditModal"
     >
-      <Form :label-width="80" :model="updateItem" :rules="updateValidate" ref="updateRef">
+      <Form
+        :label-width="80"
+        :model="updateItem"
+        :rules="updateValidate"
+        ref="updateRef"
+      >
         <FormItem label="岗位名称" prop="postName">
-          <Input placeholder="请输入岗位名称(必填)" v-model="updateItem.postName"></Input>
+          <Input
+            placeholder="请输入岗位名称(必填)"
+            v-model="updateItem.postName"
+          ></Input>
         </FormItem>
         <FormItem label="岗位描述">
           <Input
-            :autosize="{minRows: 4}"
+            :autosize="{ minRows: 4 }"
             :maxlength="200"
             placeholder="请输入岗位描述(必填)"
             type="textarea"
             v-model="updateItem.remarks"
           ></Input>
+        </FormItem>
+        <FormItem :label="$t('jb')" prop="levelId">
+          <Select v-model="updateItem.levelId" style="width:100%">
+            <Option
+              v-for="item in levelList"
+              :value="item.id"
+              :key="item.id"
+              >{{ item.levelName }}</Option
+            >
+          </Select>
         </FormItem>
       </Form>
     </Modal>
@@ -66,17 +104,32 @@
       :title="$t('CreatePosition')"
       v-model="isShowAddModal"
     >
-      <Form :label-width="100" :model="saveItem" :rules="saveValidate" ref="saveRef">
+      <Form
+        :label-width="100"
+        :model="saveItem"
+        :rules="saveValidate"
+        ref="saveRef"
+      >
         <FormItem :label="$t('PositionName')" prop="postName">
           <Input :maxlength="30" v-model="saveItem.postName"></Input>
         </FormItem>
         <FormItem label="岗位描述">
           <Input
-            :autosize="{minRows: 4}"
+            :autosize="{ minRows: 4 }"
             :maxlength="200"
             type="textarea"
             v-model="saveItem.remarks"
           ></Input>
+        </FormItem>
+        <FormItem :label="$t('jb')" prop="levelId">
+          <Select v-model="saveItem.levelId" style="width:100%">
+            <Option
+              v-for="item in levelList"
+              :value="item.id"
+              :key="item.id"
+              >{{ item.levelName }}</Option
+            >
+          </Select>
         </FormItem>
       </Form>
     </Modal>
@@ -86,12 +139,20 @@
 
 <script>
 import { positionApi } from '@/api/position';
+import { levelApi } from '@/api/level';
 let _that;
 export default {
   name: 'PositionList',
   components: {},
   props: {},
   data () {
+    const validatePass = (rule, value, callback) => {
+      if (value) {
+        callback();
+      } else {
+        callback(new Error('请选择分类'));
+      }
+    };
     return {
       ids: [],
       value1: '',
@@ -145,57 +206,67 @@ export default {
           className: 'action-hide',
           render: (h, params) => {
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'info',
-                  size: 'small'
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'info',
+                    size: 'small'
+                  },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['1-5-2']
+                    }
+                  ],
+                  on: {
+                    click: () => {
+                      this.updateItem = {
+                        postId: params.row.id,
+                        postName: params.row.postName,
+                        remarks: params.row.remarks,
+                        levelId: params.row.levelId,
+                        operatId: this.$store.state.user.userLoginInfo.userId
+                      };
+                      this.isShowEditModal = true;
+                    }
+                  }
                 },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-5-2']
+                this.$t('Edit')
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'error',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['1-5-3']
+                    }
+                  ],
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '友情提醒',
+                        content: '确定要删除吗？',
+                        onOk: () => {
+                          console.log('删除');
+                          this.deleteItem.postId = params.row.id;
+                          this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
+                          this.deletePositionById(this.deleteItem);
+                        }
+                      });
+                    }
                   }
-                ],
-                on: {
-                  click: () => {
-                    this.updateItem = {
-                      postId: params.row.id,
-                      postName: params.row.postName,
-                      remarks: params.row.remarks
-                    };
-                    this.isShowEditModal = true;
-                  }
-                }
-              }, this.$t('Edit')),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
                 },
-                style: {
-                  marginRight: '5px'
-                },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-5-3']
-                  }
-                ],
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '友情提醒',
-                      content: '确定要删除吗？',
-                      onOk: () => {
-                        console.log('删除');
-                        this.deleteItem.postId = params.row.id;
-                        this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
-                        this.deletePositionById(this.deleteItem);
-                      }
-                    });
-                  }
-                }
-              }, this.$t('Delete'))
+                this.$t('Delete')
+              )
             ]);
           }
         }
@@ -206,13 +277,23 @@ export default {
         postName: [
           { required: true, message: '请输入岗位名称', trigger: 'blur' }
         ],
-        remarks: [{ required: true, message: '请输入岗位描述', trigger: 'blur' }]
+        remarks: [
+          { required: true, message: '请输入岗位描述', trigger: 'blur' }
+        ],
+        levelId: [
+          { required: true, validator: validatePass, trigger: 'change' }
+        ]
       },
       saveValidate: {
         postName: [
           { required: true, message: '请输入岗位名称', trigger: 'blur' }
         ],
-        remarks: [{ required: true, message: '请输入岗位描述', trigger: 'blur' }]
+        remarks: [
+          { required: true, message: '请输入岗位描述', trigger: 'blur' }
+        ],
+        levelId: [
+          { required: true, trigger: 'change', validator: validatePass }
+        ]
       },
       searchFrom: {
         postName: '',
@@ -222,7 +303,8 @@ export default {
         sort: false
       },
       searchFromInt: {},
-      isShowdeleteLoading: false
+      isShowdeleteLoading: false,
+      levelList: []
     };
   },
   computed: {
@@ -240,6 +322,7 @@ export default {
     Object.assign(this.searchFromInt, this.searchFrom);
     Object.assign(this.saveItemInt, this.saveItem);
     this.getPositionListPage();
+    this.getLevelList();
   },
   beforeCreate () {},
   beforeMount () {},
@@ -249,12 +332,28 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    getLevelList () {
+      const searchFrom = {
+        pageNum: 1,
+        pageSize: 9999
+      };
+      levelApi.levelList(searchFrom).then(res => {
+        if (res.ret === 200) {
+          this.levelList = res.data.content.list;
+          console.log('this.list', this.list);
+        } else {
+          console.log('列表出错');
+        }
+      });
+    },
     Edit (row) {
       if (this.$judge(['1-5-2'])) {
         this.updateItem = {
           postId: row.id,
           postName: row.postName,
-          remarks: row.remarks
+          remarks: row.remarks, // levelId
+          levelId: row.levelId, //
+          operatId: this.$store.state.user.userLoginInfo.userId
         };
         this.isShowEditModal = true;
       } else {
@@ -262,9 +361,6 @@ export default {
       }
     },
     getlist () {
-      console.log('123', 123);
-      console.log('userLoginInfo', this.$store.state.user.userLoginInfo);
-      console.log('userId', this.$store.state.user.userLoginInfo.userId);
       this.searchFrom.postName = this.value1;
       this.searchFrom.pageNum = 1;
       positionApi.postList(this.searchFrom).then(res => {
@@ -450,5 +546,4 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

@@ -5,27 +5,78 @@
       <div style="margin-bottom: 20px">
         <Tabs value="name1">
           <TabPane label="超时步骤" name="name1">
+            <Row :gutter="16">
+              <Form
+                :model="searchform"
+                class="tools"
+                inline
+                ref="searchform"
+                :label-width="80"
+                label-position="left"
+              >
+                <Col span="4">
+                  <FormItem
+                    prop="type"
+                    :label="$t('lcbh')"
+                    style="width: 100%; margin-right: 15px"
+                  >
+                    <Input v-model.number="searchform.actionTime" clearable>
+                      <span slot="prepend">大于</span>
+                      <span slot="append">时</span>
+                    </Input>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem
+                    prop="type"
+                    :label="$t('ssfl')"
+                    style="width: 100%; margin-right: 15px"
+                  >
+                    <Input v-model.number="searchform.outTime" clearable>
+                      <span slot="prepend">大于</span>
+                      <span slot="append">时</span>
+                    </Input>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem
+                    prop="person"
+                    :label="$t('fqsj')"
+                    style="width: 100%"
+                  >
+                    <Select
+                      v-model="searchform.stat"
+                      style="width:200px"
+                      clearable
+                    >
+                      <Option
+                        v-for="item in statList"
+                        :value="item.value"
+                        :key="item.value"
+                        >{{ item.label }}</Option
+                      >
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem>
+                    <ButtonGroup>
+                      <Button @click="search" icon="ios-search" type="primary"
+                        >查询</Button
+                      >
+                    </ButtonGroup>
+                  </FormItem>
+                </Col>
+              </Form>
+            </Row>
+            <Divider />
             <Button
-              style="margin-right: 15px"
+              style="margin-right: 15px;margin-bottom: 20px;"
               @click="refresh"
               icon="md-refresh"
               type="default"
               >{{ $t("Reflash") }}</Button
             >
-            <Button
-              style="margin-right: 15px"
-              v-privilege="['1-4-1']"
-              @click="creatResult"
-              icon="md-add"
-              >{{ $t("cj") }}</Button
-            >
-            <Button
-              style="margin-right: 15px"
-              v-privilege="['1-4-1']"
-              @click="delResult"
-              >{{ $t("sc") }}</Button
-            >
-            <Divider />
             <Table
               :columns="columns"
               :data="data"
@@ -46,14 +97,75 @@
             ></Page>
           </TabPane>
           <TabPane label="超时统计" name="name2">
+            <Row :gutter="16">
+              <Form
+                :model="searchform2"
+                class="tools"
+                inline
+                :label-width="80"
+                label-position="left"
+              >
+                <Col span="5">
+                  <FormItem
+                    prop="person"
+                    :label="$t('ssfl')"
+                    style="width: 100%"
+                  >
+                    <Select v-model="searchform2.categoryId" style="width: 100%" clearable>
+                      <Option
+                        v-for="item in categoryList"
+                        :value="item.id"
+                        :key="item.id"
+                        >{{ item.categoryName }}</Option
+                      >
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem
+                    prop="type"
+                    :label="$t('lcmc')"
+                    style="width: 100%; margin-right: 15px"
+                  >
+                    <Input v-model="searchform2.flowName" clearable> </Input>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem
+                    prop="type"
+                    :label="$t('qssj')"
+                    style="width: 100%; margin-right: 15px"
+                  >
+                    <DatePicker type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px" @on-change="changeMytime"></DatePicker>
+                  </FormItem>
+                </Col>
+                <Col span="4">
+                  <FormItem>
+                    <ButtonGroup>
+                      <Button @click="search2" icon="ios-search" type="primary"
+                        >查询</Button
+                      >
+                    </ButtonGroup>
+                  </FormItem>
+                </Col>
+              </Form>
+            </Row>
+            <Divider />
+            <Button
+              style="margin-right: 15px;margin-bottom: 20px;"
+              @click="refresh2"
+              icon="md-refresh"
+              type="default"
+              >{{ $t("Reflash") }}</Button
+            >
             <Table
               :columns="columns2"
               :data="data2"
               :loading="loading2"
             ></Table>
             <Page
-              :current="searchform.pageNum2"
-              :page-size="searchform.pageSize2"
+              :current="searchform2.pageNum"
+              :page-size="searchform2.pageSize"
               :page-size-opts="[10, 20, 30, 50, 100]"
               :total="pageTotal2"
               @on-change="changePage2"
@@ -90,9 +202,8 @@ import { timeout } from '@/api/timeout';
 import { utils } from '@/lib/util';
 import { countersign } from '@/api/countersign';
 export default {
-  name: 'assessmentTask',
-  components: {
-  },
+  name: 'timeout',
+  components: {},
   props: {},
   data () {
     return {
@@ -112,10 +223,12 @@ export default {
       searchform: {
         pageNum: 1,
         pageSize: 10,
-        pageNum2: 1,
-        pageSize2: 10,
-        pageNum3: 1,
-        pageSize3: 10,
+        entrustPersonId: this.$store.state.user.userLoginInfo.userId,
+        entrustedPersonId: this.$store.state.user.userLoginInfo.userId
+      },
+      searchform2: {
+        pageNum: 1,
+        pageSize: 10,
         entrustPersonId: this.$store.state.user.userLoginInfo.userId,
         entrustedPersonId: this.$store.state.user.userLoginInfo.userId
       },
@@ -193,7 +306,6 @@ export default {
           title: this.$t('blsled'),
           width: 200,
           key: 'outEnd'
-
         },
         {
           title: this.$t('blsling'),
@@ -210,7 +322,11 @@ export default {
       data2: [],
       today: '',
       moreaction: '',
-      categoryList: []
+      categoryList: [],
+      statList: [
+        { value: 1, label: '办理中' },
+        { value: 2, label: '已办理' }
+      ]
     };
   },
   filters: {
@@ -227,8 +343,25 @@ export default {
   mounted () {
     this.getList2();
     this.getList3();
+    this.getbaseclassification();
   },
   methods: {
+    changeMytime (val) {
+      if (val.length > 0) {
+        this.searchform2.beginTime = val[0];
+        this.searchform2.endTime = val[1];
+      }
+    },
+    // 获取基础信息
+    async getbaseclassification () {
+      const searchForm = {
+        pageNum: 1,
+        pageSize: 999
+      };
+      await FlowCategoryApi.getGroup(searchForm).then(res => {
+        this.categoryList = res.data.content.list;
+      });
+    },
     handler_EditRule (row) {
       this.visiable_EditResult = true;
       this.editInfo = row;
@@ -274,7 +407,7 @@ export default {
     async getList3 () {
       try {
         this.loading2 = true;
-        let result = await timeout.gettimeout(this.searchform);
+        let result = await timeout.gettimeout(this.searchform2);
         this.loading2 = false;
         this.data2 = result.data.content.list;
         this.pageTotal2 = result.data.content.totalCount;
@@ -359,21 +492,14 @@ export default {
         pageNum: 1,
         pageSize: 10
       };
-      this.getUserLoginLogPage();
+      this.getList2();
     },
-    // 查询用户登录日志
-    async getUserLoginLogPage () {
-      try {
-        this.loading2 = true;
-        let result = await entrust.getentrustRecord(this.searchform);
-        this.loading2 = false;
-        this.data2 = result.data.content.list;
-        this.pageTotal2 = result.data.content.totalCount;
-      } catch (e) {
-        // TODO zhuoda sentry
-        console.error(e);
-        this.loading2 = false;
-      }
+    refresh2 () {
+      this.searchform = {
+        pageNum: 1,
+        pageSize: 10
+      };
+      this.getList3();
     },
     // 翻页
     changePage (pageNum) {
@@ -411,7 +537,11 @@ export default {
     // 搜索
     search () {
       this.searchform.pageNum = 1;
-      this.getUserLoginLogPage();
+      this.getList2();
+    },
+    search2 () {
+      this.searchform.pageNum = 1;
+      this.getList3();
     },
     // 重置
     reset () {
@@ -422,33 +552,6 @@ export default {
       this.$refs.searchform.resetFields();
       this.search();
     }
-    // 删除
-    // async del (id) {
-    //   this.$Spin.show();
-    //   // =======================================
-    //   for (const i in this.moreaction) {
-    //     const id = this.moreaction[i].id;
-    //     let data = {};
-    //     data.taskId = id;
-    //     data.operatId = this.$store.state.user.userLoginInfo.userId;
-    //     await assessmentTaskApi.delassessmentTask(data).then(res => {
-    //       if (res.ret === 200) {
-    //         console.log(res.msg);
-    //         this.$Message['success']({
-    //           background: true,
-    //           content: res.msg
-    //         });
-    //       } else {
-    //         console.log(res.msg);
-    //         this.$Message['error']({
-    //           background: true,
-    //           content: res.msg
-    //         });
-    //       }
-    //     });
-    //   }
-    //   this.getUserLoginLogPage();
-    // }
   }
 };
 </script>

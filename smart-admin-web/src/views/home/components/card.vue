@@ -23,7 +23,7 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .card-main {
   border-radius: 8px;
   background: #fff;

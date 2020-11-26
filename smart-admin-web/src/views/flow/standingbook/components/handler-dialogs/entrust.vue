@@ -232,12 +232,18 @@ export default {
         entrustReason: this.addformbase.entrustReason,
         handleRecordId: this.actionInfo[0].handleRecordVos[0].id
       };
-      entrust.addentrust(data).then((res) => {
-        if (res.ret === 200) {
-          this.modal_loading = false;
-          this.$emit('updateStat', false);
-          this.$Message.success(res.msg);
-          // this.reset();
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          entrust.addentrust(data).then((res) => {
+            if (res.ret === 200) {
+              this.modal_loading = false;
+              this.$emit('updateStat', false);
+              this.$Message.success(res.msg);
+              // this.reset();
+            }
+          });
+        } else {
+          this.$Message.error('验证不通过');
         }
       });
     }

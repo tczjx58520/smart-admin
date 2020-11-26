@@ -21,6 +21,12 @@ export const positionApi = {
     if (data.remarks) {
       Form.append('remarks', data.remarks);
     }
+    if (data.levelId) {
+      Form.append('levelId', data.levelId);
+    }
+    if (data.operatId) {
+      Form.append('operatId', data.operatId);
+    }
     return postAxios('/post/updatePost', Form);
   },
   // 分页查询所有岗位
@@ -41,6 +47,9 @@ export const positionApi = {
     Form.append('createId', data.createId);
     if (data.remarks) {
       Form.append('remarks', data.remarks);
+    }
+    if (data.levelId) {
+      Form.append('levelId', data.levelId);
     }
     return postAxios('/post/addPost', Form);
   }

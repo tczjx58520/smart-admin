@@ -6,7 +6,7 @@
     :closable="false"
     :mask-closable="false"
     :transfer="false"
-    :styles="{ top: '10px' }"
+    fullscreen
   >
     <div slot="header" style="text-align: left; color: #fff">
       <span>修改步骤</span>
@@ -994,42 +994,72 @@ export default {
         }
         console.log(this.addformbase.nextActions, this.stepList);
         console.log(this.stepList, this.addformbase.stepNextConditionVos);
-        this.addformbase.allowAction = this.addformbase.allowAction && typeof (this.addformbase.allowAction) === 'string' ? this.addformbase.allowAction.split(',') : this.addformbase.allowAction;
-        this.addformbase.attachmentPermission = this.addformbase.attachmentPermission && typeof (this.addformbase.attachmentPermission) === 'string' ? this.addformbase.attachmentPermission.split(',') : this.addformbase.attachmentPermission;
-        this.addformbase.countersignAttachmentPermission = this.addformbase.countersignAttachmentPermission && typeof (this.addformbase.countersignAttachmentPermission) === 'string' ? this.addformbase.countersignAttachmentPermission.split(',') : this.addformbase.countersignAttachmentPermission;
+        if (this.addformbase.allowAction) {
+          this.addformbase.allowAction = this.addformbase.allowAction && typeof (this.addformbase.allowAction) === 'string' ? this.addformbase.allowAction.split(',') : this.addformbase.allowAction;
+        } else {
+          this.addformbase.allowAction = [];
+        }
+        if (this.addformbase.attachmentPermission) {
+          this.addformbase.attachmentPermission = this.addformbase.attachmentPermission && typeof (this.addformbase.attachmentPermission) === 'string' ? this.addformbase.attachmentPermission.split(',') : this.addformbase.attachmentPermission;
+        } else {
+          this.addformbase.attachmentPermission = [];
+        }
+        if (this.addformbase.countersignAttachmentPermission) {
+          this.addformbase.countersignAttachmentPermission = this.addformbase.countersignAttachmentPermission && typeof (this.addformbase.countersignAttachmentPermission) === 'string' ? this.addformbase.countersignAttachmentPermission.split(',') : this.addformbase.countersignAttachmentPermission;
+        } else {
+          this.addformbase.countersignAttachmentPermission = [];
+        }
         if (this.baseinfo._index !== 0) {
           this.addformbase.urgePersons = Number(this.addformbase.urgePersons);
-          this.addformbase.Countersign_permission_personsNames = this.addformbase.countersignPermissionPersons && this.addformbase.countersignEmpList.map(item => {
-            return item.empName;
-          }).join(',');
-          this.addformbase.Countersign__permission_organizeNames = this.addformbase.countersignPermissionOrganize && this.addformbase.countersignOrganize.map(item => {
-            return item.organizeName;
-          }).join(',');
-          this.addformbase.distribution_permission_personsNames = this.addformbase.distributionPermissionPersons && this.addformbase.distributionEmpList.map(item => {
-            return item.empName;
-          }).join(',');
-          this.addformbase.distribution__permission_organizeNames = this.addformbase.distributionPermissionOrganize && this.addformbase.distributionOrganize.map(item => {
-            return item.organizeName;
-          }).join(',');
-          this.addformbase.Auto_distribution_organizeNames = this.addformbase.autoDistributionPersons && this.addformbase.autoDistributionEmpList.map(item => {
-            return item.empName;
-          }).join(',');
+          if (this.addformbase.countersignPermissionPersons) {
+            this.addformbase.Countersign_permission_personsNames = this.addformbase.countersignPermissionPersons && this.addformbase.countersignEmpList.map(item => {
+              return item.empName;
+            }).join(',');
+          }
+          if (this.addformbase.countersignPermissionOrganize) {
+            this.addformbase.Countersign__permission_organizeNames = this.addformbase.countersignPermissionOrganize && this.addformbase.countersignOrganize.map(item => {
+              return item.organizeName;
+            }).join(',');
+          }
+          if (this.addformbase.distributionPermissionPersons) {
+            this.addformbase.distribution_permission_personsNames = this.addformbase.distributionPermissionPersons && this.addformbase.distributionEmpList.map(item => {
+              return item.empName;
+            }).join(',');
+          }
+          if (this.addformbase.distributionPermissionOrganize) {
+            this.addformbase.distribution__permission_organizeNames = this.addformbase.distributionPermissionOrganize && this.addformbase.distributionOrganize.map(item => {
+              return item.organizeName;
+            }).join(',');
+          }
+          if (this.addformbase.autoDistributionPersons) {
+            this.addformbase.Auto_distribution_organizeNames = this.addformbase.autoDistributionPersons && this.addformbase.autoDistributionEmpList.map(item => {
+              return item.empName;
+            }).join(',');
+          }
         }
         // this.addformbase.viewFlag = 1;
         this.data_conditions = this.addformbase.flowContentVos;
         // 转换经办条件可以选择的值
-        this.data_position = this.addformbase.handlePost && this.addformbase.handlePost.map(item => {
-          return {
-            key: item.id,
-            label: item.postName
-          };
-        });
-        this.data_person = this.addformbase.handleEmpList && this.addformbase.handleEmpList.map(item => {
-          return {
-            key: item.empId,
-            label: item.empName
-          };
-        });
+        if (this.addformbase.handlePost && this.addformbase.handlePost.length > 0) {
+          this.data_position = this.addformbase.handlePost && this.addformbase.handlePost.map(item => {
+            return {
+              key: item.id,
+              label: item.postName
+            };
+          });
+        } else {
+          this.data_position = [];
+        }
+        if (this.addformbase.handleEmpList && this.addformbase.handleEmpList.length > 0) {
+          this.data_person = this.addformbase.handleEmpList && this.addformbase.handleEmpList.map(item => {
+            return {
+              key: item.empId,
+              label: item.empName
+            };
+          });
+        } else {
+          this.data_person = [];
+        }
         // 列表默认值
         this.data_rolerule = this.addformbase.roleruleList;
         if (this.receiptType && this.mymoadlStat) {
@@ -1183,6 +1213,7 @@ export default {
           break;
         default:
           addvalue = selected.value;
+          calcCadition4 = selected.value;
           break;
       }
       const fin = `${value3 || ''} ${value || ''} ${value2 || ''} ${

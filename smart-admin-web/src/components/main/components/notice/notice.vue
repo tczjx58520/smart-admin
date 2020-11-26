@@ -47,7 +47,7 @@ export default {
   components: {
     InfiniteLoading
   },
-  data() {
+  data () {
     return {
       loading: false,
       // Websocket心跳间隔
@@ -70,27 +70,27 @@ export default {
       }
     };
   },
-  mounted() {
+  mounted () {
     // this.initWebSocket();
   },
   computed: {
     // 消息集合
-    noticeList() {
+    noticeList () {
       // return this.$store.state.notice.noticeList;
       return 1;
     },
     // 消息数量
-    noticeNumber() {
+    noticeNumber () {
       // return this.$store.state.notice.noticeNumber;
       return 1;
     },
-    userInfo() {
+    userInfo () {
       // return this.$store.state.user.userLoginInfo;
       return 1;
     }
   },
   methods: {
-    initWebSocket() {
+    initWebSocket () {
       this.socket = new WebSocket(
         `${this.socketBaseUrl}webSocket/${this.userInfo.id}`
       );
@@ -100,7 +100,7 @@ export default {
       this.socket.onclose = this.websocketClose;
     },
     // socket连接成功
-    websocketOnopen() {
+    websocketOnopen () {
       this.heartTimer = setInterval(() => {
         this.heartbeat();
       }, 5000);
@@ -110,19 +110,19 @@ export default {
       });
     },
     // socket连接出错
-    websocketOnerror() {
+    websocketOnerror () {
       console.log('socket出错啦');
     },
     // socket收到消息
-    websocketOnmessage(e) {
+    websocketOnmessage (e) {
       this.$store.commit('updateNoticeNum', Number(e.data));
     },
     // socket关闭
-    websocketClose() {
+    websocketClose () {
       console.log('socket掉线啦');
     },
     // 心跳包
-    heartbeat() {
+    heartbeat () {
       let data = {
         jsonStr: '',
         messageType: 3
@@ -133,7 +133,7 @@ export default {
       data.jsonStr = JSON.stringify(subStr);
       this.socket.send(JSON.stringify(data));
     },
-    async getDetail(item) {
+    async getDetail (item) {
       // try {
       //   let result = await noticeApi.getNoticeDetail(item.id);
       //   this.noticeDetail = result.data;
@@ -157,10 +157,10 @@ export default {
       //   console.error(e);
       // }
     },
-    scroll($state) {
+    scroll ($state) {
       // this.getNoticeList($state);
     },
-    async getNoticeList($state) {
+    async getNoticeList ($state) {
       const result = await noticeApi.getNoticeUnreadList({
         ...this.searchData
       });
@@ -174,13 +174,13 @@ export default {
       }
       this.$store.commit('updateNotice', result.data.list);
     },
-    openNotice() {
+    openNotice () {
       this.searchData.pageNum = 1;
       this.$store.commit('restNotice');
       // this.getNoticeList();
       this.modalOpen = true;
     },
-    modalClose() {
+    modalClose () {
       // this.getNoticeList();
       this.detailModalOpen = false;
       this.modalOpen = false;

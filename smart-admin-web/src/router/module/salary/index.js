@@ -8,6 +8,9 @@ import { salaryEntry } from './salaryEntry';
 import { salaryjudge } from './salaryjudge';
 import { salaryOption } from './salaryOption';
 import { socialSecurityFund } from './socialSecurityFund';
+import { soloAward } from './soloAward';
+import { storeIndividualAward } from './storeIndividualAward';
+import { teamAward } from './teamAward';
 import { welfare } from './welfare';
 
 // 业务
@@ -30,7 +33,10 @@ export const salary = [
       ...salaryjudge,
       ...salaryOption,
       ...socialSecurityFund,
-      ...welfare
+      ...welfare,
+      ...teamAward,
+      ...soloAward,
+      ...storeIndividualAward
     ]
   }
 ];

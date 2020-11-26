@@ -160,6 +160,7 @@ export default {
       }
     },
     handleClose (current) {
+      console.log('current========', current);
       if (
         current.meta &&
         current.meta.beforeCloseName &&
@@ -194,7 +195,7 @@ export default {
     isCurrentTag (item) {
       return routeEqual(this.currentRouteObj, item);
     },
-    moveToView(tag) {
+    moveToView (tag) {
       const outerWidth = this.$refs.scrollOuter.offsetWidth - 50;
       const bodyWidth = this.$refs.scrollBody.offsetWidth;
       let padding = 35;

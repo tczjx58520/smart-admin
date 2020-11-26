@@ -6,7 +6,7 @@
     :closable="false"
     :mask-closable="false"
     :transfer="false"
-    :styles="{ top: '10px' }"
+    fullscreen
   >
     <div slot="header" style="text-align: left; color: #fff">
       <span>{{ $t("usermanage_view.adduser") }}</span>
@@ -1022,6 +1022,13 @@ export default {
         ]);
       } else {
         this.addformbase.actionName = this.actionName;
+        this.$set(this.addformbase, 'allowAction', ['1']);
+        this.$set(this.addformbase, 'attachmentPermission', [
+          '1'
+        ]);
+        this.$set(this.addformbase, 'countersignAttachmentPermission', [
+          '1'
+        ]);
       }
     },
     data_position: {
@@ -1140,6 +1147,7 @@ export default {
         })[0].label;
       let addvalue = null;
       let calcCadition4 = null;
+      console.log(selected.calcCadition1);
       switch (selected.calcCadition1) {
         case 'b':
           addvalue = this.postValue.filter(item => {
@@ -1163,6 +1171,8 @@ export default {
           break;
         default:
           addvalue = selected.value;
+          calcCadition4 = selected.value;
+          console.log('selected==============', selected);
           break;
       }
       const fin = `${value3 || ''} ${value || ''} ${value2 || ''} ${
@@ -1411,6 +1421,20 @@ export default {
           return item.key;
         })
         .join(',');
+      if (!this.addformbase.handlePersons && !this.addformbase.handlePosts && !this.addformbase.rulePostId && !this.addformbase.ruleOrganizeType) {
+        if (this.baseinfo._index !== 0) {
+          this.$Message.warning(this.$t('qxzjbr'));
+          return;
+        }
+      }
+      if (this.addformbase.nextActions.length > 1) {
+        for (let i = 0; i < this.selected_step.length; i++) {
+          if (this.selected_step[i].myformlua.length === 0) {
+            this.$Message.warning(this.$t('qsrtjgs'));
+            return;
+          }
+        }
+      }
       const FlowContent = this.data_conditions;
       this.$emit(
         'updateStat',
@@ -1419,6 +1443,9 @@ export default {
         this.selected_step,
         FlowContent
       );
+      this.data_position = [];
+      this.data_person = [];
+      this.data_rolerule = [];
       // this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       // this.$refs['form'].validate((valid) => {
       //   if (valid) {

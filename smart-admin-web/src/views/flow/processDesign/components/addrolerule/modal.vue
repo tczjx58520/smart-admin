@@ -1,5 +1,5 @@
 <template>
-        <Modal v-model="mymoadlStat" class="add" width="1020" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
+        <Modal v-model="mymoadlStat" class="add" width="1020" :closable="false" :mask-closable="false" :styles="{top: '10px'}">
         <div slot="header" style="text-align:left;color:#fff;">
             <span>{{ $t('salaryEntry_view.newSalaryEntry') }}</span>
         </div>

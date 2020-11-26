@@ -3,7 +3,6 @@ import Main from '@/components/main';
 
 import { level } from './level';
 import { role } from './role';
-import { levelCategory } from './levelCategory';
 import { position } from './position';
 import { organization } from './organization';
 import { Journal } from './Journal';
@@ -11,6 +10,8 @@ import { usermanage } from './usermanage';
 import { groupmanage } from './groupmanage';
 import { notice } from './notice';
 import { signature } from './signature';
+import { salesroom } from './salesroom';
+import { salesRoomLevel } from './salesRoomLevel';
 // 业务
 export const systemSetting = [
   {
@@ -26,14 +27,15 @@ export const systemSetting = [
     children: [
       ...level,
       ...role,
-      ...levelCategory,
       ...position,
       ...organization,
       ...Journal,
       ...usermanage,
       ...groupmanage,
       ...notice,
-      ...signature
+      ...signature,
+      ...salesroom,
+      ...salesRoomLevel
     ]
   }
 ];

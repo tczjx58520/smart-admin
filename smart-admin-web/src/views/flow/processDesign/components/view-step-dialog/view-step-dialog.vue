@@ -6,7 +6,7 @@
     :closable="false"
     :mask-closable="false"
     :transfer="false"
-    :styles="{ top: '10px' }"
+    fullscreen
   >
     <div slot="header" style="text-align: left; color: #fff">
       <span>查看步骤</span>
@@ -600,7 +600,7 @@
         <Card v-for="(item, index) in selected_step" :key="item.id">
           <p slot="title">
             <Icon type="md-fastforward" />
-            转入步骤: {{ item.actionName }}
+            转入步骤: {{ item.nextActionName }}
           </p>
           <div>
           </div>
@@ -878,9 +878,24 @@ export default {
         }
         console.log(this.addformbase);
         this.stepList = this.stepinfo;
-        this.addformbase.allowAction = this.addformbase.allowAction && this.addformbase.allowAction.split(',');
-        this.addformbase.attachmentPermission = this.addformbase.attachmentPermission && this.addformbase.attachmentPermission.split(',');
-        this.addformbase.countersignAttachmentPermission = this.addformbase.countersignAttachmentPermission && this.addformbase.countersignAttachmentPermission.split(',');
+        if (this.addformbase.allowAction) {
+          this.addformbase.allowAction = this.addformbase.allowAction && this.addformbase.allowAction.split(',');
+          console.log(this.addformbase.allowAction);
+        } else {
+          this.addformbase.allowAction = [];
+        }
+        if (this.addformbase.attachmentPermission) {
+          this.addformbase.attachmentPermission = this.addformbase.attachmentPermission && this.addformbase.attachmentPermission.split(',');
+          console.log(this.addformbase.attachmentPermission);
+        } else {
+          this.addformbase.attachmentPermission = [];
+        }
+        if (this.addformbase.countersignAttachmentPermission) {
+          this.addformbase.countersignAttachmentPermission = this.addformbase.countersignAttachmentPermission && this.addformbase.countersignAttachmentPermission.split(',');
+          console.log(this.addformbase.countersignAttachmentPermission);
+        } else {
+          this.addformbase.countersignAttachmentPermission = [];
+        }
         this.addformbase.nextActions = this.addformbase.stepNextConditionVos.map(item => { return item.nextSerialNumber; });
         if (this.baseinfo._index !== 0) {
           this.addformbase.urgePersons = Number(this.addformbase.urgePersons);
@@ -903,18 +918,26 @@ export default {
         this.addformbase.viewFlag = 1;
         this.data_conditions = this.addformbase.flowContentVos;
         // 转换经办条件可以选择的值
-        this.data_position = this.addformbase.handlePost.map(item => {
-          return {
-            key: item.id,
-            label: item.postName
-          };
-        });
-        this.data_person = this.addformbase.handleEmpList.map(item => {
-          return {
-            key: item.empId,
-            label: item.empName
-          };
-        });
+        if (this.addformbase.handlePost && this.addformbase.handlePost.length > 0) {
+          this.data_position = this.addformbase.handlePost.map(item => {
+            return {
+              key: item.id,
+              label: item.postName
+            };
+          });
+        } else {
+          this.data_position = [];
+        }
+        if (this.addformbase.handleEmpList && this.addformbase.handleEmpList.length > 0) {
+          this.data_person = this.addformbase.handleEmpList.map(item => {
+            return {
+              key: item.empId,
+              label: item.empName
+            };
+          });
+        } else {
+          this.data_person = [];
+        }
         this.data_rolerule = this.addformbase.roleruleList;
         if (this.receiptType && this.mymoadlStat) {
           this.selected_step = this.addformbase.stepNextConditionVos;

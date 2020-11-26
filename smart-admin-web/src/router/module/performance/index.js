@@ -4,6 +4,7 @@ import Main from '@/components/main';
 import { assessmentTask } from './assessmentTask';
 import { conductAnAssessment } from './conductAnAssessment';
 import { indicatorSet } from './indicatorSet';
+import { indicatorSingle } from './indicatorSingle';
 import { viewTask } from './viewTask';
 
 // 业务
@@ -22,7 +23,8 @@ export const performance = [
       ...assessmentTask,
       ...conductAnAssessment,
       ...indicatorSet,
-      ...viewTask
+      ...viewTask,
+      ...indicatorSingle
     ]
   }
 ];

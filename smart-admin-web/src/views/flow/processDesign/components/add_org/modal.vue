@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="mymoadlStat" class="add" width="460" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
+    <Modal v-model="mymoadlStat" class="add" width="460" :closable="false" :mask-closable="false" :styles="{top: '10px'}">
             <div slot="header" style="text-align:left;color:#fff;">
             <span>{{ $t('usermanage_view.adduser') }}</span>
             </div>
