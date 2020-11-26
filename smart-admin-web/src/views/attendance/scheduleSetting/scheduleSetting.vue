@@ -2,7 +2,7 @@
     <div class="maincontent">
 <div class="leftTree">
      <div class="leftTitle">组织架构图</div>
-            <organizationTree @chooseTreeData="getTreeData"/>
+            <organizationTree @chooseTreeData="getTreeData" />
         </div>
     <div class="rightRecord">
         <div class="rightTop">
@@ -10,20 +10,26 @@
                <div class="rightTopItem">
                    <span class="rightTopItemTitle">{{$t('kqgl.yhm')}}</span>
                    <span>
-                        <Input :placeholder="$t('kqgl.yhm')" type="text" v-model="searchform.employeename"/>
+                        <Input :placeholder="$t('kqgl.yhm')" type="text" v-model="searchform.createPersonName"/>
                    </span>
                </div>
                 <div class="rightTopItem">
-                   <span class="rightTopItemTitle">操作人</span>
+                   <span class="rightTopItemTitle">{{$t('kqgl.xuanzexiugaidebanc')}}</span>
                    <span>
-                        <Input placeholder="请输入用户名" type="text" v-model="searchform.employeename"/>
+                        <Select :value ="model1" @on-select="handleSelectShift" style="width: 200px">
+                            <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.shiftName }}</Option>
+                        </Select>
                    </span>
                </div>
                 <div class="rightTopItem">
                    <span class="rightTopItemTitle">{{$t('kqgl.xzpbrq')}}</span>
                    <span>
-                        <Input :placeholder="$t('kqgl.xzpbrq')" type="text" v-model="searchform.employeename"/>
+                    <DatePicker type="month"  placeholder="Select month" style="width: 200px" @on-change="getMonth"/>
+
                    </span>
+               </div>
+               <div class="rightTopItem">
+                   <Button type="primary" @click.native="getListData">{{$t('Search')}}</Button>
                </div>
         </div>
             <Card class="warp-card" dis-hover>
@@ -41,6 +47,7 @@
                     show-elevator
                     border
                     @on-save-selectData='editData'
+                    @on-cell-click="onCellClick"
                   ></Tables>
             </Card>
         </div>
@@ -62,11 +69,14 @@ export default {
     },
     data() {
         return {
+          model1: {},
+          month: '',
           selectData: [],
       searchform: {
         pageNum: 1,
         pageSize: 10,
         organizationId: this.$store.state.user.userLoginInfo.organizationOa
+
       },
       pageTotal: 0,
       // table是否loading
@@ -107,13 +117,92 @@ export default {
       // table数据
       data: [],
       visiable: false,
+      moreEditData: []
         }
     },
     mounted() {
+      this.getNowMonth()
       this.getListData()
       this.getSelectData()
     },
     methods: {
+      getNowMonth() {
+      let curDate = new Date();
+        this.searchform.month = curDate.getMonth() + 1
+      },
+      getMonth(val) {
+        this.searchform.month = val.substring(5, 7)
+      },
+      handleSelectShift(val) {
+        console.log('va', val)
+        // if(this.moreEditData.length === 0) {
+        //   this.$Message.error(this.$t('kqgl.qingxianxuanzhedanyuanshuju'))
+        //   this.model1 = ''
+        // }
+        console.log('this.moreEditData', this.moreEditData)
+      // const parmsarr = this.moreEditData.map(item => {
+      //   return  {
+      //     employeeId: item.substring(19, 20),
+      //      shiftId: val,
+      //       year: item.substring(0, 4),
+      //       month: item.substring(5, 7),
+      //       day: item.substring(8, 10)
+      //   }
+      // })
+          
+          let parmsarr = []
+          for(let i in this.moreEditData) {
+            let newobj = {}
+          let newarr = this.moreEditData[i].split('/')
+          newobj.employeeId = newarr[3]
+          newobj.shiftId = val.value
+          newobj.year = newarr[0].substring(0, 4)
+          newobj.month = newarr[0].substring(5, 7)
+          newobj.day = newarr[0].substring(8, 10)
+          parmsarr.push(newobj)
+          }
+          console.log('parmsarr', parmsarr)
+       attendance.modifyScheduling(parmsarr).then(res => {
+         console.log(res)
+         if(res.ret === 200) {
+           this.$Message.success(res.msg);
+         }
+         this.getListData()
+       })
+      },
+      onCellClick(row, column, data, evnet, params) {
+        let index = row._index
+        let judgeClickStat = Object.keys(this.data[index].cellClassName).includes(column.key)
+        if(judgeClickStat && column.key !== "createPersonName") {
+          this.$set(this.data[index].cellClassName, column.key, '' )
+          delete this.data[index].cellClassName[column.key]
+          for(let i in this.moreEditData) {
+            if(this.moreEditData[i].substring(0, 10) === column.key) {
+              this.moreEditData.splice(i, 1)
+            }            
+          }
+          // console.log('this.moreEditData', this.moreEditData)
+
+        } else if(!judgeClickStat && column.key !== "createPersonName") {
+           this.$set(this.data[index].cellClassName, column.key, 'shawnselect' )
+           let shiftDatas =column.key + '/' + this.data[index][column.key + '/'] + '/' + row.employeeId
+           this.moreEditData.push (shiftDatas)
+        }
+        console.log('this.moreEditData', this.moreEditData)
+        console.log('judgeClickStat', judgeClickStat)
+        console.log('row', row)
+        console.log('column', column)
+        console.log('data', data)
+        console.log('evnet', evnet)
+        console.log('params', params)
+        
+        console.log('index', index)
+        console.log('column.key', column.key)
+        // this.data[index].cellClassName[column.key] = 'shawnselect'
+       
+        
+        console.log('this.data', this.data)
+      },
      editData(val){
         console.log(val)
         let needarr = val.column.key.split('-')
@@ -174,12 +263,15 @@ export default {
         let newObj = {}
         for(let i in arr) {
           for (let j in arr[i].dateKey){
-            const needObj = arr[i].dateKey[j] + '/' + arr[i].employeeId + '/' + arr[i].createPersonName
+            if(arr[i].dateKey[j]) {
+              const needObj = arr[i].dateKey[j] + '/' + arr[i].employeeId + '/' + arr[i].createPersonName
             const key = arr[i].dateKey[j].substring(0, 9)
             const data1 = arr[i].dateKey[j].substring(10, 14)
 
             obj[key] = data1
             newarr.push(needObj)
+            }
+            
           }
         }
             console.log(newarr)
@@ -189,10 +281,12 @@ export default {
 
             for(let i in testarr) {
               const arrz = testarr[i].item.split('/')
+              // console.log('testarr', testarr[i].item)
               testarr[i][testarr[i].item.substring(0, 10)] = arrz[2]
+              testarr[i][testarr[i].item.substring(0, 11)] = arrz[2] +'/' + arrz[3]
               testarr[i]['createPersonName'] = arrz[5]
               testarr[i]['employeeId'] = arrz[4]
-              // testarr[i]['shiftId'] = arrz[3]
+              testarr[i]['cellClassName'] = new Object()
               delete testarr[i].item
             }
             for (let i = 0, l = testarr.length; i < l - 1; i++) {
@@ -211,8 +305,9 @@ export default {
           let curDate = new Date();
         /* 获取当前月份 */
           let curMonth = curDate.getMonth();
+          this.searchform.month = curMonth + 1
         /*  生成实际的月份: 由于curMonth会比实际月份小1, 故需加1 */
-        curDate.setMonth(curMonth + 1);
+        curDate.setMonth(Number(this.searchform.month) + 1);
         /* 将日期设置为0, 这里为什么要这样设置, 我不知道原因, 这是从网上学来的 */
         curDate.setDate(0);
         /* 返回当月的天数 */
@@ -229,7 +324,7 @@ export default {
         console.log(this.selectData)
         let curDate = new Date();
         let year = curDate.getFullYear()
-        let month = curDate.getMonth() + 1
+        let month = this.searchform.month
         let countDays = this.getMonthDays()
         let columnsArr = []
         let columsTitle = ''
@@ -259,13 +354,21 @@ export default {
 		case 6:
       	weekday = '星期六';  break;
   }
-          columnsArr.push({title: columsTitle + weekday, key: columsTitle, align: 'center', width: '200', editType: 'select', editable: 'true', selectData: this.selectData})
+          columnsArr.push({title: columsTitle + weekday, key: columsTitle, align: 'center', width: '200', editType: 'select', editable: 'true', selectData: this.selectData })
         }
         console.log('columnsArr', columnsArr)
         columnsArr.unshift({title: '用户名', key: 'createPersonName', align: 'center', width: '100', })
         this.columns = columnsArr
       },
     async getListData() {
+      this.moreEditData = []
+      let date = new Date()
+      if(this.searchform.month) {
+        this.searchform.year = date.getFullYear()
+      } else {
+        delete this.searchform.year
+        delete this.searchform.month
+      }
         try {
           // this.columns = this.setColumns()
           this.setColumns()
@@ -284,6 +387,8 @@ export default {
       },
       getTreeData(val) {
         console.log(val)
+        this.searchform.organizationId = val.id
+        this.getListData();
       },
         myselected (selection) {
       this.moreemp = selection;
@@ -304,7 +409,7 @@ export default {
     refresh () {
       this.searchform.pageNum = 1;
       delete this.searchform.organizationOa;
-      this.getTaskList();
+      this.getListData();
     },
     }
 }

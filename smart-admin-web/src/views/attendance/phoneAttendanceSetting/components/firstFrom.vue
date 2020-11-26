@@ -149,7 +149,7 @@ moreOrganizationTreeVisible2: false,
           { required: true, validator: validatePass, trigger: 'change' }
         ],
         radius:  [
-          { required: true, message: 'The latitude cannot be empty', trigger: 'blur' }
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         textareaData1:  [
           { required: true, message: 'The textareaData1 cannot be empty', trigger: 'blur' }
@@ -188,13 +188,13 @@ moreOrganizationTreeVisible2: false,
       this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2
       this.textareaEmpIds = firstTextDataEmp1.map(item => {
        return {
-         employeeId: item.id,
+         employeeId: item.employeeId,
           status: item.status,
        }
      })
       this.textareaOrgIds = firstTextDataOrg1.map(item => {
        return {
-         organizationId: item.id,
+         organizationId: item.organizationId,
           status: item.status,
        }
      })
@@ -210,22 +210,22 @@ moreOrganizationTreeVisible2: false,
        return item.status === 1
      })
 
-this.textareaData = firstTextDataOrg2.map(item => {
+this.textareaData3 = firstTextDataOrg2.map(item => {
        return item.organizationName
      }).join(',')
-      this.textareaData2 = firstTextDataEmp2.map(item => {
+      this.textareaData4 = firstTextDataEmp2.map(item => {
        return item.employeeName
      }).join(',')
       this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4
       this.textareaEmpIds2 = firstTextDataEmp2.map(item => {
        return {
-         employeeId: item.id,
+         employeeId: item.employeeId,
           status: item.status,
        }
      })
       this.textareaOrgIds2 = firstTextDataOrg2.map(item => {
        return {
-         organizationId: item.id,
+         organizationId: item.organizationId,
           status: item.status,
        }
      })
@@ -405,7 +405,7 @@ clearTextArea2() {
 
          this.$refs['form'].validate((valid) => {
         if (valid) {
-          attendance.addAddressForMobile(this.fromBaseData).then(res => {
+          attendance.modifyApplyObjectForMobile(this.fromBaseData).then(res => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
               this.mymoadlStat = false

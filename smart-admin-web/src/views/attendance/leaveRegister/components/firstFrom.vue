@@ -38,7 +38,7 @@
                     </div>
                     <div class="nomalDiv">
                         <span class="zhi">{{$t('kqgl.qingjiashijian')}}</span>
-                        <DatePicker type="daterange" v-model="times" placeholder="Select date" style="width: 40%" @on-change="getTimes"></DatePicker>
+                        <DatePicker type="datetimerange" v-model="times" placeholder="Select date" style="width: 40%" @on-change="getTimes"></DatePicker>
                         <div class="zhi">{{$t('kqgl.qingjiaheji')}}</div>
                         <InputNumber :max="100" :min="0" v-model="fromBaseData.totalTime"  style="width: 20%"></InputNumber>
                         <div class="zhi">{{$t('kqgl.tian')}}</div>

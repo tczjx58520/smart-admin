@@ -38,7 +38,9 @@
                     </div>
                     <div class="nomalDiv">
                         <span class="zhi">{{$t('kqgl.qingjiashijian')}}</span>
-                        <DatePicker type="daterange" disabled v-model="times" placeholder="Select date" style="width: 40%" @on-change="getTimes"></DatePicker>
+                        <!-- <DatePicker type="datetimerange" disabled v-model="times" placeholder="Select date" style="width: 40%"></DatePicker> -->
+                        <Input v-model="qingjiatian" disabled   style="width: 50%"/>
+
                         <!-- <div class="zhi">{{$t('kqgl.qingjiaheji')}}</div>
                         <InputNumber :max="100" :min="0" v-model="fromBaseData.totalTime"  style="width: 20%"></InputNumber>
                         <div class="zhi">{{$t('kqgl.tian')}}</div> -->
@@ -115,6 +117,7 @@ export default {
       }
     };
     return {
+      qingjiatian: '',
         orgStat: false,
         employeeName: this.$store.state.user.userLoginInfo.actualName,
         organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
@@ -140,6 +143,7 @@ export default {
     editData() {
     //   console.log('this.editData', this.editData)
       this.fromBaseData = this.editData
+      this.qingjiatian = this.editData.startTime + ' - ' + this.editData.endTime
     }
   },
   methods: {

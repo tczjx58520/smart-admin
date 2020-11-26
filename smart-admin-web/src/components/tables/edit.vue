@@ -1,18 +1,8 @@
 <template>
   <div class="tables-edit-outer">
-    <div v-if="!isEditting" @dblclick="startEdit" class="tables-edit-con">
-      <!-- <span class="value-con" >{{ value }}</span> -->
+    <div v-if="!isEditting" @dblclick="startEdit" @click="testClick(editingdata)" :class="editingdata.click === true ? 'tables-edit-con click-con' : 'tables-edit-con'">
       <span class="value-con" v-show="editType !== 'nomalselect'">{{ value }}</span>
       <span class="value-con" v-show="editType === 'nomalselect'">{{ value | valueFilter }}</span>
-      <!-- <Button
-        v-if="editable"
-        @click="startEdit"
-        class="tables-edit-btn"
-        style="padding: 2px 4px;"
-        type="text"
-      >
-        <Icon type="md-create"></Icon>
-      </Button> -->
     </div>
     <div v-else class="tables-editting-con">
       <Input v-show="editType === 'input'" :value="value" @input="handleInput" class="tables-edit-input"/>
@@ -93,11 +83,19 @@ export default {
     isEditting () {
       // console.log('editType', this.editType)
       return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`;
-    }
+    },
+    editingdata() {
+      // console.log(this.params)
+    return this.params
+    },
   },
   methods: {
+    testClick(val) {
+      // console.log(this.params)
+      this.params.click = !this.params.click
+    },
     getSelectData(val) {
-      console.log(val)
+      // console.log(val)
       this.$emit('getnomalselect', val);
     },
     handSelectChange(val) {
@@ -128,7 +126,8 @@ export default {
   height: 100%;
   .tables-edit-con {
     position: relative;
-    height: 100%;
+    height: 35px;
+    line-height: 35px;
     .value-con {
       vertical-align: middle;
     }
@@ -148,6 +147,10 @@ export default {
     .tables-edit-input {
       width: ~"calc(100% - 60px)";
     }
+  }
+
+  .click-con {
+    background: red;
   }
 }
 </style>

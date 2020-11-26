@@ -16,17 +16,18 @@
               <Input
                 placeholder=""
                 type="text"
-                v-model="searchform.categoryName"
+                v-model="searchform.organizationName"
                 @click.native="selectOrg()"
                 style="width: 100%"
+                @on-clear="clearOrganziation"
               />
             </FormItem>
           </Col>
-          <organization :modalstat.sync='modalstat' />
+          <organization :modalstat.sync='modalstat' @organizationData='getOrganizationData'/>
           <Col span="4">
             <FormItem>
               <ButtonGroup>
-                <Button @click="search" icon="ios-search" type="primary">{{
+                <Button @click="getwelfareList" icon="ios-search" type="primary">{{
                   $t("Search")
                 }}</Button>
               </ButtonGroup>
@@ -40,7 +41,7 @@
     <Card class="warp-card" dis-hover style="height: calc(100vh)">
       <Row :gutter="16" style="margin-bottom: 15px">
         <Form
-          :model="searchform"
+          :model="outFormData"
           class="tools"
           inline
           ref="searchform"
@@ -52,7 +53,7 @@
               <Input
                 placeholder=""
                 type="text"
-                v-model="searchform.categoryName"
+                v-model="outFormData.askForLeaveCount"
                 disabled
                 style="width: 40%"
               />
@@ -64,7 +65,7 @@
                 placeholder=""
                 type="text"
                 disabled
-                v-model="searchform.categoryName"
+                v-model="outFormData.businessOnTripCount"
                 style="width: 40%"
               />
             </FormItem>
@@ -75,7 +76,7 @@
                 placeholder=""
                 type="text"
                 disabled
-                v-model="searchform.categoryName"
+                v-model="outFormData.outsideCountToday"
                 style="width: 40%"
               />
             </FormItem>
@@ -84,7 +85,7 @@
       </Row>
       <Row :gutter="16" style="margin-bottom: 15px">
         <Form
-          :model="searchform"
+          :model="outFormData"
           class="tools"
           inline
           ref="searchform"
@@ -97,7 +98,7 @@
                 placeholder=""
                 type="text"
                 disabled
-                v-model="searchform.categoryName"
+                v-model="outFormData.vocationCount"
                 style="width: 40%"
               />
             </FormItem>
@@ -108,7 +109,7 @@
                 placeholder=""
                 type="text"
                 disabled
-                v-model="searchform.categoryName"
+                v-model="outFormData.lateForJob"
                 style="width: 40%"
               />
             </FormItem>
@@ -119,7 +120,7 @@
                 placeholder=""
                 type="text"
                 disabled
-                v-model="searchform.categoryName"
+                v-model="outFormData.leaveEarlyCount"
                 style="width: 40%"
               />
             </FormItem>
@@ -153,7 +154,7 @@
 </template>
 
 <script>
-import { FlowCategoryApi } from '@/api/flowClassification';
+import { attendance } from '@/api/attendance';
 import organization from '@/components/organization'
 export default {
   name: 'jobStatus',
@@ -163,12 +164,15 @@ export default {
   props: {},
   data () {
     return {
+      outFormData: {},
       modalstat: false,
       visiable_edit: false,
       editinfo: {},
       searchform: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        organizationId: '',
+        organizationName: ''
       },
       loading: false,
       pageTotal: 0,
@@ -176,59 +180,59 @@ export default {
       columns: [
         {
           title: this.$t('empName'),
-          key: 'categoryName'
+          key: 'createPersonName'
         },
         {
           title: this.$t('processDesign_view.organizationBelong'),
-          key: 'remark'
+          key: 'organizationName'
         },
          {
           title: this.$t('kqgl.sb'),
-          key: 'remark'
+          key: 'firstStartTime'
         },
          {
           title: this.$t('kqgl.xb'),
-          key: 'remark'
+          key: 'firstEndTime'
         },
          {
           title: this.$t('kqgl.sb'),
-          key: 'remark'
+          key: 'secondStartTime'
         },
         {
           title: this.$t('kqgl.xb'),
-          key: 'remark'
+          key: 'secondEndTime'
         },
-        {
-          title: this.$t('usermanage_view.action'),
-          key: 'action',
-          width: 200,
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'Button',
-                {
-                  props: {
-                    type: 'info',
-                    size: 'small'
-                  },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
-                  on: {
-                    click: () => {
-                      this.Edit(params.row);
-                    }
-                  }
-                },
-                this.$t('Edit')
-              )
-            ]);
-          }
-        }
+        // {
+        //   title: this.$t('usermanage_view.action'),
+        //   key: 'action',
+        //   width: 200,
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h(
+        //         'Button',
+        //         {
+        //           props: {
+        //             type: 'info',
+        //             size: 'small'
+        //           },
+        //           directives: [
+        //             {
+        //               name: 'privilege',
+        //               value: ['10-16-2']
+        //             }
+        //           ],
+        //           on: {
+        //             click: () => {
+        //               this.Edit(params.row);
+        //             }
+        //           }
+        //         },
+        //         this.$t('Edit')
+        //       )
+        //     ]);
+        //   }
+        // }
         //   {
         //     title: '操作',
         //     key: 'action',
@@ -274,6 +278,15 @@ export default {
     }, 200);
   },
   methods: {
+    clearOrganziation() {
+      this.searchform.organizationName = ''
+    this.searchform.organizationId = ''
+    },
+    getOrganizationData(val) {
+      console.log('val', val)
+    this.searchform.organizationName = val.title
+    this.searchform.organizationId = val.id
+    },
     selectOrg() {
       console.log(this.modalstat)
       this.modalstat = true
@@ -309,10 +322,16 @@ export default {
     async getwelfareList () {
       try {
         this.loading = true;
-        let result = await FlowCategoryApi.getGroup(this.searchform);
+        let result = await attendance.onTheJobStatus(this.searchform);
         this.loading = false;
-        this.data = result.data.content.list;
-        this.pageTotal = result.data.content.totalCount;
+        this.data = result.data.list.list;
+        this.pageTotal = result.data.list.total;
+        this.outFormData.askForLeaveCount = result.data.askForLeaveCount
+        this.outFormData.lateForJob = result.data.lateForJob
+        this.outFormData.leaveEarlyCount = result.data.leaveEarlyCount
+        this.outFormData.businessOnTripCount = result.data.businessOnTripCount
+        this.outFormData.outsideCountToday = result.data.outsideCountToday
+        this.outFormData.vocationCount = result.data.vocationCount
       } catch (e) {
         // TODO zhuoda sentry
         console.error(e);
@@ -339,7 +358,7 @@ export default {
     reset () {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = 10;
-      this.search();
+      // this.search();
     },
     // 删除日志(暂无)
     async deleteLog () {

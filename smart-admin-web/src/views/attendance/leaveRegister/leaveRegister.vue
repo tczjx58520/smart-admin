@@ -103,11 +103,11 @@ export default {
           key: 'reason'
         },{
           title: this.$t('kqgl.shifouxiaojia'),
-          key: 'type',
+          key: 'terminalHoliday',
           render: (h, params) => {
-            if (params.row.type === 0) {
+            if (params.row.terminalHoliday === 0) {
               return h('span', this.$t('kqgl.xiaojia'));
-            } else if(params.row.type === 1) {
+            } else if(params.row.terminalHoliday === 1) {
               return h('span', this.$t('kqgl.weixiaojia'));
             }
           }

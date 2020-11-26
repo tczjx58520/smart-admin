@@ -26,6 +26,7 @@
       @on-row-click="onRowClick"
       @on-row-dblclick="onRowDblclick"
       @on-expand="onExpand"
+      @on-cell-click="onCellclick"
     >
       <slot name="header" slot="header"></slot>
       <slot name="footer" slot="footer"></slot>
@@ -369,6 +370,9 @@ export default {
     onRowDblclick (row, index) {
       this.$emit('on-row-dblclick', row, index);
     },
+    onCellclick(row, column, data, evnet, params) {
+      this.$emit('on-cell-click', row, column, data, evnet, params);
+    },
     onExpand (row, status) {
       this.$emit('on-expand', row, status);
     }
@@ -376,4 +380,10 @@ export default {
 };
 </script>
 
+<style lang="less" scoped>
+.ivu-table .shawnselect {
+        background-color: #2db7f5;
+        color: #fff;
+    }
+</style>
 

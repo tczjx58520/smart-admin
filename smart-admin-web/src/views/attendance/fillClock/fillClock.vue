@@ -54,14 +54,14 @@ export default {
         },
         {
           title: this.$t('kqgl.bukariqi'),
-          key: 'startTime'
+          key: 'fillDate'
         },
         {
           title: this.$t('kqgl.bukabanci'),
-          key: 'endTime'
+          key: 'shiftName'
         },{
           title: this.$t('kqgl.bukayuanyin'),
-          key: 'totalTime'
+          key: 'reason'
         }],
             firstData: [],
             modalstat: false,
@@ -84,7 +84,7 @@ export default {
     async getFirstTableData () {
       try {
         this.firstLoading = true;
-        let result = await attendance.findWorkOutside(this.seachParms);
+        let result = await attendance.findFillClock(this.seachParms);
         this.firstLoading = false;
         // console.log(result)
         this.firstData = result.data.list;

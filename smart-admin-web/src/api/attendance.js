@@ -1,5 +1,17 @@
 import { postAxios } from '@/lib/http';
 export const attendance = {
+
+    // 在岗状态
+    onTheJobStatus: data => {
+      let Form = new FormData();
+      Form.append('pageNum', data.pageNum);
+      Form.append('pageSize', data.pageSize);
+      if(data.organizationId) {
+        Form.append('organizationId', data.organizationId);
+      }
+      return postAxios('/attendance/onTheJobStatus', Form);
+    },
+
   // 班次列表
   findAllShiftInfo: data => {
     let Form = new FormData();
@@ -241,6 +253,23 @@ findAnnual: data => {
             }
         },
 
+        // 补卡登记查询
+        findFillClock: data => {
+        let Form = new FormData();
+        Form.append('employeeId', data.employeeId);
+        Form.append('pageNum', data.pageNum);
+        Form.append('pageSize', data.pageSize);
+        return postAxios('/attendancePersonal/findFillClock?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+      },
+
+
+        // 补卡登记
+        addFillClock: data => {
+        if (data) {
+          return postAxios('/attendancePersonal/addFillClock', data);
+          }
+      },
+
          // 外出统计
          outsideStatistical: data => {
     let Form = new FormData();
@@ -288,9 +317,9 @@ findAddressForMobile: data => {
 },
 
 // 手机考勤设置修改
-modifyAttendanceEmployeeSet: data => {
+modifyApplyObjectForMobile: data => {
   if (data) {
-    return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
+    return postAxios('/attendanceSet/modifyApplyObjectForMobile', data);
     }
 },
 

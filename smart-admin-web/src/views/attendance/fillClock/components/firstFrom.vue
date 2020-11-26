@@ -34,7 +34,7 @@
                         </Select>
                     </FormItem>
                     <FormItem :label="$t('kqgl.bukariqi')">
-                        <DatePicker type="date" placeholder="Select date" style="width: 34%" @on-change="selectDate"></DatePicker>
+                        <DatePicker type="datetime" placeholder="Select date" style="width: 34%" @on-change="selectDate"></DatePicker>
                     </FormItem>
                     <FormItem :label="$t('kqgl.bukashiyou')">
                         <Input  v-model="fromBaseData.reason" style="width: 34%"/>
@@ -98,14 +98,7 @@ export default {
       componetState: this.modalState,
       fromBaseData: {
          employeeId: this.$store.state.user.userLoginInfo.userId,
-        // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: '',
-        startTime: null,
-        endTime: null,
-        totalTime: 0,
-        address: ''
-
       },
       ruleValidate: {
         note: [
@@ -203,13 +196,7 @@ export default {
     reset () {
       this.fromBaseData = {
          employeeId: this.$store.state.user.userLoginInfo.userId,
-        // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: '',
-        startTime: null,
-        endTime: null,
-        totalTime: 0,
-        address: ''
       };
       this.$refs['form'].resetFields();
     },
@@ -218,7 +205,7 @@ export default {
        console.log(this.fromBaseData);
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          attendance.addWorkOutside(this.fromBaseData).then(res => {
+          attendance.addFillClock(this.fromBaseData).then(res => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
               this.mymoadlStat = false

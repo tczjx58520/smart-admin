@@ -38,7 +38,7 @@
                         <organization :modalstat.sync="orgStat" @organizationData="getOrgData"/>
                     </FormItem>
                      <FormItem :label="$t('kqgl.chucaididian')">
-                        <Input  v-model="fromBaseData.addresss" style="width: 34%"/>
+                        <Input  v-model="fromBaseData.address" style="width: 34%"/>
                     </FormItem>
                     <FormItem :label="$t('kqgl.chucaishiyou')">
                         <Input  v-model="fromBaseData.reason" style="width: 34%"/>
