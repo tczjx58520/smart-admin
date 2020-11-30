@@ -33,7 +33,7 @@
 
                         <Button type="primary" class="buttonItem" @click="chooseMoreEmp">{{$t('kqgl.tjry')}}</Button>
                         <moreSelectEmp :modalstat.sync="moreSelectEmpVisible" @empData='getEmpData'/>
-                        
+
                             <Button class="buttonItem" @click="clearTextArea">{{$t('kqgl.qk')}}</Button>
                     </div>
 
@@ -63,12 +63,11 @@
 </template>
 <script>
 import $ from 'jquery';
-import selectEmp from '@/components/selectEmp'
-import organization from '@/components/organization'
-import selectInMap from './selectInMap'
-import moreOrganizationTree from '@/components/moreOrganizationTree'
-import moreSelectEmp from '@/components/moreSelectEmp'
-
+import selectEmp from '@/components/selectEmp';
+import organization from '@/components/organization';
+import selectInMap from './selectInMap';
+import moreOrganizationTree from '@/components/moreOrganizationTree';
+import moreSelectEmp from '@/components/moreSelectEmp';
 
 import {
   attendance
@@ -76,11 +75,11 @@ import {
 export default {
   name: 'firstFrom',
   components: {
-      selectEmp,
-      organization,
-      selectInMap,
-      moreOrganizationTree,
-      moreSelectEmp
+    selectEmp,
+    organization,
+    selectInMap,
+    moreOrganizationTree,
+    moreSelectEmp
   },
   props: {
     modalstat: {
@@ -97,7 +96,7 @@ export default {
     }
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -112,12 +111,12 @@ export default {
     return {
       editformData: {},
       moreSelectEmpVisible2: false,
-moreOrganizationTreeVisible2: false,
+      moreOrganizationTreeVisible2: false,
       textareaOrgIds2: [],
       textareaEmpIds2: [],
       textareaData4: '',
       textareaData3: '',
-      // 
+      //
       textareaOrgIds: [],
       textareaEmpIds: [],
       moreSelectEmpVisible: false,
@@ -125,10 +124,10 @@ moreOrganizationTreeVisible2: false,
       textareaData: '',
       moreOrganizationTreeVisible: false,
       mapStat: false,
-        orgStat: false,
-        employeeName: this.$store.state.user.userLoginInfo.actualName,
-        organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
-        empSata: false,
+      orgStat: false,
+      employeeName: this.$store.state.user.userLoginInfo.actualName,
+      organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
+      empSata: false,
       modal_loading: false,
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
@@ -142,307 +141,295 @@ moreOrganizationTreeVisible2: false,
         addressName: [
           { required: true, message: 'The addressName cannot be empty', trigger: 'blur' }
         ],
-        longitude:  [
+        longitude: [
           { required: true, validator: validatePass, trigger: 'change' }
         ],
-        latitude:  [
+        latitude: [
           { required: true, validator: validatePass, trigger: 'change' }
         ],
-        radius:  [
+        radius: [
           { required: true, validator: validatePass, trigger: 'change' }
         ],
-        textareaData1:  [
+        textareaData1: [
           { required: true, message: 'The textareaData1 cannot be empty', trigger: 'blur' }
         ],
-        textareaData2:  [
+        textareaData2: [
           { required: true, message: 'The textareaData2 cannot be empty', trigger: 'blur' }
-        ],
+        ]
       }
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      console.log('this.$store.state.user.userLoginInfo', this.$store.state.user.userLoginInfo)
+      console.log('this.$store.state.user.userLoginInfo', this.$store.state.user.userLoginInfo);
     },
-    editData() {
-    this.fromBaseData.addressName = this.editData.addressName
-     this.fromBaseData.id = this.editData.id
-     this.fromBaseData.latitude = this.editData.latitude
-     this.fromBaseData.longitude = this.editData.longitude
-     this.fromBaseData.radius = this.editData.radius
-     let firstTextDataEmp1 = this.editData.attendaceAddressForEmpolyee.filter(item => {
-       return item.status === 0
-     })
-     console.log(firstTextDataEmp1)
-     let firstTextDataOrg1 = this.editData.attendanceAddressForOrganization.filter(item => {
-       return item.status === 0
-     })
+    editData () {
+      this.fromBaseData.addressName = this.editData.addressName;
+      this.fromBaseData.id = this.editData.id;
+      this.fromBaseData.latitude = this.editData.latitude;
+      this.fromBaseData.longitude = this.editData.longitude;
+      this.fromBaseData.radius = this.editData.radius;
+      let firstTextDataEmp1 = this.editData.attendaceAddressForEmpolyee.filter(item => {
+        return item.status === 0;
+      });
+      console.log(firstTextDataEmp1);
+      let firstTextDataOrg1 = this.editData.attendanceAddressForOrganization.filter(item => {
+        return item.status === 0;
+      });
 
-     this.textareaData = firstTextDataOrg1.map(item => {
-       return item.organizationName
-     }).join(',')
+      this.textareaData = firstTextDataOrg1.map(item => {
+        return item.organizationName;
+      }).join(',');
       this.textareaData2 = firstTextDataEmp1.map(item => {
-       return item.employeeName
-     }).join(',')
-      this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2
+        return item.employeeName;
+      }).join(',');
+      this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2;
       this.textareaEmpIds = firstTextDataEmp1.map(item => {
-       return {
-         employeeId: item.employeeId,
-          status: item.status,
-       }
-     })
+        return {
+          employeeId: item.employeeId,
+          status: item.status
+        };
+      });
       this.textareaOrgIds = firstTextDataOrg1.map(item => {
-       return {
-         organizationId: item.organizationId,
-          status: item.status,
-       }
-     })
+        return {
+          organizationId: item.organizationId,
+          status: item.status
+        };
+      });
 
+      let firstTextDataEmp2 = this.editData.attendaceAddressForEmpolyee.filter(item => {
+        return item.status === 1;
+      });
+      console.log(firstTextDataEmp1);
+      let firstTextDataOrg2 = this.editData.attendanceAddressForOrganization.filter(item => {
+        return item.status === 1;
+      });
 
-
-
-     let firstTextDataEmp2 = this.editData.attendaceAddressForEmpolyee.filter(item => {
-       return item.status === 1
-     })
-     console.log(firstTextDataEmp1)
-     let firstTextDataOrg2 = this.editData.attendanceAddressForOrganization.filter(item => {
-       return item.status === 1
-     })
-
-this.textareaData3 = firstTextDataOrg2.map(item => {
-       return item.organizationName
-     }).join(',')
+      this.textareaData3 = firstTextDataOrg2.map(item => {
+        return item.organizationName;
+      }).join(',');
       this.textareaData4 = firstTextDataEmp2.map(item => {
-       return item.employeeName
-     }).join(',')
-      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4
+        return item.employeeName;
+      }).join(',');
+      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4;
       this.textareaEmpIds2 = firstTextDataEmp2.map(item => {
-       return {
-         employeeId: item.employeeId,
-          status: item.status,
-       }
-     })
+        return {
+          employeeId: item.employeeId,
+          status: item.status
+        };
+      });
       this.textareaOrgIds2 = firstTextDataOrg2.map(item => {
-       return {
-         organizationId: item.organizationId,
-          status: item.status,
-       }
-     })
-
-
+        return {
+          organizationId: item.organizationId,
+          status: item.status
+        };
+      });
     },
-    modalState() {
-      this.componetState = this.modalState
-
+    modalState () {
+      this.componetState = this.modalState;
     }
   },
   methods: {
-clearTextArea2() {
-      this.textareaData4 = ''
-      this.textareaData3 = ''
-      this.fromBaseData.textareaData2 = ''
-      this.textareaEmpIds2 = []
-      this.textareaOrgIds2 = []
+    clearTextArea2 () {
+      this.textareaData4 = '';
+      this.textareaData3 = '';
+      this.fromBaseData.textareaData2 = '';
+      this.textareaEmpIds2 = [];
+      this.textareaOrgIds2 = [];
     },
-    getEmpData2(val) {
-      console.log(val)
-      this.fromBaseData.textareaData2 = ''
-      this.textareaEmpIds2 = []
-       this.textareaData4 = val.names
-      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' +  this.textareaData4
-      const empIds = val.empIds.split(',')
+    getEmpData2 (val) {
+      console.log(val);
+      this.fromBaseData.textareaData2 = '';
+      this.textareaEmpIds2 = [];
+      this.textareaData4 = val.names;
+      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds2 = empIds.map(item => {
         return {
           employeeId: item,
-          status: 1,
-        }
-      })
-      console.log('this.fromBaseData', this.fromBaseData)
-
+          status: 1
+        };
+      });
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp2() {
-      this.moreSelectEmpVisible2 = true
+    chooseMoreEmp2 () {
+      this.moreSelectEmpVisible2 = true;
     },
-    moreOrganizationData2(val){
-      this.fromBaseData.textareaData2 = ''
-      this.textareaOrgIds2 = []
-      this.textareaData3 = val.organizationOaName
-      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4
+    moreOrganizationData2 (val) {
+      this.fromBaseData.textareaData2 = '';
+      this.textareaOrgIds2 = [];
+      this.textareaData3 = val.organizationOaName;
+      this.fromBaseData.textareaData2 = this.textareaData3 + '             ' + this.textareaData4;
       this.textareaOrgIds2 = val.organizationOa.map(item => {
         return {
           organizationId: item,
-          status: 1,
-        }
-      })
+          status: 1
+        };
+      });
     },
-    chooseOrganization2() {
-      this.moreOrganizationTreeVisible2 = true
+    chooseOrganization2 () {
+      this.moreOrganizationTreeVisible2 = true;
     },
 
-//
-    clearTextArea() {
-      this.textareaData = ''
-      this.textareaData2 = ''
-      this.fromBaseData.textareaData1 = ''
-      this.textareaEmpIds = []
-      this.textareaOrgIds = []
+    //
+    clearTextArea () {
+      this.textareaData = '';
+      this.textareaData2 = '';
+      this.fromBaseData.textareaData1 = '';
+      this.textareaEmpIds = [];
+      this.textareaOrgIds = [];
     },
-    getEmpData(val) {
-      console.log(val)
-      this.fromBaseData.textareaData1 = ''
-      this.textareaEmpIds = []
-       this.textareaData2 = val.names
-      this.fromBaseData.textareaData1 = this.textareaData + '             ' +  this.textareaData2
-      const empIds = val.empIds.split(',')
+    getEmpData (val) {
+      console.log(val);
+      this.fromBaseData.textareaData1 = '';
+      this.textareaEmpIds = [];
+      this.textareaData2 = val.names;
+      this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds = empIds.map(item => {
         return {
           employeeId: item,
-          status: 0,
-        }
-      })
-      console.log('this.fromBaseData', this.fromBaseData)
-
+          status: 0
+        };
+      });
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp() {
-      this.moreSelectEmpVisible = true
+    chooseMoreEmp () {
+      this.moreSelectEmpVisible = true;
     },
-    moreOrganizationData(val){
-      this.fromBaseData.textareaData1 = ''
-      this.textareaOrgIds = []
-      this.textareaData = val.organizationOaName
-      this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2
+    moreOrganizationData (val) {
+      this.fromBaseData.textareaData1 = '';
+      this.textareaOrgIds = [];
+      this.textareaData = val.organizationOaName;
+      this.fromBaseData.textareaData1 = this.textareaData + '             ' + this.textareaData2;
       this.textareaOrgIds = val.organizationOa.map(item => {
         return {
           organizationId: item,
-          status: 0,
-        }
-      })
+          status: 0
+        };
+      });
     },
-    chooseOrganization() {
-      this.moreOrganizationTreeVisible = true
+    chooseOrganization () {
+      this.moreOrganizationTreeVisible = true;
     },
-    getMapData(val) {
-      console.log(val)
-      this.fromBaseData.longitude = val.lang
-      this.fromBaseData.latitude = val.lat
+    getMapData (val) {
+      console.log(val);
+      this.fromBaseData.longitude = val.lang;
+      this.fromBaseData.latitude = val.lat;
+    },
+    selectLong () {
+      this.mapStat = true;
+    },
+    chooseOrg () {
+      this.orgStat = true;
+    },
+    getOrgData (val) {
+      //   console.log(val)
+      this.fromBaseData.organazationId = val.id;
+      this.organazationName = val.title;
+    },
+    changeStartTime (val) {
+      this.fromBaseData.startTime = val;
+      this.countTotalTime();
+    },
+    changeEndTime (val) {
+      this.fromBaseData.endTime = val;
 
+      this.countTotalTime();
     },
-    selectLong() {
-      this.mapStat = true
+    countTotalTime () {
+      if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
+        let hours1 = Number(this.fromBaseData.startTime.substring(0, 2));
+        let hours2 = Number(this.fromBaseData.endTime.substring(0, 2));
+        let minute1 = Number(this.fromBaseData.startTime.substring(3, 5));
+        let minute2 = Number(this.fromBaseData.endTime.substring(3, 5));
+        let second1 = Number(this.fromBaseData.startTime.substring(6, 8));
+        let second2 = Number(this.fromBaseData.endTime.substring(6, 8));
+        // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
+        let diffHours = hours2 - hours1;
+        let diffminutes = minute2 - minute1;
+        this.fromBaseData.totalTime = diffHours + diffminutes / 60;
+      }
     },
-      chooseOrg() {
-          this.orgStat = true
-      },
-      getOrgData(val) {
-        //   console.log(val)
-          this.fromBaseData.organazationId = val.id
-          this.organazationName = val.title
-      },
-      changeStartTime(val) {
-          this.fromBaseData.startTime = val
-          this.countTotalTime()
-      },
-      changeEndTime(val) {
-          this.fromBaseData.endTime = val
-          
-          this.countTotalTime()
-      },
-      countTotalTime() {
-          if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
-              let hours1 =Number(this.fromBaseData.startTime.substring(0, 2)) 
-                let hours2 =Number(this.fromBaseData.endTime.substring(0, 2))
-                let minute1 =Number(this.fromBaseData.startTime.substring(3, 5)) 
-                let minute2 =Number(this.fromBaseData.endTime.substring(3, 5))
-                 let second1 =Number(this.fromBaseData.startTime.substring(6, 8)) 
-                let second2 =Number(this.fromBaseData.endTime.substring(6, 8))
-                // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
-                let diffHours = hours2 - hours1
-                let diffminutes = minute2 - minute1
-                this.fromBaseData.totalTime = diffHours + diffminutes/60
-          }
-      },
-      selectData(val) {
-          console.log('val', val)
-          this.fromBaseData.employeeId = val.id
-          this.employeeName = val.personName
-      },
-      chooseEmp() {
-          this.empSata = true
-      },
+    selectData (val) {
+      console.log('val', val);
+      this.fromBaseData.employeeId = val.id;
+      this.employeeName = val.personName;
+    },
+    chooseEmp () {
+      this.empSata = true;
+    },
     cancel () {
-        this.mymoadlStat = false
-        this.modal_loading = false
-        this.reset()
-        this.$emit('update:modalstat', false)
+      this.mymoadlStat = false;
+      this.modal_loading = false;
+      this.reset();
+      this.$emit('update:modalstat', false);
     },
     reset () {
       this.fromBaseData = {
-       addressName: '',
+        addressName: '',
         textareaData1: '',
         textareaData2: ''
       };
-       this.textareaData4 = ''
-      this.textareaData3 = ''
-      this.fromBaseData.textareaData2 = ''
-      this.textareaEmpIds2 = []
-      this.textareaOrgIds2 = []
+      this.textareaData4 = '';
+      this.textareaData3 = '';
+      this.fromBaseData.textareaData2 = '';
+      this.textareaEmpIds2 = [];
+      this.textareaOrgIds2 = [];
 
-       this.textareaData = ''
-      this.textareaData2 = ''
-      this.fromBaseData.textareaData1 = ''
-      this.textareaEmpIds = []
-      this.textareaOrgIds = []
+      this.textareaData = '';
+      this.textareaData2 = '';
+      this.fromBaseData.textareaData1 = '';
+      this.textareaEmpIds = [];
+      this.textareaOrgIds = [];
       this.$refs['form'].resetFields();
     },
     handsave () {
-            this.modal_loading = true
-       console.log(this.fromBaseData);
-       this.fromBaseData.attendanceAddressForOrganization = this.textareaOrgIds.concat(this.textareaOrgIds2)
-       this.fromBaseData.attendaceAddressForEmpolyee = this.textareaEmpIds.concat(this.textareaEmpIds2)
+      this.modal_loading = true;
+      console.log(this.fromBaseData);
+      this.fromBaseData.attendanceAddressForOrganization = this.textareaOrgIds.concat(this.textareaOrgIds2);
+      this.fromBaseData.attendaceAddressForEmpolyee = this.textareaEmpIds.concat(this.textareaEmpIds2);
 
-       if(this.componetState === '修改') {
+      if (this.componetState === '修改') {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            attendance.modifyApplyObjectForMobile(this.fromBaseData).then(res => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.mymoadlStat = false;
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
+                this.reset();
+              }
+              this.modal_loading = false;
+            });
+          } else {
+            this.modal_loading = false;
 
-         this.$refs['form'].validate((valid) => {
-        if (valid) {
-          attendance.modifyApplyObjectForMobile(this.fromBaseData).then(res => {
-            if (res.ret === 200) {
-              this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
-            }
-            this.modal_loading = false
-          });
-        } else {
-            this.modal_loading = false
+            this.$Message.error('Fail!');
+          }
+        });
+      } else {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            attendance.addAddressForMobile(this.fromBaseData).then(res => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.mymoadlStat = false;
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
+                this.reset();
+              }
+              this.modal_loading = false;
+            });
+          } else {
+            this.modal_loading = false;
 
-          this.$Message.error('Fail!');
-        }
-      });
-
-       } else {
-this.$refs['form'].validate((valid) => {
-        if (valid) {
-          attendance.addAddressForMobile(this.fromBaseData).then(res => {
-            if (res.ret === 200) {
-              this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
-            }
-            this.modal_loading = false
-          });
-        } else {
-            this.modal_loading = false
-
-          this.$Message.error('Fail!');
-        }
-      });
-       }
-      
+            this.$Message.error('Fail!');
+          }
+        });
+      }
     }
   }
 };

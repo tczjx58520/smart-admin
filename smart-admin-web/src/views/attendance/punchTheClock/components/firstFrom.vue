@@ -46,7 +46,7 @@ export default {
     }
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -63,7 +63,7 @@ export default {
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
       fromBaseData: {
-         note: ''
+        note: ''
       },
       ruleValidate: {
         note: [
@@ -76,19 +76,19 @@ export default {
     modalstat () {
       this.mymoadlStat = this.modalstat;
     },
-    editData() {
-      console.log('this.editData', this.editData)
-      this.fromBaseData.note = this.editData.note
-      this.fromBaseData.id = this.editData.id
-      this.fromBaseData.employeeId = this.editData.employeeId
+    editData () {
+      console.log('this.editData', this.editData);
+      this.fromBaseData.note = this.editData.note;
+      this.fromBaseData.id = this.editData.id;
+      this.fromBaseData.employeeId = this.editData.employeeId;
     }
   },
   methods: {
     cancel () {
-        this.mymoadlStat = false
-        this.modal_loading = false
-        this.reset()
-        this.$emit('update:modalstat', false)
+      this.mymoadlStat = false;
+      this.modal_loading = false;
+      this.reset();
+      this.$emit('update:modalstat', false);
     },
     reset () {
       this.fromBaseData = {
@@ -97,22 +97,22 @@ export default {
       this.$refs['form'].resetFields();
     },
     handsave () {
-            this.modal_loading = true
-       console.log(this.fromBaseData);
+      this.modal_loading = true;
+      console.log(this.fromBaseData);
       this.$refs['form'].validate((valid) => {
         if (valid) {
           attendance.modifyPunchInfo(this.fromBaseData).then(res => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
+              this.mymoadlStat = false;
+              this.$emit('update:modalstat', false);
+              this.$emit('restList', true);
+              this.reset();
             }
-            this.modal_loading = false
+            this.modal_loading = false;
           });
         } else {
-            this.modal_loading = false
+          this.modal_loading = false;
 
           this.$Message.error('Fail!');
         }

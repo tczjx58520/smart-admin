@@ -1,29 +1,45 @@
 <template>
-
-<div>
-<div style="display: flex;align-items:center" >
-  <div style="width: 20%">
-  <Card class="warp-card" dis-hover >
-<div style="display:flex; align-items: center;flex-wrap: wrap">
-           <div style="margin-right: 15px;margin-top: 10px"  ><Button icon="md-refresh" @click="getorganizationtreedata">{{$t('Reflash')}}</Button> </div>
-            <div style="margin-right: 15px;margin-top: 10px"><Button v-privilege="['1-2-3']" icon="md-close" type="error" @click="deletetree">{{$t('Delete')}}</Button> </div>
-         </div>
-  </Card>
-  </div>
-  <div style="width: 80%">
-  <Card class="warp-card" dis-hover >
-<div style="display:flex; align-items: center">
-             <div style="margin-right: 15px;margin-top: 10px"><Button v-privilege="['1-2-1']" icon="md-add" type="primary" @click="handleSave">{{$t('Save')}}</Button> </div>
-
-         </div>
-  </Card>
-  </div>
-</div>
-  <div style="display:flex;margin-top: 20px">
-    <div style="width: 20%">
-
-      <Card class="warp-card" dis-hover style="height: calc(65vh)">
-
+  <div>
+    <div style="display: flex;align-items:center">
+      <div style="width: 20%">
+        <Card class="warp-card" dis-hover>
+          <div style="display:flex; align-items: center;flex-wrap: wrap">
+            <div style="margin-right: 15px;margin-top: 10px">
+              <Button icon="md-refresh" @click="getorganizationtreedata">{{
+                $t("Reflash")
+              }}</Button>
+            </div>
+            <div style="margin-right: 15px;margin-top: 10px">
+              <Button
+                v-privilege="['1-2-3']"
+                icon="md-close"
+                type="error"
+                @click="deletetree"
+                >{{ $t("Delete") }}</Button
+              >
+            </div>
+          </div>
+        </Card>
+      </div>
+      <div style="width: 80%">
+        <Card class="warp-card" dis-hover>
+          <div style="display:flex; align-items: center">
+            <div style="margin-right: 15px;margin-top: 10px">
+              <Button
+                v-privilege="['1-2-1']"
+                icon="md-add"
+                type="primary"
+                @click="handleSave"
+                >{{ $t("Save") }}</Button
+              >
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+    <div style="display:flex;margin-top: 20px">
+      <div style="width: 20%">
+        <Card class="warp-card" dis-hover style="height: calc(65vh)">
           <!-- <Tree
             ref="mytree"
             :data="treedata"
@@ -37,38 +53,59 @@
             style="height: 485px;overflow-x: scroll"
           ></Tree>
         </Card>
-  </div>
-    <div style="width: 80%;">
-      <Card class="warp-card" dis-hover style="height: calc(65vh);">
-<div>
-  <div style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;">
-<div style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"></div>
-<div>{{$t('BaseData')}}</div>
-  </div>
-  <div style="margin-top: 20px;">
- <Form ref="myForm" :model="formdata" label-position="top" :rules="ruleValidate">
-        <FormItem :label="$t('OrganizationName')" prop="organizeName">
-            <Input v-model="formdata.organizeName" style="width: 30%"></Input>
-        </FormItem>
-        <FormItem :label="$t('BelongParent')">
-            <Input v-model="formdata.organizeParent" readonly @click.native="isShowTree = !isShowTree" style="width: 30%">
-            <Icon slot="suffix" type="ios-arrow-down" v-if="!isShowTree" />
-                  <Icon slot="suffix" type="ios-arrow-up" v-else />
-                </Input>
-                <div class="department-wrap" v-if="isShowTree">
-                  <DepartmentEmployeeTree
-                    :isDepartment="true"
-                    @on-select="selectDepartmentOrEmployee"
-                    ref="departmentEmployeeTree"
-                  ></DepartmentEmployeeTree>
-                </div>
-        </FormItem>
-    </Form>
-  </div>
-   </div>
-      </Card>
+      </div>
+      <div style="width: 80%;">
+        <Card class="warp-card" dis-hover style="height: calc(65vh);">
+          <div>
+            <div
+              style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;"
+            >
+              <div
+                style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"
+              ></div>
+              <div>{{ $t("BaseData") }}</div>
+            </div>
+            <div style="margin-top: 20px;">
+              <Form
+                ref="myForm"
+                :model="formdata"
+                label-position="top"
+                :rules="ruleValidate"
+              >
+                <FormItem :label="$t('OrganizationName')" prop="organizeName">
+                  <Input
+                    v-model="formdata.organizeName"
+                    style="width: 30%"
+                  ></Input>
+                </FormItem>
+                <FormItem :label="$t('BelongParent')">
+                  <Input
+                    v-model="formdata.organizeParent"
+                    readonly
+                    @click.native="isShowTree = !isShowTree"
+                    style="width: 30%"
+                  >
+                    <Icon
+                      slot="suffix"
+                      type="ios-arrow-down"
+                      v-if="!isShowTree"
+                    />
+                    <Icon slot="suffix" type="ios-arrow-up" v-else />
+                  </Input>
+                  <div class="department-wrap" v-if="isShowTree">
+                    <DepartmentEmployeeTree
+                      :isDepartment="true"
+                      @on-select="selectDepartmentOrEmployee"
+                      ref="departmentEmployeeTree"
+                    ></DepartmentEmployeeTree>
+                  </div>
+                </FormItem>
+              </Form>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 <script>
@@ -93,7 +130,11 @@ export default {
       isShowTree: false,
       ruleValidate: {
         organizeName: [
-          { required: true, message: 'The organizeName cannot be empty', trigger: 'blur' }
+          {
+            required: true,
+            message: 'The organizeName cannot be empty',
+            trigger: 'blur'
+          }
         ]
       }
     };
@@ -101,9 +142,7 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created () {
-
-  },
+  created () {},
   mounted () {
     this.getorganizationtreedata();
   },
@@ -151,7 +190,7 @@ export default {
     handleSave () {
       this.formdata.createId = this.$store.state.user.userLoginInfo.userId;
       console.log('this.formdata===>', this.formdata);
-      this.$refs.myForm.validate((valid) => {
+      this.$refs.myForm.validate(valid => {
         if (valid) {
           console.log('true==========>');
           organization.addOrganization(this.formdata).then(res => {
@@ -202,15 +241,15 @@ export default {
     convertTree (tree, map) {
       const result = [];
       // 遍历 tree
-      tree.forEach((item) => {
+      tree.forEach(item => {
         console.log(item);
         // 读取 map 的键值映射
-        const title = item[ map.title ];
-        const parentId = item[ map.parentId ];
+        const title = item[map.title];
+        const parentId = item[map.parentId];
         const expand = true;
-        const level = item[ map.level ];
-        const id = item[ map.id ];
-        let children = item[ map.children ];
+        const level = item[map.level];
+        const id = item[map.id];
+        let children = item[map.children];
         // 如果有子节点，递归
         if (children) {
           children = this.convertTree(children, map);

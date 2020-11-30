@@ -26,7 +26,7 @@ export const usermanagelApi = {
     if (data.roleOa) {
       Form.append('roleOa', data.roleOa);
     }
-    Form.append('loginRepositoryId', data.loginRepositoryId);
+    Form.append('loginRepositoryId', 0);
     Form.append('pagenum', data.pageNum);
     Form.append('pagesize', data.pageSize);
     return postAxios('/employee/getemplist', Form);

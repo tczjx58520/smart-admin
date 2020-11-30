@@ -33,11 +33,11 @@
                 show-total style="margin:24px 0;text-align:right;"></Page>
             </Card>
             <!-- 新建弹窗 -->
-            <addModal :modalstat = "visiable" :copyfile="copyfile" @updateStat = "updateStat"></addModal>
+            <addModal :modalstat = "visiable" @updateStat = "updateStat"></addModal>
             <!-- 新建结束============= -->
             <!-- 修改弹窗 -->
-            <editModal :modalstat = "visiable2" :editinfo="editinfo" @updateStat = "updateStat_edit"></editModal>
-            <newModal :modalstat = "visiable3" :typeId="id" @updateStat = "updateStat_new" @routerlink= "to_conduct"></newModal>
+            <editModal :modalstat = "visiable2" :editinfo="editinfo" :itemList="itemlist" @updateStat = "updateStat_edit"></editModal>
+            <newModal :modalstat = "visiable3" :typeId="id"  @updateStat = "updateStat_new" @routerlink= "to_conduct"></newModal>
         </div>
     </div>
 </div>
@@ -45,6 +45,7 @@
 <script>
 import { roleApi } from '@/api/role';
 import { indicatorSetApi } from '@/api/indicatorSet';
+import { indicatorSingle } from '@/api/indicatorSingle';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
 import newModal from './components/editmodalGong/modal';
@@ -165,7 +166,8 @@ export default {
       indicatorlist: [],
       isShowTree: false,
       loading: true,
-      moreaction: ''
+      moreaction: '',
+      itemlist: []
     };
   },
   computed: {},
@@ -175,6 +177,7 @@ export default {
   },
   mounted () {
     this.getindicatorlist();
+    this.getitemlist();
   },
   beforeCreate () {},
   beforeMount () {},
@@ -184,6 +187,13 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    getitemlist () {
+      this.loading = true;
+      indicatorSingle.queryindicatorSingle().then(res => {
+        this.loading = false;
+        this.itemlist = res.data.content;
+      });
+    },
     // 分页
     changePage (pageNum) {
       this.searchform.pageNum = pageNum;
@@ -218,7 +228,6 @@ export default {
     },
     getindicatorlist () {
       indicatorSetApi.queryIndicator(this.searchform).then(res => {
-        console.log('roleresult=>', res.data.content.list);
         this.loading = false;
         this.pageTotal = res.data.content.totalCount;
         this.indicatorlist = res.data.content.list;

@@ -16,26 +16,26 @@
 </template>
 
 <script>
-import { attendance } from '@/api/attendance'
-import firstForm from './firstFrom'
+import { attendance } from '@/api/attendance';
+import firstForm from './firstFrom';
 
 export default {
-    name: 'firstTable',
-    components:{
-firstForm
-    },
-    data() {
-        return {
-          selectData: '',
-          editData: null,
-            firstLoading: false,
-            firstTable:{
-                pageNum: 1,
-                pageSize: 10
-            },
-            fistTotal: 0,
-            firstColumns: [
-                {
+  name: 'firstTable',
+  components: {
+    firstForm
+  },
+  data () {
+    return {
+      selectData: '',
+      editData: null,
+      firstLoading: false,
+      firstTable: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      fistTotal: 0,
+      firstColumns: [
+        {
           type: 'selection',
           width: 50,
           align: 'center'
@@ -47,16 +47,16 @@ firstForm
         {
           title: this.$t('kqgl.sbsj'),
           key: 'startWorkTimeMorning'
-        },{
+        }, {
           title: this.$t('kqgl.xbsj'),
           key: 'overWorkTimeMorning'
         }, {
           title: this.$t('kqgl.sbsj'),
           key: 'startWorkTimeAfternoon'
-        },{
+        }, {
           title: this.$t('kqgl.xbsj'),
           key: 'overWorkTimeAfternoon'
-        },{
+        }, {
           title: this.$t('kqgl.sfswxj'),
           key: 'whetherVocation',
           render: (h, params) => {
@@ -66,17 +66,17 @@ firstForm
               return h('span', this.$t('kqgl.no'));
             }
           }
-        },{
+        }, {
           title: this.$t('kqgl.sfsx'),
           key: 'whetherEffect',
           render: (h, params) => {
             if (params.row.whetherVocation === 0) {
-             return h('span', this.$t('kqgl.yes'));
+              return h('span', this.$t('kqgl.yes'));
             } else {
               return h('span', this.$t('kqgl.no'));
             }
           }
-        },{
+        }, {
           title: this.$t('usermanage_view.action'),
           key: 'action',
           width: 200,
@@ -101,35 +101,33 @@ firstForm
             ]);
           }
         }
-            ],
-            firstData: [],
-            modalstat: false,
-            modalState: ''
-        }
+      ],
+      firstData: [],
+      modalstat: false,
+      modalState: ''
+    };
+  },
+  mounted () {
+    this.getFirstTableData();
+  },
+  methods: {
+    restList (val) {
+      if (val) {
+        this.getFirstTableData();
+      }
     },
-    mounted() {
-        this.getFirstTableData()
-    },
-    methods: {
-      restList(val) {
-        if(val) {
-        this.getFirstTableData()
-
-        }
-      },
-      Edit (row) {
+    Edit (row) {
       // if (this.$judge(['1-4-2'])) {
       //   this.editinfo = row;
       //   this.visiable_edit = true;
       // } else {
       //   console.log('needroles');
       // }
-      this.modalState = '修改'
-            this.editData = Object.assign({}, row)
+      this.modalState = '修改';
+      this.editData = Object.assign({}, row);
 
       // this.firstLoading = true;
-      this.modalstat = true
-
+      this.modalstat = true;
     },
     selectFirst (selection) {
       this.selectData = selection;
@@ -138,20 +136,20 @@ firstForm
       let sendParms = {
         ids: [],
         createId: this.$store.state.user.userLoginInfo.userId
-      }
+      };
       for (const i in this.selectData) {
-       sendParms.ids.push(this.selectData[i].id)
+        sendParms.ids.push(this.selectData[i].id);
       }
 
-       console.log(sendParms)
-        attendance.deleteShiftPatch(sendParms).then(res => {
-          if (res.ret === 200) {
-            this.$Message.success(res.msg);
-            this.getFirstTableData();
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
+      console.log(sendParms);
+      attendance.deleteShiftPatch(sendParms).then(res => {
+        if (res.ret === 200) {
+          this.$Message.success(res.msg);
+          this.getFirstTableData();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
     async getFirstTableData () {
       try {
@@ -184,10 +182,10 @@ firstForm
       this.getFirstTableData();
     },
     newFirstForm () {
-      this.modalState = '新建'
+      this.modalState = '新建';
       // this.firstLoading = true;
-      this.modalstat = true
-    },
+      this.modalstat = true;
     }
-}
+  }
+};
 </script>

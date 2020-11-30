@@ -16,66 +16,64 @@
 </template>
 
 <script>
-import { attendance } from '@/api/attendance'
-import ThirdForm from './thirdFrom'
+import { attendance } from '@/api/attendance';
+import ThirdForm from './thirdFrom';
 
 export default {
-    name: 'ThirdTable',
-    components:{
-        ThirdForm
-    },
-    data() {
-        return {
-          selectData: '',
-          editData: null,
-            ThirdLoading: false,
-            ThirdTable:{
-                pageNum: 1,
-                pageSize: 10
-            },
-            fistTotal: 0,
-            ThirdColumns: [
-                {
+  name: 'ThirdTable',
+  components: {
+    ThirdForm
+  },
+  data () {
+    return {
+      selectData: '',
+      editData: null,
+      ThirdLoading: false,
+      ThirdTable: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      fistTotal: 0,
+      ThirdColumns: [
+        {
           type: 'selection',
           width: 50,
           align: 'center'
         },
         {
           title: this.$t('kqgl.zzmc'),
-          key: 'organzeName'
+          key: 'organizeName'
         },
         {
           title: this.$t('kqgl.bz'),
           key: 'shiftSystemName'
         }
-            ],
-            ThirdData: [],
-            modalstat: false,
-            modalState: ''
-        }
+      ],
+      ThirdData: [],
+      modalstat: false,
+      modalState: ''
+    };
+  },
+  mounted () {
+    this.getThirdTableData();
+  },
+  methods: {
+    restList (val) {
+      if (val) {
+        this.getThirdTableData();
+      }
     },
-    mounted() {
-        this.getThirdTableData()
-    },
-    methods: {
-      restList(val) {
-        if(val) {
-        this.getThirdTableData()
-
-        }
-      },
-      Edit (row) {
+    Edit (row) {
       // if (this.$judge(['1-4-2'])) {
       //   this.editinfo = row;
       //   this.visiable_edit = true;
       // } else {
       //   console.log('needroles');
       // }
-      this.modalState = '修改'
-      this.editData = Object.assign({}, row)
+      this.modalState = '修改';
+      this.editData = Object.assign({}, row);
       // this.ThirdLoading = true;
-      this.modalstat = true
-
+      this.modalstat = true;
     },
     selectThird (selection) {
       this.selectData = selection;
@@ -84,20 +82,20 @@ export default {
       let sendParms = {
         ids: [],
         createId: this.$store.state.user.userLoginInfo.userId
-      }
+      };
       for (const i in this.selectData) {
-       sendParms.ids.push(this.selectData[i].id)
+        sendParms.ids.push(this.selectData[i].id);
       }
 
-       console.log(sendParms)
-        attendance.deleteShiftGroupPatch(sendParms).then(res => {
-          if (res.ret === 200) {
-            this.$Message.success(res.msg);
-            this.getThirdTableData();
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
+      console.log(sendParms);
+      attendance.deleteShiftGroupPatch(sendParms).then(res => {
+        if (res.ret === 200) {
+          this.$Message.success(res.msg);
+          this.getThirdTableData();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
     async getThirdTableData () {
       try {
@@ -130,10 +128,10 @@ export default {
       this.getThirdTableData();
     },
     newThirdForm () {
-      this.modalState = '新建'
+      this.modalState = '新建';
       // this.ThirdLoading = true;
-      this.modalstat = true
-    },
+      this.modalstat = true;
     }
-}
+  }
+};
 </script>

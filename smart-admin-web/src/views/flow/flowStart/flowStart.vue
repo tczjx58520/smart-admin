@@ -27,7 +27,7 @@
                 <div slot="content">
                   {{ buttonItem.flowName }}
                   <br>
-                  {{ buttonItem.type | typeFilter}}
+                  {{ buttonItem.receiptType | typeFilter}}
                 </div>
                 <Button
                   class="workflow-classify-button"
@@ -42,7 +42,7 @@
                         {{ buttonItem.flowName }}
                       </div>
                       <div class="process-div-remarks ellipsis">
-                        {{ buttonItem.type | typeFilter}}
+                        {{ buttonItem.receiptType | typeFilter}}
                       </div>
                     </div>
                   </div>
@@ -60,6 +60,7 @@
 <script>
 import { FlowCategoryApi } from '@/api/flowClassification';
 import selectModal from './components/selectModal/selectModal';
+let _that = this;
 export default {
   name: 'ApplyProcessList',
   components: {
@@ -77,9 +78,11 @@ export default {
     };
   },
   filters: {
+    // 流程单据
     typeFilter (val) {
       const map = {
-        1: '薪酬审批'
+        1: _that.$t('xcsp'),
+        2: _that.$t('ygrz')
       };
       return map[val];
     }
@@ -116,11 +119,13 @@ export default {
     },
     submitWorkOrder (value) {
       console.log(value);
-      switch (value.type) {
+      switch (value.receiptType) {
         case 1:
           this.selectFrom(value);
           break;
-
+        case 2:
+          this.$router.push({ path: '/flow/actionflowStart', query: { receiptType: value.receiptType, receiptLabel: value.flowName, flowId: value.id, flowCategory: value.category } });
+          break;
         default:
           break;
       }
@@ -132,7 +137,7 @@ export default {
     updateStat_select (state, value) {
       console.log(value);
       if (value) {
-        this.$router.push({ path: '/flow/actionflowStart', query: { receiptType: value.type, receiptLabel: value.flowName, flowId: value.id, flowCategory: value.category } });
+        this.$router.push({ path: '/flow/actionflowStart', query: { receiptType: value.receiptType, receiptLabel: value.flowName, flowId: value.id, flowCategory: value.category } });
       }
       this.visiable_select = state;
     }

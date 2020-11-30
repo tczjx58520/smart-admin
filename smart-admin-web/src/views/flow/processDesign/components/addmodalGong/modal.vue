@@ -51,6 +51,7 @@
           </FormItem>
           <FormItem :label="$t('processDesign_view.processType')">
             <RadioGroup v-model="addformbase.type">
+              <!-- 流程单据 -->
               <Radio :label="1">
                 {{ $t("processDesign_view.fixedProcess") }}
               </Radio>
@@ -271,7 +272,11 @@ export default {
       businessList: [
         {
           id: 1,
-          businessName: '薪酬审批'
+          businessName: this.$t('xcsp')
+        },
+        {
+          id: 2,
+          businessName: this.$t('ygrz')
         }
       ],
       stepcolumns: [

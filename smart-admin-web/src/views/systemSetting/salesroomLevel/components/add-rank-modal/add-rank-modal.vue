@@ -38,13 +38,7 @@
           :rules="ruleValidate"
         >
           <FormItem :label="$t('mc')" style="width: 80%">
-            <Select v-model="addformbase.rank" clearable>
-              <Option :value="1">1</Option>
-              <Option :value="2">2</Option>
-              <Option :value="3">3</Option>
-              <Option :value="4">4</Option>
-              <Option :value="5">5</Option>
-            </Select>
+            <Input v-model="addformbase.reward" />
           </FormItem>
           <FormItem :label="$t('jl')" style="width: 80%">
             <Input v-model="addformbase.reward" />
@@ -74,7 +68,7 @@ const defaultForm = {
   reward: 0
 };
 export default {
-  name: 'add-team-modal',
+  name: 'add-indicatorSingle-modal',
   components: {
   },
   props: {

@@ -16,10 +16,10 @@
                     <moreOrganizationTree :modalstat.sync='moreOrganizationTreeVisible' @moreOrganizationData ='moreOrganizationData'/>
 
                     </FormItem>
-                    <FormItem :label="$t('kqgl.bz')" prop="shiftSystemId"> 
+                    <FormItem :label="$t('kqgl.bz')" prop="shiftSystemId">
                         <Select v-model="fromBaseData.shiftSystemId"  style="width: 34%">
                             <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.shiftSystemName }}</Option>
-                        </Select>      
+                        </Select>
                     </FormItem>
                 </Form>
             </Card>
@@ -39,11 +39,11 @@ import {
   attendance
 } from '@/api/attendance';
 
-import moreOrganizationTree from '@/components/moreOrganizationTree'
+import moreOrganizationTree from '@/components/moreOrganizationTree';
 export default {
   name: 'thirdFrom',
   components: {
-      moreOrganizationTree
+    moreOrganizationTree
   },
   props: {
     modalstat: {
@@ -51,8 +51,8 @@ export default {
       default: false
     },
     modalState: {
-        type: String,
-        default: null
+      type: String,
+      default: null
     },
     editData: {
       type: Object,
@@ -60,7 +60,7 @@ export default {
     }
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -81,14 +81,14 @@ export default {
     };
     return {
       selectTextData: '',
-        moreOrganizationTreeVisible: false,
-        selectData: [],
-        formTitle: '',
+      moreOrganizationTreeVisible: false,
+      selectData: [],
+      formTitle: '',
       modal_loading: false,
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
       fromBaseData: {
-        createId:this.$store.state.user.userLoginInfo.userId
+        createId: this.$store.state.user.userLoginInfo.userId
       },
       ruleValidate: {
         shiftSystemId: [
@@ -103,118 +103,116 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      this.getSelectData()
+      this.getSelectData();
     },
     modalState () {
-        this.componetState = this.modalState
-        if(this.componetState === '新建') {
-            this.formTitle = this.$t('kqgl.xjbzu')
-        } else if (this.componetState === '修改'){
-            this.formTitle = this.$t('kqgl.xgbz')
-        }
+      this.componetState = this.modalState;
+      if (this.componetState === '新建') {
+        this.formTitle = this.$t('kqgl.xjbzu');
+      } else if (this.componetState === '修改') {
+        this.formTitle = this.$t('kqgl.xgbz');
+      }
     },
-    editData() {
-      console.log('this.editData', this.editData)
-      this.fromBaseData = this.editData
-        this.fromBaseData.createId = this.$store.state.user.userLoginInfo.userId
-
+    editData () {
+      console.log('this.editData', this.editData);
+      this.fromBaseData = this.editData;
+      this.fromBaseData.createId = this.$store.state.user.userLoginInfo.userId;
     }
   },
   methods: {
-    moreOrganizationData(val) {
-      this.fromBaseData.organationId = val.organizationOa
-      this.selectTextData = val.organizationOaName
+    moreOrganizationData (val) {
+      this.fromBaseData.organizationId = val.organizationOa;
+      this.selectTextData = val.organizationOaName;
     },
-      chooseOrganzation() {
-          console.log('test')
-          this.moreOrganizationTreeVisible = true
-      },
-    async  getSelectData() {
-        const parms = {
-            pageNum: 1,
-            pageSize: 99999999
-        }
-        try {
+    chooseOrganzation () {
+      console.log('test');
+      this.moreOrganizationTreeVisible = true;
+    },
+    async  getSelectData () {
+      const parms = {
+        pageNum: 1,
+        pageSize: 99999999
+      };
+      try {
         let result = await attendance.findAllShiftSystemInfo(parms);
         this.selectData = result.data.list;
       } catch (e) {
         console.error(e);
       }
-      },
-       handleClick (e) {
-           console.log(e)   
-           if(e) {
-            this.open = !this.open;   
-           }
-                // this.open = !this.open;
-            },
-            handleChange (time) {
-                // this.value3 = time;
-            },
-            handleClear () {
-                this.open = false;
-            },
-            handleOk () {
-                this.open = false;
-            },
+    },
+    handleClick (e) {
+      console.log(e);
+      if (e) {
+        this.open = !this.open;
+      }
+      // this.open = !this.open;
+    },
+    handleChange (time) {
+      // this.value3 = time;
+    },
+    handleClear () {
+      this.open = false;
+    },
+    handleOk () {
+      this.open = false;
+    },
     cancel () {
-        this.mymoadlStat = false
-        this.modal_loading = false
-        this.reset()
-        this.$emit('update:modalstat', false)
+      this.mymoadlStat = false;
+      this.modal_loading = false;
+      this.reset();
+      this.$emit('update:modalstat', false);
     },
     reset () {
       this.fromBaseData = {
-        createId:this.$store.state.user.userLoginInfo.userId
+        createId: this.$store.state.user.userLoginInfo.userId
       };
       this.$refs['form'].resetFields();
     },
     handsave () {
-            this.modal_loading = true
-      if(this.componetState === '新建') {
-      console.log(this.fromBaseData);
-      const parmJson = JSON.stringify(this.fromBaseData)
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          attendance.addShiftGroup(parmJson).then(res => {
-            if (res.ret === 200) {
-              this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
-            }
-            this.modal_loading = false
-          });
-        } else {
-            this.modal_loading = false
+      this.modal_loading = true;
+      if (this.componetState === '新建') {
+        console.log(this.fromBaseData);
+        const parmJson = JSON.stringify(this.fromBaseData);
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            attendance.addShiftGroup(parmJson).then(res => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.mymoadlStat = false;
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
+                this.reset();
+              }
+              this.modal_loading = false;
+            });
+          } else {
+            this.modal_loading = false;
 
-          this.$Message.error('Fail!');
-        }
-      });
-        } else if (this.componetState === '修改'){
-       console.log(this.fromBaseData);
-      const parmJson = JSON.stringify(this.fromBaseData)
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          attendance.modifyShiftSystem(this.fromBaseData).then(res => {
-            if (res.ret === 200) {
-              this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
-            }
-            this.modal_loading = false
-          });
-        } else {
-            this.modal_loading = false
+            this.$Message.error('Fail!');
+          }
+        });
+      } else if (this.componetState === '修改') {
+        console.log(this.fromBaseData);
+        const parmJson = JSON.stringify(this.fromBaseData);
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            attendance.modifyShiftSystem(this.fromBaseData).then(res => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.mymoadlStat = false;
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
+                this.reset();
+              }
+              this.modal_loading = false;
+            });
+          } else {
+            this.modal_loading = false;
 
-          this.$Message.error('Fail!');
-        }
-      });
-        }
-      
+            this.$Message.error('Fail!');
+          }
+        });
+      }
     }
   }
 };

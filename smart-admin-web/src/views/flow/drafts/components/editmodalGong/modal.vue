@@ -67,7 +67,7 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
     this.getindicator();

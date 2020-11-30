@@ -72,16 +72,16 @@
 </template>
 <script>
 import $ from 'jquery';
-import selectEmp from '@/components/selectEmp'
-import organization from '@/components/organization'
+import selectEmp from '@/components/selectEmp';
+import organization from '@/components/organization';
 import {
   attendance
 } from '@/api/attendance';
 export default {
   name: 'firstFrom',
   components: {
-      selectEmp,
-      organization
+    selectEmp,
+    organization
   },
   props: {
     modalstat: {
@@ -94,7 +94,7 @@ export default {
     }
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -108,15 +108,15 @@ export default {
     };
     return {
       times: '',
-        orgStat: false,
-        employeeName: this.$store.state.user.userLoginInfo.actualName,
-        organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
-        empSata: false,
+      orgStat: false,
+      employeeName: this.$store.state.user.userLoginInfo.actualName,
+      organazationName: this.$store.state.user.userLoginInfo.organizationOaName,
+      empSata: false,
       modal_loading: false,
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
       fromBaseData: {
-         employeeId: this.$store.state.user.userLoginInfo.userId,
+        employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
         reason: '',
@@ -139,77 +139,77 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      console.log('this.$store.state.user.userLoginInfo', this.$store.state.user.userLoginInfo)
+      console.log('this.$store.state.user.userLoginInfo', this.$store.state.user.userLoginInfo);
     },
-    editData() {
+    editData () {
     //   console.log('this.editData', this.editData)
-      this.fromBaseData.note = this.editData.note
-      this.fromBaseData.id = this.editData.id
-      this.fromBaseData.employeeId = this.editData.employeeId
+      this.fromBaseData.note = this.editData.note;
+      this.fromBaseData.id = this.editData.id;
+      this.fromBaseData.employeeId = this.editData.employeeId;
     }
   },
   methods: {
-    datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式  
-        var dateSpan,
-            tempDate,
-            iDays;
-        sDate1 = Date.parse(sDate1);
-        sDate2 = Date.parse(sDate2);
-        dateSpan = sDate2 - sDate1;
-        dateSpan = Math.abs(dateSpan);
-        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
-        return iDays
+    datedifference (sDate1, sDate2) { // sDate1和sDate2是2006-12-18格式
+      let dateSpan,
+        tempDate,
+        iDays;
+      sDate1 = Date.parse(sDate1);
+      sDate2 = Date.parse(sDate2);
+      dateSpan = sDate2 - sDate1;
+      dateSpan = Math.abs(dateSpan);
+      iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+      return iDays;
     },
-    getTimes(val) {
-      this.fromBaseData.startTime = val[0]
-      this.fromBaseData.endTime = val[1]
-      let   days =  this.datedifference(val[1], val[0]) + 1
-       this.fromBaseData.totalTime = days
+    getTimes (val) {
+      this.fromBaseData.startTime = val[0];
+      this.fromBaseData.endTime = val[1];
+      let days = this.datedifference(val[1], val[0]) + 1;
+      this.fromBaseData.totalTime = days;
     },
-      chooseOrg() {
-          this.orgStat = true
-      },
-      getOrgData(val) {
-        //   console.log(val)
-          this.fromBaseData.organazationId = val.id
-          this.organazationName = val.title
-      },
-      changeStartTime(val) {
-          this.fromBaseData.startTime = val
-          this.countTotalTime()
-      },
-      changeEndTime(val) {
-          this.fromBaseData.endTime = val
-          
-          this.countTotalTime()
-      },
-      countTotalTime() {
-          if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
-              let hours1 =Number(this.fromBaseData.startTime.substring(0, 2)) 
-                let hours2 =Number(this.fromBaseData.endTime.substring(0, 2))
-                let minute1 =Number(this.fromBaseData.startTime.substring(3, 5)) 
-                let minute2 =Number(this.fromBaseData.endTime.substring(3, 5))
-                 let second1 =Number(this.fromBaseData.startTime.substring(6, 8)) 
-                let second2 =Number(this.fromBaseData.endTime.substring(6, 8))
-                // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
-                let diffHours = hours2 - hours1
-                let diffminutes = minute2 - minute1
-                this.fromBaseData.totalTime = diffHours + diffminutes/60
-          }
-      },
-      selectData(val) {
-          console.log('val', val)
-          this.fromBaseData.employeeId = val.id
-          this.employeeName = val.personName
-      },
-      chooseEmp() {
-          this.empSata = true
-      },
+    chooseOrg () {
+      this.orgStat = true;
+    },
+    getOrgData (val) {
+      //   console.log(val)
+      this.fromBaseData.organazationId = val.id;
+      this.organazationName = val.title;
+    },
+    changeStartTime (val) {
+      this.fromBaseData.startTime = val;
+      this.countTotalTime();
+    },
+    changeEndTime (val) {
+      this.fromBaseData.endTime = val;
+
+      this.countTotalTime();
+    },
+    countTotalTime () {
+      if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
+        let hours1 = Number(this.fromBaseData.startTime.substring(0, 2));
+        let hours2 = Number(this.fromBaseData.endTime.substring(0, 2));
+        let minute1 = Number(this.fromBaseData.startTime.substring(3, 5));
+        let minute2 = Number(this.fromBaseData.endTime.substring(3, 5));
+        let second1 = Number(this.fromBaseData.startTime.substring(6, 8));
+        let second2 = Number(this.fromBaseData.endTime.substring(6, 8));
+        // console.log('minute1', minute1, 'second1', second1, 'hours1', hours1)
+        let diffHours = hours2 - hours1;
+        let diffminutes = minute2 - minute1;
+        this.fromBaseData.totalTime = diffHours + diffminutes / 60;
+      }
+    },
+    selectData (val) {
+      console.log('val', val);
+      this.fromBaseData.employeeId = val.id;
+      this.employeeName = val.personName;
+    },
+    chooseEmp () {
+      this.empSata = true;
+    },
     cancel () {
-        this.mymoadlStat = false
-        this.modal_loading = false
-        this.reset()
-        this.$emit('update:modalstat', false)
+      this.mymoadlStat = false;
+      this.modal_loading = false;
+      this.reset();
+      this.$emit('update:modalstat', false);
     },
     reset () {
       this.fromBaseData = {
@@ -228,21 +228,21 @@ export default {
       this.$refs['form'].resetFields();
     },
     handsave () {
-            this.modal_loading = true
+      this.modal_loading = true;
       this.$refs['form'].validate((valid) => {
         if (valid) {
           attendance.addApplyLeave(this.fromBaseData).then(res => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
-              this.mymoadlStat = false
-              this.$emit('update:modalstat', false)
-              this.$emit('restList',  true)
-              this.reset()
+              this.mymoadlStat = false;
+              this.$emit('update:modalstat', false);
+              this.$emit('restList', true);
+              this.reset();
             }
-            this.modal_loading = false
+            this.modal_loading = false;
           });
         } else {
-            this.modal_loading = false
+          this.modal_loading = false;
 
           this.$Message.error('Fail!');
         }

@@ -1,6 +1,6 @@
 <template>
   <div>
-        <Modal v-model="mymoadlStat" class="add" width="1024" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
+        <Modal v-model="mymoadlStat" class="add" width="1024" :closable="false" :mask-closable="false" :transfer="false" fullscreen>
           <div slot="header" style="text-align:left;color:#fff;">
               <span>{{ $t('role_view.addrole') }}</span>
           </div>
@@ -11,27 +11,25 @@
                   <div>{{$t('BaseData')}}</div>
                   </div>
                   <Divider />
-                  <Form ref="form" :model="addformbase" label-position="right" :label-width="100" :rules="ruleValidate">
+                  <Form ref="form" :model="addformbase" label-position="right" :label-width="150" :rules="ruleValidate">
                       <FormItem :label="$t('indicatorSet_view.metricSetName')" prop="name">
                           <Input v-model="addformbase.name"></Input>
                       </FormItem>
                       <FormItem :label="$t('indicatorSet_view.indicatorSetContent')" prop="content">
                           <Input v-model="addformbase.content" type="textarea"></Input>
                       </FormItem>
-                      <!-- <FormItem :label="$t('welfare_view.org')" prop="organizationOa">
-                        <Input v-model="addformbase.organizationOaName" readonly @click.native="isShowTree = !isShowTree" style="width: 100%">
-                        <Icon slot="suffix" type="ios-arrow-down" v-if="!isShowTree" />
-                              <Icon slot="suffix" type="ios-arrow-up" v-else />
-                            </Input>
-                            <div class="department-wrap" v-if="isShowTree">
-                              <DepartmentEmployeeTree
-                                :isDepartment="true"
-                                @on-select="selectDepartmentOrEmployee"
-                                @addmyorg = "addorg"
-                                ref="departmentEmployeeTree"
-                              ></DepartmentEmployeeTree>
-                            </div>
-                      </FormItem> -->
+                      <FormItem :label="$t('kezbjlx')" prop="collectType">
+                          <Select v-model="addformbase.collectType">
+                            <Option :value="1">{{ $t('ry') }}</Option>
+                            <Option :value="2">{{ $t('md') }}</Option>
+                            <Option :value="3">{{ $t('gw') }}</Option>
+                          </Select>
+                      </FormItem>
+                      <FormItem :label="$t('mdjb')" prop="repositoryLevelId" >
+                          <Select v-model="addformbase.repositoryLevelId" filterable>
+                            <Option v-for="item in levelList" :value="item.id" :key="item.id">{{ item.levelName }}</Option>
+                          </Select>
+                      </FormItem>
                   </Form>
                   <div style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;">
                   <div style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"></div>
@@ -50,49 +48,59 @@
               </ButtonGroup>
           </div>
     </Modal>
+    <addIndicatorSingleModal
+      :modalstat="indicator_dialog"
+      :editinfo="indicator_info"
+      :isedit="edit_indicator_flag"
+      @updateStat="updateStat_indicator"
+    />
   </div>
 </template>
 <script>
 import { indicatorSetApi } from '@/api/indicatorSet';
+import { SalesRoomlevel } from '@/api/salesroomLevel';
+import addIndicatorSingleModal from '../add-indicatorSingle-modal/add-indicatorSingle-modal';
 import Tables from '@/components/tables';
 import RoleTree from '../role-tree/role-tree';
 import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
+import { indicatorSingle } from '@/api/indicatorSingle';
 export default {
   name: 'addModal',
   components: {
     DepartmentEmployeeTree,
-    Tables
+    Tables,
+    addIndicatorSingleModal
   },
   props: {
     modalstat: {
       type: Boolean,
       default: false
     },
-    editinfo: null
+    editinfo: null,
+    itemList: null
   },
   created () {
-    // 
+    //
   },
   data () {
+    const validatePass1 = (rule, value, callback) => {
+      if (this.addformbase.collectType === '' || this.addformbase.collectType === null || this.addformbase.collectType === undefined) {
+        callback(new Error('Please enter your emp'));
+      } else {
+        callback();
+      }
+    };
+    const validatePass2 = (rule, value, callback) => {
+      if (this.addformbase.repositoryLevelId === '' || this.addformbase.repositoryLevelId === null || this.addformbase.repositoryLevelId === undefined) {
+        callback(new Error('Please enter your emp'));
+      } else {
+        callback();
+      }
+    };
     return {
-      isShowTree: false,
-      // 树状图列表
-      authlist: [],
-      statList: [
-        {
-          label: this.$t('usermanage_view.working'),
-          value: 1
-        },
-        {
-          label: this.$t('usermanage_view.Quit'),
-          value: 2
-        }
-      ],
       modal_loading: false,
       mymoadlStat: this.modalstat,
       addformbase: {
-        rolename: '',
-        description: ''
       },
       ruleValidate: {
         name: [
@@ -100,6 +108,12 @@ export default {
         ],
         content: [
           { required: true, message: 'The content cannot be empty', trigger: 'blur' }
+        ],
+        collectType: [
+          { required: true, validator: validatePass1, trigger: 'blur' }
+        ],
+        repositoryLevelId: [
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ]
       },
       mycolumns: [
@@ -109,35 +123,77 @@ export default {
           align: 'center'
         },
         {
-          title: this.$t('indicatorSet_view.examTopic'),
-          key: 'name',
-          editable: true,
-          width: 200
+          title: this.$t('khxm'),
+          key: 'nameId',
+          render: (h, params) => {
+            console.log(this.itemList);
+            let str = '';
+            const temp = this.itemList.filter(item => {
+              return item.id === params.row.nameId;
+            });
+            str = temp[0].itemName;
+            return h('span', str);
+          }
         },
         {
-          title: this.$t('indicatorSet_view.scoreRange'),
-          editable: true,
-          children: [
-            {
-              title: this.$t('indicatorSet_view.beginScore'),
-              key: 'beginScore',
-              editable: true,
-              width: 150
-            },
-            {
-              title: this.$t('indicatorSet_view.endScore'),
-              key: 'endScore',
-              editable: true,
-              width: 150
+          title: this.$t('zblx'),
+          key: 'itemType',
+          render: (h, params) => {
+            const list = [
+              { value: 1, label: this.$t('lhzb') },
+              { value: 2, label: this.$t('xwjzzb') }
+            ];
+            const temp = list.filter(item => {
+              return item.value === params.row.itemType;
+            });
+            const str = temp[0].label;
+            return h('span', str);
+          }
+          // width: 100
+        },
+        {
+          title: this.$t('mbz'),
+          key: 'target'
+          // width: 100
+        },
+        {
+          title: this.$t('qz'),
+          key: 'weight'
+          // width: 100
+        },
+        {
+          title: this.$t('khbz'),
+          key: 'scoreDesc'
+          // width: 100
+        },
+        {
+          title: this.$t('jgzly'),
+          key: 'resultSource',
+          render: (h, params) => {
+            const list = [
+              { value: 1, label: this.$t('bkhr') },
+              { value: 2, label: this.$t('zdry') },
+              { value: 3, label: this.$t('zdzz') }
+            ];
+            const temp = list.filter(item => {
+              return item.value === params.row.resultSource;
+            });
+            const str = temp[0].label;
+            return h('span', str);
+          }
+        },
+        {
+          title: this.$t('ryzz'),
+          render: (h, params) => {
+            let str = this.$t('bkhr');
+            if (params.row.resultSource !== 1) {
+              const temp = params.row.sourceName.map(item => {
+                return item;
+              }).join(',');
+              str = temp;
             }
-          ]
-          // width: 100
-        },
-        {
-          title: this.$t('indicatorSet_view.scoreDescription'),
-          key: 'scoreDesc',
-          editable: true
-          // width: 100
+            return h('span', str);
+          }
         },
         {
           title: '操作',
@@ -148,6 +204,14 @@ export default {
           render: (h, params) => {
             return this.$tableAction(h, [
               {
+                title: '修改',
+                action: () => {
+                  this.edit_indicator_flag = true;
+                  this.indicator_info = params.row;
+                  this.indicator_dialog = true;
+                }
+              },
+              {
                 title: '删除',
                 action: () => {
                   this.$Modal.confirm({
@@ -156,9 +220,6 @@ export default {
                     onOk: () => {
                       console.log('删除');
                       this.mydataList.splice(params.index, 1);
-                      // this.deleteItem.postId = params.row.id;
-                      // this.deleteItem.operatId = this.$store.state.user.userLoginInfo.userId;
-                      // this.deletePositionById(this.deleteItem);
                     }
                   });
                 }
@@ -167,50 +228,52 @@ export default {
           }
         }
       ],
-      mydataList: []
+      mydataList: [],
+      levelList: [],
+      indicator_dialog: false,
+      indicator_info: null,
+      edit_indicator_flag: false,
+      indicatorlist: this.itemList
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      // 
-      if (this.mymoadlStat === true) {
-        console.log('editinfo==============', this.editinfo);
-        this.addformbase = this.editinfo;
-        this.mydataList = this.addformbase.assessmentItems;
+      //
+      if (this.mymoadlStat) {
+        this.getLevelList();
+        // this.getindicatorlist();
+        this.indicatorlist = this.itemList;
+        console.log(this.editinfo);
+        this.addformbase = this._.cloneDeep(this.editinfo);
+        this.mydataList = this.addformbase.assessmentItemVos;
       }
     }
   },
   methods: {
+    updateStat_indicator (stat, value) {
+      this.indicator_dialog = stat;
+      if (value && this.edit_indicator_flag) {
+        this.mydataList.splice(value._index, 1, value);
+      } else if (value) {
+        this.mydataList.push(value);
+      }
+    },
+    getLevelList () {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 9999
+      };
+      SalesRoomlevel.getSalesRoomlevel(searchform).then(res => {
+        console.log(res.data.content.list);
+        this.levelList = res.data.content.list;
+      });
+    },
     additem () {
-      const obj = {
-        name: '添加内容',
-        beginScore: '添加内容',
-        endScore: '添加内容',
-        scoreDesc: '添加内容'
-      };
-      this.mydataList.unshift(obj);
-    },
-    addorg (selection) {
-      console.log('selection==========>', selection);
-      console.log(selection.map(item => { return item.title; }).join(','));
-      this.addformbase.organizationOaName = selection.map(item => { return item.title; }).join(',');
-      this.addformbase.organizationOa = selection.map(item => { return item.id; }).join(',');
-      console.log(this.addformbase.organizationOaName);
-    },
-    // 选择部门或者成员
-    selectDepartmentOrEmployee (department) {
-      console.log('department==============>', department);
-    },
-    reset () {
-      this.addformbase = {
-        name: '',
-        content: ''
-      };
-      this.$refs.form.resetFields();
+      this.indicator_dialog = true;
+      this.edit_indicator_flag = false;
     },
     cancel () {
-      this.reset();
       this.$emit('updateStat', false);
     },
     handsave () {
@@ -219,12 +282,11 @@ export default {
         if (valid) {
           this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.itemJson = JSON.stringify(this.mydataList);
-          this.addformbase.collectId = this.addformbase.id;
+          console.log(this.addformbase);
           indicatorSetApi.updateIndicator(this.addformbase).then(res => {
             this.$Message.success(this.$t('addSuccess'));
             this.modal_loading = false;
             this.$emit('updateStat', false);
-            this.reset();
           });
         } else {
           this.$Message.error('Fail!');
