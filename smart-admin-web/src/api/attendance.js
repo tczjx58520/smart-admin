@@ -341,4 +341,27 @@ modifyAttendanceEmployeeSet: data => {
     return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
     }
 },
+// 考勤记录
+attendanceRecord: data => {
+  let Form = new FormData();
+  Form.append('employeeId', data.employeeId);
+  Form.append('date', data.date);
+  if (data) {
+    return postAxios('/attendance/attendanceRecord', Form);
+  }
+},
+
+// 考勤设置修改
+modifyAttendanceSet: data => {
+  if (data) {
+    return postAxios('/attendanceSet/modifyAttendanceSet', data);
+    }
+},
+
+// 考勤设置查询
+findAttendanceSet: data => {
+  let Form = new FormData();
+    return postAxios('/attendanceSet/findAttendanceSet');
+},
+
 }
