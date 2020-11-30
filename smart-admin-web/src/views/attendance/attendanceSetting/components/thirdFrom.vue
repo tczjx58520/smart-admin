@@ -120,9 +120,15 @@ export default {
     }
   },
   methods: {
+<<<<<<< Updated upstream
     moreOrganizationData (val) {
       this.fromBaseData.organizationId = val.organizationOa;
       this.selectTextData = val.organizationOaName;
+=======
+    moreOrganizationData(val) {
+      this.fromBaseData.organizationId = val.organizationOa
+      this.selectTextData = val.organizationOaName
+>>>>>>> Stashed changes
     },
     chooseOrganzation () {
       console.log('test');
@@ -166,6 +172,7 @@ export default {
       this.fromBaseData = {
         createId: this.$store.state.user.userLoginInfo.userId
       };
+      this.selectTextData = ''
       this.$refs['form'].resetFields();
     },
     handsave () {

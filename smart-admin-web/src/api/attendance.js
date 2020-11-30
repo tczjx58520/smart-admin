@@ -112,6 +112,10 @@ export const attendance = {
       return postAxios('/attendanceSet/modifyScheduling', data);
     }
   },
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
   // 年假查询
   findAnnual: data => {
@@ -120,6 +124,10 @@ export const attendance = {
       return postAxios('/attendanceSet/findAnnual?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
     }
   },
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
   // 年假修改
   modifyAnnual: data => {
@@ -260,6 +268,10 @@ export const attendance = {
     return postAxios('/attendancePersonal/findFillClock?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
   },
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
   // 补卡登记
   addFillClock: data => {
     if (data) {
@@ -337,54 +349,28 @@ export const attendance = {
     if (data) {
       return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
     }
-  }
-},
-// 手机考勤设置修改
-// modifyApplyObjectForMobile: data => {
-//   if (data) {
-//     return postAxios('/attendanceSet/modifyApplyObjectForMobile', data);
-//     }
-// },
+  },
+  // 考勤记录
+  attendanceRecord: data => {
+    let Form = new FormData();
+    Form.append('employeeId', data.employeeId);
+    Form.append('date', data.date);
+    if (data) {
+      return postAxios('/attendance/attendanceRecord', Form);
+    }
+  },
 
-// // 手机考勤设置新建
-// addAddressForMobile: data => {
-//   if (data) {
-//     return postAxios('/attendanceSet/addAddressForMobile', data);
-//     }
-// },
-// // 手机考勤设置删除
-// removeAddressForMobile: data => {
-//   if (data) {
-//     return postAxios('/attendanceSet/removeAddressForMobile?createId=' + data.createId, data);
-//     }
-// },
-// // 设置考勤人员修改
-// modifyAttendanceEmployeeSet: data => {
-//   if (data) {
-//     return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
-//     }
-// },
-// // 考勤记录
-// attendanceRecord: data => {
-//   let Form = new FormData();
-//   Form.append('employeeId', data.employeeId);
-//   Form.append('date', data.date);
-//   if (data) {
-//     return postAxios('/attendance/attendanceRecord', Form);
-//   }
-// },
+  // 考勤设置修改
+  modifyAttendanceSet: data => {
+    if (data) {
+      return postAxios('/attendanceSet/modifyAttendanceSet', data);
+    }
+  },
 
-// // 考勤设置修改
-// modifyAttendanceSet: data => {
-//   if (data) {
-//     return postAxios('/attendanceSet/modifyAttendanceSet', data);
-//     }
-// },
+  // 考勤设置查询
+  findAttendanceSet: data => {
+    let Form = new FormData();
+    return postAxios('/attendanceSet/findAttendanceSet');
+  },
 
-// // 考勤设置查询
-// findAttendanceSet: data => {
-//   let Form = new FormData();
-//     return postAxios('/attendanceSet/findAttendanceSet');
-// },
-
-// }
+}

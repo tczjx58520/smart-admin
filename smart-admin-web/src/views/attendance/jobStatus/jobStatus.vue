@@ -12,7 +12,11 @@
           label-position="left"
         >
           <Col span="5">
-            <FormItem prop="person" :label="$t('processDesign_view.organizationBelong')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('processDesign_view.organizationBelong')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -23,13 +27,19 @@
               />
             </FormItem>
           </Col>
-          <organization :modalstat.sync='modalstat' @organizationData='getOrganizationData'/>
+          <organization
+            :modalstat.sync="modalstat"
+            @organizationData="getOrganizationData"
+          />
           <Col span="4">
             <FormItem>
               <ButtonGroup>
-                <Button @click="getwelfareList" icon="ios-search" type="primary">{{
-                  $t("Search")
-                }}</Button>
+                <Button
+                  @click="getwelfareList"
+                  icon="ios-search"
+                  type="primary"
+                  >{{ $t("Search") }}</Button
+                >
               </ButtonGroup>
             </FormItem>
           </Col>
@@ -49,7 +59,11 @@
           label-position="left"
         >
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.qjrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.qjrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -60,7 +74,11 @@
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.ccrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.ccrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -71,7 +89,11 @@
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.wcrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.wcrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -93,7 +115,11 @@
           label-position="left"
         >
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.xjrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.xjrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -104,7 +130,11 @@
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.cdrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.cdrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -115,7 +145,11 @@
             </FormItem>
           </Col>
           <Col span="8">
-            <FormItem prop="person" :label="$t('kqgl.ztrs')" style="width: 100%">
+            <FormItem
+              prop="person"
+              :label="$t('kqgl.ztrs')"
+              style="width: 100%"
+            >
               <Input
                 placeholder=""
                 type="text"
@@ -149,20 +183,19 @@
         style="margin: 24px 0; text-align: right"
       ></Page>
     </Card>
-
   </div>
 </template>
 
 <script>
-import { attendance } from '@/api/attendance';
-import organization from '@/components/organization'
+import { attendance } from "@/api/attendance";
+import organization from "@/components/organization";
 export default {
-  name: 'jobStatus',
+  name: "jobStatus",
   components: {
-    organization
+    organization,
   },
   props: {},
-  data () {
+  data() {
     return {
       outFormData: {},
       modalstat: false,
@@ -171,36 +204,36 @@ export default {
       searchform: {
         pageNum: 1,
         pageSize: 10,
-        organizationId: '',
-        organizationName: ''
+        organizationId: "",
+        organizationName: "",
       },
       loading: false,
       pageTotal: 0,
       // table表头
       columns: [
         {
-          title: this.$t('empName'),
-          key: 'createPersonName'
+          title: this.$t("empName"),
+          key: "createPersonName",
         },
         {
-          title: this.$t('processDesign_view.organizationBelong'),
-          key: 'organizationName'
-        },
-         {
-          title: this.$t('kqgl.sb'),
-          key: 'firstStartTime'
-        },
-         {
-          title: this.$t('kqgl.xb'),
-          key: 'firstEndTime'
-        },
-         {
-          title: this.$t('kqgl.sb'),
-          key: 'secondStartTime'
+          title: this.$t("processDesign_view.organizationBelong"),
+          key: "organizationName",
         },
         {
-          title: this.$t('kqgl.xb'),
-          key: 'secondEndTime'
+          title: this.$t("kqgl.sb"),
+          key: "firstStartTime",
+        },
+        {
+          title: this.$t("kqgl.xb"),
+          key: "firstEndTime",
+        },
+        {
+          title: this.$t("kqgl.sb"),
+          key: "secondStartTime",
+        },
+        {
+          title: this.$t("kqgl.xb"),
+          key: "secondEndTime",
         },
         // {
         //   title: this.$t('usermanage_view.action'),
@@ -263,14 +296,14 @@ export default {
       // 新建弹窗
       visiable: false,
       moreWelfare: [],
-      tableHeight: 0
+      tableHeight: 0,
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created () {},
-  mounted () {
+  created() {},
+  mounted() {
     this.getwelfareList();
     setTimeout(() => {
       this.tableHeight =
@@ -279,31 +312,31 @@ export default {
   },
   methods: {
     clearOrganziation() {
-      this.searchform.organizationName = ''
-    this.searchform.organizationId = ''
+      this.searchform.organizationName = "";
+      this.searchform.organizationId = "";
     },
     getOrganizationData(val) {
-      console.log('val', val)
-    this.searchform.organizationName = val.title
-    this.searchform.organizationId = val.id
+      console.log("val", val);
+      this.searchform.organizationName = val.title;
+      this.searchform.organizationId = val.id;
     },
     selectOrg() {
-      console.log(this.modalstat)
-      this.modalstat = true
+      console.log(this.modalstat);
+      this.modalstat = true;
     },
-    Edit (row) {
-      if (this.$judge(['1-4-2'])) {
+    Edit(row) {
+      if (this.$judge(["1-4-2"])) {
         this.editinfo = row;
         this.visiable_edit = true;
       } else {
-        console.log('needroles');
+        console.log("needroles");
       }
     },
-    selectwelfare (selection) {
+    selectwelfare(selection) {
       this.moreWelfare = selection;
     },
-    clear () {
-      console.log('this.moreWelfare', this.moreWelfare);
+    clear() {
+      console.log("this.moreWelfare", this.moreWelfare);
       for (const i in this.moreWelfare) {
         let data = {};
         data.id = this.moreWelfare[i].id;
@@ -319,19 +352,19 @@ export default {
       }
     },
     // 查询用户登录日志
-    async getwelfareList () {
+    async getwelfareList() {
       try {
         this.loading = true;
         let result = await attendance.onTheJobStatus(this.searchform);
         this.loading = false;
         this.data = result.data.list.list;
         this.pageTotal = result.data.list.total;
-        this.outFormData.askForLeaveCount = result.data.askForLeaveCount
-        this.outFormData.lateForJob = result.data.lateForJob
-        this.outFormData.leaveEarlyCount = result.data.leaveEarlyCount
-        this.outFormData.businessOnTripCount = result.data.businessOnTripCount
-        this.outFormData.outsideCountToday = result.data.outsideCountToday
-        this.outFormData.vocationCount = result.data.vocationCount
+        this.outFormData.askForLeaveCount = result.data.askForLeaveCount;
+        this.outFormData.lateForJob = result.data.lateForJob;
+        this.outFormData.leaveEarlyCount = result.data.leaveEarlyCount;
+        this.outFormData.businessOnTripCount = result.data.businessOnTripCount;
+        this.outFormData.outsideCountToday = result.data.outsideCountToday;
+        this.outFormData.vocationCount = result.data.vocationCount;
       } catch (e) {
         // TODO zhuoda sentry
         console.error(e);
@@ -339,49 +372,49 @@ export default {
       }
     },
     // 翻页
-    changePage (pageNum) {
+    changePage(pageNum) {
       this.searchform.pageNum = pageNum;
       this.getUserLoginLogPage();
     },
     // 改变一页展示数
-    changePageSize (pageSize) {
+    changePageSize(pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
       this.getUserLoginLogPage();
     },
     // 搜索
-    search () {
+    search() {
       this.searchform.pageNum = 1;
       this.getwelfareList();
     },
     // 重置
-    reset () {
+    reset() {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = 10;
       // this.search();
     },
     // 删除日志(暂无)
-    async deleteLog () {
+    async deleteLog() {
       this.$Spin.show();
       this.$Spin.hide();
-      this.$Message.success('删除成功');
+      this.$Message.success("删除成功");
       this.getUserLoginLogPage();
     },
     // 弹窗组件
-    created () {
+    created() {
       console.log(12312312);
       this.visiable = true;
     },
-    updateStat (stat) {
+    updateStat(stat) {
       this.visiable = stat;
       this.getwelfareList();
     },
-    updateStat_edit (stat) {
+    updateStat_edit(stat) {
       this.visiable_edit = stat;
       this.getwelfareList();
-    }
+    },
     // 弹窗组件结束=========================》
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

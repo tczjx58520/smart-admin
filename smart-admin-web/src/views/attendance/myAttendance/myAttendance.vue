@@ -1,39 +1,31 @@
 <template>
-    <div>
- <Card class="warp-card" dis-hover>
-    <Tabs :animated="false">
-<firstTable/>
-<secondTable/>
-<thirdFrom/>
-    </Tabs>
+  <div>
+    <Card class="warp-card" dis-hover>
+      <Tabs :animated="false">
+        <firstTable />
+        <secondTable />
+        <thirdFrom />
+      </Tabs>
     </Card>
-    </div>
+  </div>
 </template>
 
 <script>
-import firstTable from './components/firstTable'
-import secondTable from './components/secondTable'
-import thirdFrom from './components/thirdFrom'
-
+import firstTable from "./components/firstTable";
+import secondTable from "./components/secondTable";
+import thirdFrom from "./components/thirdFrom";
 
 export default {
-    name: 'myAttendance',
-    components: {
-        firstTable,
-        secondTable,
-        thirdFrom
-    },
-    data() {
-        return {
-            
-
-
-        }
-    },
-    mounted() {
-    },
-    methods: {
-    
-    }
-}
+  name: "myAttendance",
+  components: {
+    firstTable,
+    secondTable,
+    thirdFrom,
+  },
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {},
+};
 </script>
