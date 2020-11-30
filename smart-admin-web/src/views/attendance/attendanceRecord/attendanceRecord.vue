@@ -11,8 +11,8 @@
 
 <script>
 import organizationTree from '@/components/organizationTree'
-
 import recordCalendar from '@/components/recordCalendar'
+import { attendance } from '@/api/attendance'
 export default {
     name: 'attendanceRecord',
     components: {
@@ -21,14 +21,24 @@ export default {
     },
     data() {
         return {
-
+            searchform: {
+                employeeId: this.$store.state.user.userLoginInfo.userId,
+                date: '2020-11'
+            }
         }
     },
     mounted() {
-
+        this.getData()
     },
     methods: {
-
+     async getData() {
+            try {
+        let result = await attendance.attendanceRecord(this.searchform);
+        
+      } catch (e) {
+        console.error(e);
+      }
+        }
     }
 }
 </script>

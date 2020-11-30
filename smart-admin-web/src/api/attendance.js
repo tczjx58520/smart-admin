@@ -338,4 +338,53 @@ export const attendance = {
       return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
     }
   }
-};
+},
+// 手机考勤设置修改
+// modifyApplyObjectForMobile: data => {
+//   if (data) {
+//     return postAxios('/attendanceSet/modifyApplyObjectForMobile', data);
+//     }
+// },
+
+// // 手机考勤设置新建
+// addAddressForMobile: data => {
+//   if (data) {
+//     return postAxios('/attendanceSet/addAddressForMobile', data);
+//     }
+// },
+// // 手机考勤设置删除
+// removeAddressForMobile: data => {
+//   if (data) {
+//     return postAxios('/attendanceSet/removeAddressForMobile?createId=' + data.createId, data);
+//     }
+// },
+// // 设置考勤人员修改
+// modifyAttendanceEmployeeSet: data => {
+//   if (data) {
+//     return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
+//     }
+// },
+// // 考勤记录
+// attendanceRecord: data => {
+//   let Form = new FormData();
+//   Form.append('employeeId', data.employeeId);
+//   Form.append('date', data.date);
+//   if (data) {
+//     return postAxios('/attendance/attendanceRecord', Form);
+//   }
+// },
+
+// // 考勤设置修改
+// modifyAttendanceSet: data => {
+//   if (data) {
+//     return postAxios('/attendanceSet/modifyAttendanceSet', data);
+//     }
+// },
+
+// // 考勤设置查询
+// findAttendanceSet: data => {
+//   let Form = new FormData();
+//     return postAxios('/attendanceSet/findAttendanceSet');
+// },
+
+// }
