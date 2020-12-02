@@ -241,7 +241,7 @@
                         <Checkbox :label="1">{{$t('kqgl.cd')}}</Checkbox>
                         <Checkbox :label="2">{{$t('kqgl.zt')}}</Checkbox>
                     </CheckboxGroup> -->
-            <RadioGroup v-model="fromBaseData.workEarlyType">
+            <RadioGroup v-model="fromBaseData.workEarlyType" @on-change="handleWorkEarlyType">
               <Radio :label="0">{{ $t("kqgl.cd") }}</Radio>
               <Radio :label="1">{{ $t("kqgl.zt") }}</Radio>
             </RadioGroup>
@@ -276,9 +276,10 @@
           style="padding-top: 20px; padding-left: 1%"
         >
           <FormItem :label="$t('kqgl.qyzdtbzjbc')">
-            <CheckboxGroup v-model="workEarlyType" @on-change="selectWorkType">
+            <!-- <CheckboxGroup v-model="workEarlyType" @on-change="selectWorkType">
               <Checkbox :label="0">{{ $t("kqgl.shi") }}</Checkbox>
-            </CheckboxGroup>
+            </CheckboxGroup> -->
+            <Checkbox v-model="automaticPunch" :label="0" @on-change="handleChange">{{ $t("kqgl.shi") }}</Checkbox>
           </FormItem>
 
           <FormItem :label="$t('kqgl.syry')">
@@ -404,6 +405,7 @@ export default {
   },
   data() {
     return {
+      automaticPunch: '',
       workEarlyType: [],
       textareaData5: "",
       moreSelectEmpVisible3: false,
@@ -451,11 +453,26 @@ export default {
     this.getDataList();
   },
   methods: {
+    handleWorkEarlyType(val) {
+      console.log('val', val)
+      this.fromBaseData.workEarlyType = val
+    },
+    handleChange(val) {
+      if(val) {
+        this.fromBaseData.automaticPunch = 1
+      } else {
+        this.fromBaseData.automaticPunch = 0
+      }
+    },
     async getDataList() {
       const result = await attendance.findAttendanceSet();
       console.log("result", result);
       this.fromBaseData = result.data;
-      this.workEarlyType = [result.data.workEarlyType];
+      if(result.data.automaticPunch === 1) {
+      this.automaticPunch = true
+      } else {
+      this.automaticPunch = false
+      }
       this.fromBaseData.timeBeforeThirdStartWork = Number(
         result.data.timeBeforeThirdStartWork
       );
@@ -571,11 +588,14 @@ export default {
           };
         }
       );
+
+      this.fromBaseData.id = result.data.id;
     },
     selectWorkType(val) {
+      console.log('this.workEarlyType', this.workEarlyType)
       console.log("val", val);
       if (val.length !== 0) {
-        this.fromBaseData.automaticPunch = val[0];
+        this.fromBaseData.automaticPunch = val[1];  
       }
     },
     newFirstForm() {

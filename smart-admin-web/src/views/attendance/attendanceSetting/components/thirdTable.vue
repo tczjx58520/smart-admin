@@ -42,11 +42,7 @@ export default {
         },
         {
           title: this.$t('kqgl.zzmc'),
-<<<<<<< Updated upstream
-          key: 'organizeName'
-=======
           key: 'organizationName'
->>>>>>> Stashed changes
         },
         {
           title: this.$t('kqgl.bz'),
@@ -88,11 +84,7 @@ export default {
         createId: this.$store.state.user.userLoginInfo.userId
       };
       for (const i in this.selectData) {
-<<<<<<< Updated upstream
-        sendParms.ids.push(this.selectData[i].id);
-=======
        sendParms.ids.push(this.selectData[i].organizationId)
->>>>>>> Stashed changes
       }
 
       console.log(sendParms);

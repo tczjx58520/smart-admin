@@ -4,7 +4,7 @@
       <organizationTree />
     </div>
     <div class="rightRecord">
-      <recordCalendar />
+      <recordCalendar :calendarData="sendData" :otherData="otherData"/>
     </div>
   </div>
 </template>
@@ -21,6 +21,8 @@ export default {
   },
   data() {
     return {
+      otherData: {},
+      sendData: [],
       searchform: {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         date: "2020-11",
@@ -34,6 +36,9 @@ export default {
     async getData() {
       try {
         let result = await attendance.attendanceRecord(this.searchform);
+        console.log('result', result)
+        this.sendData = result.data.list
+        this.otherData = result.data
       } catch (e) {
         console.error(e);
       }

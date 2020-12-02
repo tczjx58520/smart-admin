@@ -112,10 +112,6 @@ export const attendance = {
       return postAxios('/attendanceSet/modifyScheduling', data);
     }
   },
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
   // 年假查询
   findAnnual: data => {
@@ -124,10 +120,6 @@ export const attendance = {
       return postAxios('/attendanceSet/findAnnual?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
     }
   },
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
   // 年假修改
   modifyAnnual: data => {
@@ -268,10 +260,6 @@ export const attendance = {
     return postAxios('/attendancePersonal/findFillClock?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
   },
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   // 补卡登记
   addFillClock: data => {
     if (data) {

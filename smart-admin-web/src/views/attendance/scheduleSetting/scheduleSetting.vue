@@ -24,7 +24,7 @@
                 <div class="rightTopItem">
                    <span class="rightTopItemTitle">{{$t('kqgl.xzpbrq')}}</span>
                    <span>
-                    <DatePicker type="month"  placeholder="Select month" style="width: 200px" @on-change="getMonth"/>
+                    <DatePicker type="month" :value="month" placeholder="Select month" style="width: 200px" @on-change="getMonth"/>
 
                    </span>
                </div>
@@ -39,7 +39,7 @@
                     :loading="loading"
                     :page-size="searchform.pageSize"
                     :editable="true"
-                    :pageShow="false"
+                    :pageShow="true"
                     :total="pageTotal"
                     :value="data"
                     @on-change="changePage"
@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      nowMonth: '',
       model1: {},
       month: "",
       selectData: [],
@@ -127,6 +128,7 @@ export default {
     getNowMonth() {
       let curDate = new Date();
       this.searchform.month = curDate.getMonth() + 1;
+      this.nowMonth = this.searchform.month
     },
     getMonth(val) {
       this.searchform.month = val.substring(5, 7);
@@ -192,19 +194,19 @@ export default {
           row.employeeId;
         this.moreEditData.push(shiftDatas);
       }
-      console.log("this.moreEditData", this.moreEditData);
-      console.log("judgeClickStat", judgeClickStat);
-      console.log("row", row);
-      console.log("column", column);
-      console.log("data", data);
-      console.log("evnet", evnet);
-      console.log("params", params);
+      // console.log("this.moreEditData", this.moreEditData);
+      // console.log("judgeClickStat", judgeClickStat);
+      // console.log("row", row);
+      // console.log("column", column);
+      // console.log("data", data);
+      // console.log("evnet", evnet);
+      // console.log("params", params);
 
-      console.log("index", index);
-      console.log("column.key", column.key);
-      // this.data[index].cellClassName[column.key] = 'shawnselect'
+      // console.log("index", index);
+      // console.log("column.key", column.key);
+      // // this.data[index].cellClassName[column.key] = 'shawnselect'
 
-      console.log("this.data", this.data);
+      // console.log("this.data", this.data);
     },
     editData(val) {
       console.log(val);
@@ -281,7 +283,7 @@ export default {
           }
         }
       }
-      console.log(newarr);
+      // console.log(newarr);
       let testarr = newarr.map((item) => {
         return { item };
       });
@@ -311,12 +313,20 @@ export default {
     getMonthDays() {
       let curDate = new Date();
       /* 获取当前月份 */
-      let curMonth = curDate.getMonth();
-      this.searchform.month = curMonth + 1;
+      let curMonth = this.searchform.month;
+      let curYear = curDate.getFullYear()
+      // this.searchform.month = curMonth + 1;
+      // this.month =curYear + '-' + this.searchform.month
       /*  生成实际的月份: 由于curMonth会比实际月份小1, 故需加1 */
-      curDate.setMonth(Number(this.searchform.month));
+      curDate.setMonth(Number(curMonth));
       /* 将日期设置为0, 这里为什么要这样设置, 我不知道原因, 这是从网上学来的 */
       curDate.setDate(0);
+      var lastDay= new Date(curYear,curMonth,0).getDate()
+      // console.log('curYear', curYear)
+      // console.log('curMonth', curMonth)
+
+      // console.log('lastDay', lastDay)
+
       /* 返回当月的天数 */
       return curDate.getDate();
     },
@@ -333,6 +343,7 @@ export default {
       let year = curDate.getFullYear();
       let month = this.searchform.month;
       let countDays = this.getMonthDays();
+      console.log('countDays', countDays)
       let columnsArr = [];
       let columsTitle = "";
       let weekday = "";
@@ -388,6 +399,7 @@ export default {
       this.columns = columnsArr;
     },
     async getListData() {
+      console.log('this.searchform', this.searchform)
       this.moreEditData = [];
       let date = new Date();
       if (this.searchform.month) {
@@ -402,9 +414,10 @@ export default {
         this.loading = true;
         let result = await attendance.findScheduling(this.searchform);
         this.loading = false;
-        console.log(result);
-        this.data = this.switchData(result.data);
-        console.log(this.data);
+        // console.log(result);
+        this.data = this.switchData(result.data.data.list);
+        this.pageTotal = result.data.data.total
+        // console.log(this.data);
       } catch (e) {
         // TODO zhuoda sentry
         console.error(e);
@@ -423,13 +436,13 @@ export default {
     // 分页
     changePage(pageNum) {
       this.searchform.pageNum = pageNum;
-      this.getTaskList();
+      this.getListData();
     },
     // 分页
     changePageSize(pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
-      this.getTaskList();
+      this.getListData();
     },
     // 刷新
     refresh() {
