@@ -49,10 +49,10 @@
             </Select>
           </FormItem>
           <FormItem :label="$t('mbz')" style="width: 80%">
-            <Input v-model="addformbase.target" />
+            <Input v-model="addformbase.target" :disabled="addformbase.itemType === 2"/>
           </FormItem>
           <FormItem :label="$t('qz')" style="width: 80%">
-            <Input v-model="addformbase.weight" />
+            <Input v-model="addformbase.weight" :disabled="addformbase.itemType === 2"/>
           </FormItem>
           <FormItem :label="$t('khbz')" style="width: 80%">
             <Input v-model="addformbase.scoreDesc" />

@@ -2,7 +2,7 @@
   <div>
         <Modal v-model="mymoadlStat" class="add" width="1024" :closable="false" :mask-closable="false" :transfer="false" fullscreen>
           <div slot="header" style="text-align:left;color:#fff;">
-              <span>{{ $t('role_view.addrole') }}</span>
+              <span>添加指标集</span>
           </div>
           <div>
               <Card dis-hover>

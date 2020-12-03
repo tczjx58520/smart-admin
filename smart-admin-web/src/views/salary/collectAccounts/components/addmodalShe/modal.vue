@@ -83,10 +83,10 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
-    this.getBaseInfo();
+
   },
   data () {
     const validatePass2 = (rule, value, callback) => {
@@ -146,6 +146,7 @@ export default {
     modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.modalstat) {
+        this.getBaseInfo();
         this.addformbase = this.editinfo;
         console.log('修改数据================>', this.addformbase);
         this.allitems = this.addformbase.salaryOptionIds.split(',').map(Number);

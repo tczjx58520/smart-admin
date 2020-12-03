@@ -65,10 +65,8 @@
               <h3>{{ item.label }}</h3>
             </div>
             <div>
-              {{ item.componentType === 1 && item.value === 'employeeId' }}
-              {{ item.componentType }}
               <Input
-                v-if="item.componentType === 1 && item.value === 'employeeId'"
+                v-if="item.componentType === '1' && item.value === 'employeeId'"
                 style="width: 500px"
                 v-model="addformbase.employeeName"
                 readonly
@@ -76,9 +74,7 @@
                 placeholder="选择内容"
               />
               <Input
-                v-else-if="
-                  item.componentType === 1 && item.value === 'organazationId'
-                "
+                v-else-if="item.componentType === '1' && item.value === 'organazationId'"
                 style="width: 500px"
                 v-model="addformbase.organizationOaName"
                 :readonly="!Boolean(Number(item.isEdit))"
@@ -86,9 +82,7 @@
                 placeholder="选择内容"
               />
               <Input
-                v-else-if="
-                  item.componentType === 1 && item.value === 'totalTime'
-                "
+                v-else-if="item.componentType === '1' && item.value === 'totalTime' && ($route.query.receiptType == '8' || $route.query.receiptType == '10')"
                 style="width: 500px"
                 v-model="addformbase[item.value]"
                 :readonly="!Boolean(Number(item.isEdit))"
@@ -98,24 +92,35 @@
                 <span slot="append" style="width: 70px">{{ $t('day') }}</span>
               </Input>
               <Input
-                v-else-if="item.componentType === 1"
+                v-else-if="item.componentType === '1' && item.value === 'totalTime' && ($route.query.receiptType == '9' || $route.query.receiptType == '11')"
                 style="width: 500px"
                 v-model="addformbase[item.value]"
                 :readonly="!Boolean(Number(item.isEdit))"
                 size="large"
-                placeholder="输入内容1"
+                placeholder="输入内容"
+              >
+                <span slot="append" style="width: 70px">{{ $t('hour') }}</span>
+              </Input>
+              <Input
+                v-else-if="item.componentType === '1'"
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容"
               />
               <DatePicker
                 confirm
-                v-else-if="item.componentType === 2"
+                v-else-if="item.componentType === '2'"
                 v-model="addformbase[item.value]"
+                size="large"
                 type="datetime"
                 placeholder="Select date"
                 style="width: 500px"
                 @on-change="changTime($event, $event, item.value)"
               ></DatePicker>
               <Cascader
-                v-else-if="item.componentType === 4"
+                v-else-if="item.componentType === '4'"
                 style="width: 500px"
                 size="large"
                 :data="orgValue"
@@ -125,8 +130,9 @@
                 @on-change="getSelectValue"
               ></Cascader>
               <Select
-                v-else-if="item.componentType === 5 && item.value === 'type' && $route.query.receiptType == '8'"
+                v-else-if="item.componentType === '5' && item.value === 'type' && $route.query.receiptType == '8'"
                 v-model="addformbase.type"
+                size="large"
                 style="width:500px"
                 filterable
               >
@@ -138,8 +144,9 @@
                 >
               </Select>
               <Select
-                v-else-if="item.componentType === 5 && item.value === 'type' && $route.query.receiptType == '9'"
+                v-else-if="item.componentType === '5' && item.value === 'type' && $route.query.receiptType == '9'"
                 v-model="addformbase.type"
+                size="large"
                 style="width:500px"
                 filterable
               >
@@ -151,8 +158,9 @@
                 >
               </Select>
               <Select
-                v-else-if="item.componentType === 5 && item.value === 'shiftId'"
+                v-else-if="item.componentType === '5' && item.value === 'shiftId'"
                 v-model="addformbase.shiftId"
+                size="large"
                 style="width:500px"
                 filterable
               >
@@ -164,38 +172,12 @@
                 >
               </Select>
               <RadioGroup
-                v-else-if="item.componentType === 6"
+                v-else-if="item.componentType === '6'"
                 v-model="addformbase[item.value]"
               >
                 <Radio :label="1">{{ $t("yes") }}</Radio>
                 <Radio :label="2">{{ $t("no") }}</Radio>
               </RadioGroup>
-              <!-- totalTime -->
-              <!-- <Input
-                v-if="item.value === 'applyPersonId'"
-                style="width: 500px"
-                v-model="addformbase.applyPersonName"
-                readonly
-                size="large"
-                placeholder="选择内容"
-              /> -->
-              <!-- <Cascader
-                v-else-if="item.value === 'organizeId'"
-                style="width: 500px"
-                size="large"
-                :data="orgValue"
-                v-model="addformbase.actuallyOrganizeId"
-                filterable
-                change-on-select
-                @on-change="getSelectValue"
-              ></Cascader> -->
-              <!-- <Input
-                v-else
-                style="width: 500px"
-                v-model="addformbase[item.value]"
-                size="large"
-                placeholder="选择内容"
-              /> -->
             </div>
           </ListItem>
           <!-- end -->
@@ -306,7 +288,14 @@ export default {
     calcinfo: null
   },
   created () {},
-  watch () {},
+  watch: {
+    watchReceiptType: {
+      handler () {
+        console.log(this.watchReceiptType);
+      },
+      immediate: true
+    }
+  },
   mounted () {
     console.log('numbe==========', this.$route.query.receiptType);
     if (
@@ -332,6 +321,9 @@ export default {
     receiptNumber () {
       const str = utils.getDateStr(0, 'receipt');
       return `${this.$route.query.receiptLabel}${this.$store.state.user.userLoginInfo.nickName}${str}`;
+    },
+    watchReceiptType () {
+      return this.$route.query.receiptType;
     }
   },
   data () {
@@ -360,7 +352,8 @@ export default {
         employeeName: this.$store.state.user.userLoginInfo.nickName,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
         organizationOaName: this.$store.state.user.userLoginInfo
-          .organizationOaName
+          .organizationOaName,
+        whetherExchange: 1
       },
       ruleValidate: {
         title: [
@@ -839,26 +832,131 @@ export default {
     },
     save_9 () {
       attendance.addWorkOvertime(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
         console.log(res);
       });
     },
     save_10 () {
       attendance.addBusniessOnTrip(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
         console.log(res);
       });
     },
     save_11 () {
       attendance.addWorkOutside(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
         console.log(res);
       });
     },
     save_12 () {
       attendance.addFillClock(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
         console.log(res);
       });
     },
     save_13 () {
       attendance.addTerminalLeave(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
         console.log(res);
       });
     }

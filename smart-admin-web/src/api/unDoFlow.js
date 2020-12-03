@@ -57,6 +57,23 @@ export const unDoFlowApi = {
       Form.append('handleResult', data.handleResult);
     }
     return postAxios('/flowRecord/updateHandleRecord', Form);
+  },
+  // 召回
+  rebackFlowRecord: (data) => {
+    let Form = new FormData();
+    if (data.recallPersonId !== undefined && data.recallPersonId !== null && data.recallPersonId !== '') {
+      Form.append('recallPersonId', data.recallPersonId);
+    }
+    if (data.recallReason !== undefined && data.recallReason !== null && data.recallReason !== '') {
+      Form.append('recallReason', data.recallReason);
+    }
+    if (data.flowRecordId !== undefined && data.flowRecordId !== null && data.flowRecordId !== '') {
+      Form.append('flowRecordId', data.flowRecordId);
+    }
+    if (data.handleRecordId !== undefined && data.handleRecordId !== null && data.handleRecordId !== '') {
+      Form.append('handleRecordId', data.handleRecordId);
+    }
+    return postAxios('/recallRecord/addRecall', Form);
   }
 }
 ;

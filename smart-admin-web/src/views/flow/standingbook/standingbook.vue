@@ -293,24 +293,6 @@ export default {
           fixed: 'right',
           render: (h, params) => {
             return h('div', [
-              // h(
-              //   'Button',
-              //   {
-              //     props: {
-              //       type: 'success',
-              //       size: 'small'
-              //     },
-              //     style: {
-              //       marginRight: '5px'
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.handler_list(params.row);
-              //       }
-              //     }
-              //   },
-              //   this.$t('bl')
-              // ),
               h(
                 'Button',
                 {
@@ -343,7 +325,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {
@@ -367,7 +350,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {
@@ -391,7 +375,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {
@@ -415,7 +400,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {
@@ -458,7 +444,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {
@@ -482,7 +469,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.stat === 2 ? 'none' : 'inline-block'
                   },
                   directives: [
                     {

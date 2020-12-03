@@ -151,7 +151,7 @@ export default {
             return h('div', [
               h('Button', {
                 props: {
-                  type: 'primary',
+                  type: params.row.stat === 1 ? 'error' : 'primary',
                   size: 'small'
                 },
                 directives: [
@@ -171,7 +171,7 @@ export default {
                     });
                   }
                 }
-              }, params.row.stat === 1 ? this.$t('Open') : this.$t('Forbid2')),
+              }, params.row.stat === 1 ? this.$t('Forbid2') : this.$t('open')),
               h('Button', {
                 props: {
                   type: 'info',
@@ -465,14 +465,14 @@ export default {
     updateStat_view (state) {
       this.visiable_view = state;
       this.refreshModal = false;
-      this.getTaskList()
+      this.getTaskList();
       setTimeout(() => {
         this.refreshModal = true;
       }, 300);
     },
     updateStat_edit (state) {
       this.visiable_edit = state;
-      this.getTaskList()
+      this.getTaskList();
       this.refreshModal = false;
       setTimeout(() => {
         this.refreshModal = true;

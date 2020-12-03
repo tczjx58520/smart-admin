@@ -61,7 +61,7 @@ export default {
     optionList: null
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -159,9 +159,8 @@ export default {
   watch: {
     async modalstat () {
       this.mymoadlStat = this.modalstat;
-      this.addformbase = this.editinfo;
-      console.log('this.addformbase===========>', this.addformbase, this.optionList);
-      this.OptionsList = this.optionList;
+      this.addformbase = Object.assign({}, this.editinfo);
+      this.OptionsList = this._.cloneDeep(this.optionList);
       this.addformbase.salaryOptionId = this.addformbase.id;
       this.joincalc = [];
       if (this.addformbase.calculationFormulaVo) {
@@ -171,12 +170,11 @@ export default {
         await collectAccountsApi.getcalculationFormula(data).then(res => {
           result = res.data.content.list;
         });
-        console.log('result==========', result);
-        this.addformbase.pointNum = result[0].pointNum;
-        this.addformbase.partOptions = result[0].partOptions.split(',').map(Number);
-        this.addformbase.formula = result[0].formula;
-        console.log(this.addformbase.partOptions);
-        this.addformbase.formulaId = result[0].id;
+        // this.addformbase.pointNum = result[0].pointNum;
+        this.$set(this.addformbase, 'pointNum', result[0].pointNum);
+        this.$set(this.addformbase, 'partOptions', result[0].partOptions.split(',').map(Number));
+        this.$set(this.addformbase, 'formula', result[0].formula);
+        this.$set(this.addformbase, 'formulaId', result[0].id);
         this.joincalc = result[0].salaryOptions.map(item => {
           return {
             label: item.name,
@@ -191,7 +189,7 @@ export default {
     myFormula (state) {
       console.log('mystate==================?', state);
       this.$set(this.addformbase, 'formula', state);
-      console.log(this.addformbase);
+      console.log(this.addformbase.formula);
     },
     transmitInformation (selection) {
       console.log('selection===========>', selection);

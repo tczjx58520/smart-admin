@@ -48,7 +48,13 @@
           </Col>
           <Col span="5">
             <FormItem prop="person" :label="$t('fqsj')" style="width: 100%">
-              <DatePicker type="daterange" placeholder="Select date" v-model="searchform.timeRange" style="width: 200px" @on-change="setTime"></DatePicker>
+              <DatePicker
+                type="daterange"
+                placeholder="Select date"
+                v-model="searchform.timeRange"
+                style="width: 200px"
+                @on-change="setTime"
+              ></DatePicker>
             </FormItem>
           </Col>
           <Col span="4">
@@ -86,23 +92,6 @@
           icon="md-refresh"
           type="default"
           >{{ $t("Reflash") }}</Button
-        >
-        <Button
-          v-if="searchform.flag === 1"
-          style="margin-right: 15px"
-          v-privilege="['1-4-1']"
-          @click="searchSignCounter"
-          icon="md-add"
-          type="error"
-          >{{ $t("hqdb") }}</Button
-        >
-        <Button
-          v-else
-          style="margin-right: 15px"
-          v-privilege="['1-4-1']"
-          @click="searchToDoList"
-          icon="md-add"
-          >{{ $t("dblb") }}</Button
         >
       </div>
       <Table
@@ -148,6 +137,33 @@
       :editinfo="editinfo"
       @updateStat="updateStat_handler"
     ></handlerTaskDetail>
+    <Modal class="add" v-model="additem" :closable="false" :mask-closable="false" width="720">
+      <div slot="header" style="text-align: left; color: #fff">
+        <span>召回</span>
+      </div>
+      <Form
+        ref="form"
+        :model="addformbase"
+        label-position="right"
+        :label-width="100"
+      >
+        <FormItem :label="$t('zhly')" prop="personnel">
+          <Input
+            v-model="addformbase.recallReason"
+            type="textarea"
+            style="width: 100%"
+          ></Input>
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <ButtonGroup>
+          <Button type="primary" @click="sure">{{ $t("sure") }}</Button>
+          <Button type="error" @click="additem = false">{{
+            $t("Close")
+          }}</Button>
+        </ButtonGroup>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -172,6 +188,10 @@ export default {
   props: {},
   data () {
     return {
+      addformbase: {
+        recallPersonId: this.$store.state.user.userLoginInfo.id
+      },
+      additem: false,
       editinfo: null,
       mytype: null,
       visiable: false,
@@ -206,7 +226,10 @@ export default {
           title: this.$t('fqall'),
           width: 200,
           render: (h, params) => {
-            let DateStr = utils.getDate(new Date(params.row.createDate), 'YMDHMS');
+            let DateStr = utils.getDate(
+              new Date(params.row.createDate),
+              'YMDHMS'
+            );
             return h('div', [
               h(
                 'span',
@@ -288,7 +311,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.handler_list(params.row);
+                      this.zhaohui(params.row);
                     }
                   }
                 },
@@ -345,6 +368,18 @@ export default {
     this.getbaseclassification();
   },
   methods: {
+    sure () {
+      console.log(this.addformbase);
+      this.addformbase.flowRecordId = this.addformbase.id;
+      this.addformbase.handleRecordId = this.addformbase.actionId;
+      unDoFlowApi.rebackFlowRecord(this.addformbase).then(res => {
+        this.additem = false;
+      });
+    },
+    zhaohui (row) {
+      this.addformbase = Object.assign({}, row);
+      this.additem = true;
+    },
     setTime (val, type) {
       console.log(val);
       if (val.length > 0) {
@@ -521,5 +556,14 @@ export default {
 <style lang="less" scoped>
 .ivu-form-item {
   margin-bottom: 0;
+}
+.add /deep/ .ivu-modal-header {
+  background-color: #2d8cf0;
+}
+.add /deep/ .ivu-modal-content {
+  background-color: #eee;
+}
+.add /deep/ .ivu-modal-footer {
+  border: none;
 }
 </style>

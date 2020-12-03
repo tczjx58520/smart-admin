@@ -38,7 +38,7 @@
           :rules="ruleValidate"
         >
           <FormItem :label="$t('mc')" style="width: 80%">
-            <Input v-model="addformbase.reward" />
+            <Input v-model="addformbase.rank" />
           </FormItem>
           <FormItem :label="$t('jl')" style="width: 80%">
             <Input v-model="addformbase.reward" />

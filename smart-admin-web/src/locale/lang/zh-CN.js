@@ -810,6 +810,9 @@ export default {
   DoFlow: '已办流程',
   DoFlowManage: '已办流程管理',
   zhaohui: '召回',
+  zhly: '召回理由',
+  zzmc: '组织名称',
+  hour: '小时',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

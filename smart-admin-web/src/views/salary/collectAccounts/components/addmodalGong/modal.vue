@@ -82,10 +82,9 @@ export default {
     }
   },
   created () {
-    
+
   },
   mounted () {
-    this.getBaseInfo();
   },
   data () {
     const validatePass2 = (rule, value, callback) => {
@@ -144,6 +143,7 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
+      this.getBaseInfo();
     }
   },
   methods: {

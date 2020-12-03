@@ -124,8 +124,8 @@ export default {
       if (this.mymoadlStat) {
         if (this.isedit) {
           this.addformbase = Object.assign({}, this.editinfo);
-          this.getassessmentList();
         }
+        this.getassessmentList();
       }
     }
   },

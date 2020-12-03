@@ -51,7 +51,14 @@
             :data="treedata"
             :render="renderDepartmentTreeButton"
             style="height: 485px;overflow-x: scroll"
-          ></Tree>
+            @on-contextmenu="handleContextMenu"
+          >
+            <template slot="contextMenu">
+              <DropdownItem @click.native="handleContextMenuEdit"
+                >编辑</DropdownItem
+              >
+            </template>
+          </Tree>
         </Card>
       </div>
       <div style="width: 80%;">
@@ -105,6 +112,7 @@
           </div>
         </Card>
       </div>
+      <Addmodal :modalstat="edit_dialog" :editInfo="editInfo" @updateStat="addstat"/>
     </div>
   </div>
 </template>
@@ -112,10 +120,12 @@
 import $ from 'jquery';
 import { organization } from '@/api/organization';
 import DepartmentEmployeeTree from './components/department-employee-tree/department-employee-tree';
+import Addmodal from './components/addmoadal/addmodal.vue';
 export default {
   name: 'Organization',
   components: {
-    DepartmentEmployeeTree
+    DepartmentEmployeeTree,
+    Addmodal
   },
   props: {},
   data () {
@@ -136,7 +146,10 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      contextData: null,
+      edit_dialog: false,
+      editInfo: null
     };
   },
   computed: {},
@@ -154,6 +167,20 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    addstat (stat, value) {
+      this.edit_dialog = stat;
+      if (value) {
+        this.getorganizationtreedata();
+      }
+    },
+    handleContextMenu (data) {
+      console.log(data);
+      this.contextData = data;
+      this.editInfo = data;
+    },
+    handleContextMenuEdit () {
+      this.edit_dialog = true;
+    },
     // 重置表单
     resetForm () {
       this.$refs.myForm.resetFields();
@@ -249,6 +276,7 @@ export default {
         const expand = true;
         const level = item[map.level];
         const id = item[map.id];
+        const contextmenu = true;
         let children = item[map.children];
         // 如果有子节点，递归
         if (children) {
@@ -257,6 +285,7 @@ export default {
 
         result.push({
           title,
+          contextmenu,
           expand,
           parentId,
           children,
@@ -278,7 +307,8 @@ export default {
         parentId: 'parentId',
         children: 'children',
         level: 'level',
-        id: 'id'
+        id: 'id',
+        contextmenu: true
       };
       this.treedata = this.convertTree(result.data.content, map);
     },

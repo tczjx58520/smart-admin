@@ -46,7 +46,7 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
   },

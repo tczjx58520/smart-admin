@@ -274,7 +274,6 @@ export default {
         if (children) {
           children = this.convertTree(children, map);
         }
-
         result.push({
           title,
           expand,

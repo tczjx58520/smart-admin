@@ -27,7 +27,7 @@ export const organization = {
     Form.append('organizeName', data.organizeName);
     Form.append('organizeId', data.organizeId);
     Form.append('operatId', data.operatId);
-    return postAxios('/organize/deleteOrganize', Form);
+    return postAxios('/organize/updateOrganize', Form);
   }
 }
 ;
