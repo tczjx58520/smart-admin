@@ -11,6 +11,7 @@ import { recall } from './recall';
 import { drafts } from './drafts';
 import { standingbook } from './standingbook';
 import { timeout } from './timeout';
+import { DoFlow } from './DoFlow';
 // 业务
 export const flow = [
   {
@@ -33,7 +34,8 @@ export const flow = [
       ...recall,
       ...drafts,
       ...standingbook,
-      ...timeout
+      ...timeout,
+      ...DoFlow
     ]
   }
 ];

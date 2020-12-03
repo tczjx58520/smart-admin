@@ -50,14 +50,14 @@
           type="warning"
           >{{ $t("Create") }}</Button
         >
-        <Button
+        <!-- <Button
           v-privilege="['10-16-3']"
           style="margin-right: 15px"
           @click="clear"
           icon="md-close"
           type="error"
           >{{ $t("Delete") }}</Button
-        >
+        > -->
       </div>
       <Table
         ref="multipleTable"
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+
 import { salesroom } from '@/api/salesroom';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
@@ -141,7 +142,7 @@ export default {
           title: this.$t('mdzt'),
           key: 'stat',
           render: (h, params) => {
-            if (params.row.type === 1) {
+            if (params.row.stat === 1) {
               return h('span', this.$t('qy'));
             } else {
               return h('span', this.$t('Close'));
@@ -186,6 +187,9 @@ export default {
                     type: 'info',
                     size: 'small'
                   },
+                  style: {
+                    marginRight: '5px'
+                  },
                   directives: [
                     {
                       name: 'privilege',
@@ -199,6 +203,34 @@ export default {
                   }
                 },
                 this.$t('Edit')
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: params.row.stat === 1 ? 'error' : 'success',
+                    size: 'small'
+                  },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['10-16-2']
+                    }
+                  ],
+                  on: {
+                    click: () => {
+                      const date = {
+                        id: params.row.id,
+                        stat: params.row.stat === 1 ? 2 : 1
+                      };
+                      salesroom.updateSalesRoomList(date).then(res => {
+                        this.$Message.success(this.$t('czcg'));
+                        this.getwelfareList();
+                      });
+                    }
+                  }
+                },
+                params.row.stat === 1 ? this.$t('jy') : this.$t('qy')
               )
             ]);
           }
@@ -260,20 +292,20 @@ export default {
       this.moreWelfare = selection;
     },
     clear () {
-      console.log('this.moreWelfare', this.moreWelfare);
-      for (const i in this.moreWelfare) {
-        let data = {};
-        data.id = this.moreWelfare[i].id;
-        data.operatId = this.$store.state.user.userLoginInfo.userId;
-        FlowCategoryApi.delGroup(data).then((res) => {
-          if (res.ret === 200) {
-            this.$Message.success(res.msg);
-            this.reset();
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
-      }
+      // console.log('this.moreWelfare', this.moreWelfare);
+      // for (const i in this.moreWelfare) {
+      //   let data = {};
+      //   data.id = this.moreWelfare[i].id;
+      //   data.operatId = this.$store.state.user.userLoginInfo.userId;
+      //   salesroom.delGroup(data).then((res) => {
+      //     if (res.ret === 200) {
+      //       this.$Message.success(res.msg);
+      //       this.reset();
+      //     } else {
+      //       this.$Message.error(res.msg);
+      //     }
+      //   });
+      // }
     },
     // 查询用户登录日志
     async getwelfareList () {

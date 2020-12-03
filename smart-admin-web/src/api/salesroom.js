@@ -164,6 +164,10 @@ export const salesroom = {
       Form.append('sisterRepository', data.sisterRepository);
     }
     return postAxios('/repository/updateRepository', Form);
+  },
+  // 删除门店
+  delSalesRoomList: data => {
+    return postAxios('/repository/updateRepository', data);
   }
 }
 ;

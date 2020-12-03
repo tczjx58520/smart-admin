@@ -49,6 +49,7 @@ export default {
   },
   mounted () {
     this.editor = new Editor(`#${this.editorId}`);
+    // this.editor.i18next = window.i18next
     this.editor.customConfig.onchange = (html) => {
       let text = this.editor.txt.text();
       if (this.cache) localStorage.editorCache = html;

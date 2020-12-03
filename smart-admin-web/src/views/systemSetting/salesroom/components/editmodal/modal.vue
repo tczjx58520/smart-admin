@@ -95,9 +95,9 @@
                 <Select v-model="addformbase.repositoryLevelId">
                   <Option
                     v-for="item in levelList"
-                    :value="item.value"
-                    :key="item.value"
-                    >{{ item.label }}</Option
+                    :value="item.id"
+                    :key="item.id"
+                    >{{ item.levelName }}</Option
                   >
                 </Select>
               </FormItem>
@@ -148,10 +148,10 @@
               >
                 <Select v-model="addformbase.sisterRepository">
                   <Option
-                    v-for="item in repositoryList"
-                    :value="item.value"
-                    :key="item.value"
-                    >{{ item.label }}</Option
+                    v-for="item in reposList"
+                    :value="item.id"
+                    :key="item.id"
+                    >{{ item.repositoryName }}</Option
                   >
                 </Select>
               </FormItem>
@@ -220,6 +220,7 @@ import addemp from '../addemp/modal';
 import addorg from '../add_org/modal';
 import addpost from '../addpost/modal';
 import { utils } from '@/lib/util';
+import { SalesRoomlevel } from '@/api/salesroomLevel';
 const defaultForm = {
   startOrganize: '',
   startPost: '',
@@ -316,7 +317,7 @@ export default {
       visiable_post: false,
       tranferValue: null,
       mytype: null,
-      repositoryList: [],
+      reposList: [],
       levelList: []
     };
   },
@@ -329,10 +330,39 @@ export default {
       const mydate = new Date(this.addformbase.openTime);
       this.addformbase.openTimeStr = utils.getDate(mydate, 'YMDHMS');
       this.addformbase.time = new Date(this.addformbase.openTime);
+      this.getwelfareList();
+      this.getrepos();
       console.log(this.editinfo);
     }
   },
   methods: {
+    // 查询用户登录日志
+    async getrepos () {
+      const searchform = {
+        pageSize: 999,
+        pageNum: 1
+      };
+      try {
+        let result = await salesroom.getSalesRoomList(searchform);
+        this.reposList = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
+    async getwelfareList () {
+      const searchform = {
+        pageSize: 999,
+        pageNum: 1
+      };
+      try {
+        let result = await SalesRoomlevel.getSalesRoomlevel(searchform);
+        this.levelList = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
     setTime (val, val2) {
       this.addformbase.openTimeStr = val;
     },

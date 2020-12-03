@@ -9,10 +9,10 @@
           size="large"
           :style="{
             height: myheigth,
-            overflow: 'auto',
+            overflow: 'auto'
           }"
         >
-          <ListItem v-if="$route.query.receiptType === '1'">
+          <ListItem v-if="$route.query.receiptType === 1">
             <div style="padding: 10px 60px; width: 300px">
               <h3>已选薪酬表</h3>
             </div>
@@ -59,22 +59,63 @@
               </Select>
             </div>
           </ListItem>
-          <!-- 测试 -->
+          <!-- 测试从后端获取字段 -->
           <ListItem v-for="(item, index) in formList" :key="index">
             <div style="padding: 10px 60px; width: 300px">
               <h3>{{ item.label }}</h3>
             </div>
             <div>
+              {{ item.componentType === 1 && item.value === 'employeeId' }}
+              {{ item.componentType }}
               <Input
-                v-if="item.value === 'applyPersonId'"
+                v-if="item.componentType === 1 && item.value === 'employeeId'"
                 style="width: 500px"
-                v-model="addformbase.applyPersonName"
+                v-model="addformbase.employeeName"
                 readonly
                 size="large"
                 placeholder="选择内容"
               />
+              <Input
+                v-else-if="
+                  item.componentType === 1 && item.value === 'organazationId'
+                "
+                style="width: 500px"
+                v-model="addformbase.organizationOaName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
+                  item.componentType === 1 && item.value === 'totalTime'
+                "
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容"
+              >
+                <span slot="append" style="width: 70px">{{ $t('day') }}</span>
+              </Input>
+              <Input
+                v-else-if="item.componentType === 1"
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容1"
+              />
+              <DatePicker
+                confirm
+                v-else-if="item.componentType === 2"
+                v-model="addformbase[item.value]"
+                type="datetime"
+                placeholder="Select date"
+                style="width: 500px"
+                @on-change="changTime($event, $event, item.value)"
+              ></DatePicker>
               <Cascader
-                v-else-if="item.value === 'organizeId'"
+                v-else-if="item.componentType === 4"
                 style="width: 500px"
                 size="large"
                 :data="orgValue"
@@ -83,18 +124,82 @@
                 change-on-select
                 @on-change="getSelectValue"
               ></Cascader>
-              <Input
-                v-else
-                style="width: 500px"
+              <Select
+                v-else-if="item.componentType === 5 && item.value === 'type' && $route.query.receiptType == '8'"
+                v-model="addformbase.type"
+                style="width:500px"
+                filterable
+              >
+                <Option
+                  v-for="item in hoildayType"
+                  :value="item.value"
+                  :key="item.value"
+                  >{{ item.label }}</Option
+                >
+              </Select>
+              <Select
+                v-else-if="item.componentType === 5 && item.value === 'type' && $route.query.receiptType == '9'"
+                v-model="addformbase.type"
+                style="width:500px"
+                filterable
+              >
+                <Option
+                  v-for="item in workHardType"
+                  :value="item.value"
+                  :key="item.value"
+                  >{{ item.label }}</Option
+                >
+              </Select>
+              <Select
+                v-else-if="item.componentType === 5 && item.value === 'shiftId'"
+                v-model="addformbase.shiftId"
+                style="width:500px"
+                filterable
+              >
+                <Option
+                  v-for="item in firstData"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.shiftName }}</Option
+                >
+              </Select>
+              <RadioGroup
+                v-else-if="item.componentType === 6"
                 v-model="addformbase[item.value]"
+              >
+                <Radio :label="1">{{ $t("yes") }}</Radio>
+                <Radio :label="2">{{ $t("no") }}</Radio>
+              </RadioGroup>
+              <!-- totalTime -->
+              <!-- <Input
+                v-if="item.value === 'applyPersonId'"
+                style="width: 500px"
+                v-model="addformbase.applyPersonName"
                 readonly
                 size="large"
                 placeholder="选择内容"
-              />
+              /> -->
+              <!-- <Cascader
+                v-else-if="item.value === 'organizeId'"
+                style="width: 500px"
+                size="large"
+                :data="orgValue"
+                v-model="addformbase.actuallyOrganizeId"
+                filterable
+                change-on-select
+                @on-change="getSelectValue"
+              ></Cascader> -->
+              <!-- <Input
+                v-else
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                size="large"
+                placeholder="选择内容"
+              /> -->
             </div>
           </ListItem>
           <!-- end -->
-          <ListItem>
+          <!-- <ListItem>
             <div style="padding: 10px 60px; width: 300px"><h3>附件</h3></div>
             <div>
               <Input
@@ -115,30 +220,41 @@
                 </Upload>
               </Input>
             </div>
-          </ListItem>
-          <ListItem style="flex-wrap: wrap;">
-            <div style="padding: 10px 60px; width: 300px"><h3>薪酬明细</h3></div>
+          </ListItem> -->
+          <ListItem
+            style="flex-wrap: wrap;"
+            v-if="$route.query.receiptType == '1'"
+          >
+            <div style="padding: 10px 60px; width: 300px">
+              <h3>薪酬明细</h3>
+            </div>
             <div>
-            <Table :columns="columns" :data="data" max-height="500" size="small" style="width:1000px;">
-              <template slot-scope="scope" slot="personName">
-                <span type="text"> {{ scope.row.empName }} </span>
-              </template>
-              <template slot-scope="scope" slot="organizationOaName">
-                <span>{{ scope.row.organizeName }}</span>
-              </template>
-              <template slot-scope="scope" slot="yearAndMonth">
-                <span style="width: 180px">{{ scope.row.yearAndMonth }}</span>
-              </template>
-              <template slot-scope="scope" slot="grantDate">
-                <span style="width: 180px">{{ scope.row.grantDate }}</span>
-              </template>
-              <template slot-scope="scope" slot="basicAccumulationFund">
-                <span>{{ scope.row.basicAccumulationFund.basicMoney }}</span>
-              </template>
-              <template slot-scope="scope" slot="basicSocialSecurity">
-                <span>{{ scope.row.basicSocialSecurity.basicMoney }}</span>
-              </template>
-            </Table>
+              <Table
+                :columns="columns"
+                :data="data"
+                max-height="500"
+                size="small"
+                style="width:1000px;"
+              >
+                <template slot-scope="scope" slot="personName">
+                  <span type="text"> {{ scope.row.empName }} </span>
+                </template>
+                <template slot-scope="scope" slot="organizationOaName">
+                  <span>{{ scope.row.organizeName }}</span>
+                </template>
+                <template slot-scope="scope" slot="yearAndMonth">
+                  <span style="width: 180px">{{ scope.row.yearAndMonth }}</span>
+                </template>
+                <template slot-scope="scope" slot="grantDate">
+                  <span style="width: 180px">{{ scope.row.grantDate }}</span>
+                </template>
+                <template slot-scope="scope" slot="basicAccumulationFund">
+                  <span>{{ scope.row.basicAccumulationFund.basicMoney }}</span>
+                </template>
+                <template slot-scope="scope" slot="basicSocialSecurity">
+                  <span>{{ scope.row.basicSocialSecurity.basicMoney }}</span>
+                </template>
+              </Table>
             </div>
           </ListItem>
         </List>
@@ -152,9 +268,13 @@
               @click="handsave"
               >{{ $t("salaryjudge_view.submitForApproval") }}</Button
             >
-            <Button type="warning" style="margin-right: 15px" size="large" @click="handsave_drafts">{{
-              $t("cgx")
-            }}</Button>
+            <Button
+              type="warning"
+              style="margin-right: 15px"
+              size="large"
+              @click="handsave_drafts"
+              >{{ $t("cgx") }}</Button
+            >
             <Button type="error" size="large" @click="cancel">{{
               $t("Close")
             }}</Button>
@@ -172,6 +292,7 @@ import { organization } from '@/api/organization';
 import { FlowApi } from '@/api/flow';
 import addempSingle from './components/addemp_single/modal';
 import { utils } from '@/lib/util';
+import { attendance } from '@/api/attendance';
 export default {
   name: 'process',
   components: {
@@ -185,8 +306,13 @@ export default {
     calcinfo: null
   },
   created () {},
+  watch () {},
   mounted () {
-    if (!this.$store.state.user.transInfo.id) {
+    console.log('numbe==========', this.$route.query.receiptType);
+    if (
+      !this.$store.state.user.transInfo.id &&
+      this.$route.query.receiptType === '1'
+    ) {
       this.$router.go(-1);
       this.$router.closeCurrentPage();
     } else {
@@ -195,9 +321,9 @@ export default {
         this.$store.state.user.transInfo
       );
       this.getOrgValue();
-      console.log(this.addformbase);
     }
     this.getEditLabel();
+    this.getFirstTableData();
   },
   computed: {
     myheigth () {
@@ -205,7 +331,6 @@ export default {
     },
     receiptNumber () {
       const str = utils.getDateStr(0, 'receipt');
-      console.log(utils.getDateStr(0, 'YMDHM'));
       return `${this.$route.query.receiptLabel}${this.$store.state.user.userLoginInfo.nickName}${str}`;
     }
   },
@@ -229,7 +354,13 @@ export default {
         importanceLevel: 1,
         actuallyOrganizeId: [],
         applyPersonId: this.$store.state.user.userLoginInfo.userId,
-        applyPersonName: this.$store.state.user.userLoginInfo.nickName
+        applyPersonName: this.$store.state.user.userLoginInfo.nickName,
+        // 考勤
+        employeeId: this.$store.state.user.userLoginInfo.userId,
+        employeeName: this.$store.state.user.userLoginInfo.nickName,
+        organazationId: this.$store.state.user.userLoginInfo.organizationOa,
+        organizationOaName: this.$store.state.user.userLoginInfo
+          .organizationOaName
       },
       ruleValidate: {
         title: [
@@ -245,6 +376,25 @@ export default {
         { value: 2, label: '一般' },
         { value: 3, label: '不重要' }
       ],
+      hoildayType: [
+        { value: 1, label: this.$t('bingjia') },
+        { value: 2, label: this.$t('shijia') },
+        { value: 4, label: this.$t('hunjian') },
+        { value: 5, label: this.$t('chanjianjia') },
+        { value: 6, label: this.$t('chanjia') },
+        { value: 7, label: this.$t('jihuashengyushoushujia') },
+        { value: 8, label: this.$t('hulijia') },
+        { value: 9, label: this.$t('burujia') },
+        { value: 10, label: this.$t('sangjia') },
+        { value: 11, label: this.$t('nianxiujia') },
+        { value: 12, label: this.$t('qita') }
+      ],
+      workHardType: [
+        { value: 1, label: this.$t('kqgl.gzrjiab') },
+        { value: 2, label: this.$t('kqgl.shuangxiuriji') },
+        { value: 3, label: this.$t('kqgl.fdjrjaiba') }
+      ],
+      firstData: [],
       // 新建员工弹窗
       visiable_emp: false,
       formList: [],
@@ -312,13 +462,91 @@ export default {
     };
   },
   methods: {
+    async getFirstTableData () {
+      const firstTable = {
+        pageNum: 1,
+        pageSize: 999
+      };
+      try {
+        let result = await attendance.findAllShiftInfo(firstTable);
+        this.firstData = result.data.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
+    changTime (date, dateType, value) {
+      this.addformbase[value + 'Ms'] = new Date(
+        this.addformbase[value]
+      ).getTime();
+      this.addformbase[value] = date;
+      console.log(this.addformbase[value + 'Ms']);
+    },
     titleFilter () {
       const type = this.$route.query.receiptType;
-      if (type === '1') {
-        return '薪酬发放申请审批单';
-      } else {
-        return '自定义流程';
-      }
+      const map = [
+        {
+          id: 1,
+          businessName: this.$t('xcsp')
+        },
+        {
+          id: 2,
+          businessName: this.$t('ygrz')
+        },
+        {
+          id: 3,
+          businessName: this.$t('htqs')
+        },
+        {
+          id: 4,
+          businessName: this.$t('ygzz')
+        },
+        {
+          id: 5,
+          businessName: this.$t('ygdg')
+        },
+        {
+          id: 6,
+          businessName: this.$t('yglz')
+        },
+        {
+          id: 7,
+          businessName: this.$t('ygxq')
+        },
+        {
+          id: 8,
+          businessName: this.$t('qj')
+        },
+        {
+          id: 9,
+          businessName: this.$t('jiaban')
+        },
+        {
+          id: 10,
+          businessName: this.$t('chuchai')
+        },
+        {
+          id: 11,
+          businessName: this.$t('waichu')
+        },
+        {
+          id: 12,
+          businessName: this.$t('buka')
+        },
+        {
+          id: 13,
+          businessName: this.$t('xiaojia')
+        }
+      ];
+      // if (type === "1") {
+      //   return this.$t("xcffsqspd");
+      // } else if (type === "2") {
+      //   return this.$t("ygrz");
+      // } else {
+      //   return "自定义流程";
+      // }
+      console.log(type);
+      return map[+type - 1].businessName;
     },
     getSelectValue (val, selectedData) {
       const length = selectedData.length;
@@ -335,7 +563,7 @@ export default {
       }
     },
     getOrgValue () {
-      organization.organizationlist().then((res) => {
+      organization.organizationlist().then(res => {
         console.log(res.data.content);
         this.deepLoop(res.data.content);
         this.orgValue = res.data.content;
@@ -344,22 +572,25 @@ export default {
     getEditLabel () {
       let process = [];
       const data = this.$route.query.receiptType;
-      FlowApi.getFlowContent(data).then((res) => {
+      FlowApi.getFlowContent(data).then(res => {
         let data = res.data.content;
         let data2 = data.split(',');
         for (let i = 0; i < data2.length; i++) {
           let data3 = data2[i].split(':');
           const temp = {
             label: data3[1],
-            value: data3[0]
+            value: data3[0],
+            isEdit: data3[2],
+            componentType: data3[3]
           };
           process.push(temp);
         }
         this.formList = process;
+        console.log('this.formList=======', this.formList);
       });
     },
     async getorg () {
-      const result = await organization.organizationlist().then((res) => {
+      const result = await organization.organizationlist().then(res => {
         return res.data.content[0];
       });
       let name = result.organizeName;
@@ -401,18 +632,18 @@ export default {
       console.log('selection==========>', selection);
       console.log(
         selection
-          .map((item) => {
+          .map(item => {
             return item.title;
           })
           .join(',')
       );
       this.addformbase.organizationOaName = selection
-        .map((item) => {
+        .map(item => {
           return item.title;
         })
         .join(',');
       this.addformbase.organizationOa = selection
-        .map((item) => {
+        .map(item => {
           return item.id;
         })
         .join(',');
@@ -462,7 +693,7 @@ export default {
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
       this.addformbase.salaryJudgeId = this.addformbase.id;
-      salaryjudgeApi.addapproveApplication(this.addformbase).then((res) => {
+      salaryjudgeApi.addapproveApplication(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
@@ -490,22 +721,68 @@ export default {
     },
     handsave () {
       this.modal_loading = true;
-      if (this.$store.state.user.transInfo.empSalaryVos.length === 0) {
+      if (this.$route.query.receiptType === '1' && this.$store.state.user.transInfo.empSalaryVos.length === 0) {
         this.$Message.error('此单据无审批数据');
         this.modal_loading = false;
         return false;
       }
-      if (this.addformbase.actuallyOrganizeId.length === 0) {
+      if (this.$route.query.receiptType === '1' && this.addformbase.actuallyOrganizeId.length === 0) {
         this.$Message.error('请选择发放单位');
         this.modal_loading = false;
         return false;
       }
+      console.log(this.$route.query.receiptType);
+      switch (Number(this.$route.query.receiptType)) {
+        case 1:
+          this.save_1();
+          break;
+        case 2:
+          this.save_2();
+          break;
+        case 3:
+          this.save_3();
+          break;
+        case 4:
+          this.save_4();
+          break;
+        case 5:
+          this.save_5();
+          break;
+        case 6:
+          this.save_6();
+          break;
+        case 7:
+          this.save_7();
+          break;
+        case 8:
+          this.save_8();
+          break;
+        case 9:
+          this.save_9();
+          break;
+        case 10:
+          this.save_10();
+          break;
+        case 11:
+          this.save_11();
+          break;
+        case 12:
+          this.save_12();
+          break;
+        case 13:
+          this.save_13();
+          break;
+        default:
+          break;
+      }
+    },
+    save_1 () {
       this.addformbase.organizeId = this.addformbase.actuallyOrganizeId[this.addformbase.actuallyOrganizeId.length - 1];
       this.addformbase.organizeIds = this.addformbase.actuallyOrganizeId;
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
       this.addformbase.salaryJudgeId = this.addformbase.id;
-      salaryjudgeApi.addapproveApplication(this.addformbase).then((res) => {
+      salaryjudgeApi.addapproveApplication(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
@@ -527,6 +804,62 @@ export default {
           this.$Message.error(res.msg);
           this.modal_loading = false;
         }
+      });
+    },
+    save_2 () {
+
+    },
+    save_3 () {
+    },
+    save_8 () {
+      attendance.addApplyLeave(this.addformbase).then(res => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then(res => {
+            console.log('res=========', res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
+        console.log(res);
+      });
+    },
+    save_9 () {
+      attendance.addWorkOvertime(this.addformbase).then(res => {
+        console.log(res);
+      });
+    },
+    save_10 () {
+      attendance.addBusniessOnTrip(this.addformbase).then(res => {
+        console.log(res);
+      });
+    },
+    save_11 () {
+      attendance.addWorkOutside(this.addformbase).then(res => {
+        console.log(res);
+      });
+    },
+    save_12 () {
+      attendance.addFillClock(this.addformbase).then(res => {
+        console.log(res);
+      });
+    },
+    save_13 () {
+      attendance.addTerminalLeave(this.addformbase).then(res => {
+        console.log(res);
       });
     }
   }

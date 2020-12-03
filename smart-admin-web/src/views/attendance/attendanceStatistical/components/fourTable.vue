@@ -11,7 +11,6 @@
                    </span>
                </div>
 
-
                <div class="rightTopItem">
                    <span class="rightTopItemTitle">{{$t('kqgl.sengqingren')}}</span>
                    <span>
@@ -19,7 +18,6 @@
                    </span>
                     <selectEmp :modalstat.sync='empSata' @selectData='selectData'/>
                </div>
-
 
                 <div class="rightTopItem">
                    <span class="rightTopItemTitle">{{$t('kqgl.suoshuzhuzhi')}}</span>
@@ -50,34 +48,32 @@
 </template>
 
 <script>
-import { attendance } from '@/api/attendance'
+import { attendance } from '@/api/attendance';
 import Tables from '@/components/tables';
-import organization from '@/components/organization'
-import selectEmp from '@/components/selectEmp'
-
-
+import organization from '@/components/organization';
+import selectEmp from '@/components/selectEmp';
 
 export default {
-    name: 'firstTable',
-    components:{
-Tables,
-organization,
-selectEmp
-    },
-    data() {
-        return {
-          createPersonName: '',
-          organizationName: '',
-            firstLoading: false,
-            firstTable:{
-              organizationId:'',
-              createPersonName: '',
-                conditionTime: '',
-                pageNum: 1,
-                pageSize: 10
-            },
-            fistTotal: 0,
-            firstColumns: [
+  name: 'firstTable',
+  components: {
+    Tables,
+    organization,
+    selectEmp
+  },
+  data () {
+    return {
+      createPersonName: '',
+      organizationName: '',
+      firstLoading: false,
+      firstTable: {
+        organizationId: '',
+        createPersonName: '',
+        conditionTime: '',
+        pageNum: 1,
+        pageSize: 10
+      },
+      fistTotal: 0,
+      firstColumns: [
         {
           title: this.$t('kqgl.dengjiren'),
           key: 'createPersonName'
@@ -85,66 +81,65 @@ selectEmp
         {
           title: this.$t('kqgl.shenqingshijian'),
           key: 'applyTime'
-        },{
+        }, {
           title: this.$t('kqgl.kaishishijian'),
           key: 'overWorkTimeMorning'
         }, {
           title: this.$t('kqgl.jieshushijian'),
           key: 'startWorkTimeAfternoon'
-        },{
+        }, {
           title: this.$t('kqgl.jiabanleixing'),
           key: 'type',
           render: (h, params) => {
             if (params.row.type === 0) {
               return h('span', this.$t('kqgl.gzrjiab'));
-            } else if(params.row.type === 1) {
+            } else if (params.row.type === 1) {
               return h('span', this.$t('kqgl.shuangxiuriji'));
-            } else if(params.row.type === 2) {
+            } else if (params.row.type === 2) {
               return h('span', this.$t('kqgl.fdjrjaiba'));
             }
           }
-        },{
+        }, {
           title: this.$t('kqgl.jiabanshijian'),
           key: 'totalTime'
         }, {
           title: this.$t('kqgl.jiabanshiyou'),
           key: 'reason'
         }
-            ],
-            firstData: [],
-            modalstat: false,
-            modalState: '',
-            empSata: false,
-        }
+      ],
+      firstData: [],
+      modalstat: false,
+      modalState: '',
+      empSata: false
+    };
+  },
+  mounted () {
+    this.getFirstTableData();
+  },
+  methods: {
+    chooseDate (val) {
+      this.firstTable.conditionTime = val;
     },
-    mounted() {
-        this.getFirstTableData()
+    selectData (val) {
+      // console.log('val', val)
+      this.firstTable.createPersonName = val.id;
+      this.createPersonName = val.personName;
     },
-    methods: {
-      chooseDate(val) {
-        this.firstTable.conditionTime = val
-      },
-      selectData(val) {
-          // console.log('val', val)
-          this.firstTable.createPersonName = val.id
-          this.createPersonName = val.personName
-      },
-      chooseEmp() {
-          this.empSata = true
-      },
-      organizationData(val) {
-        this.organizationName = val.title
-        this.firstTable.organizationId = val.id
-      },
-      selectOrg() {
-      this.modalstat = true
+    chooseEmp () {
+      this.empSata = true;
     },
-      restList(val) {
-        if(val) {
-        this.getFirstTableData()
-
-        }
-      },
+    organizationData (val) {
+      this.organizationName = val.title;
+      this.firstTable.organizationId = val.id;
+    },
+    selectOrg () {
+      this.modalstat = true;
+    },
+    restList (val) {
+      if (val) {
+        this.getFirstTableData();
+      }
+    },
     async getFirstTableData () {
       try {
         this.firstLoading = true;
@@ -176,20 +171,20 @@ selectEmp
       this.getFirstTableData();
     },
     newFirstForm () {
-      this.modalState = '新建'
+      this.modalState = '新建';
       // this.firstLoading = true;
-      this.modalstat = true
-    },
+      this.modalstat = true;
     }
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>
-.rightTop { 
+.rightTop {
     background: #ffffff;
     padding: 10px 0;
     display: flex;
-    
+
 }
 
 .rightTopItem{

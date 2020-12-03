@@ -93,9 +93,9 @@
                 <Select v-model="addformbase.repositoryLevelId">
                   <Option
                     v-for="item in levelList"
-                    :value="item.value"
-                    :key="item.value"
-                    >{{ item.label }}</Option
+                    :value="item.id"
+                    :key="item.id"
+                    >{{ item.levelName }}</Option
                   >
                 </Select>
               </FormItem>
@@ -144,12 +144,12 @@
                 :label="$t('fsmd')"
                 style="width: 80%"
               >
-                <Select v-model="addformbase.sisterRepository">
+                <Select v-model="addformbase.sisterRepository" filterable>
                   <Option
-                    v-for="item in repositoryList"
-                    :value="item.value"
-                    :key="item.value"
-                    >{{ item.label }}</Option
+                    v-for="item in reposList"
+                    :value="item.id"
+                    :key="item.id"
+                    >{{ item.repositoryName }}</Option
                   >
                 </Select>
               </FormItem>
@@ -217,6 +217,7 @@ import { salesroom } from '@/api/salesroom';
 import addemp from '../addemp/modal';
 import addorg from '../add_org/modal';
 import addpost from '../addpost/modal';
+import { SalesRoomlevel } from '@/api/salesroomLevel';
 const defaultForm = {
   startOrganize: '',
   startPost: '',
@@ -312,16 +313,47 @@ export default {
       visiable_post: false,
       tranferValue: null,
       mytype: null,
-      repositoryList: [],
-      levelList: []
+      levelList: [],
+      reposList: []
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
+      if (this.mymoadlStat) {
+        this.getwelfareList();
+        this.getrepos();
+      }
     }
   },
   methods: {
+    // 查询用户登录日志
+    async getrepos () {
+      const searchform = {
+        pageSize: 999,
+        pageNum: 1
+      };
+      try {
+        let result = await salesroom.getSalesRoomList(searchform);
+        this.reposList = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
+    async getwelfareList () {
+      const searchform = {
+        pageSize: 999,
+        pageNum: 1
+      };
+      try {
+        let result = await SalesRoomlevel.getSalesRoomlevel(searchform);
+        this.levelList = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
     // 选择人员部门岗位
     selectOrg (index) {
       this.mytype = index;

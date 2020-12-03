@@ -44,7 +44,6 @@ export const personnelRelations = [
         },
         component: () => import('@/views/personnelManagement/empInduction/empInduction')
       },
-      // SQL监控
       {
         path: '/personnelRelations/contractManagement',
         name: 'contractManagement',
@@ -53,6 +52,33 @@ export const personnelRelations = [
           roles: ['1-8-4']
         },
         component: () => import('@/views/personnelManagement/empContract/empContract')
+      },
+      {
+        path: '/personnelRelations/regularWorker',
+        name: 'regularWorkerManagement',
+        meta: {
+          title: '员工转正管理',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/regularWorker/regularWorker')
+      },
+      {
+        path: '/personnelRelations/jobTransfer',
+        name: 'jobTransferManagement',
+        meta: {
+          title: '员工转岗管理',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/jobTransfer/jobTransfer')
+      },
+      {
+        path: '/personnelRelations/empQuit',
+        name: 'empQuitManagement',
+        meta: {
+          title: '员工离职管理',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/empQuit/empQuit')
       }
     ]
   }

@@ -338,7 +338,7 @@ export const attendance = {
       return postAxios('/attendanceSet/modifyAttendanceEmployeeSet', data);
     }
   }
-},
+};
 // 手机考勤设置修改
 // modifyApplyObjectForMobile: data => {
 //   if (data) {

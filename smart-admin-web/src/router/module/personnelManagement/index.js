@@ -2,6 +2,8 @@
 import Main from '@/components/main';
 
 import { personnelRelations } from './empInduction';
+import { traning } from './traning';
+// import { employeeFile } from './employeeFile';
 // 业务
 export const personnelManagement = [
   {
@@ -15,7 +17,9 @@ export const personnelManagement = [
       roles: ['1-2-4']
     },
     children: [
-      ...personnelRelations
+      ...personnelRelations,
+      ...traning
+      // ...employeeFile
     ]
   }
 ];

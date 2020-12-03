@@ -142,7 +142,7 @@ export default {
         },
         {
           title: this.$t('usermanage_view.role'),
-          key: 'roleOaName ',
+          key: 'rolesOaName ',
           width: '100'
         },
         {

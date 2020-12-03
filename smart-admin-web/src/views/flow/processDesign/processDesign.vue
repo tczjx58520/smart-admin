@@ -465,12 +465,14 @@ export default {
     updateStat_view (state) {
       this.visiable_view = state;
       this.refreshModal = false;
+      this.getTaskList()
       setTimeout(() => {
         this.refreshModal = true;
       }, 300);
     },
     updateStat_edit (state) {
       this.visiable_edit = state;
+      this.getTaskList()
       this.refreshModal = false;
       setTimeout(() => {
         this.refreshModal = true;
