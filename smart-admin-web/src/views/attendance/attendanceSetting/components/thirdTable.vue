@@ -42,7 +42,7 @@ export default {
         },
         {
           title: this.$t('kqgl.zzmc'),
-          key: 'organizeName'
+          key: 'organizationName'
         },
         {
           title: this.$t('kqgl.bz'),
@@ -84,7 +84,7 @@ export default {
         createId: this.$store.state.user.userLoginInfo.userId
       };
       for (const i in this.selectData) {
-        sendParms.ids.push(this.selectData[i].id);
+       sendParms.ids.push(this.selectData[i].organizationId)
       }
 
       console.log(sendParms);

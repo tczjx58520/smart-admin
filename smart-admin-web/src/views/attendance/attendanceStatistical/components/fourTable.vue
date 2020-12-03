@@ -1,50 +1,79 @@
 <template>
-    <div>
-        <TabPane :label="$t('kqgl.jiabantongji')">
-            <div class="rightTop">
-                <Button @click="resetFirstTable" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
-                <Button @click="resetFirstTable" type="primary" style="margin-right:15px;">{{ $t('kqgl.daying') }}</Button>
-               <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.rqxz')}}</span>
-                   <span>
-                        <DatePicker type="date" placeholder="Select year" style="width: 200px" @on-change="chooseDate"/>
-                   </span>
-               </div>
-
-               <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.sengqingren')}}</span>
-                   <span>
-                        <Input :value="createPersonName" type="text" @click.native="chooseEmp"/>
-                   </span>
-                    <selectEmp :modalstat.sync='empSata' @selectData='selectData'/>
-               </div>
-
-                <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.suoshuzhuzhi')}}</span>
-                   <span>
-                        <Input :value="organizationName" type="text" @click.native="selectOrg()"/>
-                   </span>
-                    <organization :modalstat.sync='modalstat' @organizationData="organizationData"/>
-               </div>
-                <div class="rightTopItem">
-                   <Button type="primary" @click.native="getFirstTableData">{{$t('Search')}}</Button>
-               </div>
+  <div>
+    <TabPane :label="$t('kqgl.jiabantongji')">
+      <div class="rightTop">
+        <Button
+          @click="resetFirstTable"
+          icon="md-refresh"
+          type="default"
+          style="margin-right: 15px"
+          >{{ $t("Reflash") }}</Button
+        >
+        <Button
+          @click="resetFirstTable"
+          type="primary"
+          style="margin-right: 15px"
+          >{{ $t("kqgl.daying") }}</Button
+        >
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{ $t("kqgl.rqxz") }}</span>
+          <span>
+            <DatePicker
+              type="date"
+              placeholder="Select year"
+              style="width: 200px"
+              @on-change="chooseDate"
+            />
+          </span>
         </div>
-            <Tables
-                    :columns="firstColumns"
-                    :current="firstTable.pageNum"
-                    :loading="firstLoading"
-                    :page-size="firstTable.pageSize"
-                    :pageShow="true"
-                    :editable='false'
-                    :total="fistTotal"
-                    :value="firstData"
-                    @on-change="firstChangePage"
-                    show-elevator
-                     show-sizer
-                  ></Tables>
-        </TabPane>
-    </div>
+
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{ $t("kqgl.sengqingren") }}</span>
+          <span>
+            <Input
+              :value="createPersonName"
+              type="text"
+              @click.native="chooseEmp"
+            />
+          </span>
+          <selectEmp :modalstat.sync="empSata" @selectData="selectData" />
+        </div>
+
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{ $t("kqgl.suoshuzhuzhi") }}</span>
+          <span>
+            <Input
+              :value="organizationName"
+              type="text"
+              @click.native="selectOrg()"
+            />
+          </span>
+          <organization
+            :modalstat.sync="modalstat"
+            @organizationData="organizationData"
+          />
+        </div>
+        <div class="rightTopItem">
+          <Button type="primary" @click.native="getFirstTableData">{{
+            $t("Search")
+          }}</Button>
+        </div>
+      </div>
+      <Tables
+        :columns="firstColumns"
+        :current="firstTable.pageNum"
+        :loading="firstLoading"
+        :page-size="firstTable.pageSize"
+        :pageShow="true"
+        :editable="false"
+        :total="fistTotal"
+        :value="firstData"
+        @on-change="firstChangePage"
+        show-elevator
+        show-sizer
+      ></Tables>
+    </TabPane>
+  </div>
 </template>
 
 <script>
@@ -81,13 +110,16 @@ export default {
         {
           title: this.$t('kqgl.shenqingshijian'),
           key: 'applyTime'
-        }, {
+        },
+        {
           title: this.$t('kqgl.kaishishijian'),
           key: 'overWorkTimeMorning'
-        }, {
+        },
+        {
           title: this.$t('kqgl.jieshushijian'),
           key: 'startWorkTimeAfternoon'
-        }, {
+        },
+        {
           title: this.$t('kqgl.jiabanleixing'),
           key: 'type',
           render: (h, params) => {
@@ -99,10 +131,12 @@ export default {
               return h('span', this.$t('kqgl.fdjrjaiba'));
             }
           }
-        }, {
+        },
+        {
           title: this.$t('kqgl.jiabanshijian'),
           key: 'totalTime'
-        }, {
+        },
+        {
           title: this.$t('kqgl.jiabanshiyou'),
           key: 'reason'
         }
@@ -181,20 +215,19 @@ export default {
 
 <style lang="less" scoped>
 .rightTop {
-    background: #ffffff;
-    padding: 10px 0;
-    display: flex;
-
+  background: #ffffff;
+  padding: 10px 0;
+  display: flex;
 }
 
-.rightTopItem{
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    padding-left: 25px;
+.rightTopItem {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  padding-left: 25px;
 }
 
 .rightTopItemTitle {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 </style>
