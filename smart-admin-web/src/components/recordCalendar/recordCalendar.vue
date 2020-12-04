@@ -103,8 +103,7 @@
                     <div class="top_icon" v-if="item.punchStatus === 0"></div>
                     <div class="top_icon2" v-if="item.punchStatus === 2"></div>
                     <div class="top_icon3" v-if="item.punchStatus === 3"></div>
-                    <div class="top_date" v-if="item.stat === 0">{{(item.punchDate).substring(7, 9)}}</div>
-                    <div class="top_date" v-else>{{(item.punchDate).substring(8, 10)}}</div>
+                    <div :class="item.stat === 0 ? 'top_date2 ': 'top_date'">{{(item.punchDate).substring(8, 10)}}</div>
                 </div>
                 <div class="item_nail"> 
                     <div class="begintime" v-if="item.firstStartTime">签到时间： {{item.firstStartTime}}</div>
@@ -155,6 +154,9 @@ export default {
             console.log('this.calendarData', this.calendarData)
             let year = this.calendarData[0].punchDate.substring(0, 4)
             let lastMonth = this.calendarData[0].punchDate.substring(5, 7) - 1
+            if(lastMonth < 10) {
+                lastMonth = '0' + lastMonth
+            }
             let firstWeek = new Date(this.calendarData[0].punchDate).getDay()
 
             var lastDay = new Date(year, lastMonth, 0).getDate();
@@ -168,7 +170,7 @@ export default {
                     stat: 0,
                     punchStatus: null
                 }
-               arr.unshift(obj)
+               arr.push(obj)
             }
             console.log('this.calendarData', this.calendarData)
             this.forData =JSON.parse(JSON.stringify(this.calendarData )) 
@@ -447,5 +449,8 @@ export default {
     border-bottom: 1px solid #e1e1e1;
 }
 
+.top_date2 {
+    color: #e1e1e1;
+}
 
 </style>

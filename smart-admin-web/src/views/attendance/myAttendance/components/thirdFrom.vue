@@ -4,7 +4,7 @@
       <div class="rightTop">
         <div class="topItems">
           <div class="itemLeft">
-            <div>img</div>
+            <div class="yingdaotianshu"></div>
             <div class="leftTitle">{{ $t("kqgl.ydts") }}</div>
           </div>
           <div class="itemRight">19</div>
@@ -12,7 +12,7 @@
 
         <div class="topItems">
           <div class="itemLeft">
-            <div>img</div>
+            <div class="yingdaotianshu2"></div>
             <div class="leftTitle">{{ $t("kqgl.cuqingtsh") }}</div>
           </div>
           <div class="itemRight">19</div>
@@ -20,7 +20,7 @@
 
         <div class="topItems">
           <div class="itemLeft">
-            <div>img</div>
+            <div class="yingdaotianshu3"></div>
             <div class="leftTitle">{{ $t("kqgl.chidaozaotui") }}</div>
           </div>
           <div class="itemRight">19</div>
@@ -28,7 +28,7 @@
 
         <div class="topItems">
           <div class="itemLeft">
-            <div>img</div>
+            <div class="yingdaotianshu4"></div>
             <div class="leftTitle">{{ $t("kqgl.quekacishu") }}</div>
           </div>
           <div class="itemRight">19</div>
@@ -36,7 +36,7 @@
 
         <div class="topItems">
           <div class="itemLeft">
-            <div>img</div>
+            <div class="yingdaotianshu5"></div>
             <div class="leftTitle">{{ $t("kqgl.waichucishu") }}</div>
           </div>
           <div class="itemRight">19</div>
@@ -180,9 +180,9 @@ export default {
     async getFirstTableData() {
       try {
         this.firstLoading = true;
-        let result = await attendance.personalHoliday(this.firstTable);
+        let result = await attendance.personalAttendance(this.firstTable);
         this.firstLoading = false;
-        // console.log(result)
+        console.log(result)
         this.firstData = result.data.list;
         this.fistTotal = result.data.totalCount;
       } catch (e) {
@@ -272,5 +272,45 @@ export default {
 
 .rightTopItemTitle {
   padding-right: 10px;
+}
+
+.yingdaotianshu {
+  background: url('../../../../assets/images/yingdaotianshu.png');
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  background-size: 100%;
+}
+
+.yingdaotianshu2 {
+  background: url('../../../../assets/images/chuqing.png');
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  background-size: 100%;
+}
+
+.yingdaotianshu3 {
+  background: url('../../../../assets/images/chidao.png');
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  background-size: 100%;
+}
+
+.yingdaotianshu4 {
+  background: url('../../../../assets/images/queka.png');
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  background-size: 100%;
+}
+
+.yingdaotianshu5 {
+  background: url('../../../../assets/images/waichu.png');
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  background-size: 100%;
 }
 </style>
