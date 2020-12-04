@@ -58,7 +58,7 @@
             />
           </FormItem>
           <FormItem :label="$t('kqgl.banjing')" prop="radius">
-            <Input style="width: 34%" v-model="fromBaseData.radius" />
+            <InputNumber style="width: 34%" :min="1" v-model="fromBaseData.radius"></InputNumber>
           </FormItem>
           <FormItem :label="$t('kqgl.syry')" prop="textareaData1">
             <Input
@@ -358,7 +358,7 @@ export default {
       const empIds = val.empIds.split(",");
       this.textareaEmpIds2 = empIds.map((item) => {
         return {
-          employeeId: item,
+          employeeId: Number(item),
           status: 1,
         };
       });
@@ -375,7 +375,7 @@ export default {
         this.textareaData3 + "             " + this.textareaData4;
       this.textareaOrgIds2 = val.organizationOa.map((item) => {
         return {
-          organizationId: item,
+          organizationId: Number(item),
           status: 1,
         };
       });
@@ -402,7 +402,7 @@ export default {
       const empIds = val.empIds.split(",");
       this.textareaEmpIds = empIds.map((item) => {
         return {
-          employeeId: item,
+          employeeId: Number(item),
           status: 0,
         };
       });
@@ -419,7 +419,7 @@ export default {
         this.textareaData + "             " + this.textareaData2;
       this.textareaOrgIds = val.organizationOa.map((item) => {
         return {
-          organizationId: item,
+          organizationId: Number(item),
           status: 0,
         };
       });
@@ -508,6 +508,10 @@ export default {
       this.fromBaseData.attendaceAddressForEmpolyee = this.textareaEmpIds.concat(
         this.textareaEmpIds2
       );
+      this.fromBaseData.radius = Number(this.fromBaseData.radius)
+      this.fromBaseData.latitude = Number(this.fromBaseData.latitude)
+      this.fromBaseData.longitude = Number(this.fromBaseData.longitude)
+
 
       if (this.componetState === "修改") {
         this.$refs["form"].validate((valid) => {

@@ -1,5 +1,27 @@
 <template>
     <div class="calendarMain">
+        <div class="search_parms">
+            <div class="rightTop">
+                <Button icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
+               </div>
+               <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.yhm')}}</span>
+                   <span>
+                        <Input :placeholder="$t('kqgl.yhm')" type="text" v-model="empName" @on-focus="getemp" clearable @on-clear="clearEmp"/>
+                        <selectEmp :modalstat.sync="empstat" @selectData="selectData"/>
+                   </span>
+               </div>
+                <div class="rightTopItem">
+                   <span class="rightTopItemTitle">{{$t('kqgl.xuanzepaibanyuefen')}}</span>
+                   <span>
+                    <DatePicker type="month" placeholder="Select month" style="width: 200px" @on-change="getMonth"/>
+
+                   </span>
+               </div>
+               <div class="rightTopItem">
+                   <Button type="primary" @click.native="handleSearch">{{$t('Search')}}</Button>
+               </div>
+        </div>
         <div class="calenderTop">
         <div class="topLeft">
             <div class="leftItem">
@@ -22,10 +44,10 @@
             </div>
         </div>
         <div class="topRight">
-            <div class="icon_item">
+            <!-- <div class="icon_item">
                 <div class="icon_content"></div>
                 <div class="icon_title">全部</div>
-            </div>
+            </div> -->
             <div class="icon_item">
                 <div class="icon_content2"></div>
                 <div class="icon_title">正常</div>
@@ -81,7 +103,8 @@
                     <div class="top_icon" v-if="item.punchStatus === 0"></div>
                     <div class="top_icon2" v-if="item.punchStatus === 2"></div>
                     <div class="top_icon3" v-if="item.punchStatus === 3"></div>
-                    <div class="top_date">{{(item.punchDate).substring(8, 10)}}</div>
+                    <div class="top_date" v-if="item.stat === 0">{{(item.punchDate).substring(7, 9)}}</div>
+                    <div class="top_date" v-else>{{(item.punchDate).substring(8, 10)}}</div>
                 </div>
                 <div class="item_nail"> 
                     <div class="begintime" v-if="item.firstStartTime">签到时间： {{item.firstStartTime}}</div>
@@ -96,8 +119,12 @@
 </template>
 
 <script>
+import selectEmp from '@/components/selectEmp'
 export default {
     name: 'recordCalendar',
+    components: {
+        selectEmp
+    },
     props: {
         calendarData: {
             type: Array,
@@ -114,6 +141,8 @@ export default {
     },
     data() {
         return {
+            empName: '',
+            empstat: false,
             getPropDate: {
                 nowDate: null
             },
@@ -136,7 +165,8 @@ export default {
             for(let i = 0; i < firstWeek; i ++) {
                 let obj = {
                     punchDate: year + '-' +  lastMonth + '-' + (lastDay - i),
-                    stat: 0
+                    stat: 0,
+                    punchStatus: null
                 }
                arr.unshift(obj)
             }
@@ -152,6 +182,28 @@ export default {
         }
     },
     methods: {
+        clearEmp() {
+
+        this.empName = ''
+            let obj = {
+                id: ''
+            }
+            this.$emit('empIdData', obj)
+        },
+        handleSearch() {
+            this.$emit('searh', true)
+        },
+        selectData(val) {
+            this.$emit('empIdData', val)
+            this.empName = val.personName
+        },
+        getemp() {
+            this.empstat = true
+        },
+        getMonth(val) {
+            console.log('val', val)
+            this.$emit('monthData', val)
+        },
         getWeek() {
             // console.log('nowDate', nowDate)
             let now = new Date()
@@ -367,6 +419,33 @@ export default {
     background-repeat: no-repeat;
 }
 
+
+.rightRecord {
+  width: 80%;
+}
+.rightTop {
+  background: #ffffff;
+  padding: 10px 0;
+  display: flex;
+}
+
+.rightTopItem {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  padding-left: 25px;
+}
+
+.rightTopItemTitle {
+  padding-right: 10px;
+}
+
+.search_parms {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #e1e1e1;
+}
 
 
 </style>

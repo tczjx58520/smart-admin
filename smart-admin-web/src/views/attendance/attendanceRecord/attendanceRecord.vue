@@ -1,10 +1,10 @@
 <template>
   <div class="maincontent">
-    <div class="leftTree">
+    <!-- <div class="leftTree">
       <organizationTree />
-    </div>
+    </div> -->
     <div class="rightRecord">
-      <recordCalendar :calendarData="sendData" :otherData="otherData"/>
+      <recordCalendar :calendarData="sendData" :otherData="otherData" @empIdData="getEmpData" @monthData="getMonthData" @searh="research"/>
     </div>
   </div>
 </template>
@@ -33,6 +33,17 @@ export default {
     this.getData();
   },
   methods: {
+    research(val) {
+      this.getData()
+    },
+    getMonthData(val) {
+      console.log('getMonthData', val)
+      this.searchform.date = val
+    },
+    getEmpData(val) {
+      console.log('getEmpData', val)
+      this.searchform.employeeId = val.id
+    },
     async getData() {
       try {
         let result = await attendance.attendanceRecord(this.searchform);
@@ -56,6 +67,6 @@ export default {
   width: 20%;
 }
 .rightRecord {
-  width: 80%;
+  width: 100%;
 }
 </style>

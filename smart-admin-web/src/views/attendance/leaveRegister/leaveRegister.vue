@@ -162,8 +162,11 @@ export default {
   },
   methods: {
     handleAdd2(val) {
-      this.editData = Object.assign({}, val);
-      this.modalstat2 = true;
+      // this.editData = Object.assign({}, val);
+      // this.modalstat2 = true;
+      this.$router.push({
+          name: 'flowStart'
+        });
     },
     restList(val) {
       if (val) {
@@ -171,7 +174,11 @@ export default {
       }
     },
     handleAdd() {
-      this.modalstat = true;
+      // this.modalstat = true;
+      this.$router.push({
+          name: 'flowStart'
+        });
+
     },
     async getFirstTableData() {
       try {

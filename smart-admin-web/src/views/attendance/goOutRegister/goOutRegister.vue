@@ -97,7 +97,10 @@ export default {
       }
     },
     handleAdd() {
-      this.modalstat = true;
+      // this.modalstat = true;
+      this.$router.push({
+          name: 'flowStart'
+        });
     },
     async getFirstTableData() {
       try {

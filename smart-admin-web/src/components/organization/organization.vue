@@ -192,7 +192,7 @@ export default {
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
       // console.log('event', event)
       // console.log('root', root)
-      // console.log('node', node)
+      console.log('node', node)
       // console.log('data', data)
       let target = event.target;
       let tagName = target.tagName;

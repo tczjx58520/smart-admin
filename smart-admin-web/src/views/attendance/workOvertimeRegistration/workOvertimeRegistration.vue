@@ -106,7 +106,10 @@ export default {
       }
     },
     handleAdd() {
-      this.modalstat = true;
+      // this.modalstat = true;
+      this.$router.push({
+          name: 'flowStart'
+        });
     },
     async getFirstTableData() {
       try {
@@ -130,7 +133,10 @@ export default {
     newFirstForm() {
       this.modalState = "新建";
       // this.firstLoading = true;
-      this.modalstat = true;
+      // this.modalstat = true;
+      // this.$router.push({
+      //     name: 'flowStart'
+      //   });
     },
     // 翻页
     firstChangePage(pageNum) {

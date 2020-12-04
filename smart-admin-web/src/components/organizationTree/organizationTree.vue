@@ -161,7 +161,7 @@ export default {
     // 选中部门 更新员工table
     loadEmployeeTable (event, root, node, data) {
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
-      // console.log(data)
+      console.log(data)
       this.$emit('chooseTreeData', data)
       let target = event.target;
       let tagName = target.tagName;

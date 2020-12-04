@@ -1032,6 +1032,9 @@ export default {
     xingming: '姓名',
     dakashijian: '打卡时间',
     xuanzexiugaidebanc: '选择修改的班次',
-    qingxianxuanzhedanyuanshuju: '请先选择数据'
+    qingxianxuanzhedanyuanshuju: '请先选择数据',
+    chakanriqi: '查看日期',
+    xuanzepaibanyuefen: '选择排班月份',
+    nianfenshoushuo: '年份搜索'
   }
 };

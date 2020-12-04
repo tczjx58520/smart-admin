@@ -10,7 +10,7 @@
           >{{ $t("Reflash") }}</Button
         >
         <div class="rightTopItem">
-          <span class="rightTopItemTitle">{{ $t("kqgl.rqxz") }}</span>
+          <span class="rightTopItemTitle">{{ $t("kqgl.nianfenshoushuo") }}</span>
           <span>
             <DatePicker
               type="year"
@@ -27,7 +27,9 @@
               placeholder="请输入用户名"
               :value="organizationName"
               type="text"
-              @click.native="selectOrg()"
+              @on-focus="selectOrg()"
+              @on-clear="clearOrg"
+              clearable
             />
           </span>
           <organization
@@ -79,7 +81,7 @@ export default {
       firstLoading: false,
       firstTable: {
         year: null,
-        organizationId: "",
+        organizationId: null,
         pageNum: 1,
         pageSize: 10,
       },
@@ -118,6 +120,10 @@ export default {
     // this.getFirstTableData()
   },
   methods: {
+    clearOrg() {
+this.organizationName = '';
+      this.firstTable.organizationId = null;
+    },
     organizationData(val) {
       this.organizationName = val.title;
       this.firstTable.organizationId = val.id;
