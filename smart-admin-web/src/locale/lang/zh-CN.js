@@ -1043,6 +1043,7 @@ export default {
     qingxianxuanzhedanyuanshuju: '请先选择数据',
     chakanriqi: '查看日期',
     xuanzepaibanyuefen: '选择排班月份',
-    nianfenshoushuo: '年份搜索'
+    nianfenshoushuo: '年份搜索',
+    zhuzumingm: '组织名'
   }
 };

@@ -21,10 +21,10 @@
           </span>
         </div>
         <div class="rightTopItem">
-          <span class="rightTopItemTitle">{{ $t("kqgl.yhm") }}</span>
+          <span class="rightTopItemTitle">{{ $t("kqgl.zhuzumingm") }}</span>
           <span>
             <Input
-              placeholder="请输入用户名"
+              placeholder="请选择"
               :value="organizationName"
               type="text"
               @on-focus="selectOrg()"

@@ -95,9 +95,9 @@ export default {
       organizationName: '',
       firstLoading: false,
       firstTable: {
-        organizationId: '',
-        createPersonName: '',
-        conditionTime: '',
+        organizationId: null,
+        createPersonName: null,
+        conditionTime: null,
         pageNum: 1,
         pageSize: 10
       },

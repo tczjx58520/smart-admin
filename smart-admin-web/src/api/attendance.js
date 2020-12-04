@@ -267,6 +267,16 @@ export const attendance = {
     }
   },
 
+  // 上下班统计
+  findpunchRecord: data => {
+    let Form = new FormData();
+    Form.append('date', data.date);
+    Form.append('organizationId', data.organizationId);
+    if (data) {
+      return postAxios('/attendanceStatistical/findpunchRecord?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+  },
+
   // 外出统计
   outsideStatistical: data => {
     let Form = new FormData();
@@ -359,6 +369,20 @@ export const attendance = {
   findAttendanceSet: data => {
     let Form = new FormData();
     return postAxios('/attendanceSet/findAttendanceSet');
-  }
+  },
+
+   // 考勤机记录查看
+   findAttendacneMachineRecord: data => {
+    let Form = new FormData();
+    return postAxios('/attendanceStatistical/findAttendacneMachineRecord', data);
+  },
+
+     // 我的考勤
+     personalAttendance: data => {
+      let Form = new FormData();
+      return postAxios('/attendancePersonal/personalAttendance?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+    }
+
+
 
 };

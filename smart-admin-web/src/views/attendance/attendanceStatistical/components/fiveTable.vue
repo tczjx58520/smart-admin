@@ -91,9 +91,6 @@ export default {
       organizationName: "",
       firstLoading: false,
       firstTable: {
-        organizationId: "",
-        createPersonName: "",
-        conditionTime: "",
         pageNum: 1,
         pageSize: 10,
       },
@@ -101,59 +98,55 @@ export default {
       firstColumns: [
         {
           title: this.$t("OrganizationName"),
-          key: "createPersonName",
+          key: "organizationName",
         },
         {
           title: this.$t("usermanage_view.name"),
-          key: "applyTime",
+          key: "createPersonName",
         },
         {
           title: this.$t("kqgl.quanqintianshu"),
-          key: "overWorkTimeMorning",
+          key: "allDays",
         },
         {
           title: this.$t("kqgl.zongchuqintianshu"),
-          key: "startWorkTimeAfternoon",
+          key: "realDays",
         },
         {
           title: this.$t("kqgl.kuanggong"),
-          key: "overWorkTimeAfternoon",
+          key: "noWork",
         },
         {
           title: this.$t("kqgl.chidao"),
-          key: "address",
+          key: "lateDays",
         },
         {
           title: this.$t("kqgl.zoatui"),
-          key: "reason",
+          key: "earlyDays",
         },
         {
           title: this.$t("kqgl.shagnbanweidengji"),
-          key: "overWorkTimeMorning",
+          key: "noPunchForWorkDays",
         },
         {
           title: this.$t("kqgl.xiabanweidengji"),
-          key: "startWorkTimeAfternoon",
+          key: "noPunchForLeaveWorkDays",
         },
         {
           title: this.$t("kqgl.waichu"),
-          key: "overWorkTimeAfternoon",
+          key: "outSide",
         },
         {
           title: this.$t("kqgl.chuchai"),
-          key: "address",
+          key: "bussinessOntrip",
         },
         {
           title: this.$t("kqgl.qignjiatianshu"),
-          key: "reason",
-        },
-        {
-          title: this.$t("kqgl.qingjiaxiaoshi"),
-          key: "address",
+          key: "vocation",
         },
         {
           title: this.$t("kqgl.jiaban"),
-          key: "reason",
+          key: "workTime",
         },
       ],
       firstData: [],
@@ -167,11 +160,11 @@ export default {
   },
   methods: {
     chooseDate(val) {
-      this.firstTable.conditionTime = val;
+      this.firstTable.date = val;
     },
     selectData(val) {
       // console.log('val', val)
-      this.firstTable.createPersonName = val.id;
+      this.firstTable.organizationId = val.id;
       this.createPersonName = val.personName;
     },
     chooseEmp() {
@@ -192,11 +185,11 @@ export default {
     async getFirstTableData() {
       try {
         this.firstLoading = true;
-        let result = await attendance.outsideStatistical(this.firstTable);
+        let result = await attendance.findpunchRecord(this.firstTable);
         this.firstLoading = false;
-        // console.log(result)
-        this.firstData = result.data.list;
-        this.fistTotal = result.data.totalCount;
+        console.log(result)
+        this.firstData = result.data.list.list;
+        this.fistTotal = result.data.list.total;
       } catch (e) {
         // TODO zhuoda sentry
         console.error(e);

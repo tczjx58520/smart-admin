@@ -69,10 +69,12 @@ export default {
   },
   data() {
     return {
+      year: '',
+      organizationName: '',
       editData: {},
       employeeId: this.$store.state.user.userLoginInfo.userId,
       // employeeId: 2,
-
+      searchParm: {},
       firstLoading: false,
       firstColumns: [
         {
@@ -82,19 +84,19 @@ export default {
         },
         {
           title: this.$t("kqgl.kaoqingjiId"),
-          key: "shiftName",
+          key: "attendanceMachineId",
         },
         {
           title: this.$t("kqgl.kaoqinzheid"),
-          key: "setTime",
+          key: "employeeId",
         },
         {
           title: this.$t("kqgl.xingming"),
-          key: "punchStartTime",
+          key: "createPersonName",
         },
         {
           title: this.$t("kqgl.dakashijian"),
-          key: "punchEndTime",
+          key: "punchTime",
         },
       ],
       firstData: [],
@@ -106,6 +108,9 @@ export default {
     this.getFirstTableData();
   },
   methods: {
+    organizationData(val) {
+      console.log(val)
+    },
     restList(val) {
       if (val) {
         this.getFirstTableData();
@@ -118,10 +123,10 @@ export default {
     async getFirstTableData() {
       try {
         this.firstLoading = true;
-        let result = await attendance.findPunchInfo(this.employeeId);
+        let result = await attendance.findAttendacneMachineRecord(this.searchParm);
         this.firstLoading = false;
         // console.log(result)
-        this.firstData = result.data.data;
+        this.firstData = result.data.list;
         this.fistTotal = result.data.totalCount;
       } catch (e) {
         // TODO zhuoda sentry
