@@ -818,6 +818,9 @@ export default {
   processDo: '流程办理',
   processManagement: '流程管理',
   processSettings: '流程设置',
+  personalAttendance: '个人考勤',
+  attendanceManagers: '考勤管理',
+  attendanceSettings: '考勤设置',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',
