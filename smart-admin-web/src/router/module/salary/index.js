@@ -1,17 +1,8 @@
 
 import Main from '@/components/main';
 
-import { collectAccounts } from './collectAccounts';
-import { mysalary } from './mysalary';
-import { salarycount } from './salarycount';
-import { salaryEntry } from './salaryEntry';
-import { salaryjudge } from './salaryjudge';
-import { salaryOption } from './salaryOption';
-import { socialSecurityFund } from './socialSecurityFund';
-import { soloAward } from './soloAward';
-import { storeIndividualAward } from './storeIndividualAward';
-import { teamAward } from './teamAward';
-import { welfare } from './welfare';
+import { salaryManagement } from './salaryManagement';
+import { basicSettings } from './basicSettings';
 
 // 业务
 export const salary = [
@@ -26,17 +17,8 @@ export const salary = [
       roles: ['10-16-4', '10-11-4', '10-12-4', '10-19-4', '10-17-4', '10-18-4', '10-15-4', '10-19-4', '10-20-4', '10-21-4', '10-22-4']
     },
     children: [
-      ...collectAccounts,
-      ...mysalary,
-      ...salarycount,
-      ...salaryEntry,
-      ...salaryjudge,
-      ...salaryOption,
-      ...socialSecurityFund,
-      ...welfare,
-      ...teamAward,
-      ...soloAward,
-      ...storeIndividualAward
+      ...salaryManagement,
+      ...basicSettings
     ]
   }
 ];

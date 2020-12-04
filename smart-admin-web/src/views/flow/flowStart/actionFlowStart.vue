@@ -275,6 +275,7 @@ import { FlowApi } from '@/api/flow';
 import addempSingle from './components/addemp_single/modal';
 import { utils } from '@/lib/util';
 import { attendance } from '@/api/attendance';
+import moment from 'moment';
 export default {
   name: 'process',
   components: {
@@ -289,9 +290,11 @@ export default {
   },
   created () {},
   watch: {
-    watchReceiptType: {
+    betweenTime: {
       handler () {
-        console.log(this.watchReceiptType);
+        if (this.watchReceiptType === '9' || this.watchReceiptType === '11') {
+          this.addformbase.totalTime = this.betweenTime;
+        }
       },
       immediate: true
     }
@@ -324,6 +327,23 @@ export default {
     },
     watchReceiptType () {
       return this.$route.query.receiptType;
+    },
+    betweenTime () {
+      let oneTime = null;
+      let twoTime = null;
+      let between = null;
+      if (this.addformbase.startTime) {
+        oneTime = moment(this.addformbase.startTime);
+      }
+      if (this.addformbase.endTime) {
+        twoTime = moment(this.addformbase.endTime);
+      }
+      if (oneTime && twoTime) {
+        // between = moment.duration(twoTime.diff(oneTime));
+        between = twoTime.diff(oneTime, 'hours');
+      }
+      console.log('asdasdasdasdasdasdasdas', oneTime, twoTime);
+      return between;
     }
   },
   data () {
@@ -805,6 +825,8 @@ export default {
     save_3 () {
     },
     save_8 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addApplyLeave(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
@@ -831,6 +853,8 @@ export default {
       });
     },
     save_9 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addWorkOvertime(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
@@ -857,6 +881,8 @@ export default {
       });
     },
     save_10 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addBusniessOnTrip(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
@@ -883,6 +909,8 @@ export default {
       });
     },
     save_11 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addWorkOutside(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
@@ -909,6 +937,8 @@ export default {
       });
     },
     save_12 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addFillClock(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
@@ -935,6 +965,8 @@ export default {
       });
     },
     save_13 () {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
       attendance.addTerminalLeave(this.addformbase).then(res => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;

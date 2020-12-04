@@ -813,6 +813,11 @@ export default {
   zhly: '召回理由',
   zzmc: '组织名称',
   hour: '小时',
+  salaryManagement: '薪酬管理',
+  basicSettings: '基础设置',
+  processDo: '流程办理',
+  processManagement: '流程管理',
+  processSettings: '流程设置',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

@@ -1,17 +1,8 @@
 
 import Main from '@/components/main';
-
-import { flowClassification } from './flowClassification';
-import { processDesign } from './processDesign';
-import { flowStart } from './flowStart';
-import { toDoFlow } from './unDoFlow';
-import { workDelegation } from './workDelegation';
-import { flowWatch } from './flowWatch';
-import { recall } from './recall';
-import { drafts } from './drafts';
-import { standingbook } from './standingbook';
-import { timeout } from './timeout';
-import { DoFlow } from './DoFlow';
+import { processDo } from './processDo';
+import { processManagement } from './processManagement';
+import { processSettings } from './processSettings';
 // 业务
 export const flow = [
   {
@@ -25,17 +16,9 @@ export const flow = [
       roles: ['1-3-4']
     },
     children: [
-      ...flowClassification,
-      ...processDesign,
-      ...flowStart,
-      ...toDoFlow,
-      ...workDelegation,
-      ...flowWatch,
-      ...recall,
-      ...drafts,
-      ...standingbook,
-      ...timeout,
-      ...DoFlow
+      ...processDo,
+      ...processManagement,
+      ...processSettings
     ]
   }
 ];
