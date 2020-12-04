@@ -206,7 +206,8 @@ export default {
           title: this.$t('fqall'),
           width: 200,
           render: (h, params) => {
-            let DateStr = utils.getDate(new Date(params.row.createDate), 'YMDHMS');
+            const mydate = params.row.createDate || params.row.sendDate
+            let DateStr = utils.getDate(new Date(mydate), 'YMDHMS');
             return h('div', [
               h(
                 'span',
@@ -219,10 +220,10 @@ export default {
                     whiteSpace: 'nowrap'
                   },
                   domProps: {
-                    title: `${params.row.startPersonName} / ${DateStr}`
+                    title: `${params.row.startPersonName || params.row.sendPersonName} / ${DateStr}`
                   }
                 },
-                `${params.row.startPersonName} / ${DateStr}`
+                `${params.row.startPersonName || params.row.sendPersonName} / ${DateStr}`
               )
             ]);
           }
