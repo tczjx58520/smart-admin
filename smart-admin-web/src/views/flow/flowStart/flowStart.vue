@@ -149,7 +149,7 @@ export default {
           break;
         case 2:
           this.$router.push({
-            path: "/flow/actionflowStart",
+            path: "/processDo/actionflowStart",
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
@@ -160,7 +160,7 @@ export default {
           break;
         default:
           this.$router.push({
-            path: "/flow/actionflowStart",
+            path: "/processDo/actionflowStart",
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
