@@ -7,7 +7,7 @@
             <div class="yingdaotianshu"></div>
             <div class="leftTitle">{{ $t("kqgl.ydts") }}</div>
           </div>
-          <div class="itemRight">19</div>
+          <div class="itemRight">{{scheduling}}</div>
         </div>
 
         <div class="topItems">
@@ -15,7 +15,7 @@
             <div class="yingdaotianshu2"></div>
             <div class="leftTitle">{{ $t("kqgl.cuqingtsh") }}</div>
           </div>
-          <div class="itemRight">19</div>
+          <div class="itemRight">{{topData.normalPunch}}</div>
         </div>
 
         <div class="topItems">
@@ -23,7 +23,7 @@
             <div class="yingdaotianshu3"></div>
             <div class="leftTitle">{{ $t("kqgl.chidaozaotui") }}</div>
           </div>
-          <div class="itemRight">19</div>
+          <div class="itemRight">{{topData.late}}</div>
         </div>
 
         <div class="topItems">
@@ -31,7 +31,7 @@
             <div class="yingdaotianshu4"></div>
             <div class="leftTitle">{{ $t("kqgl.quekacishu") }}</div>
           </div>
-          <div class="itemRight">19</div>
+          <div class="itemRight">{{topData.notClock}}</div>
         </div>
 
         <div class="topItems">
@@ -39,7 +39,7 @@
             <div class="yingdaotianshu5"></div>
             <div class="leftTitle">{{ $t("kqgl.waichucishu") }}</div>
           </div>
-          <div class="itemRight">19</div>
+          <div class="itemRight">{{outSideCount}}</div>
         </div>
       </div>
       <div class="rightTop">
@@ -58,6 +58,7 @@
               v-model="year"
               placeholder="Select year"
               style="width: 200px"
+              @on-change="getMonth"
             />
           </span>
         </div>
@@ -96,6 +97,13 @@ export default {
   },
   data() {
     return {
+      outSideCount: 0,
+      scheduling: 0,
+      topData: {
+        normalPunch: 0,
+        notClock: 0,
+        late: 0
+      },
       year: "",
       organizationName: "",
       selectData: "",
@@ -112,27 +120,27 @@ export default {
       firstColumns: [
         {
           title: this.$t("kqgl.rq"),
-          key: "annualLeaveTotalDays",
+          key: "date",
         },
         {
           title: this.$t("kqgl.sb"),
-          key: "annualLeaveUsedDays",
+          key: "startFisrtTime",
         },
         {
           title: this.$t("kqgl.xb"),
-          key: "annualLeaveRemainDays",
+          key: "endFisrtTime",
         },
         {
           title: this.$t("kqgl.sb"),
-          key: "annualLeaveUsedDays",
+          key: "startSecondTime",
         },
         {
           title: this.$t("kqgl.xb"),
-          key: "annualLeaveRemainDays",
+          key: "endSecondTime",
         },
         {
           title: this.$t("kqgl.qkshuom"),
-          key: "annualLeaveRemainDays",
+          key: "note",
         },
       ],
       firstData: [],
@@ -144,6 +152,9 @@ export default {
     this.getFirstTableData();
   },
   methods: {
+    getMonth(val) {
+      this.firstTable.punchDate = val
+    },
     organizationData(val) {
       this.organizationName = val.title;
       this.firstTable.organizationId = val.id;
@@ -183,7 +194,8 @@ export default {
         let result = await attendance.personalAttendance(this.firstTable);
         this.firstLoading = false;
         console.log(result)
-        this.firstData = result.data.list;
+        this.topData = result.data.attendance
+        this.firstData = result.data.attendanceRecord;
         this.fistTotal = result.data.totalCount;
       } catch (e) {
         // TODO zhuoda sentry
