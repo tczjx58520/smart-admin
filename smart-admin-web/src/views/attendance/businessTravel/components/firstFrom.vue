@@ -118,32 +118,32 @@
   </Modal>
 </template>
 <script>
-import $ from "jquery";
-import selectEmp from "@/components/selectEmp";
-import organization from "@/components/organization";
-import { attendance } from "@/api/attendance";
+import $ from 'jquery';
+import selectEmp from '@/components/selectEmp';
+import organization from '@/components/organization';
+import { attendance } from '@/api/attendance';
 export default {
-  name: "firstFrom",
+  name: 'firstFrom',
   components: {
     selectEmp,
-    organization,
+    organization
   },
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
     editData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  created() {},
-  mounted() {},
-  data() {
+  created () {},
+  mounted () {},
+  data () {
     const validatePass = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("Please enter"));
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
@@ -160,59 +160,59 @@ export default {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: "",
+        reason: '',
         startTime: null,
         endTime: null,
         totalTime: 0,
-        addresss: "",
+        addresss: ''
       },
       ruleValidate: {
         note: [
           {
             required: true,
-            message: "The note cannot be empty",
-            trigger: "blur",
-          },
-        ],
-      },
+            message: 'The note cannot be empty',
+            trigger: 'blur'
+          }
+        ]
+      }
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       console.log(
-        "this.$store.state.user.userLoginInfo",
+        'this.$store.state.user.userLoginInfo',
         this.$store.state.user.userLoginInfo
       );
     },
-    editData() {
+    editData () {
       //   console.log('this.editData', this.editData)
       this.fromBaseData.note = this.editData.note;
       this.fromBaseData.id = this.editData.id;
       this.fromBaseData.employeeId = this.editData.employeeId;
-    },
+    }
   },
   methods: {
-    chooseOrg() {
+    chooseOrg () {
       this.orgStat = true;
     },
-    getOrgData(val) {
+    getOrgData (val) {
       //   console.log(val)
       this.fromBaseData.organazationId = val.id;
       this.organazationName = val.title;
     },
-    changeStartTime(val) {
-      this.fromBaseData.startTime = val + " 00:00:00";
+    changeStartTime (val) {
+      this.fromBaseData.startTime = val + ' 00:00:00';
       this.countTotalTime();
     },
-    changeEndTime(val) {
-      this.fromBaseData.endTime = val + " 00:00:00";
+    changeEndTime (val) {
+      this.fromBaseData.endTime = val + ' 00:00:00';
 
       this.countTotalTime();
     },
-    datedifference(sDate1, sDate2) {
-      //sDate1和sDate2是2006-12-18格式
-      var dateSpan, tempDate, iDays;
+    datedifference (sDate1, sDate2) {
+      // sDate1和sDate2是2006-12-18格式
+      let dateSpan, tempDate, iDays;
       sDate1 = Date.parse(sDate1);
       sDate2 = Date.parse(sDate2);
       dateSpan = sDate2 - sDate1;
@@ -220,10 +220,10 @@ export default {
       iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
       return iDays;
     },
-    countTotalTime() {
+    countTotalTime () {
       if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
-        console.log("this.fromBaseData.endTime", this.fromBaseData.endTime);
-        console.log("this.fromBaseData.startTime", this.fromBaseData.startTime);
+        console.log('this.fromBaseData.endTime', this.fromBaseData.endTime);
+        console.log('this.fromBaseData.startTime', this.fromBaseData.startTime);
         let tian1 = this.datedifference(
           this.fromBaseData.startTime,
           this.fromBaseData.endTime
@@ -232,44 +232,44 @@ export default {
         this.fromBaseData.totalTime = tian1;
       }
     },
-    selectData(val) {
-      console.log("val", val);
+    selectData (val) {
+      console.log('val', val);
       this.fromBaseData.employeeId = val.id;
       this.employeeName = val.personName;
     },
-    chooseEmp() {
+    chooseEmp () {
       this.empSata = true;
     },
-    cancel() {
+    cancel () {
       this.mymoadlStat = false;
       this.modal_loading = false;
       this.reset();
-      this.$emit("update:modalstat", false);
+      this.$emit('update:modalstat', false);
     },
-    reset() {
+    reset () {
       this.fromBaseData = {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: "",
+        reason: '',
         startTime: null,
         endTime: null,
         totalTime: 0,
-        addresss: "",
+        addresss: ''
       };
-      this.$refs["form"].resetFields();
+      this.$refs['form'].resetFields();
     },
-    handsave() {
+    handsave () {
       this.modal_loading = true;
       console.log(this.fromBaseData);
-      this.$refs["form"].validate((valid) => {
+      this.$refs['form'].validate((valid) => {
         if (valid) {
           attendance.addBusniessOnTrip(this.fromBaseData).then((res) => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
               this.mymoadlStat = false;
-              this.$emit("update:modalstat", false);
-              this.$emit("restList", true);
+              this.$emit('update:modalstat', false);
+              this.$emit('restList', true);
               this.reset();
             }
             this.modal_loading = false;
@@ -277,11 +277,11 @@ export default {
         } else {
           this.modal_loading = false;
 
-          this.$Message.error("Fail!");
+          this.$Message.error('Fail!');
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
