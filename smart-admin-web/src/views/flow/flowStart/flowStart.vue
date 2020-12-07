@@ -70,15 +70,15 @@
 </template>
 
 <script>
-import { FlowCategoryApi } from "@/api/flowClassification";
-import selectModal from "./components/selectModal/selectModal";
+import { FlowCategoryApi } from '@/api/flowClassification';
+import selectModal from './components/selectModal/selectModal';
 // eslint-disable-next-line no-var
 export default {
-  name: "ApplyProcessList",
+  name: 'ApplyProcessList',
   components: {
     selectModal
   },
-  data() {
+  data () {
     return {
       processLists: [],
       tempList: [],
@@ -92,36 +92,36 @@ export default {
   },
   filters: {
     // 流程单据
-    typeFilter(val, that) {
+    typeFilter (val, that) {
       const map = {
-        1: that.$t("xcsp"),
-        2: that.$t("ygrz"),
-        3: that.$t("htqs"),
-        4: that.$t("ygzz"),
-        5: that.$t("ygdg"),
-        6: that.$t("yglz"),
-        7: that.$t("ygxq"),
-        8: that.$t("qj"),
-        9: that.$t("jiaban"),
-        10: that.$t("chuchai"),
-        11: that.$t("waichu"),
-        12: that.$t("buka"),
-        13: that.$t("xiaojia")
+        1: that.$t('xcsp'),
+        2: that.$t('ygrz'),
+        3: that.$t('htqs'),
+        4: that.$t('ygzz'),
+        5: that.$t('ygdg'),
+        6: that.$t('yglz'),
+        7: that.$t('ygxq'),
+        8: that.$t('qj'),
+        9: that.$t('jiaban'),
+        10: that.$t('chuchai'),
+        11: that.$t('waichu'),
+        12: that.$t('buka'),
+        13: that.$t('xiaojia')
       };
       return map[val];
     }
   },
-  created() {
+  created () {
     this.getProcessList();
   },
   methods: {
-    getProcessList() {
+    getProcessList () {
       FlowCategoryApi.getEmpStart(this.listQuery).then(response => {
         this.processLists = response.data.content;
         this.tempList = response.data.content;
       });
     },
-    handleQuery() {
+    handleQuery () {
       let temp = this._.cloneDeep(this.tempList);
       for (let i = 0; i < temp.length; i++) {
         for (let j = 0; j < temp[i].flowInfoVos.length; j++) {
@@ -141,7 +141,7 @@ export default {
       }
       this.processLists = temp;
     },
-    submitWorkOrder(value) {
+    submitWorkOrder (value) {
       console.log(value);
       switch (value.receiptType) {
         case 1:
@@ -149,7 +149,7 @@ export default {
           break;
         case 2:
           this.$router.push({
-            path: "/processDo/actionflowStart",
+            path: '/processDo/actionflowStart',
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
@@ -160,7 +160,7 @@ export default {
           break;
         default:
           this.$router.push({
-            path: "/processDo/actionflowStart",
+            path: '/processDo/actionflowStart',
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
@@ -171,15 +171,15 @@ export default {
           break;
       }
     },
-    selectFrom(value) {
+    selectFrom (value) {
       this.visiable_select = true;
       this.myvalue = value;
     },
-    updateStat_select(state, value) {
+    updateStat_select (state, value) {
       console.log(value);
       if (value) {
         this.$router.push({
-          path: "/flow/actionflowStart",
+          path: '/flow/actionflowStart',
           query: {
             receiptType: value.receiptType,
             receiptLabel: value.flowName,
