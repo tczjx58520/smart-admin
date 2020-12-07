@@ -2,7 +2,7 @@
   <div>
     <!-- 添加任务 -->
     <div style="display:flex">
-        <div style="width:20%;height: calc(80vh)">
+        <!-- <div style="width:20%;height: calc(80vh)">
             <Card class="warp-card" dis-hover>
                 <Tree
                   :data="treedata"
@@ -11,8 +11,8 @@
                   @on-select-change="filterorg"
                 ></Tree>
             </Card>
-        </div>
-        <div style="width:80%;height:calc(80vh)">
+        </div> -->
+        <div style="height:calc(80vh)">
             <Card class="warp-card" dis-hover>
                 <Row :gutter="16">
                     <Form :model="searchform" class="tools" inline ref="searchform" :label-width="65" label-position="left">
@@ -45,7 +45,7 @@
                     :loading="loading"
                     :page-size="searchform.pageSize"
                     :editable="true"
-                    :pageShow="true"
+                    :pageShow="false"
                     :total="pageTotal"
                     :value="data"
                     @on-change="changePage"
@@ -53,9 +53,9 @@
                     border
                     show-elevator
                   ></Tables>
-                <!-- <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
+                <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
                 :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
-                show-total style="margin:24px 0;text-align:right;"></Page> -->
+                show-total style="margin:24px 0;text-align:right;"></Page>
             </Card>
             <!-- 新建弹窗 -->
             <addGong v-if="refreshModal" :modalstat = "visiable" :editinfo="editinfo" @updateStat = "updateStat"></addGong>

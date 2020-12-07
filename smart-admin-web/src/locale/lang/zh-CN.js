@@ -821,6 +821,9 @@ export default {
   personalAttendance: '个人考勤',
   attendanceManagers: '考勤管理',
   attendanceSettings: '考勤设置',
+  uploadfujian: '上传附件',
+  zshihetong: '正式合同',
+  linshihetong: '临时合同',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

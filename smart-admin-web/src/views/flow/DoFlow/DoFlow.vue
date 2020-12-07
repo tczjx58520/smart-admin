@@ -370,6 +370,7 @@ export default {
   methods: {
     sure () {
       console.log(this.addformbase);
+      this.addformbase.recallPersonId = this.$store.state.user.userLoginInfo.id
       this.addformbase.flowRecordId = this.addformbase.id;
       this.addformbase.handleRecordId = this.addformbase.actionId;
       unDoFlowApi.rebackFlowRecord(this.addformbase).then(res => {

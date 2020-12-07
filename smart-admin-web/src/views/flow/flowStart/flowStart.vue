@@ -66,17 +66,29 @@
       :myvalue="myvalue"
       @updateStat="updateStat_select"
     ></selectModal>
+    <select-modal-emp
+      :modalstat="visiable_contract"
+      :myvalue="myvalue"
+      @updateStat="updateStat_contract" />
+      <select-modal-hademp
+      :modalstat="visiable_newcontract"
+      :myvalue="myvalue"
+      @updateStat="updateStat_newcontract" />
   </div>
 </template>
 
 <script>
 import { FlowCategoryApi } from "@/api/flowClassification";
 import selectModal from "./components/selectModal/selectModal";
+import SelectModalEmp from './components/selectModal/selectModal_emp.vue';
+import SelectModalHademp from './components/selectModal/selectModal_hademp.vue';
 // eslint-disable-next-line no-var
 export default {
   name: "ApplyProcessList",
   components: {
-    selectModal
+    selectModal,
+    SelectModalEmp,
+    SelectModalHademp
   },
   data() {
     return {
@@ -86,6 +98,8 @@ export default {
         empId: this.$store.state.user.userLoginInfo.userId
       },
       visiable_select: false,
+      visiable_contract: false,
+      visiable_newcontract: false,
       myvalue: null,
       that: this
     };
@@ -158,6 +172,12 @@ export default {
             }
           });
           break;
+          case 3:
+          this.selectEmp_contract(value)
+          break;
+          case 7:
+          this.selectEmp_newcontract(value)
+          break;
         default:
           this.$router.push({
             path: "/processDo/actionflowStart",
@@ -175,11 +195,19 @@ export default {
       this.visiable_select = true;
       this.myvalue = value;
     },
+    selectEmp_contract(value) {
+      this.visiable_contract = true;
+      this.myvalue = value;
+    },
+    selectEmp_newcontract(value) {
+      this.visiable_newcontract = true;
+      this.myvalue = value;
+    },
     updateStat_select(state, value) {
       console.log(value);
       if (value) {
         this.$router.push({
-          path: "/flow/actionflowStart",
+          path: "/processDo/actionflowStart",
           query: {
             receiptType: value.receiptType,
             receiptLabel: value.flowName,
@@ -189,6 +217,34 @@ export default {
         });
       }
       this.visiable_select = state;
+    },
+    updateStat_contract(state, value) {
+      if (value) {
+        this.$router.push({
+          path: "/processDo/actionflowStart",
+          query: {
+            receiptType: value.receiptType,
+            receiptLabel: value.flowName,
+            flowId: value.id,
+            flowCategory: value.category
+          }
+        });
+      }
+      this.visiable_contract = state;
+    },
+    updateStat_newcontract(state, value) {
+      if (value) {
+        this.$router.push({
+          path: "/processDo/actionflowStart",
+          query: {
+            receiptType: value.receiptType,
+            receiptLabel: value.flowName,
+            flowId: value.id,
+            flowCategory: value.category
+          }
+        });
+      }
+      this.visiable_newcontract = state;
     }
   }
 };

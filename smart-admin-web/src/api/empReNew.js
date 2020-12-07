@@ -1,8 +1,8 @@
 import { postAxios } from '@/lib/http';
 
-export const empInduction = {
+export const empReNew = {
   // 查询门店
-  getempInductionList: (data) => {
+  getempReNew: (data) => {
     let Form = new FormData();
     if (data.empInductionId !== undefined && data.empInductionId !== null && data.empInductionId !== '') {
       Form.append('empInductionId', data.empInductionId);
@@ -31,13 +31,10 @@ export const empInduction = {
     return postAxios('/empInduction/empInductionList', Form);
   },
   // 添加门店
-  addempInduction: data => {
+  addempReNew: data => {
     let Form = new FormData();
     if (data.id !== undefined && data.id !== null && data.id !== '') {
       Form.append('id', data.id);
-    }
-    if (data.title !== undefined && data.title !== null && data.title !== '') {
-      Form.append('title', data.title);
     }
     if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
       Form.append('flowId', data.flowId);
@@ -45,97 +42,19 @@ export const empInduction = {
     if (data.flowNumber !== undefined && data.flowNumber !== null && data.flowNumber !== '') {
       Form.append('flowNumber', data.flowNumber);
     }
-    if (data.firstName !== undefined && data.firstName !== null && data.firstName !== '') {
-      Form.append('firstName', data.firstName);
-    }
-    if (data.middleName !== undefined && data.middleName !== null && data.middleName !== '') {
-      Form.append('middleName', data.middleName);
-    }
-    if (data.lastName !== undefined && data.lastName !== null && data.lastName !== '') {
-      Form.append('lastName', data.lastName);
-    }
-    if (data.gender !== undefined && data.gender !== null && data.gender !== '') {
-      Form.append('gender', data.gender);
-    }
-    if (data.phone !== undefined && data.phone !== null && data.phone !== '') {
-      Form.append('phone', data.phone);
-    }
-    if (data.idCard !== undefined && data.idCard !== null && data.idCard !== '') {
-      Form.append('idCard', data.idCard);
-    }
-    if (data.cardPic !== undefined && data.cardPic !== null && data.cardPic !== '') {
-      Form.append('cardPic', data.cardPic);
-    }
-    if (data.empPic !== undefined && data.empPic !== null && data.empPic !== '') {
-      Form.append('empPic', data.empPic);
-    }
-    if (data.organizeId !== undefined && data.organizeId !== null && data.organizeId !== '') {
-      Form.append('organizeId', data.organizeId);
-    }
-    if (data.postId !== undefined && data.postId !== null && data.postId !== '') {
-      Form.append('postId', data.postId);
-    }
-    if (data.levelId !== undefined && data.levelId !== null && data.levelId !== '') {
-      Form.append('levelId', data.levelId);
-    }
-    if (data.superiorId !== undefined && data.superiorId !== null && data.superiorId !== '') {
-      Form.append('superiorId', data.superiorId);
-    }
-    if (data.onDate !== undefined && data.onDate !== null && data.onDate !== '') {
-      Form.append('onDate1', data.onDate);
-    }
-    if (data.workAddress !== undefined && data.workAddress !== null && data.workAddress !== '') {
-      Form.append('workAddress', data.workAddress);
-    }
-    if (data.postContent !== undefined && data.postContent !== null && data.postContent !== '') {
-      Form.append('postContent', data.postContent);
-    }
-    if (data.account !== undefined && data.account !== null && data.account !== '') {
-      Form.append('account', data.account);
-    }
-    if (data.roleId !== undefined && data.roleId !== null && data.roleId !== '') {
-      Form.append('roleId', data.roleId);
-    }
-    if (data.isTrain !== undefined && data.isTrain !== null && data.isTrain !== '') {
-      Form.append('isTrain', data.isTrain);
-    }
-    if (data.trainName !== undefined && data.trainName !== null && data.trainName !== '') {
-      Form.append('trainName', data.trainName);
-    }
-    if (data.trainWay !== undefined && data.trainWay !== null && data.trainWay !== '') {
-      Form.append('trainWay', data.trainWay);
-    }
-    if (data.trainType !== undefined && data.trainType !== null && data.trainType !== '') {
-      Form.append('trainType', data.trainType);
-    }
-    if (data.trainAddress !== undefined && data.trainAddress !== null && data.trainAddress !== '') {
-      Form.append('trainAddress', data.trainAddress);
-    }
-    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
-      Form.append('beginTime', data.beginTime);
-    }
-    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
-      Form.append('endTime', data.endTime);
-    }
-    if (data.trainHandle !== undefined && data.trainHandle !== null && data.trainHandle !== '') {
-      Form.append('trainHandle', data.trainHandle);
-    }
-    if (data.isTest !== undefined && data.isTest !== null && data.isTest !== '') {
-      Form.append('isTest', data.isTest);
+    if (data.title !== undefined && data.title !== null && data.title !== '') {
+      Form.append('title', data.title);
     }
     if (data.createId !== undefined && data.createId !== null && data.createId !== '') {
       Form.append('createId', data.createId);
     }
-    if (data.createDate !== undefined && data.createDate !== null && data.createDate !== '') {
-      Form.append('createDate', data.createDate);
-    }
-    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
-      Form.append('empId', data.empId);
+    if (data.renewDetailJson !== undefined && data.renewDetailJson !== null && data.renewDetailJson !== '') {
+      Form.append('renewDetailJson', data.renewDetailJson);
     }
 
-    return postAxios('/empInduction/addEmpInduction', Form);
+    return postAxios('/empRenew/addEmpRenew', Form);
   },
-  updateempInduction: data => {
+  updateempReNew: data => {
     let Form = new FormData();
     if (data.id !== undefined && data.id !== null && data.id !== '') {
       Form.append('id', data.id);
