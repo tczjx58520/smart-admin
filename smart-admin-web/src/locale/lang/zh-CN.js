@@ -870,6 +870,9 @@ export default {
   examTime: '考试时间',
   look: '查看',
   weight: '权重',
+  uploadfujian: '上传附件',
+  zshihetong: '正式合同',
+  linshihetong: '临时合同',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

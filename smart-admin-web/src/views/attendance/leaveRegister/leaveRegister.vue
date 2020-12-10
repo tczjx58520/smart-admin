@@ -33,21 +33,21 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
-import firstFrom from "./components/firstFrom";
-import SecondFrom from "./components/secondFrom.vue";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
+import firstFrom from './components/firstFrom';
+import SecondFrom from './components/secondFrom.vue';
 
 export default {
-  name: "leaveRegister",
+  name: 'leaveRegister',
   components: {
     Tables,
     organization,
     firstFrom,
-    SecondFrom,
+    SecondFrom
   },
-  data() {
+  data () {
     return {
       editData: {},
       fistTotal: 0,
@@ -55,132 +55,131 @@ export default {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
 
       firstLoading: false,
       firstColumns: [
         {
-          title: this.$t("kqgl.shenqingshijian"),
-          key: "applyTime",
+          title: this.$t('kqgl.shenqingshijian'),
+          key: 'applyTime'
         },
         {
-          title: this.$t("kqgl.kaishishijian"),
-          key: "startTime",
+          title: this.$t('kqgl.kaishishijian'),
+          key: 'startTime'
         },
         {
-          title: this.$t("kqgl.jieshushijian"),
-          key: "endTime",
+          title: this.$t('kqgl.jieshushijian'),
+          key: 'endTime'
         },
         {
-          title: this.$t("kqgl.shijianleixing"),
-          key: "type",
+          title: this.$t('kqgl.shijianleixing'),
+          key: 'type',
           render: (h, params) => {
             if (params.row.type === 0) {
-              return h("span", this.$t("kqgl.tian"));
+              return h('span', this.$t('kqgl.tian'));
             } else if (params.row.type === 1) {
-              return h("span", this.$t("kqgl.xiaoshi"));
+              return h('span', this.$t('kqgl.xiaoshi'));
             }
-          },
+          }
         },
         {
-          title: this.$t("kqgl.qingjiashijian"),
-          key: "totalTime",
+          title: this.$t('kqgl.qingjiashijian'),
+          key: 'totalTime'
         },
         {
-          title: this.$t("kqgl.qingjialeixing"),
-          key: "type",
+          title: this.$t('kqgl.qingjialeixing'),
+          key: 'type',
           render: (h, params) => {
             if (params.row.type === 0) {
-              return h("span", this.$t("kqgl.bingjia"));
+              return h('span', this.$t('kqgl.bingjia'));
             } else if (params.row.type === 1) {
-              return h("span", this.$t("kqgl.shijia"));
+              return h('span', this.$t('kqgl.shijia'));
             } else if (params.row.type === 2) {
-              return h("span", this.$t("kqgl.nianjia"));
+              return h('span', this.$t('kqgl.nianjia'));
             } else if (params.row.type === 3) {
-              return h("span", this.$t("kqgl.hunjia"));
+              return h('span', this.$t('kqgl.hunjia'));
             } else if (params.row.type === 4) {
-              return h("span", this.$t("kqgl.peichanjia"));
+              return h('span', this.$t('kqgl.peichanjia'));
             } else if (params.row.type === 5) {
-              return h("span", this.$t("kqgl.chanjia"));
+              return h('span', this.$t('kqgl.chanjia'));
             } else if (params.row.type === 6) {
-              return h("span", this.$t("kqgl.shangjia"));
+              return h('span', this.$t('kqgl.shangjia'));
             } else if (params.row.type === 7) {
-              return h("span", this.$t("kqgl.qita"));
+              return h('span', this.$t('kqgl.qita'));
             }
-          },
+          }
         },
         {
-          title: this.$t("kqgl.qingjiashiyou"),
-          key: "reason",
+          title: this.$t('kqgl.qingjiashiyou'),
+          key: 'reason'
         },
         {
-          title: this.$t("kqgl.shifouxiaojia"),
-          key: "terminalHoliday",
+          title: this.$t('kqgl.shifouxiaojia'),
+          key: 'terminalHoliday',
           render: (h, params) => {
             if (params.row.terminalHoliday === 0) {
-              return h("span", this.$t("kqgl.xiaojia"));
+              return h('span', this.$t('kqgl.xiaojia'));
             } else if (params.row.terminalHoliday === 1) {
-              return h("span", this.$t("kqgl.weixiaojia"));
+              return h('span', this.$t('kqgl.weixiaojia'));
             }
-          },
+          }
         },
         {
-          title: this.$t("usermanage_view.action"),
-          key: "action",
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
           width: 200,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "info",
-                    size: "small",
+                    type: 'info',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.handleAdd2(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
-                this.$t("kqgl.xiaojiadengji")
-              ),
+                this.$t('kqgl.xiaojiadengji')
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
-      modalstat2: false,
+      modalState: '',
+      modalstat2: false
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    handleAdd2(val) {
+    handleAdd2 (val) {
       // this.editData = Object.assign({}, val);
       // this.modalstat2 = true;
       this.$router.push({
-          name: 'flowStart'
-        });
+        name: 'flowStart'
+      });
     },
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    handleAdd() {
+    handleAdd () {
       // this.modalstat = true;
       this.$router.push({
-          name: 'flowStart'
-        });
-
+        name: 'flowStart'
+      });
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findApplyLeave(this.seachParms);
@@ -195,21 +194,21 @@ export default {
       }
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.seachParms.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.seachParms.pageNum = pageNum;
       this.getFirstTableData();
-    },
-  },
+    }
+  }
 };
 </script>
 

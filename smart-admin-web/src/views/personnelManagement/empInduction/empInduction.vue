@@ -1,59 +1,118 @@
 <template>
-
-<div>
-    <div style="display:flex">
-        <div style="width:100%;height:calc(80vh)">
-            <Card class="warp-card" dis-hover>
-                <Row :gutter="16">
-                    <Form :model="searchform" class="tools" inline ref="searchform" :label-width="80" label-position="left">
-                      <Col span="5">
-                      <FormItem prop="person" :label="$t('gwmc')" style="width:100%">
-                        <Input placeholder="请输入" type="text" v-model="searchform.name" clearable style="width:100%" />
-                      </FormItem>
-                      </Col>
-                      <Col span="4">
-                      <FormItem>
-                        <ButtonGroup>
-                          <Button @click="search" icon="ios-search" type="primary">{{ $t('Search') }}</Button>
-                        </ButtonGroup>
-                      </FormItem>
-                      </Col>
-                    </Form>
-                </Row>
-            </Card>
-            <Card class="warp-card" dis-hover>
-                <div style="margin-bottom:20px;">
-                    <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('rzlc') }}</Button>
-                </div>
-                <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
-                <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
-                :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
-                show-total style="margin:24px 0;text-align:right;"></Page>
-            </Card>
-            <!-- 新建弹窗 -->
-            <addModal :modalstat = "visiable" @updateStat = "updateStat"></addModal>
-            <editModal :modalstat = "visiable_edit" :editinfo="editinfo" @updateStat = "updateStat_edit"></editModal>
-            <!-- 新建结束============= -->
-        </div>
+  <div>
+    <div style="display: flex">
+      <div style="width: 100%; height: calc(80vh)">
+        <Card class="warp-card" dis-hover>
+          <Row :gutter="16">
+            <Form
+              :model="searchform"
+              class="tools"
+              inline
+              ref="searchform"
+              :label-width="80"
+              label-position="left"
+            >
+              <Col span="5">
+                <FormItem prop="person" :label="$t('gwmc')" style="width: 100%">
+                  <Select
+                    v-model="searchform.postId"
+                    size="large"
+                    filterable
+                    :transfer="true"
+                    clearable
+                  >
+                    <Option
+                      v-for="item in postData"
+                      :value="item.id"
+                      :key="item.id"
+                      >{{ item.postName }}</Option
+                    >
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span="4">
+                <FormItem>
+                  <ButtonGroup>
+                    <Button @click="search" icon="ios-search" type="primary">{{
+                      $t("Search")
+                    }}</Button>
+                  </ButtonGroup>
+                </FormItem>
+              </Col>
+            </Form>
+          </Row>
+        </Card>
+        <Card class="warp-card" dis-hover>
+          <div style="margin-bottom: 20px">
+            <Button
+              style="margin-right: 15px"
+              @click="refresh"
+              icon="md-refresh"
+              type="default"
+              >{{ $t("Reflash") }}</Button
+            >
+            <Button
+              style="margin-right: 15px"
+              v-privilege="['1-4-1']"
+              @click="created"
+              icon="md-add"
+              type="warning"
+              >{{ $t("rzlc") }}</Button
+            >
+          </div>
+          <Table
+            border
+            ref="selection"
+            :columns="columns4"
+            :data="indicatorlist"
+            max-height="calc(70vh)"
+            @on-selection-change="getmoreaction"
+            @on-row-click="rowClick"
+            :loading="loading"
+            @on-row-dblclick="Edit"
+          ></Table>
+          <Page
+            :current="searchform.pageNum"
+            :page-size="searchform.pageSize"
+            :page-size-opts="[10, 20, 30, 50, 100]"
+            :total="pageTotal"
+            @on-change="changePage"
+            @on-page-size-change="changePageSize"
+            show-elevator
+            show-sizer
+            show-total
+            style="margin: 24px 0; text-align: right"
+          ></Page>
+        </Card>
+        <!-- 新建弹窗 -->
+        <addModal :modalstat="visiable" @updateStat="updateStat"></addModal>
+        <editModal
+          :modalstat="visiable_edit"
+          :editinfo="editinfo"
+          @updateStat="updateStat_edit"
+        ></editModal>
+        <!-- 新建结束============= -->
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
-import { roleApi } from '@/api/role';
-import { empInduction } from '@/api/empInduction';
-import addModal from './components/addmodal/modal';
-import editModal from './components/editmodal/modal';
+import { roleApi } from "@/api/role";
+import { empInduction } from "@/api/empInduction";
+import { positionApi } from "@/api/position";
+import addModal from "./components/addmodal/modal";
+import editModal from "./components/editmodal/modal";
 // import newModal from './components/editmodalGong/modal';
 export default {
-  name: 'indicatorSet',
+  name: "indicatorSet",
   components: {
     addModal,
-    editModal
+    editModal,
   },
-  data () {
+  data() {
     return {
-      id: '',
+      postData: [],
+      id: "",
       copyfile: null,
       editinfo: {},
       visiable: false,
@@ -62,230 +121,265 @@ export default {
       statList: [
         {
           value: 1,
-          label: '启用'
+          label: "启用",
         },
         {
           value: 2,
-          label: '停用'
-        }
+          label: "停用",
+        },
       ],
       treedata: [],
       formdata: {
-        organizeParent: ''
+        organizeParent: "",
       },
       searchform: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       },
       columns4: [
         {
-          type: 'selection',
+          type: "selection",
           width: 60,
-          align: 'center'
+          align: "center",
         },
         {
-          title: this.$t('xm'),
-          key: 'itemName'
+          title: this.$t("xm"),
+          key: "employeeName",
         },
         {
-          title: this.$t('sszz'),
-          key: 'itemName'
+          title: this.$t("sszz"),
+          key: "organizeName",
         },
         {
-          title: this.$t('ssgw'),
-          key: 'itemName'
+          title: this.$t("ssgw"),
+          key: "postName",
         },
         {
-          title: this.$t('jhrzsj'),
-          key: 'itemName'
+          title: this.$t("jhrzsj"),
+          key: "onDate",
         },
         {
-          title: this.$t('xb'),
-          key: 'itemName'
-        },
-        {
-          title: this.$t('sjh'),
-          key: 'itemName'
-        },
-        {
-          title: this.$t('htqssj'),
-          key: 'itemName'
-        },
-        {
-          title: this.$t('zzrq'),
-          key: 'itemName'
-        },
-        {
-          title: this.$t('action'),
-          key: 'action',
-          width: 200,
-          align: 'center',
+          title: this.$t("xb"),
           render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
+            if (params.row.gender === 1) {
+              return h("span", this.$t("nan"));
+            } else {
+              return h("span", this.$t("nv"));
+            }
+          },
+        },
+        {
+          title: this.$t("sjh"),
+          key: "phone",
+        },
+        // {
+        //   title: this.$t("htqssj"),
+        //   key: "itemName",
+        // },
+        // {
+        //   title: this.$t("zzrq"),
+        //   key: "itemName",
+        // },
+        {
+          title: this.$t("action"),
+          key: "action",
+          width: 200,
+          align: "center",
+          render: (h, params) => {
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "primary",
+                    size: "small",
+                  },
+                  style: {
+                    marginRight: "5px",
+                  },
+                  on: {
+                    click: () => {
+                      this.haveAcontract(params.row);
+                    },
+                  },
                 },
-                style: {
-                  marginRight: '5px'
+                this.$t("qsht")
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "error",
+                    size: "small",
+                  },
+                  directives: [
+                    {
+                      name: "privilege",
+                      value: ["1-4-2"],
+                    },
+                  ],
+                  on: {
+                    click: () => {
+                      this.delSingle(params.row);
+                    },
+                  },
                 },
-                on: {
-                  click: () => {
-                    this.Edit(params.row);
-                  }
-                }
-              }, this.$t('qsht')),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-4-2']
-                  }
-                ],
-                on: {
-                  click: () => {
-                    this.delSingle(params.row);
-                  }
-                }
-              }, this.$t('ryzhuanzheng'))
+                this.$t("ryzhuanzheng")
+              ),
             ]);
-          }
-        }
+          },
+        },
       ],
       indicatorlist: [],
       loading: false,
-      moreaction: ''
+      moreaction: "",
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created () {
-  },
-  mounted () {
+  created() {},
+  mounted() {
+    this.getlist();
     this.getempInductionList();
   },
-  beforeCreate () {},
-  beforeMount () {},
-  beforeUpdate () {},
-  updated () {},
-  beforeDestroy () {},
-  destroyed () {},
-  activated () {},
+  beforeCreate() {},
+  beforeMount() {},
+  beforeUpdate() {},
+  updated() {},
+  beforeDestroy() {},
+  destroyed() {},
+  activated() {},
   methods: {
+    haveAcontract(row) {
+      this.$router.push({path:'/processDo/flowStart',query:{id:row.id}})
+    },
+    getlist() {
+      const searchFrom = {
+        pageNum: 1,
+        pageSize: 9999,
+      };
+      positionApi.postList(searchFrom).then((res) => {
+        if (res.ret === 200) {
+          this.postData = res.data.content.list;
+        } else {
+          console.log("列表出错");
+        }
+      });
+    },
     // 分页
-    changePage (pageNum) {
+    changePage(pageNum) {
       this.searchform.pageNum = pageNum;
       this.getempInductionList();
     },
     // 分页
-    changePageSize (pageSize) {
+    changePageSize(pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
       this.getempInductionList();
     },
-    getmoreaction (list) {
+    getmoreaction(list) {
       this.moreaction = list;
-      console.log('list===>', list);
+      console.log("list===>", list);
     },
-    updateStat (stat) {
+    updateStat(stat) {
       this.visiable = stat;
       this.getempInductionList();
     },
-    updateStat_edit (stat) {
+    updateStat_edit(stat) {
       this.visiable_edit = stat;
       this.getempInductionList();
     },
-    updateStat_new (stat) {
+    updateStat_new(stat) {
       this.visiable3 = stat;
     },
-    to_conduct (stat) {
+    to_conduct(stat) {
       this.visiable3 = stat;
       this.$router.push({
-        name: 'conductAnAssessment'
+        name: "conductAnAssessment",
       });
     },
-    getempInductionList () {
+    getempInductionList() {
       this.loading = true;
-      empInduction.getempInductionList(this.searchform).then(res => {
+      empInduction.getempInductionList(this.searchform).then((res) => {
         this.loading = false;
         this.indicatorlist = res.data.content.list;
       });
     },
-    rowClick (data, index) { // data 该行数据 ，index该行索引
-    //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
+    rowClick(data, index) {
+      // data 该行数据 ，index该行索引
+      //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
     },
-    Edit (row) {
+    Edit(row) {
       console.log(row);
       this.visiable_edit = true;
       this.editinfo = row;
     },
-    delSingle (row) {
+    delSingle(row) {
       console.log(row);
       const itemNameId = row.id;
-      indicatorSingle.delindicatorSingle(itemNameId).then(res => {
-        this.$Message.success(this.$t('sccg'));
+      indicatorSingle.delindicatorSingle(itemNameId).then((res) => {
+        this.$Message.success(this.$t("sccg"));
         this.getempInductionList();
       });
     },
-    newtask (row) {
+    newtask(row) {
       this.visiable3 = true;
       this.id = row.id;
     },
-    search () {
+    search() {
       this.getempInductionList();
     },
-    remove (row) {
-      console.log('发起考核');
+    remove(row) {
+      console.log("发起考核");
     },
-    refresh () {
-      console.log('refresh');
+    refresh() {
+      console.log("refresh");
       this.searchform = {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       };
       this.getempInductionList();
     },
-    created () {
-      this.visiable = true;
-      this.copyfile = null;
+    created() {
+      // this.visiable = true;
+      // this.copyfile = null;
+      this.$router.push({path: '/processDo/flowStart'})
     },
-    del () {
-      console.log('del');
+    del() {
+      console.log("del");
       for (const i in this.moreaction) {
         const id = this.moreaction[i].id;
         let data = id;
-        indicatorSingle.delindicatorSingle(data).then(res => {
-          if (res.ret === 200) {
-            console.log(res.msg);
-            this.$Message['success']({
-              background: true,
-              content: res.msg
-            });
-          } else {
-            console.log(res.msg);
-            this.$Message['error']({
-              background: true,
-              content: res.msg
-            });
-          }
-        }).then(res => {
-          this.getempInductionList();
-        });
+        indicatorSingle
+          .delindicatorSingle(data)
+          .then((res) => {
+            if (res.ret === 200) {
+              console.log(res.msg);
+              this.$Message["success"]({
+                background: true,
+                content: res.msg,
+              });
+            } else {
+              console.log(res.msg);
+              this.$Message["error"]({
+                background: true,
+                content: res.msg,
+              });
+            }
+          })
+          .then((res) => {
+            this.getempInductionList();
+          });
       }
     },
-    forbid () {
-      console.log('forbid');
+    forbid() {
+      console.log("forbid");
     },
-    open () {
-      console.log('open');
-    }
-  }
+    open() {
+      console.log("open");
+    },
+  },
 };
 </script>
 

@@ -261,7 +261,55 @@ export default {
       businessList: [
         {
           id: 1,
-          businessName: '薪酬审批'
+          businessName: this.$t('xcsp')
+        },
+        {
+          id: 2,
+          businessName: this.$t('ygrz')
+        },
+        {
+          id: 3,
+          businessName: this.$t('htqs')
+        },
+        {
+          id: 4,
+          businessName: this.$t('ygzz')
+        },
+        {
+          id: 5,
+          businessName: this.$t('ygdg')
+        },
+        {
+          id: 6,
+          businessName: this.$t('yglz')
+        },
+        {
+          id: 7,
+          businessName: this.$t('ygxq')
+        },
+        {
+          id: 8,
+          businessName: this.$t('qj')
+        },
+        {
+          id: 9,
+          businessName: this.$t('jiaban')
+        },
+        {
+          id: 10,
+          businessName: this.$t('chuchai')
+        },
+        {
+          id: 11,
+          businessName: this.$t('waichu')
+        },
+        {
+          id: 12,
+          businessName: this.$t('buka')
+        },
+        {
+          id: 13,
+          businessName: this.$t('xiaojia')
         }
       ],
       stepcolumns: [

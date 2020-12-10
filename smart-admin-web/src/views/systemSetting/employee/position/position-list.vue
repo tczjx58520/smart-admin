@@ -84,7 +84,7 @@
           ></Input>
         </FormItem>
         <FormItem :label="$t('jb')" prop="levelId">
-          <Select v-model="updateItem.levelId" style="width:100%">
+          <Select v-model="updateItem.levelId" style="width:100%" filterable multiple>
             <Option
               v-for="item in levelList"
               :value="item.id"
@@ -122,7 +122,7 @@
           ></Input>
         </FormItem>
         <FormItem :label="$t('jb')" prop="levelId">
-          <Select v-model="saveItem.levelId" style="width:100%">
+          <Select v-model="saveItem.levelId" style="width:100%" filterable multiple>
             <Option
               v-for="item in levelList"
               :value="item.id"
@@ -147,7 +147,8 @@ export default {
   props: {},
   data () {
     const validatePass = (rule, value, callback) => {
-      if (value) {
+      console.log('验证消息=============', value);
+      if (value.length &&  value.length !== 0) {
         callback();
       } else {
         callback(new Error('请选择分类'));
@@ -169,14 +170,16 @@ export default {
       // 更新的数据
       updateItem: {
         id: 0,
-        postName: 'postName',
-        remarks: ''
+        postName: '',
+        remarks: '',
+        levelId: []
       },
       // 添加保存的数据
       saveItem: {
         postName: '',
         remarks: '',
-        createId: this.$store.state.user.userLoginInfo.userId
+        createId: this.$store.state.user.userLoginInfo.userId,
+        levelId: []
       },
       saveItemInt: {},
       // table表头
@@ -228,6 +231,8 @@ export default {
                         levelId: params.row.levelId,
                         operatId: this.$store.state.user.userLoginInfo.userId
                       };
+                      this.updateItem.levelId = this.updateItem.levelId.split(',').map(Number)
+                      console.log(this.updateItem);
                       this.isShowEditModal = true;
                     }
                   }
@@ -454,6 +459,7 @@ export default {
     },
     // 更新岗位
     async updatePosition () {
+      this.updateItem.levelId = this.updateItem.levelId.join(',')
       try {
         let result = await positionApi.updatePost(this.updateItem);
         this.$Message.success('修改成功');
@@ -508,6 +514,7 @@ export default {
     },
     // 添加岗位 - 异步
     async addPosition () {
+      this.saveItem.levelId = this.saveItem.levelId.join(',')
       try {
         let result = await positionApi.addPost(this.saveItem);
         this.$Message.success('添加成功');
