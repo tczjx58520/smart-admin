@@ -3,7 +3,7 @@
     <!-- 查询结束 -->
     <Card class="warp-card" dis-hover style="height: calc(100vh - 75px)">
       <div style="margin-bottom: 20px">
-        <Tabs value="name1">
+        <Tabs value="name1" :animated="false">
           <TabPane label="我的委托规则" name="name1">
             <Button
               style="margin-right: 15px"
@@ -595,7 +595,7 @@ export default {
         };
         await entrust.delentrustedResult(data).then(res => {
           console.log(res);
-          count++;
+          this.getList2()
         });
       });
       this.$Message.success('删除成功');
@@ -682,7 +682,7 @@ export default {
     },
     updateStat_view (state) {
       this.visiable_addResult = state;
-      this.getUserLoginLogPage();
+      this.getList2();
     },
     updateStat_viewDetail (state) {
       this.visiable_view = state;
@@ -702,9 +702,10 @@ export default {
     refresh () {
       this.searchform = {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        entrustPersonId: this.$store.state.user.userLoginInfo.userId
       };
-      this.getUserLoginLogPage();
+      this.getList2();
     },
     // 查询用户登录日志
     async getUserLoginLogPage () {

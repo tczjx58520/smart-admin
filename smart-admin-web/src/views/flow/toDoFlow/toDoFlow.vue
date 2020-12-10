@@ -87,23 +87,10 @@
           type="default"
           >{{ $t("Reflash") }}</Button
         >
-        <Button
-          v-if="searchform.flag === 1"
-          style="margin-right: 15px"
-          v-privilege="['1-4-1']"
-          @click="searchSignCounter"
-          icon="md-add"
-          type="error"
-          >{{ $t("hqdb") }}</Button
-        >
-        <Button
-          v-else
-          style="margin-right: 15px"
-          v-privilege="['1-4-1']"
-          @click="searchToDoList"
-          icon="md-add"
-          >{{ $t("dblb") }}</Button
-        >
+        <RadioGroup v-model="searchform.flag" type="button" @on-change="changeList">
+          <Radio :label="1">{{ $t("hqdb") }}</Radio>
+          <Radio :label="2">{{ $t("dblb") }}</Radio>
+        </RadioGroup>
       </div>
       <Table
         :columns="columns"
@@ -145,6 +132,7 @@
     ></viewtaskDetail>
     <handlerTaskDetail
       :modalstat="visiable_handler"
+      :flag="searchform.flag"
       :editinfo="editinfo"
       @updateStat="updateStat_handler"
     ></handlerTaskDetail>
@@ -184,7 +172,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         empId: this.$store.state.user.userLoginInfo.userId,
-        stat: 1
+        flag: 1
       },
       originList: [],
       pageTotal: 0,
@@ -289,7 +277,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.handler_list(params.row);
+                      this.handler_list(params.row, this.searchform.flag);
                     }
                   }
                 },
@@ -342,10 +330,17 @@ export default {
   watch: {},
   created () {},
   mounted () {
-    this.getUserLoginLogPage();
+    this.getcounterSign();
     this.getbaseclassification();
   },
   methods: {
+    changeList() {
+      if (this.searchform.flag === 2) {
+        this.searchToDoList()
+      } else {
+        this.searchSignCounter()
+      }
+    },
     setTime (val, type) {
       console.log(val);
       if (val.length > 0) {
@@ -357,7 +352,6 @@ export default {
       this.getUserLoginLogPage();
     },
     searchSignCounter () {
-      this.searchform.flag = 2;
       this.getcounterSign();
     },
     getcounterSign () {
@@ -382,7 +376,8 @@ export default {
       this.visiable_view = true;
       this.editinfo = row;
     },
-    handler_list (row) {
+    handler_list (row, flag) {
+      console.log(flag);
       this.visiable_handler = true;
       this.editinfo = row;
     },
@@ -431,11 +426,11 @@ export default {
     },
     updateStat_view (state) {
       this.visiable_view = state;
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     updateStat_handler (state) {
       this.visiable_handler = state;
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     clear () {
       console.log('清楚');
@@ -447,11 +442,10 @@ export default {
         empId: this.$store.state.user.userLoginInfo.userId,
         stat: 1
       };
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     // 查询用户登录日志
     async getUserLoginLogPage () {
-      this.searchform.flag = 1;
       try {
         this.loading = true;
         let result = await unDoFlowApi.getFlowRecord(this.searchform);
@@ -467,18 +461,18 @@ export default {
     // 翻页
     changePage (pageNum) {
       this.searchform.pageNum = pageNum;
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     // 改变一页展示数
     changePageSize (pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     // 搜索
     search () {
       this.searchform.pageNum = 1;
-      this.getUserLoginLogPage();
+      this.changeList()
     },
     // 重置
     reset () {
@@ -514,7 +508,7 @@ export default {
           }
         });
       }
-      this.getUserLoginLogPage();
+      this.changeList();
     }
   }
 };

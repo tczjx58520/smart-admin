@@ -96,12 +96,12 @@ export default {
           slot: 'basicSocialSecurity'
         },
         {
-          title: '发薪日期',
+          title: '薪酬月份',
           slot: 'yearAndMonth',
           width: '200'
         },
         {
-          title: '薪酬日期',
+          title: '发薪日期',
           key: 'grantDate',
           width: '200'
           // render: (h, params) => {

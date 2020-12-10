@@ -107,6 +107,70 @@
                 placeholder="选择内容"
               />
               <Input
+                v-else-if="item.value === 'empId'"
+                style="width: 500px"
+                v-model="addformbase.empName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.oldOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.newOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldPostId'"
+                style="width: 500px"
+                v-model="addformbase.oldPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'postId'"
+                style="width: 500px"
+                v-model="addformbase.postName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newPostId'"
+                style="width: 500px"
+                v-model="addformbase.newPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'levelId'"
+                style="width: 500px"
+                v-model="addformbase.levelName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'onDate'"
+                style="width: 500px"
+                :value="filterDate(addformbase.onDate)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
                 v-else-if="item.value === 'whetherExchange'"
                 style="width: 500px"
                 :value="addformbase[item.value] === 1 ? $t('yes'):$t('no')"
@@ -186,11 +250,15 @@
     <div slot="footer">
       <ButtonGroup>
         <!-- <Button type="primary" size="large" :loading="modal_loading" @click="handsave">{{ $t('Save') }}</Button> -->
+        <Button size="large" @click="handlerprocessSteps">{{
+          $t("lcbz")
+        }}</Button>
         <Button type="error" size="large" @click="cancel">{{
           $t("Close")
         }}</Button>
       </ButtonGroup>
     </div>
+    <processSteps :modalstat="visiable_processSteps" :actionInfo="actionInfo" @updateStat="updateStat_processSteps" />
   </Modal>
 </template>
 <script>
@@ -198,9 +266,12 @@ import { unDoFlowApi } from '@/api/unDoFlow';
 import { FlowApi } from '@/api/flow';
 import { organization } from '@/api/organization';
 import { utils } from '@/lib/util';
+import processSteps from '../handler-dialogs/processSteps';
 export default {
   name: 'viewtaskDetail',
-  components: {},
+  components: {
+    processSteps
+  },
   props: {
     modalstat: {
       type: Boolean,
@@ -212,6 +283,7 @@ export default {
   mounted () {},
   data () {
     return {
+      visiable_processSteps: false,
       GongList: [],
       SheList: [],
       itemsList: [],
@@ -256,9 +328,13 @@ export default {
           title: '评阅日期',
           key: 'sendDate',
           render: (h, params) => {
-            console.log(params.row.sendDate);
-            const mydate = new Date(params.row.sendDate);
-            return h('span', utils.getDate(mydate, 'YMDHMS'));
+            if (!params.row.sendDate) {
+              return h('span', 'N/A');
+            } else {
+              console.log(params.row.sendDate);
+              const mydate = new Date(params.row.sendDate);
+              return h('span', utils.getDate(mydate, 'YMDHMS'));
+            }
           }
         }
       ],
@@ -285,12 +361,18 @@ export default {
           key: 'signDate',
           render: (h, params) => {
             console.log(params.row.signDate);
-            const mydate = new Date(params.row.signDate);
-            return h('span', utils.getDate(mydate, 'YMDHMS'));
+            if (!params.row.signDate) {
+              return h('span', 'N/A');
+            } else {
+              const mydate = new Date(params.row.signDate);
+              return h('span', utils.getDate(mydate, 'YMDHMS'));
+            }
+            
           }
         }
       ],
-      data2: []
+      data2: [],
+      actionInfo: null,
     };
   },
   filters: {
@@ -310,6 +392,20 @@ export default {
     }
   },
   methods: {
+    handlerprocessSteps () {
+      this.visiable_processSteps = true;
+    },
+    updateStat_processSteps (stat) {
+      this.visiable_processSteps = stat;
+    },
+    filterDate(date) {
+      if (!date) {
+        return ''
+      }
+      const temp = new Date(date);
+      const value = utils.getDate(temp,'YMDHM')
+      return value
+    },
     filter (val) {
       let map = [];
       switch (this.type) {
@@ -381,6 +477,7 @@ export default {
       unDoFlowApi.getFlowRecordDetail(data).then((res) => {
         console.log(res.data.content[0].receiptType);
         this.addformbase = res.data.receipt[0];
+        this.actionInfo = res.data.content;
         this.Picpath = res.data.content[0].picPaths;
         this.type = res.data.content[0].receiptType;
         this.creatDate = res.data.content[0].initiateDate;

@@ -91,6 +91,109 @@
                 v-model="addformbase.organizeName"
               ></Input>
               <Input
+                v-else-if="item.value === 'organazationId'"
+                style="width: 500px"
+                size="large"
+                readonly
+                v-model="addformbase.organizationName"
+              ></Input>
+              <Input
+                v-else-if="item.value === 'employeeId'"
+                style="width: 500px"
+                v-model="addformbase.createPersonName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'empId'"
+                style="width: 500px"
+                v-model="addformbase.empName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.oldOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.newOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldPostId'"
+                style="width: 500px"
+                v-model="addformbase.oldPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'postId'"
+                style="width: 500px"
+                v-model="addformbase.postName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newPostId'"
+                style="width: 500px"
+                v-model="addformbase.newPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'levelId'"
+                style="width: 500px"
+                v-model="addformbase.levelName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'onDate'"
+                style="width: 500px"
+                :value="filterDate(addformbase.onDate)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'whetherExchange'"
+                style="width: 500px"
+                :value="addformbase[item.value] === 1 ? $t('yes'):$t('no')"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'type' && type === 8"
+                style="width: 500px"
+                :value="filter(addformbase.type)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'type' && type === 9"
+                style="width: 500px"
+                :value="filter(addformbase.type)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
                 v-else
                 style="width: 500px"
                 v-model="addformbase[item.value]"
@@ -192,11 +295,52 @@ export default {
     modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
-        this.getList(this.editinfo.flowRecordId);
+        console.log('123123123123123123', this.editinfo);
+        this.getList(this.editinfo.id);
       }
     }
   },
   methods: {
+    filterDate(date) {
+      if (!date) {
+        return ''
+      }
+      const temp = new Date(date);
+      const value = utils.getDate(temp,'YMDHM')
+      return value
+    },
+    filter (val) {
+      let map = [];
+      switch (this.type) {
+        case 8:
+          map = [
+            { value: 1, label: this.$t('bingjia') },
+            { value: 2, label: this.$t('shijia') },
+            { value: 3, label: this.$t('hunjian') },
+            { value: 4, label: this.$t('chanjianjia') },
+            { value: 5, label: this.$t('chanjia') },
+            { value: 6, label: this.$t('jihuashengyushoushujia') },
+            { value: 7, label: this.$t('hulijia') },
+            { value: 8, label: this.$t('burujia') },
+            { value: 9, label: this.$t('sangjia') },
+            { value: 10, label: this.$t('nianxiujia') },
+            { value: 11, label: this.$t('qita') }
+          ];
+          break;
+        case 9:
+          map = [
+            { value: 1, label: this.$t('kqgl.gzrjiab') },
+            { value: 2, label: this.$t('kqgl.shuangxiuriji') },
+            { value: 3, label: this.$t('kqgl.fdjrjaiba') }
+          ];
+          break;
+        default:
+          break;
+      }
+      if (map[val - 1].label) {
+        return map[val - 1].label;
+      }
+    },
     handlerCountersign () {
       this.visiable_countersign = true;
     },

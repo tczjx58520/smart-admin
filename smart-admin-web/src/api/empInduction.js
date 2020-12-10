@@ -28,6 +28,9 @@ export const empInduction = {
     if (data.isContract !== undefined && data.isContract !== null && data.isContract !== '') {
       Form.append('isContract', data.isContract);
     }
+    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
+      Form.append('empId', data.empId);
+    }
     return postAxios('/empInduction/empInductionList', Form);
   },
   // 添加门店

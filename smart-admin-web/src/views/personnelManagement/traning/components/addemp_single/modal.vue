@@ -1,10 +1,10 @@
 <template>
-        <Modal v-model="mymoadlStat" class="add" width="1020" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
+        <Modal v-model="mymoadlStat" class="add" width="1020" :closable="false" :mask-closable="false" :transfer="true">
         <div slot="header" style="text-align:left;color:#fff;">
             <span>{{ $t('usermanage_view.adduser') }}</span>
         </div>
         <div>
-            <Card dis-hover v-if="showallEmp">
+            <Card dis-hover>
               <div style="display:flex">
                 <div style="width: 20%">
                   <Tree
@@ -48,17 +48,7 @@
                       </Col>
                     </Form>
                   </Row>
-                  <Table border ref="selection" :columns="columns4" :data="emplist" max-height="400" :loading="emp_loading" @on-selection-change="selectService"></Table>
-                  <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
-                  :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
-                  show-total style="margin:24px 0;text-align:right;"></Page>
-                </div>
-              </div>
-            </Card>
-            <Card dis-hover v-else>
-              <div style="display:flex">
-                <div style="width: 100%">
-                  <Table border ref="selection" :columns="columns4" :data="emplist" max-height="400" :loading="emp_loading" @on-selection-change="selectService"></Table>
+                  <Table border ref="selection" :columns="columns4" :data="emplist" max-height="400" :loading="emp_loading" highlight-row @on-selection-change="selectService" @on-row-click="selectmyemp"></Table>
                   <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
                   :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
                   show-total style="margin:24px 0;text-align:right;"></Page>
@@ -78,24 +68,23 @@
 import { usermanagelApi } from '@/api/usermanage';
 import { organization } from '@/api/organization';
 import { groupApi } from '@/api/group';
-import { countersign } from '@/api/countersign';
 export default {
-  name: 'addemp',
+  name: 'addempSingle',
   props: {
     modalstat: {
       type: Boolean,
       default: false
     },
-    type: null,
+    groupId: null,
     memberId: {
       type: null,
       default: () => {
-        return {};
+        return [];
       }
-    },
-    actionInfo: null
+    }
   },
   created () {
+    this.getemplist();
   },
   data () {
     const validatePass = (rule, value, callback) => {
@@ -126,11 +115,6 @@ export default {
       treedata: [],
       columns4: [
         {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
-        {
           title: this.$t('usermanage_view.userName'),
           key: 'personName',
           width: '100'
@@ -142,7 +126,7 @@ export default {
         },
         {
           title: this.$t('usermanage_view.role'),
-          key: 'rolesOaName ',
+          key: 'roleName',
           width: '100'
         },
         {
@@ -183,21 +167,17 @@ export default {
       roleList: [],
       curPageSelected: [], // 存放当前页选中项
       formValidate: {},
-      curPageSelectedName: [], // 存放当前页名字
-      showallEmp: false
+      curPageSelectedName: [] // 存放当前页名字
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      this.formValidate.serviceIdList = [];
-      this.formValidate.serviceIdNameList = [];
-      if (this.memberId.checkPerson) {
-        console.log('已经选择的人员===========', this.memberId);
-        this.formValidate.serviceIdList = this.memberId.checkPerson.split(',').map(Number);
-        this.formValidate.serviceIdNameList = this.memberId.checkPersonNames.split(',')
-      }
-      console.log('this.formValidate.serviceIdList======================>', this.formValidate.serviceIdList);
+      // if (this.memberId !== null) {
+      //   this.formValidate.serviceIdList = this.memberId.split(',').map(Number);
+      // }
+      console.log('父传子====================>', this.formValidate.serviceIdList);
+      delete this.searchform['organizationOa'];
       this.getemplist();
       this.getroleList();
     }
@@ -219,24 +199,27 @@ export default {
         this.roleList = res.data.content;
       });
     },
+    selectmyemp (row) {
+      console.log('row==========>', row);
+      this.$emit('updateStat', false, row);
+    },
     cancel () {
       this.$emit('updateStat', false);
     },
     handsave () {
       this.modal_loading = true;
       let data = {};
-      console.log('选择人员', this.formValidate);
       try {
         data.empIds = this.formValidate.serviceIdList.join(',');
         data.names = this.formValidate.serviceIdNameList.join(',');
         setTimeout(() => {
           this.modal_loading = false;
-          this.$emit('updateStat', false, data, this.formValidate.serviceIdNameList, this.type);
+          this.$emit('updateStat', false, data);
         }, 1000);
       } catch (error) {
         setTimeout(() => {
           this.modal_loading = false;
-          this.$emit('updateStat', false, data, this.type);
+          this.$emit('updateStat', false, data);
         }, 1000);
       }
     },
@@ -292,32 +275,11 @@ export default {
     // 获取员工列表
     getemplist () {
       this.emp_loading = true;
-      console.log('actionInfo=======', this.actionInfo);
-      if (this.type === 1) {
-        countersign.getcountersignPerson(this.actionInfo[0].handleRecordVos[0].actionId).then(res => {
-          if (res.data.content.length === 0) {
-            this.showallEmp = true;
-            usermanagelApi.queryList(this.searchform).then(res => {
-              this.pageTotal = res.data.content.totalCount;
-              this.emp_loading = false;
-              this.emplist = this.selectFromId(res.data.content.list, this.formValidate.serviceIdList);
-            });
-          } else {
-            this.showallEmp = false;
-            console.log(res.data.content);
-            this.emp_loading = false;
-            this.emplist = res.data.content;
-          }
-          ;
-        });
-      } else {
-        this.showallEmp = true;
-        usermanagelApi.queryList(this.searchform).then(res => {
-          this.pageTotal = res.data.content.totalCount;
-          this.emp_loading = false;
-          this.emplist = this.selectFromId(res.data.content.list, this.formValidate.serviceIdList);
-        });
-      }
+      usermanagelApi.queryList(this.searchform).then(res => {
+        this.pageTotal = res.data.content.totalCount;
+        this.emp_loading = false;
+        this.emplist = this.selectFromId(res.data.content.list, this.formValidate.serviceIdList);
+      });
     },
     // 分页函数
     changePage (pageNum) {

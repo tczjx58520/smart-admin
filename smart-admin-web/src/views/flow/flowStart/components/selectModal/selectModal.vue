@@ -102,7 +102,8 @@ export default {
       mymoadlStat: this.modalstat,
       searchform: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        stat: 1
       },
       loading: false,
       pageTotal: 0,

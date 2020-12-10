@@ -91,6 +91,117 @@
                 v-model="addformbase.organizeName"
               ></Input>
               <Input
+                v-else-if="item.value === 'organazationId'"
+                style="width: 500px"
+                size="large"
+                readonly
+                v-model="addformbase.organizationName"
+              ></Input>
+              <Input
+                v-else-if="item.value === 'employeeId'"
+                style="width: 500px"
+                v-model="addformbase.createPersonName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'empId'"
+                style="width: 500px"
+                v-model="addformbase.empName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.oldOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newOrganizeId'"
+                style="width: 500px"
+                v-model="addformbase.newOrganizeName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'oldPostId'"
+                style="width: 500px"
+                v-model="addformbase.oldPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'postId'"
+                style="width: 500px"
+                v-model="addformbase.postName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'newPostId'"
+                style="width: 500px"
+                v-model="addformbase.newPostName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'levelId'"
+                style="width: 500px"
+                v-model="addformbase.levelName"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'onDate'"
+                style="width: 500px"
+                :value="filterDate(addformbase.onDate)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'whetherExchange'"
+                style="width: 500px"
+                :value="addformbase[item.value] === 1 ? $t('yes'):$t('no')"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'type' && type === 8"
+                style="width: 500px"
+                :value="filter(addformbase.type)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'type' && type === 9"
+                style="width: 500px"
+                :value="filter(addformbase.type)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="item.value === 'type' && type === 13"
+                style="width: 500px"
+                :value="filter(addformbase.type)"
+                readonly
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
                 v-else
                 style="width: 500px"
                 v-model="addformbase[item.value]"
@@ -119,34 +230,37 @@
         <!-- <Button size="large" >{{
           $t("lcsj")
         }}</Button> -->
-        <Button size="large" @click="handlerprocessSteps">{{
+        <Button size="large" v-if="this.flag === 1" @click="handlerCount()">{{
+          $t("kshq")
+        }}</Button>
+        <Button size="large" v-if="this.flag === 2" @click="handlerprocessSteps">{{
           $t("lcbz")
         }}</Button>
-        <Button size="large" >{{
+        <Button size="large" v-if="this.flag === 2">{{
           $t("jrrc")
         }}</Button>
-        <Button size="large" @click="handlerEntrust">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerEntrust">{{
           $t("wt")
         }}</Button>
-        <Button size="large" @click="handlerstepaction(3)">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerstepaction(3)">{{
           $t("th")
         }}</Button>
-        <Button size="large" @click="handlerDistribute">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerDistribute">{{
           $t("ff")
         }}</Button>
-        <Button size="large" @click="handlerCountersign">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerCountersign">{{
           $t("hq")
         }}</Button>
-        <Button size="large" @click="handlerstepaction(4)">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerstepaction(4)">{{
           $t("jj")
         }}</Button>
-        <Button size="large" >{{
+        <Button size="large" v-if="this.flag === 2">{{
           $t("tjfj")
         }}</Button>
-        <Button size="large" @click="handlerstepaction(5)">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerstepaction(5)">{{
           $t("blyj")
         }}</Button>
-        <Button size="large" @click="handlerstepaction(2)">{{
+        <Button size="large" v-if="this.flag === 2" @click="handlerstepaction(2)">{{
           stepName
         }}</Button>
         <Button type="error" size="large" @click="cancel">{{
@@ -160,6 +274,7 @@
     <distribute :modalstat="visiable_distribute" :actionInfo="actionInfo" @updateStat="updateStat_distribute" />
     <processSteps :modalstat="visiable_processSteps" :actionInfo="actionInfo" @updateStat="updateStat_processSteps" />
     <stepaction :modalstat="visiable_stepaction" :actionInfo="actionInfo" :stat="stat" @updateStat="updateStat_stepaction" />
+    <action-counter-sign :modalstat="visiable_actionCount" :actionInfo="editinfo" @updateStat="updateStat_actionCount" />
   </Modal>
 </template>
 <script>
@@ -172,6 +287,7 @@ import entrust from '../handler-dialogs/entrust';
 import distribute from '../handler-dialogs/distribute';
 import processSteps from '../handler-dialogs/processSteps';
 import stepaction from '../handler-dialogs/stepaction';
+import ActionCounterSign from '../handler-dialogs/actionCounterSign.vue';
 export default {
   name: 'viewtaskDetail',
   components: {
@@ -179,14 +295,16 @@ export default {
     entrust,
     distribute,
     processSteps,
-    stepaction
+    stepaction,
+    ActionCounterSign
   },
   props: {
     modalstat: {
       type: Boolean,
       default: false
     },
-    editinfo: null
+    editinfo: null,
+    flag: null
   },
   created () {},
   mounted () {},
@@ -211,6 +329,7 @@ export default {
       visiable_distribute: false,
       visiable_processSteps: false,
       visiable_stepaction: false,
+      visiable_actionCount: false,
       actionInfo: null,
       stepName: '',
       stat: null
@@ -228,11 +347,67 @@ export default {
     modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
+        console.log('flag=============', this.flag);
         this.getList(this.editinfo.flowRecordId);
       }
     }
   },
   methods: {
+    filterDate(date) {
+      if (!date) {
+        return ''
+      }
+      const temp = new Date(date);
+      const value = utils.getDate(temp,'YMDHM')
+      return value
+    },
+    filter (val) {
+      let map = [];
+      switch (this.type) {
+        case 8:
+          map = [
+            { value: 1, label: this.$t('bingjia') },
+            { value: 2, label: this.$t('shijia') },
+            { value: 3, label: this.$t('hunjian') },
+            { value: 4, label: this.$t('chanjianjia') },
+            { value: 5, label: this.$t('chanjia') },
+            { value: 6, label: this.$t('jihuashengyushoushujia') },
+            { value: 7, label: this.$t('hulijia') },
+            { value: 8, label: this.$t('burujia') },
+            { value: 9, label: this.$t('sangjia') },
+            { value: 10, label: this.$t('nianxiujia') },
+            { value: 11, label: this.$t('qita') }
+          ];
+          break;
+        case 9:
+          map = [
+            { value: 1, label: this.$t('kqgl.gzrjiab') },
+            { value: 2, label: this.$t('kqgl.shuangxiuriji') },
+            { value: 3, label: this.$t('kqgl.fdjrjaiba') }
+          ];
+          break;
+        case 13:
+          map = [
+            { value: 1, label: this.$t('bingjia') },
+            { value: 2, label: this.$t('shijia') },
+            { value: 3, label: this.$t('hunjian') },
+            { value: 4, label: this.$t('chanjianjia') },
+            { value: 5, label: this.$t('chanjia') },
+            { value: 6, label: this.$t('jihuashengyushoushujia') },
+            { value: 7, label: this.$t('hulijia') },
+            { value: 8, label: this.$t('burujia') },
+            { value: 9, label: this.$t('sangjia') },
+            { value: 10, label: this.$t('nianxiujia') },
+            { value: 11, label: this.$t('qita') }
+          ];
+          break;
+        default:
+          break;
+      }
+      if (map[val - 1].label) {
+        return map[val - 1].label;
+      }
+    },
     handlerCountersign () {
       this.visiable_countersign = true;
     },
@@ -244,6 +419,9 @@ export default {
     },
     handlerprocessSteps () {
       this.visiable_processSteps = true;
+    },
+    handlerCount() {
+      this.visiable_actionCount = true;
     },
     handlerstepaction (stat) {
       this.stat = stat;
@@ -263,6 +441,9 @@ export default {
     },
     updateStat_stepaction (stat) {
       this.visiable_stepaction = stat;
+    },
+    updateStat_actionCount(stat) {
+      this.visiable_actionCount = stat;
     },
     getDate (val, ymd) {
       const date = new Date(val);
@@ -313,7 +494,6 @@ export default {
       });
     },
     cancel () {
-      this.reset();
       this.$emit('updateStat', false);
     },
     reset () {

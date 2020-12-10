@@ -134,18 +134,16 @@ export default {
           render: (h, params) => {
             let day = '';
             if (params.row.handleDate) {
-              const between = params.row.handleDate - params.row.createDate;
-              console.log(between);
-              // const temp = new Date(params.row.handleDate);
-              day = between / (1000 * 60 * 60);
-              console.log(day);
+              const myDate = this.$moment(params.row.handleDate);
+              const myDate2 = this.$moment(params.row.createDate);
+              day = myDate.diff(myDate2,'hours') === 0 ? `${myDate.diff(myDate2,'minutes')}分钟` : `${myDate.diff(myDate2,'hours')}时`
             } else {
               const between = new Date().getTime() - params.row.createDate;
-              console.log(between);
-              day = between / (1000 * 60 * 60);
-              console.log(day);
+              const myDate = this.$moment(new Date().getTime());
+              const myDate2 = this.$moment(params.row.createDate);
+              day = myDate.diff(myDate2,'hours') === 0 ? `${myDate.diff(myDate2,'minutes')}分钟` : `${myDate.diff(myDate2,'hours')}时`
             }
-            return h('div', `${day.toFixed(0)}时`);
+            return h('div', `${day}`);
           }
         },
         {

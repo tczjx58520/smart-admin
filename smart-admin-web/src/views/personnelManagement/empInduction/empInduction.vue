@@ -317,11 +317,7 @@ export default {
     },
     delSingle(row) {
       console.log(row);
-      const itemNameId = row.id;
-      indicatorSingle.delindicatorSingle(itemNameId).then((res) => {
-        this.$Message.success(this.$t("sccg"));
-        this.getempInductionList();
-      });
+      this.$router.push({path: '/processDo/flowStart'})
     },
     newtask(row) {
       this.visiable3 = true;
@@ -342,8 +338,6 @@ export default {
       this.getempInductionList();
     },
     created() {
-      // this.visiable = true;
-      // this.copyfile = null;
       this.$router.push({path: '/processDo/flowStart'})
     },
     del() {

@@ -183,6 +183,9 @@ export default {
           title: this.$t('jhrzsj'),
           key: 'planDate',
           render: (h, params) => {
+            if (!params.row.planDate) {
+              return h('span', 'N/A');
+            }
             const mydate = new Date(params.row.planDate);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
           }
@@ -191,6 +194,9 @@ export default {
           title: this.$t('sjrz'),
           key: 'actualDate',
           render: (h, params) => {
+            if (!params.row.actualDate) {
+              return h('span', 'N/A');
+            }
             const mydate = new Date(params.row.actualDate);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
           }
@@ -218,6 +224,7 @@ export default {
                     on: {
                       click: () => {
                       // this.Edit(params.row);
+                        this.$router.push({path: '/processDo/flowStart'})
                       }
                     }
                   },
@@ -250,6 +257,9 @@ export default {
           title: this.$t('htkssj'),
           key: 'beginTime',
           render: (h, params) => {
+            if (!params.row.beginTime) {
+              return h('span', 'N/A');
+            }
             const mydate = new Date(params.row.beginTime);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
           }
@@ -258,6 +268,9 @@ export default {
           title: this.$t('htjssj'),
           key: 'endTime',
           render: (h, params) => {
+            if (!params.row.endTime) {
+              return h('span', 'N/A');
+            }
             const mydate = new Date(params.row.endTime);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
           }
@@ -281,7 +294,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.Edit(params.row);
+                      this.$router.push({path: '/processDo/flowStart'})
                     }
                   }
                 },
@@ -417,9 +430,10 @@ export default {
       };
       this.getempInductionList2();
     },
-    created () {
-      this.visiable = true;
-      this.copyfile = null;
+    created() {
+      // this.visiable = true;
+      // this.copyfile = null;
+      this.$router.push({path: '/processDo/flowStart'})
     },
     del () {
       console.log('del');

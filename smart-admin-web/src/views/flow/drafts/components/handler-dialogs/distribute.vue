@@ -196,7 +196,7 @@ export default {
           render: (h, params) => {
             let date = '';
             if (params.row.distributionDate) {
-              const temp = new Date(params.row.distributionDate / 1000);
+              const temp = new Date(params.row.distributionDate);
               date = utils.getDate(temp, 'YMDHM');
             }
             return h('div', [

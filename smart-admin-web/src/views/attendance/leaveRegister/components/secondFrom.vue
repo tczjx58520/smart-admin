@@ -103,14 +103,17 @@
           </FormItem>
           <FormItem :label="$t('kqgl.qingjialeixing')">
             <Select v-model="fromBaseData.type" disabled style="width: 34%">
-              <Option :value="0">{{ $t("kqgl.bingjia") }}</Option>
-              <Option :value="1">{{ $t("kqgl.shijia") }}</Option>
-              <Option :value="2">{{ $t("kqgl.nianjia") }}</Option>
-              <Option :value="3">{{ $t("kqgl.hunjia") }}</Option>
-              <Option :value="4">{{ $t("kqgl.peichanjia") }}</Option>
-              <Option :value="5">{{ $t("kqgl.chanjia") }}</Option>
-              <Option :value="6">{{ $t("kqgl.shangjia") }}</Option>
-              <Option :value="7">{{ $t("kqgl.qita") }}</Option>
+              <Option :value="1">{{ $t("bingjia") }}</Option>
+              <Option :value="2">{{ $t("shijia") }}</Option>
+              <Option :value="3">{{ $t("hunjian") }}</Option>
+              <Option :value="4">{{ $t("chanjianjia") }}</Option>
+              <Option :value="5">{{ $t("chanjia") }}</Option>
+              <Option :value="6">{{ $t("jihuashengyushoushujia") }}</Option>
+              <Option :value="7">{{ $t("hulijia") }}</Option>
+              <Option :value="8">{{ $t("burujia") }}</Option>
+              <Option :value="9">{{ $t("sangjia") }}</Option>
+              <Option :value="10">{{ $t("nianxiujia") }}</Option>
+              <Option :value="11">{{ $t("qita") }}</Option>
             </Select>
           </FormItem>
           <FormItem :label="$t('kqgl.qingjiaheji')">

@@ -26,7 +26,7 @@
               <div class="detail_right">
                 <div class="title">{{ item.materialName }}</div>
                 <div class="content">
-                  <p>{{ item.materialBody }}</p>
+                  <p v-html="item.materialBody"></p>
                 </div>
               </div>
             </div>
@@ -43,7 +43,7 @@
                 <Button type="text">{{ $t("sc") }}</Button>
               </Poptip>
               <span style="color:#ebebeb;">|</span>
-              <Button type="text">{{ $t("Edit") }}</Button>
+              <Button type="text" @click.native="editItem(item)">{{ $t("Edit") }}</Button>
             </div>
           </Card>
         </div>
@@ -51,18 +51,20 @@
     </Card>
     <!-- 添加类型 -->
     <add-detail-modal :modalstat="addDialog" @updateStat="updateStat"/>
+    <edit-dialog :modalstat="editDialog" :editInfo="editInfo" @updateStat="updateStat_edit" />
   </div>
 </template>
 <script>
 import AddDetailModal from './components/addmodal/add-detail-modal.vue';
 import { training } from "@/api/traning";
+import EditDialog from './components/editmodal/editmodal.vue';
 const defaultform = {
   name: '',
   des: ''
 };
 export default {
   name: 'traning',
-  components: { AddDetailModal },
+  components: { AddDetailModal, EditDialog },
   props: {},
   data () {
     return {
@@ -78,7 +80,9 @@ export default {
           { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
         ]
       },
-      addDialog: false
+      addDialog: false,
+      editDialog: false,
+      editInfo: null
     };
   },
   computed: {},
@@ -97,16 +101,25 @@ export default {
     },
     cancel_del() {},
     getItemList() {
-      training.getTrainingDetail().then( res=> {
+      training.getTrainingDetail(this.$route.query.id).then( res=> {
         console.log(res);
         this.items = res.data
       })
     },
     updateStat (stat, value) {
       this.addDialog = stat;
+      this.getItemList()
+    },
+    updateStat_edit (stat, value) {
+      this.editDialog = stat;
     },
     additem () {
       this.addDialog = true;
+    },
+    editItem(value) {
+      console.log('执行=====');
+      this.editInfo = value
+      this.editDialog = true;
     },
     ok () {
       const data = {

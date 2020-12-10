@@ -250,6 +250,7 @@ export default {
         for (let i = 0; i < this.processLists.length; i++) {
           this.$set(this.listitem, i, false);
           this.$set(this.checkList, i, false);
+          this.checkAllGroup[i] = []
         }
       });
     },
@@ -363,6 +364,7 @@ export default {
       // this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       console.log(this.addformbase, this.checkAllGroup);
       const arr = this._.flatten(this.checkAllGroup);
+      this._.pull(arr,'',0)
       console.log(arr);
       // return false;
       this.$refs['form'].validate((valid) => {

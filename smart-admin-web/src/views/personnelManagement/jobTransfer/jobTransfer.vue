@@ -7,8 +7,8 @@
                 <Row :gutter="16">
                     <Form :model="searchform" class="tools" inline ref="searchform" :label-width="80" label-position="left">
                       <Col span="5">
-                      <FormItem prop="person" :label="$t('gwmc')" style="width:100%">
-                        <Input placeholder="请输入" type="text" v-model="searchform.name" clearable style="width:100%" />
+                      <FormItem prop="person" :label="$t('ygxm')" style="width:100%">
+                        <Input placeholder="请输入" type="text" v-model="searchform.employeeName" clearable style="width:100%" />
                       </FormItem>
                       </Col>
                       <Col span="4">
@@ -85,20 +85,24 @@ export default {
           align: 'center'
         },
         {
-          title: this.$t('zzry'),
-          key: 'empName'
+          title: this.$t('sqr'),
+          key: 'applyPersonName'
         },
         {
-          title: this.$t('zzryzz'),
-          key: 'organizeName'
+          title: this.$t('yzz'),
+          key: 'oldOrganizeName'
         },
         {
-          title: this.$t('rzrq'),
-          key: 'onDate',
-          render: (h, params) => {
-            const mydate = new Date(params.row.onDate);
-            return h('span', utils.getDate(mydate, 'YMDHMS'));
-          }
+          title: this.$t('xzz'),
+          key: 'newOrganizeName'
+        },
+        {
+          title: this.$t('ygw'),
+          key: 'oldPostName'
+        },
+        {
+          title: this.$t('xgw'),
+          key: 'newPostName'
         },
         {
           title: this.$t('sqrq'),
@@ -106,51 +110,6 @@ export default {
           render: (h, params) => {
             const mydate = new Date(params.row.applyDate);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
-          }
-        },
-        // {
-        //   title: this.$t('lczt'),
-        //   key: 'itemName'
-        // },
-        {
-          title: this.$t('action'),
-          key: 'action',
-          width: 200,
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.Edit(params.row);
-                  }
-                }
-              }, this.$t('qsht')),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-4-2']
-                  }
-                ],
-                on: {
-                  click: () => {
-                    this.delSingle(params.row);
-                  }
-                }
-              }, this.$t('ryzhuanzheng'))
-            ]);
           }
         }
       ],
@@ -249,9 +208,10 @@ export default {
       };
       this.getempInductionList();
     },
-    created () {
-      this.visiable = true;
-      this.copyfile = null;
+    created() {
+      // this.visiable = true;
+      // this.copyfile = null;
+      this.$router.push({path: '/processDo/flowStart'})
     },
     del () {
       console.log('del');
