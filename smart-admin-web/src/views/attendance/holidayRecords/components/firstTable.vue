@@ -62,84 +62,84 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
 
 export default {
-  name: "firstTable",
+  name: 'firstTable',
   components: {
     Tables,
-    organization,
+    organization
   },
-  data() {
+  data () {
     return {
-      year: "",
-      organizationName: "",
-      selectData: "",
+      year: '',
+      organizationName: '',
+      selectData: '',
       editData: null,
       firstLoading: false,
       firstTable: {
         year: null,
         organizationId: null,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       fistTotal: 0,
       firstColumns: [
         {
-          type: "selection",
+          type: 'selection',
           width: 50,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("kqgl.yhm"),
-          key: "username",
+          title: this.$t('kqgl.yhm'),
+          key: 'username'
         },
         {
-          title: this.$t("kqgl.nj"),
-          key: "annualLeaveTotalDays",
+          title: this.$t('kqgl.nj'),
+          key: 'annualLeaveTotalDays',
           editable: true,
-          editType: "input",
+          editType: 'input'
         },
         {
-          title: this.$t("kqgl.yxnj"),
-          key: "annualLeaveUsedDays",
+          title: this.$t('kqgl.yxnj'),
+          key: 'annualLeaveUsedDays'
         },
         {
-          title: this.$t("kqgl.wxnj"),
-          key: "annualLeaveRemainDays",
-        },
+          title: this.$t('kqgl.wxnj'),
+          key: 'annualLeaveRemainDays'
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     // this.getFirstTableData()
   },
   methods: {
-    clearOrg() {
-this.organizationName = '';
+    clearOrg () {
+      this.organizationName = '';
       this.firstTable.organizationId = null;
     },
-    organizationData(val) {
+    organizationData (val) {
       this.organizationName = val.title;
       this.firstTable.organizationId = val.id;
     },
-    selectOrg() {
+    selectOrg () {
       this.modalstat = true;
     },
-    async getEditData(val) {
-      console.log("getEditData", val);
-      if (val.column.key === "annualLeaveTotalDays") {
+    async getEditData (val) {
+      console.log('getEditData', val);
+      if (val.column.key === 'annualLeaveTotalDays') {
         const parms = {
           annualLeaveRemainDays:
             Number(val.value) - Number(val.row.annualLeaveUsedDays),
           annualLeaveTotalDays: Number(val.value),
           annualLeaveUsedDays: val.row.annualLeaveUsedDays,
-          id: val.row.id,
+          id: val.row.id
         };
         try {
           this.firstLoading = true;
@@ -157,35 +157,35 @@ this.organizationName = '';
         }
       }
     },
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    Edit(row) {
+    Edit (row) {
       // if (this.$judge(['1-4-2'])) {
       //   this.editinfo = row;
       //   this.visiable_edit = true;
       // } else {
       //   console.log('needroles');
       // }
-      this.modalState = "修改";
+      this.modalState = '修改';
       this.editData = Object.assign({}, row);
 
       // this.firstLoading = true;
       this.modalstat = true;
     },
-    selectFirst(selection) {
+    selectFirst (selection) {
       this.selectData = selection;
     },
-    GMTToStr(time) {
+    GMTToStr (time) {
       let date = new Date(time);
       let Str = date.getFullYear();
       return Str;
     },
-    async getFirstTableData() {
-      console.log("year", this.GMTToStr(this.year));
-      console.log("this.firstTable", this.firstTable);
+    async getFirstTableData () {
+      console.log('year', this.GMTToStr(this.year));
+      console.log('this.firstTable', this.firstTable);
       this.firstTable.year = this.GMTToStr(this.year);
       try {
         this.firstLoading = true;
@@ -201,27 +201,27 @@ this.organizationName = '';
       }
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.firstTable.pageNum = pageNum;
       this.getFirstTableData();
     },
     // 改变一页展示数
-    firstChangePageSize(pageSize) {
+    firstChangePageSize (pageSize) {
       this.firstTable.pageNum = 1;
       this.firstTable.pageSize = pageSize;
       this.getFirstTableData();
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.firstTable.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
