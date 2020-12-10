@@ -239,19 +239,17 @@ export default {
         // console.log('params', params)
         // console.log('selectData', params.column.selectData)
         // console.log('this.insideTableData[params.index][params.column.key]', this.insideTableData[params.index][params.column.key])
-        let selectId
-        if(params.column.editType === 'select') {
-           selectId = params.column.selectData.find(item => {
-          
-        return  item.shiftName === this.insideTableData[params.index][params.column.key]
+        let selectId;
+        if (params.column.editType === 'select') {
+          selectId = params.column.selectData.find(item => {
+            return item.shiftName === this.insideTableData[params.index][params.column.key];
           }
-          )
+          );
         } else {
-           selectId = {
+          selectId = {
             id: 1
-          } 
+          };
         }
-        
 
         // console.log('selectid', selectId)
         return h(TablesEdit, {
@@ -266,14 +264,14 @@ export default {
           },
           on: {
             'input': val => {
-              console.log('val', val)
+              console.log('val', val);
               this.edittingText = val;
             },
             'select': val => {
-              this.selectIdData = val
+              this.selectIdData = val;
             },
             'getnomalselect': val => {
-              this.selectIdData = val
+              this.selectIdData = val;
             },
             'on-start-edit': (params) => {
               this.edittingCellId = `editting-${params.index}-${params.column.key}`;
@@ -284,11 +282,11 @@ export default {
               this.$emit('on-cancel-edit', params);
             },
             'on-save-edit': (params) => {
-              console.log('params', params)
+              console.log('params', params);
               this.value[params.row.initRowIndex][params.column.key] = this.edittingText;
               this.$emit('input', this.value);
               this.$emit('on-save-edit', Object.assign(params, { value: this.edittingText }));
-              this.$emit('on-save-selectData', Object.assign(params, { value: this.selectIdData, value2: this.edittingText }))
+              this.$emit('on-save-selectData', Object.assign(params, { value: this.selectIdData, value2: this.edittingText }));
               this.edittingCellId = '';
             }
           }
@@ -370,7 +368,7 @@ export default {
     onRowDblclick (row, index) {
       this.$emit('on-row-dblclick', row, index);
     },
-    onCellclick(row, column, data, evnet, params) {
+    onCellclick (row, column, data, evnet, params) {
       this.$emit('on-cell-click', row, column, data, evnet, params);
     },
     onExpand (row, status) {
@@ -386,4 +384,3 @@ export default {
         color: #fff;
     }
 </style>
-

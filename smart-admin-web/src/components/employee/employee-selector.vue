@@ -1,6 +1,12 @@
 <template>
-  <Select clearable filterable :multiple="multiple" :style="selectorStyle" v-model="selectValue">
-    <Option :key="item.id" :value="item.id" v-for="item in dataList">{{ item.actualName }}</Option>
+  <Select clearable
+          filterable
+          :multiple="multiple"
+          :style="selectorStyle"
+          v-model="selectValue">
+    <Option :key="item.id"
+            :value="item.id"
+            v-for="item in dataList">{{ item.actualName }}</Option>
   </Select>
 </template>
 <script>
@@ -14,36 +20,36 @@ export default {
       type: Boolean,
       default: false
     },
-    selectorStyle:{
-      type:String,
-      default:'width:180px'
+    selectorStyle: {
+      type: String,
+      default: 'width:180px'
     }
   },
-  data() {
+  data () {
     return {
       dataList: [],
       selectValue: this.value
     };
   },
-  mounted() {
+  mounted () {
     this.reset();
     this.query();
   },
   methods: {
-    reset() {
+    reset () {
       if (this.multiple) {
         this.selectValue = [];
       } else {
         this.selectValue = -1;
       }
     },
-    updateSelect(value) {
+    updateSelect (value) {
       this.selectValue = value;
     },
-    getSelectValue() {
+    getSelectValue () {
       return this.selectValue;
     },
-    query() {
+    query () {
       (async () => {
         let res = await employeeApi.getAllEmployee();
         this.dataList = res.data;

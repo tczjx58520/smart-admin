@@ -3,6 +3,7 @@ import Main from '@/components/main';
 
 import { personnelRelations } from './empInduction';
 import { traning } from './traning';
+import { examination } from './examination';
 // import { employeeFile } from './employeeFile';
 // 业务
 export const personnelManagement = [
@@ -18,7 +19,8 @@ export const personnelManagement = [
     },
     children: [
       ...personnelRelations,
-      ...traning
+      ...traning,
+      ...examination
       // ...employeeFile
     ]
   }
