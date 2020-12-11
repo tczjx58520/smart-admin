@@ -874,7 +874,7 @@ export default {
   zshihetong: '正式合同',
   linshihetong: '临时合同',
   yzz: '原组织',
-  xzz:'新组织',
+  xzz: '新组织',
   ygw: '原岗位',
   xgw: '新岗位',
   blsx: '办理时限',
@@ -883,6 +883,9 @@ export default {
   userYearDay: '可使用年假天数',
   useExchangDay: '可使用调休天数',
   gdjlxyczlcgz: '该单据类型已存在流程规则',
+  xywksd: '需要我考试的',
+  wwcd: '我完成的',
+  wqkd: '我缺考的',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

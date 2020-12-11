@@ -5,6 +5,7 @@
       <div>
         <Button style="margin-right:15px;"
                 icon="md-refresh"
+                @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
                 v-privilege="['10-15-1']"
@@ -20,8 +21,8 @@
              :data="tableData"
              :loading="Gongloading">
       </Table>
-      <Page :current="Gongsearchform.pageNum"
-            :page-size="Gongsearchform.pageSize"
+      <Page :current="listQuery.pageNum"
+            :page-size="listQuery.pageSize"
             :page-size-opts="[10, 20, 30, 50, 100]"
             :total="GongpageTotal"
             @on-change="GongchangePage"
@@ -81,11 +82,12 @@ export default {
           key: 'questionCount',
           align: 'center'
         },
+        // {
+        //   title: this.$t('examStat'),
+        //   key: 'status',
+        //   align: 'center'
+        // },
         {
-          title: this.$t('examStat'),
-          key: 'status',
-          align: 'center'
-        }, {
           title: this.$t('examNum'),
           key: 'employeeTotalCount',
           align: 'center'
@@ -119,17 +121,21 @@ export default {
   },
   methods: {
     getList () {
+      this.Gongloading = true;
       examination.findExamTask(this.listQuery).then(res => {
         console.log(res);
         this.tableData = res.data.list;
         this.GongpageTotal = res.data.totalCount;
+        this.Gongloading = false;
       });
     },
-    GongchangePage () {
-
+    GongchangePage (val) {
+      this.listQuery.pageNum = val;
+      this.getList();
     },
-    GongchangePageSize () {
-
+    GongchangePageSize (val) {
+      this.listQuery.pageSize = val;
+      this.getList();
     },
     addGong () {
       this.visiable = true;
@@ -137,6 +143,10 @@ export default {
     },
     updateStat (stat) {
       this.visiable = stat;
+      this.getList();
+    },
+    refresh () {
+      this.listQuery.pageNum = 1;
       this.getList();
     }
   }

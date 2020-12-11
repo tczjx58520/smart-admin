@@ -3,7 +3,7 @@
     <Card class="warp-card"
           dis-hover>
       <Tabs @on-click="changeTab">
-        <TabPane label="需要我考试的"
+        <TabPane :label="$t('xywksd')"
                  name="tab1">
           <Table border
                  ref="selection"
@@ -17,7 +17,7 @@
             </template>
           </Table>
         </TabPane>
-        <TabPane label="我完成的"
+        <TabPane :label="$t('wwcd')"
                  name="tab2">
           <Table border
                  ref="selection"
@@ -31,7 +31,7 @@
             </template> -->
           </Table>
         </TabPane>
-        <TabPane label="我缺考的"
+        <TabPane :label="$t('wqkd')"
                  name="tab3">
           <Table border
                  ref="selection"
@@ -84,10 +84,6 @@ export default {
           key: 'questionCount'
         },
         {
-          title: this.$t('examStat'),
-          key: 'status'
-        },
-        {
           title: this.$t('action'),
           slot: 'action',
           width: 150,
@@ -117,16 +113,12 @@ export default {
           key: 'questionCount'
         },
         {
-          title: this.$t('examStat'),
-          key: 'status'
-        },
-        {
           title: this.$t('getGoal'),
           key: 'point'
         },
         {
           title: this.$t('examTime'),
-          key: 'status'
+          key: 'createTime'
         }
         // {
         //   title: this.$t('action'),
@@ -156,10 +148,6 @@ export default {
         {
           title: this.$t('questionNum'),
           key: 'questionCount'
-        },
-        {
-          title: this.$t('examStat'),
-          key: 'status'
         }
         // {
         //   title: this.$t('action'),
@@ -188,7 +176,7 @@ export default {
       };
       examination.beginExam(data).then(res => {
         console.log(res);
-        this.$router.push({ path: '/examination/test', query: { questionList: res.data.choiceQstList, examId: row.examId, startTime: res.data.createTime, totalTime: row.totalTime } });
+        this.$router.push({ path: '/examination/test', query: { examId: row.examId, totalTime: row.totalTime } });
       });
     },
     getList () {

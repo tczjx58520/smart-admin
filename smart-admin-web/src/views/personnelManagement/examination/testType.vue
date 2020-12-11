@@ -143,7 +143,7 @@ export default {
         },
         {
           title: this.$t('createName'),
-          key: 'createId'
+          key: 'employeeName'
         },
         {
           title: this.$t('createTime'),

@@ -8,7 +8,7 @@
       考试时间还剩：{{leaveTimeMin}}: {{leaveTimeSecond}}
     </div>
     <div style="text-align: center;font-size: 40px;margin-bottom: 50px;">好好考试，天天向上</div>
-    <div style="height:1000px;overflow:auto;">
+    <div style="height:950px;overflow:auto;">
       <Card :bordered="false"
             v-for="(item,index) in questionList"
             :key=item.id>
@@ -49,53 +49,70 @@ export default {
       questionList: [],
       examId: null,
       leaveTimeMin: null,
-      leaveTimeSecond: 60,
-      totalTime: null
+      leaveTimeSecond: null,
+      totalTime: null,
+      startTime: null,
+      currentTime: null
     };
   },
   created () {
-    this.questionList = this.$route.query.questionList;
+    // 考试ID
     this.examId = Number(this.$route.query.examId);
-    this.startTime = this.$route.query.startTime;
-    this.totalTime = Number(this.$route.query.totalTime);
-    console.log(this.startTime);
 
-    // 当前时间
-    let nowTime = new Date();
+    const data = {
+      employeeId: this.$store.state.user.userLoginInfo.userId,
+      examId: this.examId
+    };
+    examination.beginExam(data).then(res => {
+      // 考试问题
+      this.questionList = res.data.choiceQstList;
+      // 考试时间毫秒值
+      this.startTime = Number(res.data.createTime);
+      // 当前时间毫秒值
+      this.currentTime = Number(res.data.currentTime);
 
-    const myDate = this.$moment(nowTime);
-    const myDate2 = this.$moment(Number(this.startTime));
-    const surplus = myDate.diff(myDate2, 'minutes');
-    console.log(myDate);
-    console.log(myDate2);
+      // 考试总时长
+      this.totalTime = Number(this.$route.query.totalTime);
 
-    console.log(surplus);
-    console.log(this.totalTime);
+      // 考试结束时间毫秒值
+      let endTime = this.startTime + this.totalTime * 60 * 1000;
 
-    console.log(this.$moment.duration(myDate.diff(myDate2))._data);
-    console.log(11111, this.$moment.duration(myDate.diff(myDate2))._data.minutes);
-    console.log(22222, this.$moment.duration(myDate.diff(myDate2))._data.seconds);
+      console.log(11111, endTime);
 
-    const day = this.$moment.duration(myDate.diff(myDate2))._data.day * 24 * 60 * 60 * 1000;
-    const hour = this.$moment.duration(myDate.diff(myDate2))._data.hours * 60 * 60 * 1000;
-    const minutes = this.$moment.duration(myDate.diff(myDate2))._data.hours * 60 * 1000;
-    const seconds = this.$moment.duration(myDate.diff(myDate2))._data.hours * 1000;
+      // 剩余考试时间的毫秒值
+      let surplus = endTime - this.currentTime;
 
-    if (surplus > this.totalTime) {
-      this.leaveTimeMin = this.totalTime - 1;
-    } else {
-      this.leaveTimeMin = surplus - this.totalTime - 1;
-    }
+      console.log(22222222, surplus);
+
+      console.log(55555555, surplus);
+
+      if (surplus < 0 || surplus === 0) {
+        this.leaveTimeSecond = 0;
+        this.leaveTimeMin = 0;
+      } else {
+        // 剩余考试时间多少秒
+        this.leaveTimeSecond = parseInt((surplus / 1000) % 60);
+        // 剩余考试时间多少分钟
+        this.leaveTimeMin = parseInt(surplus / 1000 / 60);
+      }
+
+      console.log(123123, this.startTime);
+      console.log(123123, this.currentTime);
+    });
+
+    // const myDate = this.$moment(nowTime);
+    // const myDate2 = this.$moment(Number(this.startTime));
+    // console.log(5555555555, myDate2);
 
     this.leaveTime();
   },
   methods: {
     leaveTime () {
-      setInterval(() => {
-        if (this.leaveTimeSecond !== 0 && this.leaveTimeMin !== 0) {
+      const interval = setInterval(() => {
+        if (this.leaveTimeSecond !== 0) {
           this.leaveTimeSecond--;
         }
-        if (this.leaveTimeSecond < 10) {
+        if (this.leaveTimeSecond < 10 && this.leaveTimeMin !== 0 && this.leaveTimeSecond !== 0) {
           this.leaveTimeSecond = '0' + this.leaveTimeSecond;
         }
         if (Number(this.leaveTimeSecond) === 0 && this.leaveTimeMin !== 0) {
@@ -104,8 +121,8 @@ export default {
         }
 
         if (this.leaveTimeSecond === 0 && this.leaveTimeMin === 0) {
+          clearInterval(interval);
           this.leaveTimeSecond = 0;
-          clearInterval();
           this.submit();
         }
       }, 1000);
@@ -113,15 +130,23 @@ export default {
     submit () {
       console.log(this.questionList);
       const list = [];
+
       this.questionList.map(item => {
-        list.push({
-          id: item.id,
-          result: item.attachment.split('、')[0]
-        });
+        if (item.attachment) {
+          list.push({
+            id: item.id,
+            result: item.attachment.split('、')[0]
+          });
+        } else {
+          list.push({
+            id: item.id,
+            result: item.attachment
+          });
+        }
       });
 
       examination.examGoal(JSON.stringify(list), this.$store.state.user.userLoginInfo.userId, this.examId).then(res => {
-        console.log(33333333333333333333333, res);
+        console.log(33333333333333, res);
         this.$router.closeCurrentPage();
       });
     },
