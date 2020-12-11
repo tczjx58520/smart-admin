@@ -188,7 +188,7 @@ export default {
       };
       examination.beginExam(data).then(res => {
         console.log(res);
-        this.$router.push({ path: '/examination/test', query: { questionList: res.data.choiceQstList, examId: row.examId, startTime: res.data.createTime, totalTime: row.totalTime } });
+        this.$router.push({ path: '/examination/test', query: { questionList: JSON.stringify(res.data.choiceQstList), examId: row.examId, startTime: res.data.createTime, totalTime: row.totalTime, currentTime: res.data.currentTime } });
       });
     },
     getList () {

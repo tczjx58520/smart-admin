@@ -49,53 +49,58 @@ export default {
       questionList: [],
       examId: null,
       leaveTimeMin: null,
-      leaveTimeSecond: 60,
-      totalTime: null
+      leaveTimeSecond: null,
+      totalTime: null,
+      startTime: null,
+      currentTime: null
     };
   },
   created () {
-    this.questionList = this.$route.query.questionList;
+    // 考试问题
+    this.questionList = JSON.parse(this.$route.query.questionList);
+    // 考试ID
     this.examId = Number(this.$route.query.examId);
-    this.startTime = this.$route.query.startTime;
+    // 考试考试时间毫秒值
+    this.startTime = Number(this.$route.query.startTime);
+    // 当前时间毫秒值
+    this.currentTime = Number(this.$route.query.currentTime);
+    // 考试总时长
     this.totalTime = Number(this.$route.query.totalTime);
-    console.log(this.startTime);
 
-    // 当前时间
-    let nowTime = new Date();
+    // 考试结束时间毫秒值
+    let endTime = this.startTime + this.totalTime * 60 * 1000;
 
-    const myDate = this.$moment(nowTime);
-    const myDate2 = this.$moment(Number(this.startTime));
-    const surplus = myDate.diff(myDate2, 'minutes');
-    console.log(myDate);
-    console.log(myDate2);
+    // 剩余考试时间的毫秒值
+    let surplus = endTime - this.currentTime;
 
-    console.log(surplus);
-    console.log(this.totalTime);
+    console.log(55555555, surplus);
 
-    console.log(this.$moment.duration(myDate.diff(myDate2))._data);
-    console.log(11111, this.$moment.duration(myDate.diff(myDate2))._data.minutes);
-    console.log(22222, this.$moment.duration(myDate.diff(myDate2))._data.seconds);
-
-    const day = this.$moment.duration(myDate.diff(myDate2))._data.day * 24 * 60 * 60 * 1000;
-    const hour = this.$moment.duration(myDate.diff(myDate2))._data.hours * 60 * 60 * 1000;
-    const minutes = this.$moment.duration(myDate.diff(myDate2))._data.hours * 60 * 1000;
-    const seconds = this.$moment.duration(myDate.diff(myDate2))._data.hours * 1000;
-
-    if (surplus > this.totalTime) {
-      this.leaveTimeMin = this.totalTime - 1;
+    if (surplus < 0 || surplus === 0) {
+      this.leaveTimeSecond = 0;
+      this.leaveTimeMin = 0;
     } else {
-      this.leaveTimeMin = surplus - this.totalTime - 1;
+      // 剩余考试时间多少秒
+      this.leaveTimeSecond = parseInt((surplus / 1000) % 60);
+      // 剩余考试时间多少分钟
+      this.leaveTimeMin = parseInt(surplus / 1000 / 60);
     }
+
+    console.log(parseInt((surplus / 1000) % 60));
+    console.log(parseInt(surplus / 1000 / 60));
+
+    // const myDate = this.$moment(nowTime);
+    // const myDate2 = this.$moment(Number(this.startTime));
+    // console.log(5555555555, myDate2);
 
     this.leaveTime();
   },
   methods: {
     leaveTime () {
-      setInterval(() => {
-        if (this.leaveTimeSecond !== 0 && this.leaveTimeMin !== 0) {
+      const interval = setInterval(() => {
+        if (this.leaveTimeSecond !== 0) {
           this.leaveTimeSecond--;
         }
-        if (this.leaveTimeSecond < 10) {
+        if (this.leaveTimeSecond < 10 && this.leaveTimeMin !== 0 && this.leaveTimeSecond !== 0) {
           this.leaveTimeSecond = '0' + this.leaveTimeSecond;
         }
         if (Number(this.leaveTimeSecond) === 0 && this.leaveTimeMin !== 0) {
@@ -104,8 +109,8 @@ export default {
         }
 
         if (this.leaveTimeSecond === 0 && this.leaveTimeMin === 0) {
+          clearInterval(interval);
           this.leaveTimeSecond = 0;
-          clearInterval();
           this.submit();
         }
       }, 1000);
@@ -113,15 +118,23 @@ export default {
     submit () {
       console.log(this.questionList);
       const list = [];
+
       this.questionList.map(item => {
-        list.push({
-          id: item.id,
-          result: item.attachment.split('、')[0]
-        });
+        if (item.attachment) {
+          list.push({
+            id: item.id,
+            result: item.attachment.split('、')[0]
+          });
+        } else {
+          list.push({
+            id: item.id,
+            result: item.attachment
+          });
+        }
       });
 
       examination.examGoal(JSON.stringify(list), this.$store.state.user.userLoginInfo.userId, this.examId).then(res => {
-        console.log(33333333333333333333333, res);
+        console.log(33333333333333, res);
         this.$router.closeCurrentPage();
       });
     },
