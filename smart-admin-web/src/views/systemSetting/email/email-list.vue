@@ -2,40 +2,105 @@
   <div>
     <Card class="warp-card" dis-hover>
       <Row :gutter="16">
-        <Form :model="searchForm" class="tools" inline ref="searchform" :label-width="65" label-position="left">
+        <Form
+          :model="searchForm"
+          class="tools"
+          inline
+          ref="searchform"
+          :label-width="65"
+          label-position="left"
+        >
           <Col span="4">
-          <FormItem prop="type" :label="$t('notice_view.title')" style="width:100%;margin-right:15px;">
-            <Input placeholder="请输入标题" type="text" v-model="searchForm.title" style="width:100%" clearable/>
-          </FormItem>
+            <FormItem
+              prop="type"
+              :label="$t('notice_view.title')"
+              style="width: 100%; margin-right: 15px"
+            >
+              <Input
+                placeholder="请输入标题"
+                type="text"
+                v-model="searchForm.title"
+                style="width: 100%"
+                clearable
+              />
+            </FormItem>
           </Col>
           <Col span="4">
-          <FormItem prop="startDate" :label="$t('actiontime')" style="width:100%">
-            <DatePicker type="date" placeholder="Select date" v-model="searchForm.beginTime" format="yyyy-MM-dd" style="width: 100%" @on-change="time1"></DatePicker>
-          </FormItem>
+            <FormItem
+              prop="startDate"
+              :label="$t('actiontime')"
+              style="width: 100%"
+            >
+              <DatePicker
+                type="date"
+                placeholder="Select date"
+                v-model="searchForm.beginTime"
+                format="yyyy-MM-dd"
+                style="width: 100%"
+                @on-change="time1"
+              ></DatePicker>
+            </FormItem>
           </Col>
           <Col span="4">
-          <FormItem prop="startDate" :label="$t('actiontime')" style="width:100%">
-            <DatePicker type="date" placeholder="Select date" v-model="searchForm.endTime" format="yyyy-MM-dd" style="width: 100%" @on-change="time2"></DatePicker>
-          </FormItem>
+            <FormItem
+              prop="startDate"
+              :label="$t('actiontime')"
+              style="width: 100%"
+            >
+              <DatePicker
+                type="date"
+                placeholder="Select date"
+                v-model="searchForm.endTime"
+                format="yyyy-MM-dd"
+                style="width: 100%"
+                @on-change="time2"
+              ></DatePicker>
+            </FormItem>
           </Col>
           <Col span="4">
-          <FormItem>
-            <ButtonGroup>
-              <Button @click="find" icon="ios-search" type="primary">查询</Button>
-              <!-- <Button @click="reset" icon="md-refresh" type="default">重置</Button> -->
-            </ButtonGroup>
-          </FormItem>
+            <FormItem>
+              <ButtonGroup>
+                <Button @click="find" icon="ios-search" type="primary"
+                  >查询</Button
+                >
+                <!-- <Button @click="reset" icon="md-refresh" type="default">重置</Button> -->
+              </ButtonGroup>
+            </FormItem>
           </Col>
         </Form>
       </Row>
     </Card>
-    <Card class="warp-card" dis-hover >
-      <div class="butttonGroup" style="margin-bottom:10px;">
-        <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-        <Button v-privilege="['1-9-1']" style="margin-right:15px;" @click="addNew" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-        <Button v-privilege="['1-9-3']" style="margin-right:15px;" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
+    <Card class="warp-card" dis-hover>
+      <div class="butttonGroup" style="margin-bottom: 10px">
+        <Button
+          style="margin-right: 15px"
+          @click="refresh"
+          icon="md-refresh"
+          type="default"
+          >{{ $t("Reflash") }}</Button
+        >
+        <Button
+          v-privilege="['1-9-1']"
+          style="margin-right: 15px"
+          @click="addNew"
+          icon="md-add"
+          type="warning"
+          >{{ $t("Create") }}</Button
+        >
+        <Button
+          v-privilege="['1-9-3']"
+          style="margin-right: 15px"
+          @click="del"
+          icon="md-trash"
+          type="error"
+          >{{ $t("Delete") }}</Button
+        >
       </div>
-      <Table :columns="columns" :data="tableData" @on-selection-change="SelectMore"></Table>
+      <Table
+        :columns="columns"
+        :data="tableData"
+        @on-selection-change="SelectMore"
+      ></Table>
       <Page
         :current="searchForm.pageNum"
         :page-size="searchForm.pageSize"
@@ -46,25 +111,29 @@
         show-elevator
         show-sizer
         show-total
-        style="margin:24px 0;text-align:right;"
+        style="margin: 24px 0; text-align: right"
       ></Page>
     </Card>
     <!-- 新建弹窗 -->
-            <addModal :modalstat = "visiable" :info = "infoList" @updateStat = "updateStat"></addModal>
-            <!-- 新建结束============= -->
+    <addModal
+      :modalstat="visiable"
+      :info="infoList"
+      @updateStat="updateStat"
+    ></addModal>
+    <!-- 新建结束============= -->
   </div>
 </template>
 
 <script>
-import { noticeApi } from '@/api/notice';
-import addModal from './components/addmodal/modal';
+import { noticeApi } from "@/api/notice";
+import addModal from "./components/addmodal/modal";
 export default {
-  name: 'noticeList',
+  name: "noticeList",
   components: {
-    addModal
+    addModal,
   },
   props: {},
-  data () {
+  data() {
     return {
       infoList: {},
       visiable: false,
@@ -76,179 +145,201 @@ export default {
         pageNum: 1,
         pageSize: 10,
         beginTime: null,
-        title: null
+        title: null,
       },
       // 表头
       columns: [
         {
-          type: 'selection',
+          type: "selection",
           width: 60,
-          align: 'center'
+          align: "center",
         },
         {
-          title: '发布人员',
-          key: 'createName'
+          title: "发布人员",
+          key: "createName",
         },
         {
-          title: '标题',
-          key: 'title'
+          title: "标题",
+          key: "title",
         },
         {
-          title: '过期',
-          key: 'title'
+          title: "过期",
+          key: "title",
         },
         {
-          title: '开始时间',
-          key: 'beginTime'
+          title: "开始时间",
+          key: "beginTime",
         },
         {
-          title: '结束时间',
-          key: 'endTime'
+          title: "结束时间",
+          key: "endTime",
         },
         {
-          title: this.$t('usermanage_view.action'),
-          key: 'action',
+          title: this.$t("usermanage_view.action"),
+          key: "action",
           width: 200,
-          align: 'center',
+          align: "center",
           render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "primary",
+                    size: "small",
+                  },
+                  style: {
+                    marginRight: "5px",
+                  },
+                  on: {
+                    click: () => {
+                      this.View(params);
+                    },
+                  },
                 },
-                style: {
-                  marginRight: '5px'
+                this.$t("View")
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info",
+                    size: "small",
+                  },
+                  directives: [
+                    {
+                      name: "privilege",
+                      value: ["1-9-2"],
+                    },
+                  ],
+                  on: {
+                    click: () => {
+                      this.editEmail(params);
+                    },
+                  },
                 },
-                on: {
-                  click: () => {
-                    this.View(params);
-                  }
-                }
-              }, this.$t('View')),
-              h('Button', {
-                props: {
-                  type: 'info',
-                  size: 'small'
-                },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-9-2']
-                  }
-                ],
-                on: {
-                  click: () => {
-                    this.editEmail(params);
-                  }
-                }
-              }, this.$t('Edit'))
+                this.$t("Edit")
+              ),
             ]);
-          }
-        }
+          },
+        },
       ],
       // table数据
       tableData: [],
       // 删除id
       delId: null,
-      moreNotice: []
+      moreNotice: [],
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created () {
+  activated() {
+    this.getEmailMess();
+  },
+  mounted() {
     this.getEmailMess();
   },
   methods: {
-    updateStat (stat) {
+    updateStat(stat) {
       this.visiable = stat;
     },
-    SelectMore (selection) {
+    SelectMore(selection) {
       this.moreNotice = selection;
     },
-    time1 (e) {
+    time1(e) {
       this.searchForm.beginTime = e;
     },
-    time2 (e) {
+    time2(e) {
       this.searchForm.endTime = e;
     },
-    refresh () {
+    refresh() {
       this.getEmailMess();
     },
-    del () {
-      const delmap = this.moreNotice.map(item => { return item.id; });
-      for (const i in delmap) {
-        let data = {};
-        data.noticeId = delmap[i];
-        data.operatId = this.$store.state.user.userLoginInfo.userId;
-        noticeApi.deleteNotice(data).then(res => {
-          if (res.ret === 200) {
-            this.$Message.success(res.msg);
-            this.getEmailMess();
-          } else {
-            this.$Message.error(res.msg);
+    del() {
+      this.$Modal.confirm({
+        title: "Title",
+        content: "<p>是否确认删除</p>",
+        onOk: () => {
+          const delmap = this.moreNotice.map((item) => {
+            return item.id;
+          });
+          for (const i in delmap) {
+            let data = {};
+            data.noticeId = delmap[i];
+            data.operatId = this.$store.state.user.userLoginInfo.userId;
+            noticeApi.deleteNotice(data).then((res) => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.getEmailMess();
+              } else {
+                this.$Message.error(res.msg);
+              }
+            });
           }
-        });
-      }
+        },
+        onCancel: () => {
+          this.$Message.info("Clicked cancel");
+        },
+      });
     },
-    View (params) {
+    View(params) {
       this.infoList = params.row;
       this.visiable = true;
-      console.log('查看');
+      console.log("查看");
     },
     // 编辑邮件
-    editEmail (params) {
+    editEmail(params) {
       this.$router.push({
-        path: '/notice/notice',
-        query: { id: params.row.id }
+        path: "/notice/notice",
+        query: { id: params.row.id },
       });
     },
     // 新增
-    addNew () {
-      this.$router.push({ path: '/notice/notice' });
+    addNew() {
+      this.$router.push({ path: "/notice/notice" });
     },
     // 重置
-    reset () {
+    reset() {
       this.$refs.searchForm.resetFields();
       this.searchForm.startDate = null;
       this.searchForm.endDate = null;
-      this.$set(this.searchForm, 'endDate', null);
+      this.$set(this.searchForm, "endDate", null);
       this.find();
     },
     // 删除确定
-    async deleteSure () {
+    async deleteSure() {
       this.$Spin.show();
       let res = await noticeApi.deleteEmail(this.delId);
-      this.$Message.success('删除成功');
+      this.$Message.success("删除成功");
       this.$Spin.hide();
       this.getEmailMess();
     },
     // 删除操作
-    deleteEmail (params) {
+    deleteEmail(params) {
       this.delId = params.row.id;
       this.$Modal.confirm({
-        title: '友情提醒',
-        content: '确定要删除吗？',
+        title: "友情提醒",
+        content: "确定要删除吗？",
         onOk: () => {
           this.deleteSure(params.row.id);
-        }
+        },
       });
     },
     // 查询
-    find () {
+    find() {
       this.searchForm.pageNum = 1;
       this.searchForm.pageSize = 10;
       this.getEmailMess();
     },
     // 更改分页查询条数
-    changePageSize (pageSize) {
+    changePageSize(pageSize) {
       this.searchForm.pageNum = 1;
       this.searchForm.pageSize = pageSize;
       this.getEmailMess();
     },
     // 获取邮件数据
-    async getEmailMess () {
+    async getEmailMess() {
       this.$Spin.show();
       let res = await noticeApi.getNoticeList(this.searchForm);
       this.$Spin.hide();
@@ -256,15 +347,15 @@ export default {
       this.total = res.data.content.totalCount;
     },
     // 页码改变
-    changePage (pageNum) {
+    changePage(pageNum) {
       this.searchForm.pageNum = pageNum;
       this.getEmailMess();
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
-  .ivu-form-item {
-        margin-bottom: 0;
-    }
+.ivu-form-item {
+  margin-bottom: 0;
+}
 </style>

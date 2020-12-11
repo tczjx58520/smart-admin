@@ -455,31 +455,6 @@ export default {
                   ],
                   on: {
                     click: () => {
-                      this.View_list(params.row);
-                    }
-                  }
-                },
-                this.$t('xz')
-              ),
-              h(
-                'Button',
-                {
-                  props: {
-                    type: 'info',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '5px',
-                    display: params.row.stat === 2 ? 'none' : 'inline-block'
-                  },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['1-4-2']
-                    }
-                  ],
-                  on: {
-                    click: () => {
                       this.$Modal.confirm({
                         title: 'Title',
                         content: '<p>确认删除流程?</p>',

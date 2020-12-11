@@ -64,6 +64,12 @@ import Tables from '@/components/tables';
 import RoleTree from '../role-tree/role-tree';
 import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
 import { indicatorSingle } from '@/api/indicatorSingle';
+const defaultForm = {
+  name: '',
+  content: '',
+  collectType: null,
+  repositoryLevelId: null
+}
 export default {
   name: 'addModal',
   components: {
@@ -274,6 +280,8 @@ export default {
       this.edit_indicator_flag = false;
     },
     cancel () {
+      this.addformbase = Object.assign({},defaultForm)
+      this.mydataList = []
       this.$emit('updateStat', false);
     },
     handsave () {
@@ -286,6 +294,8 @@ export default {
           indicatorSetApi.addindicator(this.addformbase).then(res => {
             this.$Message.success(this.$t('addSuccess'));
             this.modal_loading = false;
+            this.addformbase = Object.assign({},defaultForm)
+            this.mydataList = []
             this.$emit('updateStat', false);
           });
         } else {

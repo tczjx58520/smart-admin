@@ -882,6 +882,7 @@ export default {
   kshq: '开始会签',
   userYearDay: '可使用年假天数',
   useExchangDay: '可使用调休天数',
+  gdjlxyczlcgz: '该单据类型已存在流程规则',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

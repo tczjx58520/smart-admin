@@ -462,7 +462,6 @@ export default {
       });
     },
     cancel () {
-      this.reset();
       this.$emit('updateStat', false);
     },
     reset () {

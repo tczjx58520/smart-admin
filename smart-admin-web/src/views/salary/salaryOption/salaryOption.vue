@@ -213,7 +213,7 @@ export default {
     },
     // 翻页
     GongchangePage (pageNum) {
-      this.searchform.pageNum = pageNum;
+      this.Gongsearchform.pageNum = pageNum;
       this.getGongList();
     },
     // 改变一页展示数

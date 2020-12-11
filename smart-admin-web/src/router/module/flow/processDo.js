@@ -29,15 +29,15 @@ export const processDo = [
         },
         component: () => import('@/views/flow/flowStart/actionFlowStart')
       },
-      {
-        path: '/processDo/drafts',
-        name: 'drafts',
-        meta: {
-          title: '草稿箱',
-          roles: ['1-3-4']
-        },
-        component: () => import('@/views/flow/drafts/drafts')
-      },
+      // {
+      //   path: '/processDo/drafts',
+      //   name: 'drafts',
+      //   meta: {
+      //     title: '草稿箱',
+      //     roles: ['1-3-4']
+      //   },
+      //   component: () => import('@/views/flow/drafts/drafts')
+      // },
       {
         path: '/processDo/toDoFlow',
         name: 'toDoFlow',
