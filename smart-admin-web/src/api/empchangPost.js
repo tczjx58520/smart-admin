@@ -1,8 +1,8 @@
 import { postAxios } from '@/lib/http';
 
-export const EmpSign = {
+export const empchangPost = {
   // 查询门店
-  getempInductionList: (data) => {
+  getempchangPost: (data) => {
     let Form = new FormData();
     if (data.empInductionId !== undefined && data.empInductionId !== null && data.empInductionId !== '') {
       Form.append('empInductionId', data.empInductionId);
@@ -31,7 +31,7 @@ export const EmpSign = {
     return postAxios('/empInduction/empInductionList', Form);
   },
   // 添加门店
-  addEmpSign: data => {
+  addempchangPost: data => {
     let Form = new FormData();
     if (data.id !== undefined && data.id !== null && data.id !== '') {
       Form.append('id', data.id);
@@ -45,36 +45,30 @@ export const EmpSign = {
     if (data.title !== undefined && data.title !== null && data.title !== '') {
       Form.append('title', data.title);
     }
-    if (data.createId !== undefined && data.createId !== null && data.createId !== '') {
-      Form.append('createId', data.createId);
+    if (data.applyPersonId !== undefined && data.applyPersonId !== null && data.applyPersonId !== '') {
+      Form.append('applyPersonId', data.applyPersonId);
     }
-    if (data.contractType !== undefined && data.contractType !== null && data.contractType !== '') {
-      Form.append('contractType', data.contractType);
+    if (data.oldOrganizeId !== undefined && data.oldOrganizeId !== null && data.oldOrganizeId !== '') {
+      Form.append('oldOrganizeId', data.oldOrganizeId);
     }
-    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
-      Form.append('empId', data.empId);
+    if (data.newOrganizeId !== undefined && data.newOrganizeId !== null && data.newOrganizeId !== '') {
+      Form.append('newOrganizeId', data.newOrganizeId);
     }
-    if (data.organizeId !== undefined && data.organizeId !== null && data.organizeId !== '') {
-      Form.append('organizeId', data.organizeId);
+    if (data.oldPostId !== undefined && data.oldPostId !== null && data.oldPostId !== '') {
+      Form.append('oldPostId', data.oldPostId);
     }
-    if (data.postId !== undefined && data.postId !== null && data.postId !== '') {
-      Form.append('postId', data.postId);
+    if (data.newPostId !== undefined && data.newPostId !== null && data.newPostId !== '') {
+      Form.append('newPostId', data.newPostId);
     }
-    if (data.probation !== undefined && data.probation !== null && data.probation !== '') {
-      Form.append('probation', data.probation);
+    if (data.levelId !== undefined && data.levelId !== null && data.levelId !== '') {
+      Form.append('levelId', data.levelId);
     }
-    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
-      Form.append('beginTime1', data.beginTime);
+    if (data.reason !== undefined && data.reason !== null && data.reason !== '') {
+      Form.append('reason', data.reason);
     }
-    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
-      Form.append('endTime1', data.endTime);
-    }
-    if (data.contractNumber !== undefined && data.contractNumber !== null && data.contractNumber !== '') {
-      Form.append('contractNumber', data.contractNumber);
-    }
-    return postAxios('/empsign/addEmpSign', Form);
+    return postAxios('/empChangePost/addEmpChangePost', Form);
   },
-  updateempInduction: data => {
+  updateempchangPost: data => {
     let Form = new FormData();
     if (data.id !== undefined && data.id !== null && data.id !== '') {
       Form.append('id', data.id);

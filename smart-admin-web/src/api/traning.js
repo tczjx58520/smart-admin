@@ -23,7 +23,11 @@ export const training = {
   },
   // 根据id查询资料
   getTrainingDetail: data => {
-    return postAxios('/trainning/findTrainningMaterial', data);
+    let Form = new FormData();
+    if (data !== undefined && data !== null && data !== '') {
+      Form.append('classificationId', data);
+    }
+    return postAxios('/trainning/findTrainningMaterial', Form);
   },
   // 根据id查询资料
   delTrainingDetail: data => {
@@ -36,6 +40,9 @@ export const training = {
   // 添加查询资料
   addTrainingDetail: data => {
     return postAxios('/trainning/addTrainningMaterial', data);
-  }
+  },
+  updateTrainingDetail: data=> {
+    return postAxios('/trainning/modifyTrainningMaterial', data);
+  },
 }
 ;

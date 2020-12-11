@@ -314,7 +314,9 @@ export default {
             organizationOaName: sessionResult.data.content.organizationOaName,
             postOaName: sessionResult.data.content.postOaName,
             postOa: sessionResult.data.content.postOa,
-            repositoryId: sessionResult.data.content.repositoryId
+            repositoryId: sessionResult.data.content.repositoryId,
+            level: sessionResult.data.content.levelOa,
+            levelOaName: sessionResult.data.content.levelOaName
             // isSuperMan: false
           });
           // 设置权限

@@ -30,38 +30,38 @@ export const regularWorker = {
     if (data.title !== undefined && data.title !== null && data.title !== '') {
       Form.append('title', data.title);
     }
-    if (data.address !== undefined && data.address !== null && data.address !== '') {
-      Form.append('address', data.address);
+    if (data.flowId !== undefined && data.flowId !== null && data.flowId !== '') {
+      Form.append('flowId', data.flowId);
     }
-    if (data.longitude !== undefined && data.longitude !== null && data.longitude !== '') {
-      Form.append('longitude', data.longitude);
+    if (data.flowNumber !== undefined && data.flowNumber !== null && data.flowNumber !== '') {
+      Form.append('flowNumber', data.flowNumber);
     }
-    if (data.latitude !== undefined && data.latitude !== null && data.latitude !== '') {
-      Form.append('latitude', data.latitude);
+    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
+      Form.append('empId', data.empId);
     }
-    if (data.managerPeopleId !== undefined && data.managerPeopleId !== null && data.managerPeopleId !== '') {
-      Form.append('managerPeopleId', data.managerPeopleId);
+    if (data.organizeId !== undefined && data.organizeId !== null && data.organizeId !== '') {
+      Form.append('organizeId', data.organizeId);
     }
-    if (data.openTimeStr !== undefined && data.openTimeStr !== null && data.openTimeStr !== '') {
-      Form.append('openTimeStr', data.openTimeStr);
+    if (data.onDate !== undefined && data.onDate !== null && data.onDate !== '') {
+      Form.append('onDate', data.onDate);
     }
-    if (data.stat !== undefined && data.stat !== null && data.stat !== '') {
-      Form.append('stat', data.stat);
+    if (data.applyDate !== undefined && data.applyDate !== null && data.applyDate !== '') {
+      Form.append('applyDate', data.applyDate);
     }
-    if (data.description !== undefined && data.description !== null && data.description !== '') {
-      Form.append('description', data.description);
+    if (data.postContent !== undefined && data.postContent !== null && data.postContent !== '') {
+      Form.append('postContent', data.postContent);
     }
-    if (data.regionId !== undefined && data.regionId !== null && data.regionId !== '') {
-      Form.append('regionId', data.regionId);
+    if (data.growingUp !== undefined && data.growingUp !== null && data.growingUp !== '') {
+      Form.append('growingUp', data.growingUp);
     }
-    if (data.type !== undefined && data.type !== null && data.type !== '') {
-      Form.append('type', data.type);
+    if (data.faults !== undefined && data.faults !== null && data.faults !== '') {
+      Form.append('faults', data.faults);
     }
-    if (data.regionManagerId !== undefined && data.regionManagerId !== null && data.regionManagerId !== '') {
-      Form.append('regionManagerId', data.regionManagerId);
+    if (data.doBetter !== undefined && data.doBetter !== null && data.doBetter !== '') {
+      Form.append('doBetter', data.doBetter);
     }
-    if (data.attributes !== undefined && data.attributes !== null && data.attributes !== '') {
-      Form.append('attributes', data.attributes);
+    if (data.advice !== undefined && data.advice !== null && data.advice !== '') {
+      Form.append('advice', data.advice);
     }
     return postAxios('/empConversion/addEmpConversion', Form);
   },

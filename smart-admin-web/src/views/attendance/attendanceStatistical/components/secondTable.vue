@@ -127,23 +127,21 @@ export default {
           title: this.$t("kqgl.qingjialeixing"),
           key: "type",
           render: (h, params) => {
-            if (params.row.type === 0) {
-              return h("span", this.$t("kqgl.bingjia"));
-            } else if (params.row.type === 1) {
-              return h("span", this.$t("kqgl.shijia"));
-            } else if (params.row.type === 2) {
-              return h("span", this.$t("kqgl.nianjia"));
-            } else if (params.row.type === 3) {
-              return h("span", this.$t("kqgl.hunjia"));
-            } else if (params.row.type === 4) {
-              return h("span", this.$t("kqgl.peichanjia"));
-            } else if (params.row.type === 5) {
-              return h("span", this.$t("kqgl.chanjia"));
-            } else if (params.row.type === 6) {
-              return h("span", this.$t("kqgl.shangjia"));
-            } else if (params.row.type === 7) {
-              return h("span", this.$t("kqgl.qita"));
-            }
+            const map = [
+              { value: 1, label: this.$t('bingjia') },
+              { value: 2, label: this.$t('shijia') },
+              { value: 3, label: this.$t('hunjian') },
+              { value: 4, label: this.$t('chanjianjia') },
+              { value: 5, label: this.$t('chanjia') },
+              { value: 6, label: this.$t('jihuashengyushoushujia') },
+              { value: 7, label: this.$t('hulijia') },
+              { value: 8, label: this.$t('burujia') },
+              { value: 9, label: this.$t('sangjia') },
+              { value: 10, label: this.$t('nianxiujia') },
+              { value: 11, label: this.$t('qita') }
+            ]
+            const label = map[params.row.type - 1].label
+            return h("span", label);
           },
         },
         {

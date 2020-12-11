@@ -337,9 +337,10 @@ export default {
     refresh () {
       console.log('refresh');
     },
-    created () {
-      this.visiable = true;
-      this.copyfile = null;
+    created() {
+      // this.visiable = true;
+      // this.copyfile = null;
+      this.$router.push({path: '/processDo/flowStart'})
     },
     del () {
       usermanagelApi.delete().then(res => {

@@ -96,12 +96,12 @@ export default {
           slot: 'basicSocialSecurity'
         },
         {
-          title: '发薪日期',
+          title: '薪酬月份',
           slot: 'yearAndMonth',
           width: '200'
         },
         {
-          title: '薪酬日期',
+          title: '发薪日期',
           key: 'grantDate',
           width: '200'
           // render: (h, params) => {
@@ -258,12 +258,12 @@ export default {
           width: '100'
         },
         {
-          title: '发薪日期',
+          title: '薪酬月份',
           slot: 'yearAndMonth',
           width: '200'
         },
         {
-          title: '薪酬日期',
+          title: '发薪日期',
           slot: 'grantDate',
           width: '200'
         },
@@ -372,7 +372,7 @@ export default {
                 },
                 on: {
                   input: (val) => {
-                    console.log('val========>', val, item.name);
+                    console.log('val========>触发==========', val, item.name);
                     this.data[params.index][item.name] = val;
                     console.log(this.data[params.index]);
                     this.calc(params, item.name);
@@ -485,15 +485,13 @@ export default {
             }
           }
           console.log('process.join===================>', process.join(''));
-
           // eslint-disable-next-line
           let res = eval(process.join('')).toFixed(this.data[params.index].formula[i].pointNum);
           console.log('res======================>', res);
-
           // this.data[params.index][this.data[params.index].formula[i]] = res;
           this.data[params.index][this.data[params.index].formula[i].salaryOptionName] = res;
           this.$set(params.row, this.data[params.index].formula[i].salaryOptionName, res);
-          // console.log('myformula=========>', myformula);
+          console.log('myformula=========>', myformula);
         }
       }
     }

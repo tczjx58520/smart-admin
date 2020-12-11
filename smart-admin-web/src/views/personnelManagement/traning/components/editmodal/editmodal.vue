@@ -4,10 +4,10 @@
     class="add"
     :closable="false"
     :mask-closable="false"
-    :transfer="true"
+    :transfer="false"
     fullscreen
   >
-    <div slot="header" style="text-align: left; color: #fff">
+    <div slot="header" style="text-align:left;color:#fff;">
       <span>{{ $t("tjpxzl") }}</span>
     </div>
     <div>
@@ -71,7 +71,7 @@
               </Form>
             </TabPane>
             <TabPane :label="$t('zwnr')" name="name2">
-              <Editor v-model="leaderform.materialBody" />
+              <Editor v-model="leaderform.materialBody" :showFlag="mymoadlStat"/>
             </TabPane>
           </div>
         </Tabs>
@@ -84,7 +84,8 @@
           size="large"
           :loading="modal_loading"
           @click="handsave"
-          >{{ $t("Save") }}</Button>
+          >{{ $t("Save") }}</Button
+        >
         <Button type="error" size="large" @click="cancel">{{
           $t("Close")
         }}</Button>
@@ -100,14 +101,14 @@
   </Modal>
 </template>
 <script>
-import Editor from "@/components/editor/editor";
-import "wangeditor/release/wangEditor.min.css";
+import Editor from '@/components/editor/editor';
+import 'wangeditor/release/wangEditor.min.css';
 import { training } from "@/api/traning";
 import addempSingle from "../addemp_single/modal";
 import addorg from "../add_org/modal";
 import { positionApi } from "@/api/position";
 export default {
-  name: "addModal",
+  name: 'addModal',
   components: {
     Editor,
     addempSingle,
@@ -116,26 +117,27 @@ export default {
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    editInfo: null
   },
-  created() {},
-  mounted() {},
-  data() {
+  created () {},
+  mounted () {},
+  data () {
     const validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("Please enter"));
+      if (value === '') {
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
     };
     const validatePass2 = (rule, value, callback) => {
       if (
-        this.leaderform.organizationOaName === "" &&
-        this.leaderform.organizationOaName === null &&
-        this.leaderform.organizationOaName === undefined
+        this.addformbase.organizationOaName === '' &&
+        this.addformbase.organizationOaName === null &&
+        this.addformbase.organizationOaName === undefined
       ) {
-        callback(new Error("Please enter your organization"));
+        callback(new Error('Please enter your organization'));
       } else {
         callback();
       }
@@ -144,47 +146,49 @@ export default {
       visiable: false,
       isShowTree: false,
       visiable_org: false,
-      mytype: 1,
       statList: [
         {
-          label: this.$t("usermanage_view.working"),
-          value: 1,
+          label: this.$t('usermanage_view.working'),
+          value: 1
         },
         {
-          label: this.$t("usermanage_view.Quit"),
-          value: 2,
-        },
+          label: this.$t('usermanage_view.Quit'),
+          value: 2
+        }
       ],
       modal_loading: false,
       mymoadlStat: this.modalstat,
+      addformbase: {},
       ruleValidate: {
         firstname: [
           {
             required: true,
-            message: "The firstname cannot be empty",
-            trigger: "blur",
-          },
+            message: 'The firstname cannot be empty',
+            trigger: 'blur'
+          }
         ],
         middlename: [
           {
             required: true,
-            message: "The middlename cannot be empty",
-            trigger: "blur",
-          },
-        ],
+            message: 'The middlename cannot be empty',
+            trigger: 'blur'
+          }
+        ]
       },
       leaderform: {},
       backvalue: null,
+      mytype: null,
       postData: [],
     };
   },
   watch: {
-    async modalstat() {
+    async modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
-        this.getPostlist();
+        this.getPostlist()
+        this.leaderform = this.editInfo
       }
-    },
+    }
   },
   methods: {
     getPostlist() {
@@ -241,18 +245,19 @@ export default {
         }
       }
     },
-    cancel() {
-      this.$emit("updateStat", false);
+    cancel () {
+      this.$emit('updateStat', false);
     },
-    reset() {
-      this.leaderform = {};
+    reset () {
+      this.addformbase = {};
+      this.addformaccount = {};
     },
-    handsave() {
+    handsave () {
       console.log(this.leaderform, this.leaderform.materialBody);
       this.leaderform.classificationId = this.$route.query.id
       this.$refs["form2"].validate((valid) => {
         if (valid) {
-          training.addTrainingDetail(this.leaderform).then((res) => {
+          training.updateTrainingDetail(this.leaderform).then((res) => {
             if (res.ret === 200) {
               this.$emit("updateStat", false);
               this.$Message.success(res.msg);
@@ -262,8 +267,8 @@ export default {
           this.$Message.error("Fail!");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

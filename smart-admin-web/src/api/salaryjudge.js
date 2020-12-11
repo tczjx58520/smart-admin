@@ -12,6 +12,9 @@ export const salaryjudgeApi = {
     if (data.salaryDate !== undefined && data.salaryDate !== '' && data.salaryDate !== null) {
       Form.append('salaryDate', data.salaryDate);
     }
+    if (data.stat !== undefined && data.stat !== '' && data.stat !== null) {
+      Form.append('stat', data.stat);
+    }
     Form.append('pageNum', data.pageNum);
     Form.append('pageSize', data.pageSize);
     return postAxios('/salaryJudge/judgeList', Form);

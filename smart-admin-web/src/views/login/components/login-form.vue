@@ -121,7 +121,9 @@ export default {
           postOaName: loginInfo.postOaName,
           postOa: loginInfo.postOa,
           // isSuperMan: false
-          repositoryId: loginInfo.repositoryId
+          repositoryId: loginInfo.repositoryId,
+          level: loginInfo.levelOa,
+          levelOaName: loginInfo.levelOaName
         });
         //设置权限
         localStorage.setItem('token', loginInfo.token);

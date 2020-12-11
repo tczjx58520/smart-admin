@@ -74,7 +74,9 @@
                 placeholder="选择内容"
               />
               <Input
-                v-else-if="item.componentType === '1' && item.value === 'createId'"
+                v-else-if="
+                  item.componentType === '1' && item.value === 'createId'
+                "
                 style="width: 500px"
                 v-model="addformbase.createName"
                 readonly
@@ -93,7 +95,39 @@
               />
               <Input
                 v-else-if="
-                  item.componentType === '1' && item.value === 'empId' && $route.query.receiptType === '3'
+                  item.componentType === '1' && item.value === 'applyPersonId'
+                "
+                style="width: 500px"
+                v-model="addformbase.applyPersonName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
+                  item.componentType === '1' && item.value === 'oldOrganizeId'
+                "
+                style="width: 500px"
+                v-model="addformbase.organizationOaName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
+                  item.componentType === '1' && item.value === 'oldPostId'
+                "
+                style="width: 500px"
+                v-model="addformbase.oldPostName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
+                  item.componentType === '1' &&
+                  item.value === 'empId' &&
+                  $route.query.receiptType === '3'
                 "
                 style="width: 500px"
                 v-model="addformbase.employeeName"
@@ -102,9 +136,25 @@
                 placeholder="选择内容"
               />
               <Input
-                v-else-if="item.componentType === '1' && item.value === 'empId' && $route.query.receiptType === '7'"
+                v-else-if="
+                  item.componentType === '1' &&
+                  item.value === 'empId' &&
+                  $route.query.receiptType === '7'
+                "
                 style="width: 500px"
                 v-model="addformbase.empName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
+                  item.componentType === '1' &&
+                  item.value === 'empId' &&
+                  $route.query.receiptType === '4'
+                "
+                style="width: 500px"
+                v-model="addformbase.employeeName"
                 :readonly="!Boolean(Number(item.isEdit))"
                 size="large"
                 placeholder="选择内容"
@@ -141,6 +191,16 @@
               />
               <Input
                 v-else-if="
+                  item.componentType === '1' && item.value === 'levelId'
+                "
+                style="width: 500px"
+                v-model="addformbase.levelOaName"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="选择内容"
+              />
+              <Input
+                v-else-if="
                   item.componentType === '1' &&
                   item.value === 'totalTime' &&
                   ($route.query.receiptType == '8' ||
@@ -169,6 +229,26 @@
               >
                 <span slot="append" style="width: 70px">{{ $t("hour") }}</span>
               </Input>
+              <InputNumber
+                v-else-if="item.componentType === '1' && item.value === 'useAnnual' "
+                :min="0"
+                :max="leaveYearDay"
+                style="width: 500px"
+                v-model="addformbase.useAnnual"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容"
+              />
+              <InputNumber
+                v-else-if="item.componentType === '1' && item.value === 'useExchangeDay' "
+                :min="0"
+                :max="leaveExchangDay"
+                style="width: 500px"
+                v-model="addformbase.useExchangeDay"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容"
+              />
               <Input
                 v-else-if="item.componentType === '1'"
                 style="width: 500px"
@@ -444,6 +524,18 @@
                   >{{ item.roleName }}</Option
                 >
               </Select>
+              <!-- 文本域 -->
+              <Input
+                v-else-if="item.componentType === '11'"
+                type="textarea"
+                style="width: 500px"
+                v-model="addformbase[item.value]"
+                :readonly="!Boolean(Number(item.isEdit))"
+                size="large"
+                placeholder="输入内容"
+              />
+              <span v-if="item.value === 'useAnnual'" style="font-size:14px;color:#ed4014;">{{ `${$t('userYearDay')}${leaveYearDay}` }}</span>
+              <span v-if="item.value === 'useExchangeDay'" style="font-size:14px;color:#ed4014;">{{ `${$t('useExchangDay')}${leaveExchangDay}` }}</span>
             </div>
           </ListItem>
           <!-- end -->
@@ -544,9 +636,12 @@ import { utils } from "@/lib/util";
 import { attendance } from "@/api/attendance";
 import { roleApi } from "@/api/role";
 import moment from "moment";
-import { empInduction } from '@/api/empInduction'
-import { EmpSign } from '@/api/empsign'
-import { empReNew } from '@/api/empReNew'
+import { empInduction } from "@/api/empInduction";
+import { EmpSign } from "@/api/empsign";
+import { empReNew } from "@/api/empReNew";
+import { empchangPost } from "@/api/empchangPost";
+import { empQuit } from "@/api/empQuit";
+import { regularWorker } from "@/api/regularWorker";
 export default {
   name: "process",
   components: {
@@ -569,6 +664,22 @@ export default {
       },
       immediate: true,
     },
+    watchReceiptType: {
+      handler() {
+        if (this.watchReceiptType === "4") {
+          const data = {
+            empId: this.$store.state.user.userLoginInfo.userId,
+          };
+          empInduction.getempInductionList(data).then((res) => {
+            console.log("查询员工入职", res.data.content.list[0]);
+          });
+        } else if (this.watchReceiptType === "8") {
+            this.getExchangeDay();
+            this.getYearHoliday();
+        }
+      },
+      immediate: true,
+    },
   },
   mounted() {
     console.log("numbe==========", this.$route.query.receiptType);
@@ -583,11 +694,11 @@ export default {
         this.addformbase,
         this.$store.state.user.transInfo
       );
-      if (this.$route.query.receiptType === '7') {
-        this.addformbase.beginTime = ''
-        this.addformbase.endTime = ''
+      if (this.$route.query.receiptType === "7") {
+        this.addformbase.beginTime = "";
+        this.addformbase.endTime = "";
       }
-      console.log('添加合同签署', this.addformbase);
+      console.log("添加合同签署", this.addformbase);
       this.getOrgValue();
     }
     this.getEditLabel();
@@ -605,7 +716,7 @@ export default {
     },
     contractNumber() {
       const str = utils.getDateStr(0, "receipt");
-      return `${this.$store.state.user.userLoginInfo.userId}${str}`
+      return `${this.$store.state.user.userLoginInfo.userId}${str}`;
     },
     watchReceiptType() {
       return this.$route.query.receiptType;
@@ -657,9 +768,20 @@ export default {
         createId: this.$store.state.user.userLoginInfo.userId,
         createName: this.$store.state.user.userLoginInfo.nickName,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        organizationOaName: this.$store.state.user.userLoginInfo
-          .organizationOaName,
+        organizationOaName: this.$store.state.user.userLoginInfo.organizationOaName,
         whetherExchange: 1,
+        // 人事
+        oldPostId: this.$store.state.user.userLoginInfo.postOa,
+        oldPostName: this.$store.state.user.userLoginInfo.postOaName,
+        oldOrganizeId: this.$store.state.user.userLoginInfo.organizationOa,
+        organizeId: this.$store.state.user.userLoginInfo.organizeId,
+        organizeName: this.$store.state.user.userLoginInfo.organizationOaName,
+        postId: this.$store.state.user.userLoginInfo.postOa,
+        postName: this.$store.state.user.userLoginInfo.postOaName,
+
+        useAnnual: 0,
+        useExchangeDay: 0,
+        levelOaName: this.$store.state.user.userLoginInfo.levelOaName,
       },
       ruleValidate: {
         title: [
@@ -676,14 +798,17 @@ export default {
         { value: 3, label: "不重要" },
       ],
       hoildayType: [
-        { value: 0, label: this.$t('kqgl.bingjia') },
-        { value: 1, label: this.$t('kqgl.shijia') },
-        { value: 2, label: this.$t('kqgl.nianjia') },
-        { value: 3, label: this.$t('kqgl.hunjia') },
-        { value: 4, label: this.$t('kqgl.peichanjia') },
-        { value: 5, label: this.$t('kqgl.chanjia') },
-        { value: 6, label: this.$t('kqgl.shangjia') },
-        { value: 7, label: this.$t('kqgl.qita') }
+        { value: 1, label: this.$t("bingjia") },
+        { value: 2, label: this.$t("shijia") },
+        { value: 3, label: this.$t("hunjian") },
+        { value: 4, label: this.$t("chanjianjia") },
+        { value: 5, label: this.$t("chanjia") },
+        { value: 6, label: this.$t("jihuashengyushoushujia") },
+        { value: 7, label: this.$t("hulijia") },
+        { value: 8, label: this.$t("burujia") },
+        { value: 9, label: this.$t("sangjia") },
+        { value: 10, label: this.$t("nianxiujia") },
+        { value: 11, label: this.$t("qita") },
       ],
       workHardType: [
         { value: 1, label: this.$t("kqgl.gzrjiab") },
@@ -758,9 +883,46 @@ export default {
       orgValue: [],
       selectOrg: "",
       backvalue: "",
+      leaveExchangDay: 0,
+      leaveYearDay: 0,
     };
   },
   methods: {
+    GMTToStr() {
+      let date = new Date();
+      let Str = date.getFullYear();
+      return Str;
+    },
+    async getExchangeDay() {
+      const data = {
+        pageNum: 1,
+        pageSize: 999,
+        year: this.GMTToStr(),
+        employeeId: this.$store.state.user.userLoginInfo.userId
+      }
+      let result = await attendance.findExchangeDay(data);
+      console.log('数组长度======================', result.data.list.length);
+      const firstData = result.data.list.length > 0 && result.data.list[0].exchangeDayRemain;
+      console.log('firstData======', firstData);
+      if (firstData) {
+        this.leaveExchangDay = firstData
+      }
+    },
+    async getYearHoliday() {
+      const data = {
+        pageNum: 1,
+        pageSize: 999,
+        year: this.GMTToStr(),
+        employeeId: this.$store.state.user.userLoginInfo.userId
+      }
+      let result = await attendance.findAnnual(data);
+      console.log('数组长度======================222222', result.data.list.length);
+      const firstData = result.data.list.length > 0 && result.data.list[0].annualLeaveRemainDays;
+      console.log('firstData======', firstData);
+      if (firstData) {
+        this.leaveYearDay = firstData
+      }
+    },
     getrolelist() {
       const searchform = {
         pageNum: 1,
@@ -927,16 +1089,16 @@ export default {
       this.addformbase.organizeId = id;
     },
     LinktoPic(value) {
-        switch (value) {
-          case "cardPic":
-            if (this.addformbase.cardPic)  window.open(this.addformbase.cardPic);
-            break;
-          case "empPic":
-            if (this.addformbase.empPic) window.open(this.addformbase.empPic);
-            break;
-          default:
-            break;
-        }
+      switch (value) {
+        case "cardPic":
+          if (this.addformbase.cardPic) window.open(this.addformbase.cardPic);
+          break;
+        case "empPic":
+          if (this.addformbase.empPic) window.open(this.addformbase.empPic);
+          break;
+        default:
+          break;
+      }
     },
     mysuccess1(response, file, fileList) {
       let id = response.data.content.picId;
@@ -1174,9 +1336,9 @@ export default {
       ];
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
-      empInduction.addempInduction(this.addformbase).then(res => {
+      empInduction.addempInduction(this.addformbase).then((res) => {
         if (res.ret === 200) {
-          console.log('员工入职==========', res);
+          console.log("员工入职==========", res);
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.flowCategory = this.$route.query.flowCategory;
@@ -1197,15 +1359,15 @@ export default {
           this.$Message.error(res.msg);
           this.modal_loading = false;
         }
-      })
+      });
     },
     save_3() {
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
-      this.addformbase.contractNumber = this.contractNumber,
-      EmpSign.addEmpSign(this.addformbase).then(res => {
+      this.addformbase.contractNumber = this.contractNumber;
+      EmpSign.addEmpSign(this.addformbase).then((res) => {
         if (res.ret === 200) {
-          console.log('员工入职==========', res);
+          console.log("员工入职==========", res);
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.flowCategory = this.$route.query.flowCategory;
@@ -1226,27 +1388,21 @@ export default {
           this.$Message.error(res.msg);
           this.modal_loading = false;
         }
-      })
+      });
     },
-    save_7() {
+    save_4() {
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
-      this.addformbase.contractNumber = this.contractNumber,
-      // this.addformbase.renewDetailJson = [{
-      //   beginTime: this.addformbase.beginTime,
-      //   endTime: this.addformbase.endTime,
-      //   postId: this.addformbase.postId,
-      //   contractType: this.addformbase.contractType,
-      //   organizeId: this.addformbase.organizeId,
-      //   empId: this.addformbase.empId
-      // }]
-      empReNew.addempReNew(this.addformbase).then(res => {
+      this.addformbase.organizeId = this.$store.state.user.userLoginInfo.organizationOa;
+      this.addformbase.empId = this.$store.state.user.userLoginInfo.userId;
+      regularWorker.addregularWorker(this.addformbase).then((res) => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;
           this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.flowCategory = this.$route.query.flowCategory;
           this.addformbase.flowId = this.$route.query.flowId;
           FlowApi.addFlowRecord(this.addformbase).then((res) => {
+            console.log("res=========", res);
             if (res.ret === 200) {
               this.$Message.success(res.msg);
               this.modal_loading = false;
@@ -1261,7 +1417,99 @@ export default {
           this.$Message.error(res.msg);
           this.modal_loading = false;
         }
-      })
+      });
+    },
+    save_5() {
+      this.addformbase.newOrganizeId = this.addformbase.actuallyOrganizeId[
+        this.addformbase.actuallyOrganizeId.length - 1
+      ];
+      this.addformbase.flowNumber = this.receiptNumber;
+      empchangPost.addempchangPost(this.addformbase).then((res) => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then((res) => {
+            console.log("res=========", res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
+      });
+    },
+    save_6() {
+      this.addformbase.flowNumber = this.receiptNumber;
+      this.addformbase.organizeId = this.$store.state.user.userLoginInfo.organizationOa;
+      this.addformbase.levelId = this.$store.state.user.userLoginInfo.level;
+      empQuit.addempQuit(this.addformbase).then((res) => {
+        if (res.ret === 200) {
+          this.addformbase.receiptId = res.data.receiptId;
+          this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+          this.addformbase.flowCategory = this.$route.query.flowCategory;
+          this.addformbase.flowId = this.$route.query.flowId;
+          FlowApi.addFlowRecord(this.addformbase).then((res) => {
+            console.log("res=========", res);
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.modal_loading = false;
+              this.$router.go(-1);
+              this.$router.closeCurrentPage();
+            } else {
+              this.$Message.error(res.msg);
+              this.modal_loading = false;
+            }
+          });
+        } else {
+          this.$Message.error(res.msg);
+          this.modal_loading = false;
+        }
+      });
+    },
+    save_7() {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
+      this.addformbase.flowNumber = this.receiptNumber;
+      (this.addformbase.contractNumber = this.contractNumber),
+        // this.addformbase.renewDetailJson = [{
+        //   beginTime: this.addformbase.beginTime,
+        //   endTime: this.addformbase.endTime,
+        //   postId: this.addformbase.postId,
+        //   contractType: this.addformbase.contractType,
+        //   organizeId: this.addformbase.organizeId,
+        //   empId: this.addformbase.empId
+        // }]
+        empReNew.addempReNew(this.addformbase).then((res) => {
+          if (res.ret === 200) {
+            this.addformbase.receiptId = res.data.receiptId;
+            this.addformbase.initiatePersonId = this.$store.state.user.userLoginInfo.userId;
+            this.addformbase.flowCategory = this.$route.query.flowCategory;
+            this.addformbase.flowId = this.$route.query.flowId;
+            FlowApi.addFlowRecord(this.addformbase).then((res) => {
+              if (res.ret === 200) {
+                this.$Message.success(res.msg);
+                this.modal_loading = false;
+                this.$router.go(-1);
+                this.$router.closeCurrentPage();
+              } else {
+                this.$Message.error(res.msg);
+                this.modal_loading = false;
+              }
+            });
+          } else {
+            this.$Message.error(res.msg);
+            this.modal_loading = false;
+          }
+        });
     },
     save_8() {
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;

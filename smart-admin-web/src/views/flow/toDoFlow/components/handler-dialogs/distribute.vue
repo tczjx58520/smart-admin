@@ -246,7 +246,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.delCounterSign(params.row.index);
+                      this.delCounterSign(params.row);
                     }
                   }
                 },
@@ -268,6 +268,9 @@ export default {
         this.addformbase.checkPerson = this.data.map(item => {
           return item.distributionPersonId;
         }).join(',');
+        this.addformbase.checkPersonNames = this.data.map(item => {
+          return item.distributionPersonName
+        }).join(',')
         this.gettoday();
       }
     }
@@ -315,7 +318,10 @@ export default {
         this.addformbase.checkPerson = empList.empIds;
       }
     },
-    delCounterSign (index) {
+    delCounterSign (row) {
+      const index = this.data.findIndex( item => {
+        return item.distributionPersonId === row.distributionPersonId
+      })
       this.data.splice(index, 1);
       const temp = this.addformbase.checkPerson.split(',');
       temp.splice(index, 1);
@@ -366,10 +372,9 @@ export default {
       this.modal_loading = true;
       console.log(this.actionInfo);
       const temp = this.data.map(item => {
-        if (!item.sendPersonId) {
-          return item;
-        }
+        return item;
       });
+      console.log('temp============', temp);
       const data = {
         flowRecordId: this.actionInfo[0].handleRecordVos[0].flowRecordId,
         handleRecordId: this.actionInfo[0].handleRecordVos[0].id,
