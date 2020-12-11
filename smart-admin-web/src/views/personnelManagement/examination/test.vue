@@ -8,7 +8,7 @@
       考试时间还剩：{{leaveTimeMin}}: {{leaveTimeSecond}}
     </div>
     <div style="text-align: center;font-size: 40px;margin-bottom: 50px;">好好考试，天天向上</div>
-    <div style="height:1000px;overflow:auto;">
+    <div style="height:950px;overflow:auto;">
       <Card :bordered="false"
             v-for="(item,index) in questionList"
             :key=item.id>
@@ -56,37 +56,49 @@ export default {
     };
   },
   created () {
-    // 考试问题
-    this.questionList = JSON.parse(this.$route.query.questionList);
     // 考试ID
     this.examId = Number(this.$route.query.examId);
-    // 考试考试时间毫秒值
-    this.startTime = Number(this.$route.query.startTime);
-    // 当前时间毫秒值
-    this.currentTime = Number(this.$route.query.currentTime);
-    // 考试总时长
-    this.totalTime = Number(this.$route.query.totalTime);
 
-    // 考试结束时间毫秒值
-    let endTime = this.startTime + this.totalTime * 60 * 1000;
+    const data = {
+      employeeId: this.$store.state.user.userLoginInfo.userId,
+      examId: this.examId
+    };
+    examination.beginExam(data).then(res => {
+      // 考试问题
+      this.questionList = res.data.choiceQstList;
+      // 考试时间毫秒值
+      this.startTime = Number(res.data.createTime);
+      // 当前时间毫秒值
+      this.currentTime = Number(res.data.currentTime);
 
-    // 剩余考试时间的毫秒值
-    let surplus = endTime - this.currentTime;
+      // 考试总时长
+      this.totalTime = Number(this.$route.query.totalTime);
 
-    console.log(55555555, surplus);
+      // 考试结束时间毫秒值
+      let endTime = this.startTime + this.totalTime * 60 * 1000;
 
-    if (surplus < 0 || surplus === 0) {
-      this.leaveTimeSecond = 0;
-      this.leaveTimeMin = 0;
-    } else {
-      // 剩余考试时间多少秒
-      this.leaveTimeSecond = parseInt((surplus / 1000) % 60);
-      // 剩余考试时间多少分钟
-      this.leaveTimeMin = parseInt(surplus / 1000 / 60);
-    }
+      console.log(11111, endTime);
 
-    console.log(parseInt((surplus / 1000) % 60));
-    console.log(parseInt(surplus / 1000 / 60));
+      // 剩余考试时间的毫秒值
+      let surplus = endTime - this.currentTime;
+
+      console.log(22222222, surplus);
+
+      console.log(55555555, surplus);
+
+      if (surplus < 0 || surplus === 0) {
+        this.leaveTimeSecond = 0;
+        this.leaveTimeMin = 0;
+      } else {
+        // 剩余考试时间多少秒
+        this.leaveTimeSecond = parseInt((surplus / 1000) % 60);
+        // 剩余考试时间多少分钟
+        this.leaveTimeMin = parseInt(surplus / 1000 / 60);
+      }
+
+      console.log(123123, this.startTime);
+      console.log(123123, this.currentTime);
+    });
 
     // const myDate = this.$moment(nowTime);
     // const myDate2 = this.$moment(Number(this.startTime));

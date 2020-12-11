@@ -20,12 +20,12 @@
                 :rules="ruleValidate"
                 inline>
             <FormItem :label="$t('testName')"
-                      prop="title"
+                      prop="examName"
                       style="width:40%;">
               <Input v-model="testForm.examName"></Input>
             </FormItem>
             <FormItem :label="$t('testType')"
-                      prop="collectType"
+                      prop="typeName1"
                       style="width:40%;">
               <Select v-model="testForm.examTypeId">
                 <Option v-for="item in typeList"
@@ -34,9 +34,10 @@
               </Select>
             </FormItem>
             <FormItem :label="$t('startTime')"
-                      prop="title"
+                      prop="startTime"
                       style="width:40%;">
               <DatePicker type="datetime"
+                          :options="options3"
                           format="yyyy-MM-dd HH:mm:ss"
                           @on-change="changeDate"
                           ref="changeDatePicker"
@@ -45,9 +46,10 @@
                           style="width: 200px"></DatePicker>
             </FormItem>
             <FormItem :label="$t('endTime')"
-                      prop="title"
+                      prop="endTime"
                       style="width:40%;">
               <DatePicker type="datetime"
+                          :options="options3"
                           format="yyyy-MM-dd HH:mm:ss"
                           @on-change="changeDate1"
                           ref="changeDatePicker1"
@@ -56,27 +58,27 @@
                           style="width: 200px"></DatePicker>
             </FormItem>
             <FormItem :label="$t('questionNum')"
-                      prop="title"
+                      prop="questionCount"
                       style="width:40%;">
               <Input v-model="testForm.questionCount"></Input>
             </FormItem>
             <FormItem :label="$t('totalCount')"
-                      prop="title"
+                      prop="totalPoint"
                       style="width:40%;">
               <Input v-model="testForm.totalPoint"></Input>
             </FormItem>
             <FormItem :label="$t('passGoal')"
-                      prop="title"
+                      prop="passPoint"
                       style="width:40%;">
               <Input v-model="testForm.passPoint"></Input>
             </FormItem>
             <FormItem :label="$t('testTime')"
-                      prop="title"
+                      prop="totalTime"
                       style="width:40%;">
               <Input v-model="testForm.totalTime"></Input>
             </FormItem>
             <FormItem :label="$t('testObject')"
-                      prop="title"
+                      prop="userName"
                       style="width:80%;">
               <Input v-model="testForm.userName"
                      type="textarea"
@@ -86,7 +88,7 @@
                      readonly></Input>
             </FormItem>
             <FormItem :label="$t('questionsSetting')"
-                      prop="title"
+                      prop="typeName"
                       style="width:100%;">
               <span style="padding-right:10px">题库分类</span>
               <Input v-model="testForm.typeName"
@@ -164,13 +166,95 @@ export default {
       mymoadlStat: this.modalstat,
       testForm: {
         examEmployeeList: [],
-        examQuestionBankList: []
+        examQuestionBankList: [],
+        typeName: '',
+        endTime: null,
+        examTypeId: null,
+        passPoint: null,
+        questionCount: null,
+        startTime: null,
+        totalPoint: null,
+        totalTime: null
+      },
+      options3: {
+        disabledDate (date) {
+          return date && date.valueOf() < Date.now() - 86400000;
+        }
       },
       visiable_emp: false,
       mytype: 3,
       modal_loading: false,
       ruleValidate: {
-
+        // examName: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the examName',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // typeName1: [
+        //   {
+        //     required: true,
+        //     message: 'Please select in the typeName',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // startTime: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the startTime',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // endTime: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the startTime',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // questionCount: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the questionCount',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // totalPoint: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the totalPoint',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // passPoint: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the passPoint',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // totalTime: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the totalTime',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // userName: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the userName',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // typeName: [
+        //   {
+        //     required: true,
+        //     message: 'Please fill in the typeName',
+        //     trigger: 'blur'
+        //   }
+        // ]
       },
       typeList: [],
       kindModal: false,
@@ -192,17 +276,14 @@ export default {
           title: this.$t('weight'),
           key: 'weight',
           render: (h, params) => {
-            console.log(2222222, params);
             return h('Input', {
               props: {
                 value: params.row.weight
               },
               on: {
                 'on-change': (event) => {
-                  console.log(666666666, event.currentTarget.value);
                   // 获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
                   this.$set(this.kindData[params.index], [params.column.key], event.currentTarget.value);
-                  console.log(this.kindData);
                 }
               }
             });
@@ -248,6 +329,20 @@ export default {
     },
     handsave () {
       console.log(22222222222, this.testForm);
+      if (this.testForm.endTime === null || this.testForm.examName === null || this.testForm.examTypeId === null || this.testForm.passPoint === null || this.testForm.questionCount === null || this.testForm.startTime === null || this.testForm.totalPoint === null || this.testForm.totalTime === null) {
+        this.$Message.error('请输入完整的内容');
+        return false;
+      }
+      console.log(11, this.testForm.examEmployeeList);
+      console.log(22, this.testForm.examQuestionBankList);
+      if (this.testForm.examEmployeeList.length === 0) {
+        this.$Message.error('请输入完整的内容');
+        return false;
+      }
+      if (this.testForm.examQuestionBankList.length === 0) {
+        this.$Message.error('请输入完整的内容');
+        return false;
+      }
       const data = {
         endTime: this.testForm.endTime,
         examEmployeeList: this.testForm.examEmployeeList,
@@ -298,19 +393,36 @@ export default {
     goSelectType () {
       this.kindModal = true;
     },
+    // 选中题库分类确定
     ok_type () {
-      this.testForm.typeName = this.selectedData[0].typeName;
+      console.log(this.selectedData);
+      if (this.selectedData.length === 0) {
+        this.$Message.error('请先选中一行');
+        return false;
+      }
+      let weightTotal = 0;
+      this.testForm.typeName = '';
+      this.testForm.examQuestionBankList = [];
+      for (let i = 0; i < this.selectedData.length; i++) {
+        this.testForm.typeName = this.testForm.typeName + this.selectedData[i].typeName + '、';
+        weightTotal = weightTotal + Number(this.selectedData[i].weight);
+      }
+
+      if (weightTotal !== 100) {
+        this.$Message.error('必须选中一行且选中行权重总和必须为100');
+        return false;
+      }
+
       console.log(this.selectedData);
       for (let i = 0; i < this.selectedData.length; i++) {
-        console.log(this.selectedData[i].weight);
         const data = {
           questionBankId: Number(this.selectedData[i].id),
           weight: Number(this.selectedData[i].weight)
         };
-        console.log(222222222, data);
+
         this.testForm.examQuestionBankList.push(data);
       }
-      console.log(3333333333, this.testForm.examQuestionBankList);
+      console.log(this.testForm.examQuestionBankList);
       this.kindModal = false;
     },
     cancel_type () {

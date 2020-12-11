@@ -98,7 +98,7 @@ export default {
         },
         {
           title: this.$t('BelongType'),
-          key: 'typeId'
+          key: 'typeName'
         },
         {
           title: this.$t('correctAnswer'),
@@ -106,7 +106,7 @@ export default {
         },
         {
           title: this.$t('createName'),
-          key: 'createId'
+          key: 'employeeName'
         },
         {
           title: this.$t('action'),
