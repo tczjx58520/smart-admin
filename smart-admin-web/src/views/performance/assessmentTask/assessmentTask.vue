@@ -198,7 +198,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.stat === 2 || params.row.stat === 3 ? 'none' : 'inline-block'
                 },
                 directives: [
                   {
@@ -218,7 +219,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display:params.row.stat === 2 || params.row.stat === 3 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {

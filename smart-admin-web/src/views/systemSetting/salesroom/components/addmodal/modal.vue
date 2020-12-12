@@ -69,9 +69,11 @@
             <Col span="6">
               <FormItem :label="$t('kysj')" style="width: 80%">
                 <DatePicker
+                  v-model="addformbase.time"
                   type="date"
                   placeholder="Select date"
                   style="width: 100%"
+                  @on-change="selectDate"
                 ></DatePicker>
               </FormItem>
             </Col>
@@ -327,6 +329,9 @@ export default {
     }
   },
   methods: {
+    selectDate(val) {
+      this.addformbase.openTimeStr = val
+    },
     // 查询用户登录日志
     async getrepos () {
       const searchform = {

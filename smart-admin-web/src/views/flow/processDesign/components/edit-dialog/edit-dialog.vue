@@ -598,7 +598,11 @@ export default {
         }
         const data = JSON.stringify(this.addformbase);
         const data2 = JSON.stringify(this.stepdata);
-        await FlowApi.addFlow(data, data2);
+        const result = await FlowApi.addFlow(data, data2);
+        console.log('复制流程', result);
+        if (result.ret === 100) {
+          this.$Message.error(result.msg)
+        }
       } else {
         for (let i = 0; i < this.stepdata.length; i++) {
           let item = this.stepdata[i];
@@ -631,7 +635,8 @@ export default {
         const data = JSON.stringify(this.addformbase);
         const data2 = JSON.stringify(this.stepdata);
         const data3 = this.$store.state.user.userLoginInfo.userId;
-        await FlowApi.updateFlow(data, data2, data3);
+        const result = await FlowApi.updateFlow(data, data2, data3);
+        console.log(result);
       }
       // 把输入的值插入json
       this.modal_loading = false;

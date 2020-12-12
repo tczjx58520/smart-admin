@@ -143,7 +143,7 @@ export default {
         {
           title: this.$t('zhsj'),
           render: (h, params) => {
-            let DateStr = utils.getDate(new Date(params.row.sendDate), 'YMDHM');
+            let DateStr = utils.getDate(new Date(params.row.recallDate), 'YMDHM');
             return h('div', [
               h(
                 'span',
@@ -179,10 +179,10 @@ export default {
                     whiteSpace: 'nowrap'
                   },
                   domProps: {
-                    title: `${params.row.flowCategoryName} / ${params.row.flowName}`
+                    title: `${params.row.recallPersonName}`
                   }
                 },
-                `${params.row.flowCategoryName} / ${params.row.flowName}`
+                `${params.row.recallPersonName}`
               )
             ]);
           }

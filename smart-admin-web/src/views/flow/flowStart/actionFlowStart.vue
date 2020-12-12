@@ -608,13 +608,13 @@
               @click="handsave"
               >{{ $t("salaryjudge_view.submitForApproval") }}</Button
             >
-            <Button
+            <!-- <Button
               type="warning"
               style="margin-right: 15px"
               size="large"
               @click="handsave_drafts"
               >{{ $t("cgx") }}</Button
-            >
+            > -->
             <Button type="error" size="large" @click="cancel">{{
               $t("Close")
             }}</Button>
