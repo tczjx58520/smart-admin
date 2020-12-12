@@ -29,7 +29,7 @@
           <div class="workflow-classify-title">
             {{ item.categoryName }}
           </div>
-          <div style="margin-bottom: 15px;">
+          <div style="margin-bottom: 15px">
             <template v-for="buttonItem in item.flowInfoVos">
               <Tooltip :key="buttonItem.id" theme="dark" placement="top">
                 <div slot="content">
@@ -69,73 +69,83 @@
     <select-modal-emp
       :modalstat="visiable_contract"
       :myvalue="myvalue"
-      @updateStat="updateStat_contract" />
-      <select-modal-hademp
+      @updateStat="updateStat_contract"
+    />
+    <select-modal-hademp
       :modalstat="visiable_newcontract"
       :myvalue="myvalue"
-      @updateStat="updateStat_newcontract" />
+      @updateStat="updateStat_newcontract"
+    />
+    <select-modal-hoilday
+      :modalstat="visiable_hoilday"
+      :myvalue="myvalue"
+      @updateStat="updateStat_hoilday"
+    />
   </div>
 </template>
 
 <script>
 import { FlowCategoryApi } from "@/api/flowClassification";
 import selectModal from "./components/selectModal/selectModal";
-import SelectModalEmp from './components/selectModal/selectModal_emp.vue';
-import SelectModalHademp from './components/selectModal/selectModal_hademp.vue';
+import SelectModalEmp from "./components/selectModal/selectModal_emp.vue";
+import SelectModalHademp from "./components/selectModal/selectModal_hademp.vue";
+import SelectModalHoilday from './components/selectModal/selectModal_hoilday.vue';
 // eslint-disable-next-line no-var
 export default {
-  name: 'ApplyProcessList',
+  name: "ApplyProcessList",
   components: {
     selectModal,
     SelectModalEmp,
-    SelectModalHademp
+    SelectModalHademp,
+    SelectModalHoilday,
   },
-  data () {
+  data() {
     return {
       processLists: [],
       tempList: [],
       listQuery: {
-        empId: this.$store.state.user.userLoginInfo.userId
+        empId: this.$store.state.user.userLoginInfo.userId,
       },
       visiable_select: false,
       visiable_contract: false,
       visiable_newcontract: false,
+      visiable_hoilday: false,
       myvalue: null,
-      that: this
+      that: this,
     };
   },
   filters: {
     // 流程单据
-    typeFilter (val, that) {
+    typeFilter(val, that) {
       const map = {
-        1: that.$t('xcsp'),
-        2: that.$t('ygrz'),
-        3: that.$t('htqs'),
-        4: that.$t('ygzz'),
-        5: that.$t('ygdg'),
-        6: that.$t('yglz'),
-        7: that.$t('ygxq'),
-        8: that.$t('qj'),
-        9: that.$t('jiaban'),
-        10: that.$t('chuchai'),
-        11: that.$t('waichu'),
-        12: that.$t('buka'),
-        13: that.$t('xiaojia')
+        1: that.$t("xcsp"),
+        2: that.$t("ygrz"),
+        3: that.$t("htqs"),
+        4: that.$t("ygzz"),
+        5: that.$t("ygdg"),
+        6: that.$t("yglz"),
+        7: that.$t("ygxq"),
+        8: that.$t("qj"),
+        9: that.$t("jiaban"),
+        10: that.$t("chuchai"),
+        11: that.$t("waichu"),
+        12: that.$t("buka"),
+        13: that.$t("xiaojia"),
       };
       return map[val];
-    }
+    },
   },
-  created () {
+  created() {
     this.getProcessList();
   },
   methods: {
-    getProcessList () {
-      FlowCategoryApi.getEmpStart(this.listQuery).then(response => {
+    getProcessList() {
+      FlowCategoryApi.getEmpStart(this.listQuery).then((response) => {
         this.processLists = response.data.content;
         this.tempList = response.data.content;
       });
     },
-    handleQuery () {
+    handleQuery() {
       let temp = this._.cloneDeep(this.tempList);
       for (let i = 0; i < temp.length; i++) {
         for (let j = 0; j < temp[i].flowInfoVos.length; j++) {
@@ -155,7 +165,7 @@ export default {
       }
       this.processLists = temp;
     },
-    submitWorkOrder (value) {
+    submitWorkOrder(value) {
       console.log(value);
       switch (value.receiptType) {
         case 1:
@@ -163,35 +173,38 @@ export default {
           break;
         case 2:
           this.$router.push({
-            path: '/processDo/actionflowStart',
+            path: "/processDo/actionflowStart",
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
               flowId: value.id,
-              flowCategory: value.category
-            }
+              flowCategory: value.category,
+            },
           });
           break;
-          case 3:
-          this.selectEmp_contract(value)
+        case 3:
+          this.selectEmp_contract(value);
           break;
-          case 7:
-          this.selectEmp_newcontract(value)
+        case 7:
+          this.selectEmp_newcontract(value);
+          break;
+        case 13:
+          this.selectEmp_backHoilday(value);
           break;
         default:
           this.$router.push({
-            path: '/processDo/actionflowStart',
+            path: "/processDo/actionflowStart",
             query: {
               receiptType: value.receiptType,
               receiptLabel: value.flowName,
               flowId: value.id,
-              flowCategory: value.category
-            }
+              flowCategory: value.category,
+            },
           });
           break;
       }
     },
-    selectFrom (value) {
+    selectFrom(value) {
       this.visiable_select = true;
       this.myvalue = value;
     },
@@ -203,6 +216,10 @@ export default {
       this.visiable_newcontract = true;
       this.myvalue = value;
     },
+    selectEmp_backHoilday(value) {
+      this.visiable_hoilday = true
+      this.myvalue = value
+    },
     updateStat_select(state, value) {
       console.log(value);
       if (value) {
@@ -212,8 +229,8 @@ export default {
             receiptType: value.receiptType,
             receiptLabel: value.flowName,
             flowId: value.id,
-            flowCategory: value.category
-          }
+            flowCategory: value.category,
+          },
         });
       }
       this.visiable_select = state;
@@ -226,8 +243,8 @@ export default {
             receiptType: value.receiptType,
             receiptLabel: value.flowName,
             flowId: value.id,
-            flowCategory: value.category
-          }
+            flowCategory: value.category,
+          },
         });
       }
       this.visiable_contract = state;
@@ -240,13 +257,27 @@ export default {
             receiptType: value.receiptType,
             receiptLabel: value.flowName,
             flowId: value.id,
-            flowCategory: value.category
-          }
+            flowCategory: value.category,
+          },
         });
       }
       this.visiable_newcontract = state;
-    }
-  }
+    },
+    updateStat_hoilday(state, value) {
+      if (value) {
+        this.$router.push({
+          path: "/processDo/actionflowStart",
+          query: {
+            receiptType: value.receiptType,
+            receiptLabel: value.flowName,
+            flowId: value.id,
+            flowCategory: value.category,
+          },
+        });
+      }
+      this.visiable_hoilday = state;
+    },
+  },
 };
 </script>
 

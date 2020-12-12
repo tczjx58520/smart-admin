@@ -214,11 +214,7 @@ export const attendance = {
 
   // 请假登记
   findApplyLeave: data => {
-    let Form = new FormData();
-    Form.append('employeeId', data.employeeId);
-    Form.append('pageNum', data.pageNum);
-    Form.append('pageSize', data.pageSize);
-    return postAxios('/attendancePersonal/findApplyLeave?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, Form);
+    return postAxios('/attendancePersonal/findApplyLeave?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
   },
 
   // 请假登记新建

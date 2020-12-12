@@ -247,7 +247,8 @@ export default {
       type: Boolean,
       default: false
     },
-    editinfo: null
+    editinfo: null,
+    isedit: null
   },
   created () {},
   mounted () {},
@@ -524,13 +525,23 @@ export default {
       // repositoryLevelId
       this.$refs['form'].validate(valid => {
         if (valid) {
-          salesroom.updateSalesRoomList(this.addformbase).then(res => {
+          if (this.isedit) {
+            salesroom.updateSalesRoomList(this.addformbase).then(res => {
             if (res.ret === 200) {
               this.$emit('updateStat', false);
               this.addformbase = Object.assign({}, defaultForm);
               this.$Message.success(res.msg);
             }
           });
+          } else {
+            salesroom.addSalesRoomList(this.addformbase).then(res => {
+            if (res.ret === 200) {
+              this.$emit('updateStat', false);
+              this.addformbase = Object.assign({}, defaultForm);
+              this.$Message.success(res.msg);
+            }
+          });
+          }
         } else {
           this.$Message.error('Fail!');
         }

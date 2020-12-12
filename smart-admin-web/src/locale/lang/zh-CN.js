@@ -317,7 +317,8 @@ export default {
     stat: '状态',
     assessmentSituation: '考核情况',
     termination: '终止',
-    viewer: '查看者'
+    viewer: '查看者',
+    flowstat: '流程状态'
   },
   viewTask: '考核任务查看',
   viewTask_view: {

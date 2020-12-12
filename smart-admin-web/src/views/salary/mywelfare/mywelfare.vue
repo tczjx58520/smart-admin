@@ -225,15 +225,15 @@ export default {
         },
         {
           title: '通知人',
-          key: 'basicMoney'
+          key: 'createName'
         },
         {
           title: '标题',
-          key: 'createName'
+          key: 'title'
         },
         {
           title: '内容',
-          key: 'createName'
+          key: 'content'
         }
         //   {
         //     title: '操作',
@@ -425,7 +425,7 @@ export default {
         // this.Shesearchform.empId = this.$store.state.user.userLoginInfo.userId;
         let result = await welfareApi.getmywelfare(this.Shesearchform);
         this.Sheloading = false;
-        this.Shedata = result.data.content.list;
+        this.Shedata = result.data.content;
         this.ShepageTotal = result.data.content.totalCount;
       } catch (e) {
         // TODO zhuoda sentry

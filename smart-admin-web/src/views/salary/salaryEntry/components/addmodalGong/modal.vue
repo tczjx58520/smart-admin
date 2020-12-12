@@ -29,10 +29,10 @@
                     <template slot-scope="scope" slot="grantDate">
                         <DatePicker type="date"  format:="yyyy-MM-dd" v-model="scope.row.grantDate" placeholder="Select date" style="width: 180px" @on-change="getmydate($event,scope)"></DatePicker>
                     </template>
-                    <template slot-scope="scope" slot="basicAccumulationFund">
+                    <template v-if="scope.row.account.basicAccumulationFund" slot-scope="scope" slot="basicAccumulationFund">
                         <span >{{ scope.row.account.basicAccumulationFund.basicMoney }}</span>
                     </template>
-                    <template slot-scope="scope" slot="basicSocialSecurity">
+                    <template v-if="scope.row.account.basicSocialSecurity" slot-scope="scope" slot="basicSocialSecurity">
                         <span >{{ scope.row.account.basicSocialSecurity.basicMoney }}</span>
                     </template>
                   </Table>
@@ -239,13 +239,15 @@ export default {
                 ] = this.baseinfo[i].salaryinfo.salaryDetails[j].optionMoney;
               } else {
                 this.baseinfo[i][this.baseinfo[i].account[key][j].name] = 0;
-                if (this.baseinfo[i].account.basicAccumulationFund && this.baseinfo[i].account.basicSocialSecurity) {
+                if (this.baseinfo[i].account.basicAccumulationFund ) {
+                  this.baseinfo[i]['公积金'] = this.baseinfo[i].account.basicAccumulationFund.personalAdd
+                }
+                if (this.baseinfo[i].account.basicSocialSecurity) {
                   this.baseinfo[i]['养老保险'] = this.baseinfo[i].account.basicSocialSecurity.personalPensionInsurance
                   this.baseinfo[i]['医疗保险'] = this.baseinfo[i].account.basicSocialSecurity.companyMedicalInsurance
                   this.baseinfo[i]['失业保险'] = this.baseinfo[i].account.basicSocialSecurity.companyUnemploymentInsurance
                   this.baseinfo[i]['工伤保险'] = this.baseinfo[i].account.basicSocialSecurity.personalInjuryInsurance
                   this.baseinfo[i]['生育保险'] = this.baseinfo[i].account.basicSocialSecurity.personalBirthInsurance
-                  this.baseinfo[i]['公积金'] = this.baseinfo[i].account.basicAccumulationFund.personalAdd
                 }
               }
               let data = {

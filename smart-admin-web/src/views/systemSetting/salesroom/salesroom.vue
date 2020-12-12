@@ -86,6 +86,7 @@
     <!-- 新建结束============= -->
     <editModal
       :modalstat="visiable_edit"
+      :isedit="isedit"
       :editinfo="editinfo"
       @updateStat="updateStat_edit"
     ></editModal>
@@ -108,6 +109,7 @@ export default {
   props: {},
   data () {
     return {
+      isedit: false,
       visiable_edit: false,
       editinfo: {},
       searchform: {
@@ -174,7 +176,7 @@ export default {
                   ],
                   on: {
                     click: () => {
-                      this.Edit(params.row);
+                      this.Copy(params.row);
                     }
                   }
                 },
@@ -282,6 +284,16 @@ export default {
   methods: {
     Edit (row) {
       if (this.$judge(['1-4-2'])) {
+        this.editinfo = row;
+        this.visiable_edit = true;
+        this.isedit = true
+      } else {
+        console.log('needroles');
+      }
+    },
+    Copy(row) {
+      if (this.$judge(['1-4-2'])) {
+        this.isedit = false
         this.editinfo = row;
         this.visiable_edit = true;
       } else {

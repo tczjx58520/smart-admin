@@ -87,7 +87,8 @@ export default {
       loading: false,
       searchform: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        empId: this.$store.state.user.userLoginInfo.userId
       },
       originList: [],
       pageTotal: 0,

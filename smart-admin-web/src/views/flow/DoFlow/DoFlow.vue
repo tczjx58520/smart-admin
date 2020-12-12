@@ -284,6 +284,14 @@ export default {
           key: 'effectiveDate'
         },
         {
+          title: this.$t('assessmentTask_view.flowstat'),
+          key: 'stat',
+          width: '100',
+          render: (h, params) => {
+            return h('span', this.$options.filters.flowStatFilter(params.row.flowStat));
+          }
+        },
+        {
           title: this.$t('assessmentTask_view.stat'),
           key: 'stat',
           width: '100',
@@ -307,7 +315,8 @@ export default {
                     size: 'small'
                   },
                   style: {
-                    marginRight: '5px'
+                    marginRight: '5px',
+                    display: params.row.flowStat === 5 ? 'none' : 'inline-block'
                   },
                   on: {
                     click: () => {
@@ -355,7 +364,16 @@ export default {
   filters: {
     statfilter (value) {
       const statMap = {
-        1: '办理中'
+        1: '办理中',
+        2: '已完成'
+      };
+      return statMap[value];
+    },
+    flowStatFilter(value) {
+      const statMap = {
+        1: '办理中',
+        2: '已完成',
+        5: '召回'
       };
       return statMap[value];
     }
@@ -375,6 +393,7 @@ export default {
       this.addformbase.handleRecordId = this.addformbase.actionId;
       unDoFlowApi.rebackFlowRecord(this.addformbase).then(res => {
         this.additem = false;
+        this.getUserLoginLogPage()
       });
     },
     zhaohui (row) {

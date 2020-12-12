@@ -134,18 +134,24 @@ export default {
         callback();
       }
     };
+    const validatePass5 = (rule, value, callback) => {
+      if (this.addformbase.email === '') {
+        callback(new Error('Please enter'));
+      } else {
+        callback();
+      }
+    };
     const checkphone = (rule, value, callback) => {
-      if (!value) {
+      if (!this.addformbase.phone) {
         return callback(new Error('please enter'));
       }
       setTimeout(() => {
-        console.log(String(value).length);
-        if (String(value).length !== 11) {
+        if (String(this.addformbase.phone).length !== 11) {
           callback(new Error('please enter Correct phone'));
         } else {
           callback();
         }
-      }, 1000);
+      }, 100);
     };
     return {
       isShowTree: false,
@@ -184,7 +190,7 @@ export default {
           { required: true, validator: checkphone, trigger: 'blur' }
         ],
         mail: [
-          { required: true, message: 'The mail cannot be empty', trigger: 'blur' }
+          { required: true, validator: validatePass5, trigger: 'blur' }
         ],
         postOa: [
           { required: true, validator: validatePass, trigger: 'blur' }
@@ -327,15 +333,19 @@ export default {
       this.$refs['form2'].resetFields();
     },
     handsave () {
+      console.log(123);
     //   console.log(this.addformbase, this.addformaccount);
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$refs['form2'].validate((valid) => {
             if (valid) {
+              console.log('保存');
               usermanagelApi.register(this.addformbase, this.addformaccount).then(res => {
                 if (res.ret === 200) {
                   this.$emit('updateStat', false);
                   this.$Message.success(res.msg);
+                } else{
+                  this.$Message.warning(res.msg);
                 }
               });
             } else {

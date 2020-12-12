@@ -230,7 +230,9 @@
                 <span slot="append" style="width: 70px">{{ $t("hour") }}</span>
               </Input>
               <InputNumber
-                v-else-if="item.componentType === '1' && item.value === 'useAnnual' "
+                v-else-if="
+                  item.componentType === '1' && item.value === 'useAnnual'
+                "
                 :min="0"
                 :max="leaveYearDay"
                 style="width: 500px"
@@ -240,7 +242,9 @@
                 placeholder="输入内容"
               />
               <InputNumber
-                v-else-if="item.componentType === '1' && item.value === 'useExchangeDay' "
+                v-else-if="
+                  item.componentType === '1' && item.value === 'useExchangeDay'
+                "
                 :min="0"
                 :max="leaveExchangDay"
                 style="width: 500px"
@@ -332,6 +336,25 @@
               >
                 <Option
                   v-for="item in workHardType"
+                  :value="item.value"
+                  :key="item.value"
+                  >{{ item.label }}</Option
+                >
+              </Select>
+              <Select
+                v-else-if="
+                  item.componentType === '5' &&
+                  item.value === 'type' &&
+                  $route.query.receiptType == '13'
+                "
+                v-model="addformbase.type"
+                size="large"
+                style="width: 500px"
+                disabled
+                :transfer="true"
+              >
+                <Option
+                  v-for="item in hoildayType"
                   :value="item.value"
                   :key="item.value"
                   >{{ item.label }}</Option
@@ -534,8 +557,16 @@
                 size="large"
                 placeholder="输入内容"
               />
-              <span v-if="item.value === 'useAnnual'" style="font-size:14px;color:#ed4014;">{{ `${$t('userYearDay')}${leaveYearDay}` }}</span>
-              <span v-if="item.value === 'useExchangeDay'" style="font-size:14px;color:#ed4014;">{{ `${$t('useExchangDay')}${leaveExchangDay}` }}</span>
+              <span
+                v-if="item.value === 'useAnnual'"
+                style="font-size: 14px; color: #ed4014"
+                >{{ `${$t("userYearDay")}${leaveYearDay}` }}</span
+              >
+              <span
+                v-if="item.value === 'useExchangeDay'"
+                style="font-size: 14px; color: #ed4014"
+                >{{ `${$t("useExchangDay")}${leaveExchangDay}` }}</span
+              >
             </div>
           </ListItem>
           <!-- end -->
@@ -673,9 +704,12 @@ export default {
           empInduction.getempInductionList(data).then((res) => {
             console.log("查询员工入职", res.data.content.list[0]);
           });
-        } else if (this.watchReceiptType === "8") {
-            this.getExchangeDay();
-            this.getYearHoliday();
+        } else if (
+          this.watchReceiptType === "8" ||
+          this.watchReceiptType === "13"
+        ) {
+          this.getExchangeDay();
+          this.getYearHoliday();
         }
       },
       immediate: true,
@@ -685,7 +719,8 @@ export default {
     console.log("numbe==========", this.$route.query.receiptType);
     if (
       !this.$store.state.user.transInfo.id &&
-      this.$route.query.receiptType === "1"
+      (this.$route.query.receiptType === "1" ||
+        this.$route.query.receiptType === "13")
     ) {
       this.$router.go(-1);
       this.$router.closeCurrentPage();
@@ -768,7 +803,8 @@ export default {
         createId: this.$store.state.user.userLoginInfo.userId,
         createName: this.$store.state.user.userLoginInfo.nickName,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        organizationOaName: this.$store.state.user.userLoginInfo.organizationOaName,
+        organizationOaName: this.$store.state.user.userLoginInfo
+          .organizationOaName,
         whetherExchange: 1,
         // 人事
         oldPostId: this.$store.state.user.userLoginInfo.postOa,
@@ -898,14 +934,15 @@ export default {
         pageNum: 1,
         pageSize: 999,
         year: this.GMTToStr(),
-        employeeId: this.$store.state.user.userLoginInfo.userId
-      }
+        employeeId: this.$store.state.user.userLoginInfo.userId,
+      };
       let result = await attendance.findExchangeDay(data);
-      console.log('数组长度======================', result.data.list.length);
-      const firstData = result.data.list.length > 0 && result.data.list[0].exchangeDayRemain;
-      console.log('firstData======', firstData);
+      console.log("数组长度======================", result.data.list.length);
+      const firstData =
+        result.data.list.length > 0 && result.data.list[0].exchangeDayRemain;
+      console.log("firstData======", firstData);
       if (firstData) {
-        this.leaveExchangDay = firstData
+        this.leaveExchangDay = firstData;
       }
     },
     async getYearHoliday() {
@@ -913,14 +950,19 @@ export default {
         pageNum: 1,
         pageSize: 999,
         year: this.GMTToStr(),
-        employeeId: this.$store.state.user.userLoginInfo.userId
-      }
+        employeeId: this.$store.state.user.userLoginInfo.userId,
+      };
       let result = await attendance.findAnnual(data);
-      console.log('数组长度======================222222', result.data.list.length);
-      const firstData = result.data.list.length > 0 && result.data.list[0].annualLeaveRemainDays;
-      console.log('firstData======', firstData);
+      console.log(
+        "数组长度======================222222",
+        result.data.list.length
+      );
+      const firstData =
+        result.data.list.length > 0 &&
+        result.data.list[0].annualLeaveRemainDays;
+      console.log("firstData======", firstData);
       if (firstData) {
-        this.leaveYearDay = firstData
+        this.leaveYearDay = firstData;
       }
     },
     getrolelist() {
@@ -947,6 +989,10 @@ export default {
       positionApi.postList(searchFrom).then((res) => {
         if (res.ret === 200) {
           this.postData = res.data.content.list;
+          const data = this.postData.filter((item) => {
+            return item.id === this.addformbase['postId'];
+          });
+          this.levelList = data[0].levelVos;
         } else {
           console.log("列表出错");
         }
@@ -1654,6 +1700,7 @@ export default {
     save_13() {
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.flowNumber = this.receiptNumber;
+      this.addformbase.terminalHoliday = 0;
       attendance.addTerminalLeave(this.addformbase).then((res) => {
         if (res.ret === 200) {
           this.addformbase.receiptId = res.data.receiptId;

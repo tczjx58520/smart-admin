@@ -33,9 +33,9 @@ export const roleApi = {
     if (data.operatId !== undefined && data.operatId !== null && data.operatId !== '') {
       Form.append('operatId', data.operatId);
     }
-    // if (data.description !== undefined && data.description !== null && data.description !== '') {
-    //   Form.append('description', data.description);
-    // }
+    if (data.description !== undefined && data.description !== null && data.description !== '') {
+      Form.append('description', data.description);
+    }
     if (data2 !== undefined && data2 !== null && data2 !== '') {
       Form.append('authority', data2);
     }
