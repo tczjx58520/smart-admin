@@ -1,73 +1,98 @@
 <template>
   <div style="height:100%">
-    <Card class="warp-card" dis-hover style="height:100%;">
+    <Card class="warp-card"
+          dis-hover
+          style="height:100%;">
       <div style="margin-bottom:15px;">{{ $t("grjffgz") }}</div>
-      <Form ref="formInline" :model="stepFormInfo" inline>
+      <Form ref="formInline"
+            :model="stepFormInfo"
+            inline>
         <Row>
           <Col span="5">
-            <FormItem prop="user" label="项目:" style="display: flex">
-              <Select v-model="stepFormInfo.calcCadition1" filterable clearable>
-                <Option
-                  v-for="item in assessmentList"
-                  :value="item.id"
-                  :key="item.id"
-                  >{{ item.itemName }}</Option
-                >
-              </Select>
-            </FormItem>
+          <FormItem prop="user"
+                    label="项目:"
+                    style="display: flex">
+            <Select v-model="stepFormInfo.calcCadition1"
+                    filterable
+                    clearable>
+              <Option v-for="item in assessmentList"
+                      :value="item.id"
+                      :key="item.id">{{ item.itemName }}</Option>
+            </Select>
+          </FormItem>
           </Col>
           <Col span="5">
-            <FormItem prop="password" label="条件:" style="display: flex">
-              <Select v-model="stepFormInfo.calcCadition2" filterable clearable>
-                <Option
-                  v-for="item in conditionList"
-                  :value="item.value"
-                  :key="item.value"
-                  >{{ item.label }}</Option
-                >
-              </Select>
-            </FormItem>
+          <FormItem prop="password"
+                    label="条件:"
+                    style="display: flex">
+            <Select v-model="stepFormInfo.calcCadition2"
+                    filterable
+                    clearable>
+              <Option v-for="item in conditionList"
+                      :value="item.value"
+                      :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </FormItem>
           </Col>
           <Col span="5">
-            <FormItem prop="password" label="值:" style="display: flex">
-              <Input v-model="stepFormInfo.value" placeholder="value"></Input>
-            </FormItem>
+          <FormItem prop="password"
+                    label="值:"
+                    style="display: flex">
+            <Input v-model="stepFormInfo.value"
+                   placeholder="value"></Input>
+          </FormItem>
           </Col>
           <Col span="5">
-            <FormItem prop="password" label="关系:" style="display: flex">
-              <Select v-model="stepFormInfo.calcCadition3" filterable clearable>
-                <Option
-                  v-for="item in relationList"
-                  :value="item.value"
-                  :key="item.value"
-                  >{{ item.label }}</Option
-                >
-              </Select>
-            </FormItem>
+          <FormItem prop="password"
+                    label="关系:"
+                    style="display: flex">
+            <Select v-model="stepFormInfo.calcCadition3"
+                    filterable
+                    clearable>
+              <Option v-for="item in relationList"
+                      :value="item.value"
+                      :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </FormItem>
           </Col>
           <Col span="1">
-            <FormItem>
-              <Button type="primary" @click="handleSubmit()">{{
+          <FormItem>
+            <Button type="primary"
+                    @click="handleSubmit()">{{
                 $t("tj")
               }}</Button>
-            </FormItem>
+          </FormItem>
+          </Col>
+          <Col span="1">
+          <FormItem>
+            <Button type="primary"
+                    @click="clear()">{{
+                $t("kqgl.qk")
+              }}</Button>
+          </FormItem>
           </Col>
         </Row>
       </Form>
       <div class="condition">
         <ul class="conditionList">
-          <li
-            v-for="(items, index) in myformlua"
-            :class="[items.selected ? 'active' : 'li-hover']"
-            @click="selectedFormlua(index, myformlua)"
-          >
+          <li v-for="(items, index) in myformlua"
+              :class="[items.selected ? 'active' : 'li-hover']"
+              @click="selectedFormlua(index, myformlua)">
             {{ items.label }}
           </li>
         </ul>
       </div>
+      <div style="margin-top:20px">
+        <span>{{$t('qsrjljz')}}</span>
+        <Input v-model="baseMoney"
+               style="width:200px;padding-left:10px;"
+               :placeholder="$t(qsrjljz)" />
+      </div>
       <div class="button-warp">
         <div class="button-group">
-          <Button type="primary" @click="handlerSave()" :loading="isloading">
+          <Button type="primary"
+                  @click="handlerSave()"
+                  :loading="isloading">
             保存
           </Button>
           <!-- <Button @click="$router.go(-1)">
@@ -113,18 +138,22 @@ export default {
       myformlua: [],
       selectIndex: null,
       isedit: false,
-      id: null
+      id: null,
+      baseMoney: ''
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created () {},
+  created () { },
   mounted () {
     this.getassessmentList();
     this.getList();
   },
   methods: {
+    clear () {
+      this.stepFormInfo = {};
+    },
     getList () {
       soloAward.getsoloAward().then(res => {
         console.log(res.data.content);
@@ -198,14 +227,15 @@ export default {
       const data3 = JSON.stringify(this.myformlua);
       const data4 = this.$store.state.user.userLoginInfo.userId;
       if (this.isedit) {
-        soloAward.updatesoloAward(this.id, formula, data2, data3, data4).then(res => {
+        soloAward.updatesoloAward(this.baseMoney, this.id, formula, data2, data3, data4).then(res => {
           console.log(res);
           this.stepFormInfo = Object.assign({}, defaultForm);
           this.isloading = false;
         });
       } else {
-        soloAward.addsoloAward(formula, data2, data3, data4).then(res => {
+        soloAward.addsoloAward(this.baseMoney, formula, data2, data3, data4).then(res => {
           console.log(res);
+          console.log(1111111111111, this.baseMoney);
           this.stepFormInfo = Object.assign({}, defaultForm);
         });
         this.getList();

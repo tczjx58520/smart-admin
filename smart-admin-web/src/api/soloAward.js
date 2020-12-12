@@ -6,8 +6,11 @@ export const soloAward = {
     return postAxios('/targetRule/queryTargetRule');
   },
   // 新增级别
-  addsoloAward: (data, data2, data3, data4) => {
+  addsoloAward: (baseMoney, data, data2, data3, data4) => {
     let Form = new FormData();
+    if (baseMoney !== undefined && baseMoney !== null && baseMoney !== '') {
+      Form.append('baseMoney', baseMoney);
+    }
     if (data !== undefined && data !== null && data !== '') {
       Form.append('formula', data);
     }
@@ -23,8 +26,11 @@ export const soloAward = {
     return postAxios('/targetRule/addTargetRule', Form);
   },
   // 更新级别
-  updatesoloAward: (id, data, data2, data3, data4) => {
+  updatesoloAward: (baseMoney, id, data, data2, data3, data4) => {
     let Form = new FormData();
+    if (baseMoney !== undefined && baseMoney !== null && baseMoney !== '') {
+      Form.append('baseMoney', baseMoney);
+    }
     if (id !== undefined && id !== null && id !== '') {
       Form.append('id', id);
     }
@@ -43,4 +49,4 @@ export const soloAward = {
     return postAxios('/targetRule/updateTargetRule', Form);
   }
 }
-;
+  ;

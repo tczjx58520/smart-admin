@@ -887,6 +887,7 @@ export default {
   xywksd: '需要我考试的',
   wwcd: '我完成的',
   wqkd: '我缺考的',
+  qsrjljz: '请输入奖励',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

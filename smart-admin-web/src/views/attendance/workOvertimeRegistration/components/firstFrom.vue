@@ -1,44 +1,37 @@
 <template>
-  <Modal
-    v-model="mymoadlStat"
-    class="add"
-    width="720"
-    :closable="false"
-    :mask-closable="false"
-    :transfer="false"
-    :styles="{ top: '10px' }"
-  >
-    <div slot="header" style="text-align: left; color: #fff">
+  <Modal v-model="mymoadlStat"
+         class="add"
+         width="720"
+         :closable="false"
+         :mask-closable="false"
+         :transfer="false"
+         :styles="{ top: '10px' }">
+    <div slot="header"
+         style="text-align: left; color: #fff">
       <span>{{ $t("kqgl.jbsheqingda") }}</span>
     </div>
     <div>
       <Card dis-hover>
-        <div
-          style="
+        <div style="
             display: flex;
             align-items: center;
             border-bottom: 1px solid #e1e1e1;
             padding-bottom: 20px;
-          "
-        >
-          <div
-            style="
+          ">
+          <div style="
               width: 4px;
               height: 20px;
               background: #2d8cf0;
               margin-right: 15px;
-            "
-          ></div>
+            "></div>
           <div>{{ $t("BaseData") }}</div>
         </div>
         <Divider />
-        <Form
-          ref="form"
-          :model="fromBaseData"
-          label-position="right"
-          :label-width="100"
-          :rules="ruleValidate"
-        >
+        <Form ref="form"
+              :model="fromBaseData"
+              label-position="right"
+              :label-width="100"
+              :rules="ruleValidate">
           <FormItem :label="$t('kqgl.liuchengbianhao')">
             <Input style="width: 34%" />
           </FormItem>
@@ -49,13 +42,12 @@
             <Input style="width: 34%" />
           </FormItem>
           <FormItem :label="$t('kqgl.shengqingren')">
-            <Input
-              v-model="employeeName"
-              style="width: 34%"
-              @click.native="chooseEmp"
-            />
+            <Input v-model="employeeName"
+                   style="width: 34%"
+                   @click.native="chooseEmp" />
           </FormItem>
-          <selectEmp :modalstat.sync="empSata" @selectData="selectData" />
+          <selectEmp :modalstat.sync="empSata"
+                     @selectData="selectData" />
           <!-- <div class="nomalDiv">
                         <span class="zhi">{{$t('kqgl.jiabanshijianduan')}}</span>
                         <TimePicker type="time" :value="fromBaseData.startTime" confirm style="width: 20%" @on-change="changeStartTime"></TimePicker>
@@ -68,31 +60,23 @@
 
           <div class="nomalDiv">
             <span class="zhi">{{ $t("kqgl.jiabanshijianduan") }}</span>
-            <DatePicker
-              type="datetimerange"
-              v-model="times"
-              format="yyyy-MM-dd HH:mm:ss"
-              style="width: 40%"
-              @on-change="changeStartTime"
-            ></DatePicker>
+            <DatePicker type="datetimerange"
+                        v-model="times"
+                        format="yyyy-MM-dd HH:mm:ss"
+                        style="width: 40%"
+                        @on-change="changeStartTime"></DatePicker>
             <div class="zhi">{{ $t("kqgl.jiabanheji") }}</div>
-            <Input
-              v-model="fromBaseData.totalTime"
-              disabled
-              style="width: 20%"
-            />
+            <Input v-model="fromBaseData.totalTime"
+                   disabled
+                   style="width: 20%" />
             <div class="zhi">{{ $t("kqgl.xiaoshi") }}</div>
           </div>
           <FormItem :label="$t('kqgl.shusuozhuzhi')">
-            <Input
-              v-model="organazationName"
-              style="width: 34%"
-              @click.native="chooseOrg"
-            />
-            <organization
-              :modalstat.sync="orgStat"
-              @organizationData="getOrgData"
-            />
+            <Input v-model="organazationName"
+                   style="width: 34%"
+                   @click.native="chooseOrg" />
+            <organization :modalstat.sync="orgStat"
+                          @organizationData="getOrgData" />
           </FormItem>
           <FormItem :label="$t('kqgl.shifoujirutiaoxiu')">
             <RadioGroup v-model="fromBaseData.whetherExchange">
@@ -101,10 +85,12 @@
             </RadioGroup>
           </FormItem>
           <FormItem :label="$t('kqgl.jiabanshiyou')">
-            <Input v-model="fromBaseData.reason" style="width: 34%" />
+            <Input v-model="fromBaseData.reason"
+                   style="width: 34%" />
           </FormItem>
           <FormItem :label="$t('kqgl.jiabanleixing')">
-            <Select v-model="fromBaseData.type" style="width: 34%">
+            <Select v-model="fromBaseData.type"
+                    style="width: 34%">
               <Option :value="0">{{ $t("kqgl.gzrjiab") }}</Option>
               <Option :value="1">{{ $t("kqgl.shuangxiuriji") }}</Option>
               <Option :value="2">{{ $t("kqgl.fdjrjaiba") }}</Option>
@@ -115,14 +101,13 @@
     </div>
     <div slot="footer">
       <ButtonGroup>
-        <Button
-          type="primary"
-          size="large"
-          :loading="modal_loading"
-          @click="handsave"
-          >{{ $t("Save") }}</Button
-        >
-        <Button type="error" size="large" @click="cancel">{{
+        <Button type="primary"
+                size="large"
+                :loading="modal_loading"
+                @click="handsave">{{ $t("Save") }}</Button>
+        <Button type="error"
+                size="large"
+                @click="cancel">{{
           $t("Close")
         }}</Button>
       </ButtonGroup>
@@ -130,32 +115,32 @@
   </Modal>
 </template>
 <script>
-import $ from "jquery";
-import selectEmp from "@/components/selectEmp";
-import organization from "@/components/organization";
-import { attendance } from "@/api/attendance";
+import $ from 'jquery';
+import selectEmp from '@/components/selectEmp';
+import organization from '@/components/organization';
+import { attendance } from '@/api/attendance';
 export default {
-  name: "firstFrom",
+  name: 'firstFrom',
   components: {
     selectEmp,
-    organization,
+    organization
   },
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
     editData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  created() {},
-  mounted() {},
-  data() {
+  created () { },
+  mounted () { },
+  data () {
     const validatePass = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("Please enter"));
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
@@ -173,49 +158,49 @@ export default {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: "",
+        reason: '',
         startTime: null,
         endTime: null,
         totalTime: 0,
         type: 0,
-        whetherExchange: 0,
+        whetherExchange: 0
       },
       ruleValidate: {
         note: [
           {
             required: true,
-            message: "The note cannot be empty",
-            trigger: "blur",
-          },
-        ],
-      },
+            message: 'The note cannot be empty',
+            trigger: 'blur'
+          }
+        ]
+      }
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       console.log(
-        "this.$store.state.user.userLoginInfo",
+        'this.$store.state.user.userLoginInfo',
         this.$store.state.user.userLoginInfo
       );
     },
-    editData() {
+    editData () {
       //   console.log('this.editData', this.editData)
       this.fromBaseData.note = this.editData.note;
       this.fromBaseData.id = this.editData.id;
       this.fromBaseData.employeeId = this.editData.employeeId;
-    },
+    }
   },
   methods: {
-    changeStartTime(val) {
+    changeStartTime (val) {
       console.log(val);
       this.fromBaseData.startTime = val[0];
       this.fromBaseData.endTime = val[1];
       this.countTotalTime(val[0], val[1]);
     },
-    datedifference(sDate1, sDate2) {
-      //sDate1和sDate2是2006-12-18格式
-      var dateSpan, tempDate, iDays;
+    datedifference (sDate1, sDate2) {
+      // sDate1和sDate2是2006-12-18格式
+      let dateSpan, tempDate, iDays;
       sDate1 = Date.parse(sDate1);
       sDate2 = Date.parse(sDate2);
       dateSpan = sDate2 - sDate1;
@@ -223,7 +208,7 @@ export default {
       iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
       return iDays;
     },
-    countTotalTime(val, val2) {
+    countTotalTime (val, val2) {
       const subDays = val.substring(0, 10);
       const subDays2 = val2.substring(0, 10);
       const diffdays = this.datedifference(subDays, subDays2);
@@ -233,17 +218,17 @@ export default {
       let minute2 = Number(val2.substring(14, 16));
       let second1 = Number(val.substring(17, 19));
       let second2 = Number(val2.substring(17, 19));
-      console.log("minute1", minute1, "second1", second1, "hours1", hours1);
+      console.log('minute1', minute1, 'second1', second1, 'hours1', hours1);
       console.log(diffdays);
       let diffHours = hours2 - hours1;
       let diffminutes = minute2 - minute1;
       this.fromBaseData.totalTime =
         diffHours + diffminutes / 60 + Number(diffdays) * 24;
     },
-    chooseOrg() {
+    chooseOrg () {
       this.orgStat = true;
     },
-    getOrgData(val) {
+    getOrgData (val) {
       //   console.log(val)
       this.fromBaseData.organazationId = val.id;
       this.organazationName = val.title;
@@ -271,45 +256,45 @@ export default {
     //           this.fromBaseData.totalTime = diffHours + diffminutes/60
     //     }
     // },
-    selectData(val) {
-      console.log("val", val);
+    selectData (val) {
+      console.log('val', val);
       this.fromBaseData.employeeId = val.id;
       this.employeeName = val.personName;
     },
-    chooseEmp() {
+    chooseEmp () {
       this.empSata = true;
     },
-    cancel() {
+    cancel () {
       this.mymoadlStat = false;
       this.modal_loading = false;
       this.reset();
-      this.$emit("update:modalstat", false);
+      this.$emit('update:modalstat', false);
     },
-    reset() {
+    reset () {
       this.fromBaseData = {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         organazationId: this.$store.state.user.userLoginInfo.organizationOa,
-        reason: "",
+        reason: '',
         startTime: null,
         endTime: null,
         totalTime: 0,
         type: 0,
-        whetherExchange: 0,
+        whetherExchange: 0
       };
-      this.$refs["form"].resetFields();
+      this.$refs['form'].resetFields();
     },
-    handsave() {
+    handsave () {
       this.modal_loading = true;
       console.log(this.fromBaseData);
-      this.$refs["form"].validate((valid) => {
+      this.$refs['form'].validate((valid) => {
         if (valid) {
           attendance.addWorkOvertime(this.fromBaseData).then((res) => {
             if (res.ret === 200) {
               this.$Message.success(res.msg);
               this.mymoadlStat = false;
-              this.$emit("update:modalstat", false);
-              this.$emit("restList", true);
+              this.$emit('update:modalstat', false);
+              this.$emit('restList', true);
               this.reset();
             }
             this.modal_loading = false;
@@ -317,11 +302,11 @@ export default {
         } else {
           this.modal_loading = false;
 
-          this.$Message.error("Fail!");
+          this.$Message.error('Fail!');
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

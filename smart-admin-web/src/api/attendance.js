@@ -306,7 +306,6 @@ export const attendance = {
 
   // 设置考勤人员查询
   findAttendanceEmployeeSet: data => {
-    let Form = new FormData();
     if (data) {
       return postAxios('/attendanceSet/findAttendanceEmployeeSet?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
     }
@@ -367,18 +366,16 @@ export const attendance = {
     return postAxios('/attendanceSet/findAttendanceSet');
   },
 
-   // 考勤机记录查看
-   findAttendacneMachineRecord: data => {
+  // 考勤机记录查看
+  findAttendacneMachineRecord: data => {
     let Form = new FormData();
     return postAxios('/attendanceStatistical/findAttendacneMachineRecord', data);
   },
 
-     // 我的考勤
-     personalAttendance: data => {
-      let Form = new FormData();
-      return postAxios('/attendancePersonal/personalAttendance?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
-    }
-
-
+  // 我的考勤
+  personalAttendance: data => {
+    let Form = new FormData();
+    return postAxios('/attendancePersonal/personalAttendance?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+  }
 
 };
