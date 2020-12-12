@@ -2,61 +2,51 @@
   <div>
     <TabPane :label="$t('kqgl.nj')">
       <div class="rightTop">
-        <Button
-          @click="resetFirstTable"
-          icon="md-refresh"
-          type="default"
-          style="margin-right: 15px"
-          >{{ $t("Reflash") }}</Button
-        >
+        <Button @click="resetFirstTable"
+                icon="md-refresh"
+                type="default"
+                style="margin-right: 15px">{{ $t("Reflash") }}</Button>
         <div class="rightTopItem">
           <span class="rightTopItemTitle">{{ $t("kqgl.nianfenshoushuo") }}</span>
           <span>
-            <DatePicker
-              type="year"
-              v-model="year"
-              placeholder="Select year"
-              style="width: 200px"
-            />
+            <DatePicker type="year"
+                        v-model="year"
+                        placeholder="Select year"
+                        style="width: 200px" />
           </span>
         </div>
         <div class="rightTopItem">
           <span class="rightTopItemTitle">{{ $t("kqgl.zhuzumingm") }}</span>
           <span>
-            <Input
-              placeholder="请选择"
-              :value="organizationName"
-              type="text"
-              @on-focus="selectOrg()"
-              @on-clear="clearOrg"
-              clearable
-            />
+            <Input placeholder="请选择"
+                   :value="organizationName"
+                   type="text"
+                   @on-focus="selectOrg()"
+                   @on-clear="clearOrg"
+                   clearable />
           </span>
-          <organization
-            :modalstat.sync="modalstat"
-            @organizationData="organizationData"
-          />
+          <organization :modalstat.sync="modalstat"
+                        @organizationData="organizationData" />
         </div>
         <div class="rightTopItem">
-          <Button type="primary" @click.native="getFirstTableData">{{
+          <Button type="primary"
+                  @click.native="getFirstTableData">{{
             $t("Search")
           }}</Button>
         </div>
       </div>
-      <Tables
-        :columns="firstColumns"
-        :current="firstTable.pageNum"
-        :loading="firstLoading"
-        :page-size="firstTable.pageSize"
-        :pageShow="true"
-        :editable="true"
-        :total="fistTotal"
-        :value="firstData"
-        @on-change="firstChangePage"
-        @on-selection-change="selectFirst"
-        @on-save-edit="getEditData"
-        show-elevator
-      ></Tables>
+      <Tables :columns="firstColumns"
+              :current="firstTable.pageNum"
+              :loading="firstLoading"
+              :page-size="firstTable.pageSize"
+              :pageShow="true"
+              :editable="true"
+              :total="fistTotal"
+              :value="firstData"
+              @on-change="firstChangePage"
+              @on-selection-change="selectFirst"
+              @on-save-edit="getEditData"
+              show-elevator></Tables>
     </TabPane>
   </div>
 </template>
@@ -135,8 +125,7 @@ export default {
       console.log('getEditData', val);
       if (val.column.key === 'annualLeaveTotalDays') {
         const parms = {
-          annualLeaveRemainDays:
-            Number(val.value) - Number(val.row.annualLeaveUsedDays),
+          annualLeaveRemainDays: Number(val.value) - Number(val.row.annualLeaveUsedDays),
           annualLeaveTotalDays: Number(val.value),
           annualLeaveUsedDays: val.row.annualLeaveUsedDays,
           id: val.row.id
