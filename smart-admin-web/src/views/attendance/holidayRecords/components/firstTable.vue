@@ -107,7 +107,7 @@ export default {
     };
   },
   mounted () {
-    // this.getFirstTableData()
+    this.getFirstTableData();
   },
   methods: {
     clearOrg () {

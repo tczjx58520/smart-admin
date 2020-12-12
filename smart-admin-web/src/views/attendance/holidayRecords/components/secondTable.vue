@@ -16,9 +16,9 @@
           </span>
         </div>
         <div class="rightTopItem">
-          <span class="rightTopItemTitle">{{ $t("kqgl.yhm") }}</span>
+          <span class="rightTopItemTitle">{{ $t("kqgl.zhuzumingm") }}</span>
           <span>
-            <Input placeholder="请输入用户名"
+            <Input placeholder="请选择"
                    :value="organizationName"
                    type="text"
                    @click.native="selectOrg()" />
@@ -86,9 +86,9 @@ export default {
         },
         {
           title: this.$t('kqgl.kytx'),
-          key: 'exchangeDayCanUse',
-          editable: true,
-          editType: 'input'
+          key: 'exchangeDayCanUse'
+          // editable: true,
+          // editType: 'input'
         },
         {
           title: this.$t('kqgl.yytx'),
@@ -101,7 +101,7 @@ export default {
     };
   },
   mounted () {
-    // this.getFirstTableData()
+    this.getFirstTableData();
   },
   methods: {
     organizationData (val) {
@@ -113,13 +113,14 @@ export default {
     },
     async getEditData (val) {
       console.log('getEditData', val);
-      if (val.column.key === 'annualLeaveTotalDays') {
+      if (val.column.key === 'exchangeDayCanUse') {
         const parms = {
           annualLeaveRemainDays: Number(val.value) - Number(val.row.annualLeaveUsedDays),
           annualLeaveTotalDays: Number(val.value),
           annualLeaveUsedDays: val.row.annualLeaveUsedDays,
           id: val.row.id
         };
+        console.log(111111111, parms);
         try {
           this.firstLoading = true;
           let result = await attendance.modifyAnnual(parms);

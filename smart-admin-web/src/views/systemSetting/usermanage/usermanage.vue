@@ -1,78 +1,139 @@
 <template>
 
-<div>
+  <div>
     <div style="display:flex">
-        <div style="width:20%;height: calc(80vh)">
-            <Card class="warp-card" dis-hover>
-                <Tree
-                  :data="treedata"
-                  style="height: calc(80vh);overflow-x: scroll"
-                  @on-select-change="filterorg"
-                ></Tree>
-            </Card>
-        </div>
-        <div style="width:80%;height:calc(80vh)">
-            <Card class="warp-card" dis-hover>
-                <Row :gutter="16">
-                    <Form :model="searchform" class="tools" inline ref="searchform" :label-width="65" label-position="left">
-                      <Col span="5">
-                      <FormItem prop="person" :label="$t('usermanage_view.userName')" style="width:100%">
-                        <Input placeholder="请输入用户名" type="text" v-model="searchform.employeename" style="width:100%" />
-                      </FormItem>
-                      </Col>
-                      <Col span="5">
-                      <FormItem prop="startDate" :label="$t('usermanage_view.account')" style="width:100%">
-                        <Input placeholder="请输入登录帐号" type="text" v-model="searchform.account" style="width:100%" />
-                      </FormItem>
-                      </Col>
-                      <Col span="4">
-                      <FormItem prop="origin" :label="$t('usermanage_view.position')" style="width:100%">
-                        <Select v-model="searchform.postOa" style="width:100%" clearable>
-                          <Option v-for="item in postList" :value="item.id" :key="item.id">{{ item.postName }}</Option>
-                        </Select>
-                      </FormItem>
-                      </Col>
-                      <Col span="4">
-                      <FormItem prop="type" :label="$t('usermanage_view.stat')" style="width:100%;margin-right:15px;">
-                        <Select v-model="searchform.stat" style="width:100%">
-                          <Option v-for="item in statList" :value="item.value" v-bind:key="item.value">{{ item.label }}</Option>
-                        </Select>
-                      </FormItem>
-                      </Col>
-                      <Col span="4">
-                      <FormItem>
-                        <ButtonGroup>
-                          <Button @click="search" icon="ios-search" type="primary">{{ $t('Search') }}</Button>
-                          <!-- <Button @click="reset" icon="md-refresh" type="default">重置</Button> -->
-                        </ButtonGroup>
-                      </FormItem>
-                      </Col>
-                    </Form>
-                </Row>
-            </Card>
-            <Card class="warp-card" dis-hover>
-                <div style="margin-bottom:20px;">
-                    <Button @click="refresh" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
-                    <Button @click="created" v-privilege="['1-7-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('Create') }}</Button>
-                    <Button @click="del" v-privilege="['1-7-3']" icon="md-trash" type="error" style="margin-right:15px;">{{ $t('Delete') }}</Button>
-                    <Button @click="forbid" icon="md-close" type="error" style="margin-right:15px;">{{ $t('Forbid') }}</Button>
-                    <Button @click="open" icon="md-checkmark" type="primary" style="margin-right:15px;">{{ $t('Open') }}</Button>
-                    <Button @click="viewlist" icon="md-list-box" type="primary">{{ $t('usermanage_view.PermissionList') }}</Button>
-                </div>
-                <Table border ref="selection" :columns="columns4" :data="emplist" max-height="400" @on-row-click="rowClick" :loading="loading" @on-select="selectemp" @on-row-dblclick="Edit"></Table>
-                <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
-                :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
-                show-total style="margin:24px 0;text-align:right;"></Page>
-            </Card>
-            <!-- 新建弹窗 -->
-            <addModal :modalstat = "visiable" :copyfile="copyfile" @updateStat = "updateStat"></addModal>
-            <!-- 新建结束============= -->
-            <!-- 修改弹窗 -->
-            <editModal :modalstat = "visiable2" :editinfo="editinfo" @updateStat = "updateStat_edit"></editModal>
-            <viewroleList :modalstat = "visiable3" :editinfo="editinfo" @updateStat = "updateStat_view"></viewroleList>
-        </div>
+      <div style="width:20%;height: calc(80vh)">
+        <Card class="warp-card"
+              dis-hover>
+          <Tree :data="treedata"
+                style="height: calc(80vh);overflow-x: scroll"
+                @on-select-change="filterorg"></Tree>
+        </Card>
+      </div>
+      <div style="width:80%;height:calc(80vh)">
+        <Card class="warp-card"
+              dis-hover>
+          <Row :gutter="16">
+            <Form :model="searchform"
+                  class="tools"
+                  inline
+                  ref="searchform"
+                  :label-width="65"
+                  label-position="left">
+              <Col span="5">
+              <FormItem prop="person"
+                        :label="$t('usermanage_view.userName')"
+                        style="width:100%">
+                <Input placeholder="请输入用户名"
+                       type="text"
+                       v-model="searchform.employeename"
+                       style="width:100%" />
+              </FormItem>
+              </Col>
+              <Col span="5">
+              <FormItem prop="startDate"
+                        :label="$t('usermanage_view.account')"
+                        style="width:100%">
+                <Input placeholder="请输入登录帐号"
+                       type="text"
+                       v-model="searchform.account"
+                       style="width:100%" />
+              </FormItem>
+              </Col>
+              <Col span="4">
+              <FormItem prop="origin"
+                        :label="$t('usermanage_view.position')"
+                        style="width:100%">
+                <Select v-model="searchform.postOa"
+                        style="width:100%"
+                        clearable>
+                  <Option v-for="item in postList"
+                          :value="item.id"
+                          :key="item.id">{{ item.postName }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col span="4">
+              <FormItem prop="type"
+                        :label="$t('usermanage_view.stat')"
+                        style="width:100%;margin-right:15px;">
+                <Select v-model="searchform.stat"
+                        style="width:100%">
+                  <Option v-for="item in statList"
+                          :value="item.value"
+                          v-bind:key="item.value">{{ item.label }}</Option>
+                </Select>
+              </FormItem>
+              </Col>
+              <Col span="4">
+              <FormItem>
+                <ButtonGroup>
+                  <Button @click="search"
+                          icon="ios-search"
+                          type="primary">{{ $t('Search') }}</Button>
+                  <!-- <Button @click="reset" icon="md-refresh" type="default">重置</Button> -->
+                </ButtonGroup>
+              </FormItem>
+              </Col>
+            </Form>
+          </Row>
+        </Card>
+        <Card class="warp-card"
+              dis-hover>
+          <div style="margin-bottom:20px;">
+            <Button @click="refresh"
+                    icon="md-refresh"
+                    type="default"
+                    style="margin-right:15px;">{{ $t('Reflash') }}</Button>
+            <!-- <Button @click="created" v-privilege="['1-7-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('Create') }}</Button>
+                    <Button @click="del" v-privilege="['1-7-3']" icon="md-trash" type="error" style="margin-right:15px;">{{ $t('Delete') }}</Button> -->
+            <Button @click="forbid"
+                    icon="md-close"
+                    type="error"
+                    style="margin-right:15px;">{{ $t('Forbid') }}</Button>
+            <Button @click="open"
+                    icon="md-checkmark"
+                    type="primary"
+                    style="margin-right:15px;">{{ $t('Open') }}</Button>
+            <Button @click="viewlist"
+                    icon="md-list-box"
+                    type="primary">{{ $t('usermanage_view.PermissionList') }}</Button>
+          </div>
+          <Table border
+                 ref="selection"
+                 :columns="columns4"
+                 :data="emplist"
+                 max-height="400"
+                 @on-row-click="rowClick"
+                 :loading="loading"
+                 @on-select="selectemp"
+                 @on-row-dblclick="Edit"></Table>
+          <Page :current="searchform.pageNum"
+                :page-size="searchform.pageSize"
+                :page-size-opts="[10, 20, 30, 50, 100]"
+                :total="pageTotal"
+                @on-change="changePage"
+                @on-page-size-change="changePageSize"
+                show-elevator
+                show-sizer
+                show-total
+                style="margin:24px 0;text-align:right;"></Page>
+        </Card>
+        <!-- 新建弹窗 -->
+        <addModal :modalstat="visiable"
+                  :copyfile="copyfile"
+                  @updateStat="updateStat"></addModal>
+        <!-- 新建结束============= -->
+        <!-- 修改弹窗 -->
+        <editModal :modalstat="visiable2"
+                   :editinfo="editinfo"
+                   @updateStat="updateStat_edit"></editModal>
+        <viewroleList :modalstat="visiable3"
+                      :editinfo="editinfo"
+                      @updateStat="updateStat_view"></viewroleList>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import $ from 'jquery';
@@ -289,13 +350,13 @@ export default {
     // this.getBaseRole();
     this.getBasePost();
   },
-  beforeCreate () {},
-  beforeMount () {},
-  beforeUpdate () {},
-  updated () {},
-  beforeDestroy () {},
-  destroyed () {},
-  activated () {},
+  beforeCreate () { },
+  beforeMount () { },
+  beforeUpdate () { },
+  updated () { },
+  beforeDestroy () { },
+  destroyed () { },
+  activated () { },
   methods: {
     getBasePost () {
       let From = {};
@@ -374,10 +435,10 @@ export default {
         this.emplist = res.data.content.list;
         // console.table(this.emplist);
       });
-    //   this.$set(this.emplist, empresult.data.content.list);
+      //   this.$set(this.emplist, empresult.data.content.list);
     },
     rowClick (data, index) { // data 该行数据 ，index该行索引
-    //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
+      //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
     },
     Edit (row) {
       if (this.$judge(['1-7-2'])) {
@@ -490,7 +551,7 @@ export default {
       this.getemplist();
     },
     changePageSize (pageSize) {
-    //   this.searchform.pageNum = 1;
+      //   this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
       this.getemplist();
     },
@@ -527,10 +588,10 @@ export default {
       // 遍历 tree
       tree.forEach((item) => {
         // 读取 map 的键值映射
-        const title = item[ map.title ];
-        const parentId = item[ map.parentId ];
+        const title = item[map.title];
+        const parentId = item[map.parentId];
         const expand = true;
-        let children = item[ map.children ];
+        let children = item[map.children];
         const id = item[map.id];
         // 如果有子节点，递归
         if (children) {
