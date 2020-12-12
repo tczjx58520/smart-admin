@@ -86,7 +86,7 @@
         <span>{{$t('qsrjljz')}}</span>
         <Input v-model="baseMoney"
                style="width:200px;padding-left:10px;"
-               :placeholder="$t(qsrjljz)" />
+               :placeholder="$t('qsrjljz')" />
       </div>
       <div class="button-warp">
         <div class="button-group">
@@ -95,9 +95,9 @@
                   :loading="isloading">
             保存
           </Button>
-          <!-- <Button @click="$router.go(-1)">
-            取消
-          </Button> -->
+          <Button @click="clearContent">
+            清空
+          </Button>
         </div>
       </div>
     </Card>
@@ -161,6 +161,7 @@ export default {
           this.isedit = true;
           this.id = res.data.content[0].id;
           const temp = JSON.parse(res.data.content[0].myformlua);
+          this.baseMoney = res.data.content[0].baseMoney
           this.myformlua = temp;
         }
       });
@@ -215,6 +216,9 @@ export default {
         this.selectIndex = null;
       }
       console.log('item======', this.selectIndex);
+    },
+    clearContent() {
+      this.myformlua = []
     },
     handlerSave () {
       this.isloading = true;

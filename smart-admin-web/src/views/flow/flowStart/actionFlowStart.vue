@@ -703,6 +703,9 @@ export default {
           };
           empInduction.getempInductionList(data).then((res) => {
             console.log("查询员工入职", res.data.content.list[0]);
+            if (res.data.content.list.length > 0) {
+              this.addformbase.onDate = res.data.content.list[0].onDate
+            }
           });
         } else if (
           this.watchReceiptType === "8" ||
