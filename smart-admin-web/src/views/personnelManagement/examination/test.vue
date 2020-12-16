@@ -112,7 +112,7 @@ export default {
         if (this.leaveTimeSecond !== 0) {
           this.leaveTimeSecond--;
         }
-        if (this.leaveTimeSecond < 10 && this.leaveTimeMin !== 0 && this.leaveTimeSecond !== 0) {
+        if (this.leaveTimeSecond < 10) {
           this.leaveTimeSecond = '0' + this.leaveTimeSecond;
         }
         if (Number(this.leaveTimeSecond) === 0 && this.leaveTimeMin !== 0) {
