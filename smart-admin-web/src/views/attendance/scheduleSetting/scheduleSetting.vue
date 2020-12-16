@@ -1,58 +1,71 @@
 <template>
-    <div class="maincontent">
-<div class="leftTree">
-     <div class="leftTitle">组织架构图</div>
-            <organizationTree @chooseTreeData="getTreeData" />
-        </div>
-    <div class="rightRecord">
-        <div class="rightTop">
-                <Button @click="refresh" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
-               <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.yhm')}}</span>
-                   <span>
-                        <Input :placeholder="$t('kqgl.yhm')" type="text" v-model="searchform.createPersonName"/>
-                   </span>
-               </div>
-                <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.xuanzexiugaidebanc')}}</span>
-                   <span>
-                        <Select :value ="model1" @on-select="handleSelectShift" style="width: 200px">
-                            <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.shiftName }}</Option>
-                        </Select>
-                   </span>
-               </div>
-                <div class="rightTopItem">
-                   <span class="rightTopItemTitle">{{$t('kqgl.xzpbrq')}}</span>
-                   <span>
-                    <DatePicker type="month" :value="month" placeholder="Select month" style="width: 200px" @on-change="getMonth"/>
-
-                   </span>
-               </div>
-               <div class="rightTopItem">
-                   <Button type="primary" @click.native="getListData">{{$t('Search')}}</Button>
-               </div>
-        </div>
-            <Card class="warp-card" dis-hover>
-                  <Tables
-                    :columns="columns"
-                    :current="searchform.pageNum"
-                    :loading="loading"
-                    :page-size="searchform.pageSize"
-                    :editable="true"
-                    :pageShow="true"
-                    :total="pageTotal"
-                    :value="data"
-                    @on-change="changePage"
-                    @on-selection-change="myselected"
-                    show-elevator
-                    border
-                    @on-save-selectData='editData'
-                    @on-cell-click="onCellClick"
-                  ></Tables>
-            </Card>
-        </div>
-        </div>
+  <div class="maincontent">
+    <div class="leftTree">
+      <div class="leftTitle">组织架构图</div>
+      <organizationTree @chooseTreeData="getTreeData" />
     </div>
+    <div class="rightRecord">
+      <div class="rightTop">
+        <Button @click="refresh"
+                icon="md-refresh"
+                type="default"
+                style="margin-right:15px;">{{ $t('Reflash') }}</Button>
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{$t('kqgl.yhm')}}</span>
+          <span>
+            <Input :placeholder="$t('kqgl.yhm')"
+                   type="text"
+                   v-model="searchform.createPersonName" />
+          </span>
+        </div>
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{$t('kqgl.xuanzexiugaidebanc')}}</span>
+          <span>
+            <Select :value="model1"
+                    @on-select="handleSelectShift"
+                    style="width: 200px">
+              <Option v-for="item in selectData"
+                      :value="item.id"
+                      :key="item.id">{{ item.shiftName }}</Option>
+            </Select>
+          </span>
+        </div>
+        <div class="rightTopItem">
+          <span class="rightTopItemTitle">{{$t('kqgl.xzpbrq')}}</span>
+          <span>
+            <DatePicker type="month"
+                        :value="month"
+                        placeholder="Select month"
+                        style="width: 200px"
+                        @on-change="getMonth" />
+
+          </span>
+        </div>
+        <div class="rightTopItem">
+          <Button type="primary"
+                  @click.native="getListData">{{$t('Search')}}</Button>
+        </div>
+      </div>
+      <Card class="warp-card"
+            dis-hover>
+        <Tables :columns="columns"
+                :current="searchform.pageNum"
+                :loading="loading"
+                :page-size="searchform.pageSize"
+                :editable="true"
+                :pageShow="true"
+                :total="pageTotal"
+                :value="data"
+                @on-change="changePage"
+                @on-selection-change="myselected"
+                show-elevator
+                border
+                @on-save-selectData='editData'
+                @on-cell-click="onCellClick"></Tables>
+      </Card>
+    </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -399,6 +412,11 @@ export default {
       this.columns = columnsArr;
     },
     async getListData () {
+      // console.log(333333333, this.$store.state.user.userLoginInfo.organizationOa);
+      if (!this.searchform.organizationId) {
+        this.searchform.organizationId = 3;
+      }
+
       console.log('this.searchform', this.searchform);
       this.moreEditData = [];
       let date = new Date();
@@ -414,9 +432,17 @@ export default {
         this.loading = true;
         let result = await attendance.findScheduling(this.searchform);
         this.loading = false;
-        // console.log(result);
-        this.data = this.switchData(result.data.data.list);
-        this.pageTotal = result.data.data.total;
+
+        console.log(1111111111, result);
+
+        if (result.ret === 200) {
+          this.data = this.switchData(result.data.data.list);
+          this.pageTotal = result.data.data.total;
+        } else {
+          this.data = [];
+          this.pageTotal = 0;
+        }
+
         // console.log(this.data);
       } catch (e) {
         // TODO zhuoda sentry
@@ -425,7 +451,7 @@ export default {
       }
     },
     getTreeData (val) {
-      console.log(val);
+      console.log(333333333, val);
       this.searchform.organizationId = val.id;
       this.getListData();
     },

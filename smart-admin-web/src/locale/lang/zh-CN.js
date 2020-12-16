@@ -832,7 +832,7 @@ export default {
   test: '考试',
   testTask: '考试任务',
   releaseTest: '发布考试',
-  addTrainingTask: '添加培训任务',
+  addTrainingTask: '添加考试类型',
   topicClassification: '题目分类',
   topicName: '题目名称',
   topicOptions: '题目选项',
