@@ -5,6 +5,7 @@ import { personnelRelations } from './empInduction';
 import { traning } from './traning';
 import { examination } from './examination';
 import { personnelAnalysis } from './personnelAnalysis';
+import { personnelProfile } from './personnelProfile';
 // import { employeeFile } from './employeeFile';
 // 业务
 export const personnelManagement = [
@@ -22,7 +23,8 @@ export const personnelManagement = [
       ...personnelRelations,
       ...traning,
       ...examination,
-      ...personnelAnalysis
+      ...personnelAnalysis,
+      ...personnelProfile
       // ...employeeFile
     ]
   }
