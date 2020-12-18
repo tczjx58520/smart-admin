@@ -10,23 +10,23 @@
                 <div>{{$t('BaseData')}}</div>
                 </div>
                 <Divider />
-                <Form ref="form" :model="addformbase" label-position="right" :label-width="100" :rules="ruleValidate">
-                  <FormItem :label="$t('assessmentTask_view.taskName')" prop="title">
+                <Form ref="form" :model="addformbase" label-position="right" :label-width="120" :rules="ruleValidate">
+                  <FormItem :label="$t('gwkhrwbt')" prop="title">
                         <Input v-model="addformbase.title"></Input>
                   </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.examiner')" prop="empList">
-                      <Input v-model="addformbase.testHandleNames" readonly @click.native="showemp_exa" style="width: 100%"></Input>
-                  </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.assessee')" prop="empList2">
-                      <Input v-model="addformbase.empNames" readonly @click.native="showemp_ass" style="width: 100%"></Input>
-                  </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.viewer')" prop="empList3">
-                      <Input v-model="addformbase.checkPersonNames" readonly @click.native="showemp_viewer" style="width: 100%"></Input>
-                  </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.assessmentIndicatorSet')" prop="assessmentCollectId">
-                      <Select v-model="addformbase.assessmentCollectId" style="width:100%">
+                  <FormItem :label="$t('assessmentTask_view.assessmentIndicatorSet')" prop="postCollectId">
+                      <Select v-model="addformbase.postCollectId" style="width:100%">
                         <Option v-for="item in originList" :value="item.id" v-bind:key="item.id">{{ item.name }}</Option>
                       </Select>
+                  </FormItem>
+                  <FormItem :label="$t('assessmentTask_view.examiner')" prop="empList">
+                      <Input type="textarea" v-model="addformbase.testHandleNames" readonly @click.native="showemp_exa" style="width: 100%"></Input>
+                  </FormItem>
+                  <FormItem :label="$t('assessmentTask_view.assessee')" prop="empList2">
+                      <Input type="textarea" v-model="addformbase.empNames" readonly @click.native="showemp_ass" style="width: 100%"></Input>
+                  </FormItem>
+                  <FormItem :label="$t('assessmentTask_view.viewer')" prop="empList3">
+                      <Input type="textarea" v-model="addformbase.checkPersonNames" readonly @click.native="showemp_viewer" style="width: 100%"></Input>
                   </FormItem>
                   <FormItem :label="$t('assessmentTask_view.effectiveDate')" prop="effectiveTime">
                     <DatePicker v-model="addformbase.effectiveTime" type="date" format="yyyy-MM-dd" placeholder="Select date" style="width: 100%" @on-change="getmytime"></DatePicker>
@@ -51,11 +51,12 @@
 </template>
 <script>
 import $ from 'jquery';
-import { indicatorSetApi } from '@/api/indicatorSet';
+import { personnelAnalysis } from '@/api/personnelAnalysis';
 import { assessmentTaskApi } from '@/api/assessmentTask';
 import addemp from '../addemp_more/modal';
+import { utils } from "@/lib/util";
 export default {
-  name: 'editGong',
+  name: 'addGong',
   components: {
     addemp
   },
@@ -95,7 +96,7 @@ export default {
       }
     };
     const validatePass5 = (rule, value, callback) => {
-      if (this.addformbase.assessmentCollectId === '' || this.addformbase.assessmentCollectId === null || this.addformbase.assessmentCollectId === undefined) {
+      if (this.addformbase.postCollectId === '' || this.addformbase.postCollectId === null || this.addformbase.postCollectId === undefined) {
         callback(new Error('Please enter your emp'));
       } else {
         callback();
@@ -149,7 +150,7 @@ export default {
         deadTime: [
           { required: true, validator: validatePass6, trigger: 'blur' }
         ],
-        assessmentCollectId: [
+        postCollectId: [
           { required: true, validator: validatePass7, trigger: 'blur' }
         ]
       },
@@ -161,29 +162,21 @@ export default {
     modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
-        this.addformbase = this.editinfo;
-        console.log('this.addformbase=================?', this.addformbase);
-        this.addformbase.testHandleNames = this.addformbase.testName;
-        this.addformbase.empNames = this.addformbase.empName;
-        this.addformbase.checkPersonNames = this.addformbase.checkPersonName;
-        this.addformbase.effectiveTime = this.addformbase.effectiveDate;
-        this.addformbase.deadTime = this.addformbase.deadDate;
-        // 去除字符串前后逗号
-        if (this.addformbase.testHandle.substr(0, 1) === ',') {
-          this.addformbase.testHandle = this.addformbase.testHandle.substr(1);
+        this.addformbase = Object.assign({},this.editinfo)
+        console.log(this.addformbase);
+        const date = new Date(this.addformbase.effectiveDate)
+        const date1 = new Date(this.addformbase.deadDate)
+        this.addformbase.effectiveTime = utils.getDate(date,'YMDHMS')
+        this.addformbase.deadTime = utils.getDate(date1,'YMDHMS')
+        this.addformbase.effectiveDate = this.addformbase.effectiveTime
+        this.addformbase.deadDate = this.addformbase.deadTime
+        if (this.addformbase.checkPerson) {
+          this.addformbase.checkPerson = this.addformbase.checkPerson.substring(1)
         }
-        if (this.addformbase.checkPerson.substr(0, 1) === ',') {
-          this.addformbase.checkPerson = this.addformbase.checkPerson.substr(1);
+        if (this.addformbase.testHandle) {
+          this.addformbase.testHandle = this.addformbase.testHandle.substring(1)
         }
-        if (this.addformbase.empIds.substr(0, 1) === ',') {
-          this.addformbase.empIds = this.addformbase.empIds.substr(1);
-        }
-        this.addformbase.testHandle = (this.addformbase.testHandle.substring(this.addformbase.testHandle.length - 1) === ',') ? this.addformbase.testHandle.substring(0, this.addformbase.testHandle.length - 1) : this.addformbase.testHandle;
-        this.addformbase.checkPerson = (this.addformbase.checkPerson.substring(this.addformbase.checkPerson.length - 1) === ',') ? this.addformbase.checkPerson.substring(0, this.addformbase.checkPerson.length - 1) : this.addformbase.checkPerson;
-        this.addformbase.empIds = (this.addformbase.empIds.substring(this.addformbase.empIds.length - 1) === ',') ? this.addformbase.empIds.substring(0, this.addformbase.empIds.length - 1) : this.addformbase.empIds;
-        console.log('this.addformbase=================2222', this.addformbase);
-
-        // this.gettoday();
+        console.log(this.addformbase);
       }
     }
   },
@@ -193,7 +186,7 @@ export default {
       data.pageNum = 1;
       data.pageSize = 10;
       let result = null;
-      await indicatorSetApi.queryIndicator(data).then(res => {
+      await personnelAnalysis.getpostTaskSet(data).then(res => {
         result = res.data.content.list;
       });
       this.originList = result.map(item => {
@@ -272,12 +265,6 @@ export default {
     // 选择部门或者成员
     selectDepartmentOrEmployee (department) {
       console.log('department==============>', department);
-      // this.addformbase.organizationOaName = department.name;
-      // this.addformbase.organizationOa = department.id;
-      // this.$set(this.formdata, 'organizeParent', department.id);
-      // this.$set(this.formdata, 'organizeParent', department.name);
-      // this.isShowTree = false;
-      // $('.department-wrap').hide();
     },
     cancel () {
       this.reset();
@@ -292,12 +279,11 @@ export default {
     handsave () {
       this.modal_loading = true;
       console.log(this.addformbase);
-      this.addformbase.taskId = this.addformbase.id;
       this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
       console.log(this.addformbase);
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          assessmentTaskApi.updateassessmentTask(this.addformbase).then(res => {
+          personnelAnalysis.updatepostTask(this.addformbase).then(res => {
             if (res.ret === 200) {
               this.modal_loading = false;
               this.$emit('updateStat', false);

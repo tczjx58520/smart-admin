@@ -48,6 +48,8 @@
     </div>
     <!-- 添加任务 -->
     <addGong :modalstat = "visiable" @updateStat = "updateStat"></addGong>
+    <editGong :modalstat = "visiable_edit" :editinfo="editinfo" @updateStat = "updateStat_edit"></editGong>
+    <handler-test :modalstat="visiable_test" :editInfo="editinfo" @updateStat="updateStat_test"/>
   </div>
 </template>
 <script>
@@ -56,15 +58,21 @@ import { personnelAnalysis } from "@/api/personnelAnalysis";
 import { positionApi } from "@/api/position";
 import addemp from './components/addemp/modal';
 import addGong from './components/addmodalGong/modal';
+import editGong from './components/editmodalGong/modal';
+import { utils } from '@/lib/util';
+import HandlerTest from './components/handlerTest.vue';
 // import newModal from './components/editmodalGong/modal';
 export default {
   name: "staffPositionAnalysis",
   components: {
       addemp,
-      addGong
+      addGong,
+      editGong,
+      HandlerTest
   },
   data() {
     return {
+      visiable_test: false,
       postData: [],
       id: "",
       editinfo: {},
@@ -96,33 +104,73 @@ export default {
           align: "center",
         },
         {
-          title: this.$t("xm"),
-          key: "employeeName",
+          title: this.$t("khrwbt"),
+          key: "title",
         },
         {
-          title: this.$t("ssgw"),
-          key: "postName",
+          title: this.$t("khr"),
+          key: "testHandleNames",
         },
         {
-          title: this.$t("ssjb"),
-          key: "postName",
+          title: this.$t("khzbj"),
+          key: "postCollectName",
         },
         {
-          title: this.$t("bykhjg"),
-          key: "organizeName",
+          title: this.$t("sxrq"),
+          key: "effectiveDate",
+          render: (h, params) => {
+            let date = '';
+            if (params.row.effectiveDate) {
+              const temp = new Date(params.row.effectiveDate);
+              date = utils.getDate(temp, 'YMDHM');
+            }
+            return h('div', [
+              h(
+                'span',
+                {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }
+                },
+                params.row.effectiveDate ? date : '无'
+              )
+            ]);
+          }
         },
         {
-          title: this.$t("sykhjg"),
-          key: "organizeName",
+          title: this.$t("jzrq"),
+          key: "deadDate",
+          render: (h, params) => {
+            let date = '';
+            if (params.row.deadDate) {
+              const temp = new Date(params.row.deadDate);
+              date = utils.getDate(temp, 'YMDHM');
+            }
+            return h('div', [
+              h(
+                'span',
+                {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }
+                },
+                params.row.deadDate ? date : '无'
+              )
+            ]);
+          }
         },
-        {
-          title: this.$t("pjz"),
-          key: "organizeName",
-        },
-        {
-          title: this.$t("jy"),
-          key: "onDate",
-        },
+        // {
+        //   title: this.$t("brkhzt"),
+        //   key: "organizeName",
+        // },
         {
           title: this.$t("action"),
           key: "action",
@@ -140,13 +188,43 @@ export default {
                   style: {
                     marginRight: "5px",
                   },
+                  directives: [
+                    {
+                      name: "privilege",
+                      value: ["1-4-2"],
+                    },
+                  ],
                   on: {
                     click: () => {
                       this.haveAcontract(params.row);
                     },
                   },
                 },
-                this.$t("qsht")
+                this.$t("khzk")
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "error",
+                    size: "small",
+                  },
+                  style: {
+                    marginRight: "5px",
+                  },
+                  directives: [
+                    {
+                      name: "privilege",
+                      value: ["1-4-2"],
+                    },
+                  ],
+                  on: {
+                    click: () => {
+                      this.EditRow(params.row);
+                    },
+                  },
+                },
+                this.$t("Edit")
               ),
               h(
                 "Button",
@@ -167,7 +245,7 @@ export default {
                     },
                   },
                 },
-                this.$t("ryzhuanzheng")
+                this.$t("ljzz")
               ),
             ]);
           },
@@ -194,15 +272,15 @@ export default {
   destroyed() {},
   activated() {},
   methods: {
+    updateStat_test(stat) {
+      this.visiable_test = stat
+    },
     addGong() {
         this.visiable = true
-        console.log(123);
     },
     haveAcontract(row) {
-      this.$router.push({
-        path: "/processDo/flowStart",
-        query: { id: row.id },
-      });
+      this.editinfo = row
+      this.visiable_test = true
     },
     getlist() {
       const searchFrom = {
@@ -253,16 +331,8 @@ export default {
       this.loading = true;
       personnelAnalysis.querypostTaskList(this.searchform).then((res) => {
         this.loading = false;
-        console.log("获取结果=================", res.ret);
-        if (res.ret === 100) {
-          this.$Notice.warning({
-            title: "Warning",
-            desc: "请创建人员流动规则",
-          });
-        } else {
-          this.indicatorlist = res.data.content.list;
-          this.pageTotal = res.data.content.totalCount;
-        }
+        this.indicatorlist = res.data.content.list;
+        this.pageTotal = res.data.content.totalCount;
       });
     },
     rowClick(data, index) {
@@ -274,9 +344,19 @@ export default {
       this.visiable_edit = true;
       this.editinfo = row;
     },
+    EditRow(row) {
+      this.visiable_edit = true;
+      this.editinfo = row;
+    },
     delSingle(row) {
-      console.log(row);
-      this.$router.push({ path: "/processDo/flowStart" });
+      const data = {
+        id: row.id,
+        operatId: this.$store.state.user.userLoginInfo.userId
+      }
+      personnelAnalysis.endingTask(data).then(res => {
+        console.log(res);
+        this.getpersonnelAnalysis();
+      })
     },
     newtask(row) {
       this.visiable3 = true;

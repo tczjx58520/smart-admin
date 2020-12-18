@@ -72,7 +72,6 @@ export default {
       if (this.mymoadlStat) {
         this.addformbase = this.editinfo;
         console.log('this.addformbase=================?', this.addformbase);
-        // this.gettoday();
         this.getscore();
       }
     }

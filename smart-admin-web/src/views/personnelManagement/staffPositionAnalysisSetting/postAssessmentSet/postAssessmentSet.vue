@@ -49,6 +49,7 @@ import { personnelAnalysis } from '@/api/personnelAnalysis';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
 import newModal from './components/editmodalGong/modal';
+import { utils } from '@/lib/util';
 export default {
   name: 'indicatorSet',
   components: {
@@ -95,23 +96,7 @@ export default {
         },
         {
           title: this.$t('role_view.description'),
-          key: 'content',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-                style: {
-                  display: 'inline-block',
-                  width: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
-                },
-                domProps: {
-                  title: params.row.content
-                }
-              }, params.row.content)
-            ]);
-          }
+          key: 'postName',
         },
         {
           title: this.$t('CreatePerson'),
@@ -119,7 +104,12 @@ export default {
         },
         {
           title: this.$t('CreateTime'),
-          key: 'createDate'
+          key: 'createDate',
+          render: (h,params) => {
+            const date = new Date(Number(params.row.createDate))
+            const mydate = utils.getDate(date, 'YMDHM');
+            return h ('span',mydate)
+          }
         },
         {
           title: this.$t('action'),
@@ -128,20 +118,6 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.newtask(params.row);
-                  }
-                }
-              }, this.$t('indicatorSet_view.initiateAssessment')),
               h('Button', {
                 props: {
                   type: 'info',
@@ -270,7 +246,7 @@ export default {
         let data = {};
         data.collectId = id;
         data.operatId = this.$store.state.user.userLoginInfo.userId;
-        indicatorSetApi.delIndicator(data).then(res => {
+        personnelAnalysis.delpostTaskSet(data).then(res => {
           if (res.ret === 200) {
             console.log(res.msg);
             this.$Message['success']({

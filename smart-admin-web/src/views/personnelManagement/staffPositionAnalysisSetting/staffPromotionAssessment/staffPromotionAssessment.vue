@@ -36,6 +36,7 @@
             style="margin: 24px 0; text-align: right"
           ></Page>
         </Card>
+        <handler-test :modalstat="visiable_test" :editInfo="editInfo" @updateStat="updateStat_test"/>
       </div>
     </div>
   </div>
@@ -44,16 +45,21 @@
 import { roleApi } from "@/api/role";
 import { personnelAnalysis } from "@/api/personnelAnalysis";
 import { positionApi } from "@/api/position";
+import { utils } from '@/lib/util';
+import HandlerTest from './components/handlerTest.vue';
 // import newModal from './components/editmodalGong/modal';
 export default {
   name: "staffPositionAnalysis",
-  components: {},
+  components: {
+    HandlerTest
+  },
   data() {
     return {
+      visiable_test: false,
       postData: [],
       id: "",
       copyfile: null,
-      editinfo: {},
+      editInfo: {},
       visiable: false,
       visiable_edit: false,
       pageTotal: 0,
@@ -82,32 +88,72 @@ export default {
           align: "center",
         },
         {
-          title: this.$t("khrwmc"),
-          key: "employeeName",
+          title: this.$t("khrwbt"),
+          key: "title",
         },
         {
-          title: this.$t("ssgw"),
-          key: "postName",
+          title: this.$t("khr"),
+          key: "testHandleNames",
         },
         {
-          title: this.$t("ssjb"),
-          key: "postName",
+          title: this.$t("khzbj"),
+          key: "postCollectName",
         },
         {
-          title: this.$t("bykhjg"),
+          title: this.$t("sxrq"),
+          key: "effectiveDate",
+          render: (h, params) => {
+            let date = '';
+            if (params.row.effectiveDate) {
+              const temp = new Date(params.row.effectiveDate);
+              date = utils.getDate(temp, 'YMDHM');
+            }
+            return h('div', [
+              h(
+                'span',
+                {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }
+                },
+                params.row.effectiveDate ? date : '无'
+              )
+            ]);
+          }
+        },
+        {
+          title: this.$t("jzrq"),
+          key: "deadDate",
+          render: (h, params) => {
+            let date = '';
+            if (params.row.deadDate) {
+              const temp = new Date(params.row.deadDate);
+              date = utils.getDate(temp, 'YMDHM');
+            }
+            return h('div', [
+              h(
+                'span',
+                {
+                  style: {
+                    display: 'inline-block',
+                    width: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }
+                },
+                params.row.deadDate ? date : '无'
+              )
+            ]);
+          }
+        },
+        {
+          title: this.$t("brkhzt"),
           key: "organizeName",
-        },
-        {
-          title: this.$t("sykhjg"),
-          key: "organizeName",
-        },
-        {
-          title: this.$t("pjz"),
-          key: "organizeName",
-        },
-        {
-          title: this.$t("jy"),
-          key: "onDate",
         },
         {
           title: this.$t("action"),
@@ -126,21 +172,6 @@ export default {
                   style: {
                     marginRight: "5px",
                   },
-                  on: {
-                    click: () => {
-                      this.haveAcontract(params.row);
-                    },
-                  },
-                },
-                this.$t("qsht")
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "error",
-                    size: "small",
-                  },
                   directives: [
                     {
                       name: "privilege",
@@ -149,11 +180,11 @@ export default {
                   ],
                   on: {
                     click: () => {
-                      this.delSingle(params.row);
+                      this.hanlderTest(params.row);
                     },
                   },
                 },
-                this.$t("ryzhuanzheng")
+                this.$t("sdkh")
               ),
             ]);
           },
@@ -180,6 +211,9 @@ export default {
   destroyed() {},
   activated() {},
   methods: {
+    updateStat_test(stat, value) {
+      this.visiable_test = stat
+    },
     haveAcontract(row) {
       this.$router.push({
         path: "/processDo/flowStart",
@@ -233,7 +267,7 @@ export default {
     },
     getpersonnelAnalysis() {
       this.loading = true;
-      personnelAnalysis.queryPostAnalysis(this.searchform).then((res) => {
+      personnelAnalysis.querypostTaskList(this.searchform).then((res) => {
         this.loading = false;
         console.log("获取结果=================", res.ret);
         if (res.ret === 100) {
@@ -253,7 +287,7 @@ export default {
     Edit(row) {
       console.log(row);
       this.visiable_edit = true;
-      this.editinfo = row;
+      this.editInfo = row;
     },
     delSingle(row) {
       console.log(row);
@@ -313,6 +347,10 @@ export default {
     open() {
       console.log("open");
     },
+    hanlderTest(row) {
+      this.editInfo = row
+      this.visiable_test = true
+    }
   },
 };
 </script>

@@ -1,52 +1,140 @@
 <template>
   <div>
-        <Modal v-model="mymoadlStat" class="add" width="1024" :closable="false" :mask-closable="false" :transfer="false" fullscreen>
-          <div slot="header" style="text-align:left;color:#fff;">
-              <span>{{ $t('role_view.addrole') }}</span>
+    <Modal
+      v-model="mymoadlStat"
+      class="add"
+      width="1024"
+      :closable="false"
+      :mask-closable="false"
+      :transfer="false"
+      fullscreen
+    >
+      <div slot="header" style="text-align: left; color: #fff">
+        <span>修改指标集</span>
+      </div>
+      <div>
+        <Card dis-hover>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid #e1e1e1;
+              padding-bottom: 20px;
+            "
+          >
+            <div
+              style="
+                width: 4px;
+                height: 20px;
+                background: #2d8cf0;
+                margin-right: 15px;
+              "
+            ></div>
+            <div>{{ $t("BaseData") }}</div>
           </div>
-          <div>
-              <Card dis-hover>
-                  <div style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;">
-                  <div style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"></div>
-                  <div>{{$t('BaseData')}}</div>
-                  </div>
-                  <Divider />
-                  <Form ref="form" :model="addformbase" label-position="right" :label-width="150" :rules="ruleValidate">
-                      <FormItem :label="$t('indicatorSet_view.metricSetName')" prop="name">
-                          <Input v-model="addformbase.name"></Input>
-                      </FormItem>
-                      <FormItem :label="$t('indicatorSet_view.indicatorSetContent')" prop="content">
-                          <Input v-model="addformbase.content" type="textarea"></Input>
-                      </FormItem>
-                      <FormItem :label="$t('kezbjlx')" prop="collectType">
-                          <Select v-model="addformbase.collectType">
-                            <Option :value="1">{{ $t('ry') }}</Option>
-                            <Option :value="2">{{ $t('md') }}</Option>
-                            <Option :value="3">{{ $t('gw') }}</Option>
-                          </Select>
-                      </FormItem>
-                      <FormItem :label="$t('mdjb')" prop="repositoryLevelId" >
-                          <Select v-model="addformbase.repositoryLevelId" filterable>
-                            <Option v-for="item in levelList" :value="item.id" :key="item.id">{{ item.levelName }}</Option>
-                          </Select>
-                      </FormItem>
-                  </Form>
-                  <div style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;">
-                  <div style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"></div>
-                  <div>{{$t('indicatorSet_view.assessmentIndexItems')}}</div>
-                  </div>
-                  <div style="margin:20px 0;">
-                    <Button style="margin-right:15px;" @click="additem" icon="md-add" type="info">{{ $t('Create') }}</Button>
-                  </div>
-                  <Tables border ref="selection" :maxheight="300" :columns="mycolumns" :value="mydataList" editable></Tables>
-              </Card>
+          <Divider />
+          <Form
+            ref="form"
+            :model="addformbase"
+            label-position="right"
+            :label-width="150"
+            :rules="ruleValidate"
+          >
+            <FormItem
+              :label="$t('indicatorSet_view.metricSetName')"
+              prop="name"
+            >
+              <Input v-model="addformbase.name"></Input>
+            </FormItem>
+            <FormItem
+              :label="$t('indicatorSet_view.metricSetName')"
+              prop="name"
+            >
+              <Select
+                v-model="addformbase.postId"
+                size="large"
+                filterable
+                :transfer="true"
+                @on-change="selectPost()"
+              >
+                <Option
+                  v-for="item in postData"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.postName }}</Option
+                >
+              </Select>
+            </FormItem>
+            <FormItem
+              :label="$t('indicatorSet_view.metricSetName')"
+              prop="name"
+            >
+              <Select
+                v-model="addformbase.levelId"
+                size="large"
+                filterable
+                :transfer="true"
+              >
+                <Option
+                  v-for="item in levelList"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.levelName }}</Option
+                >
+              </Select>
+            </FormItem>
+          </Form>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid #e1e1e1;
+              padding-bottom: 20px;
+            "
+          >
+            <div
+              style="
+                width: 4px;
+                height: 20px;
+                background: #2d8cf0;
+                margin-right: 15px;
+              "
+            ></div>
+            <div>{{ $t("indicatorSet_view.assessmentIndexItems") }}</div>
           </div>
-          <div slot="footer">
-              <ButtonGroup>
-                  <Button type="primary" size="large" :loading="modal_loading" @click="handsave">{{ $t('Save') }}</Button>
-                  <Button type="error" size="large"  @click="cancel">{{ $t('Close') }}</Button>
-              </ButtonGroup>
+          <div style="margin: 20px 0">
+            <Button
+              style="margin-right: 15px"
+              @click="additem"
+              icon="md-add"
+              type="info"
+              >{{ $t("Create") }}</Button
+            >
           </div>
+          <Tables
+            border
+            ref="selection"
+            :maxheight="300"
+            :columns="mycolumns"
+            :value="mydataList"
+            editable
+          ></Tables>
+        </Card>
+      </div>
+      <div slot="footer">
+        <ButtonGroup>
+          <Button
+            type="primary"
+            size="large"
+            :loading="modal_loading"
+            @click="handsave"
+            >{{ $t("Save") }}</Button
+          >
+          <Button type="error" size="large" @click="cancel">{{
+            $t("Close")
+          }}</Button>
+        </ButtonGroup>
+      </div>
     </Modal>
     <addIndicatorSingleModal
       :modalstat="indicator_dialog"
@@ -57,201 +145,189 @@
   </div>
 </template>
 <script>
-import { indicatorSetApi } from '@/api/indicatorSet';
-import { SalesRoomlevel } from '@/api/salesroomLevel';
-import addIndicatorSingleModal from '../add-indicatorSingle-modal/add-indicatorSingle-modal';
-import Tables from '@/components/tables';
-import RoleTree from '../role-tree/role-tree';
-import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
-import { indicatorSingle } from '@/api/indicatorSingle';
+import addIndicatorSingleModal from "../add-indicatorSingle-modal/add-indicatorSingle-modal";
+import Tables from "@/components/tables";
+import RoleTree from "../role-tree/role-tree";
+import DepartmentEmployeeTree from "../department-employee-tree/department-employee-tree";
+import { personnelAnalysis } from "@/api/personnelAnalysis";
+import { positionApi } from "@/api/position";
 export default {
-  name: 'addModal',
+  name: "addModal",
   components: {
     DepartmentEmployeeTree,
     Tables,
-    addIndicatorSingleModal
+    addIndicatorSingleModal,
   },
   props: {
     modalstat: {
       type: Boolean,
-      default: false
+      default: false,
     },
     editinfo: null,
-    itemList: null
+    itemList: null,
   },
-  created () {
+  created() {
     //
   },
-  data () {
+  data() {
     const validatePass1 = (rule, value, callback) => {
-      if (this.addformbase.collectType === '' || this.addformbase.collectType === null || this.addformbase.collectType === undefined) {
-        callback(new Error('Please enter your emp'));
+      if (
+        this.addformbase.collectType === "" ||
+        this.addformbase.collectType === null ||
+        this.addformbase.collectType === undefined
+      ) {
+        callback(new Error("Please enter your emp"));
       } else {
         callback();
       }
     };
     const validatePass2 = (rule, value, callback) => {
-      if (this.addformbase.repositoryLevelId === '' || this.addformbase.repositoryLevelId === null || this.addformbase.repositoryLevelId === undefined) {
-        callback(new Error('Please enter your emp'));
+      if (
+        this.addformbase.repositoryLevelId === "" ||
+        this.addformbase.repositoryLevelId === null ||
+        this.addformbase.repositoryLevelId === undefined
+      ) {
+        callback(new Error("Please enter your emp"));
       } else {
         callback();
       }
     };
     return {
+      postData: [],
       modal_loading: false,
       mymoadlStat: this.modalstat,
-      addformbase: {
-      },
+      addformbase: {},
       ruleValidate: {
         name: [
-          { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+          {
+            required: true,
+            message: "The name cannot be empty",
+            trigger: "blur",
+          },
         ],
         content: [
-          { required: true, message: 'The content cannot be empty', trigger: 'blur' }
+          {
+            required: true,
+            message: "The content cannot be empty",
+            trigger: "blur",
+          },
         ],
         collectType: [
-          { required: true, validator: validatePass1, trigger: 'blur' }
+          { required: true, validator: validatePass1, trigger: "blur" },
         ],
         repositoryLevelId: [
-          { required: true, validator: validatePass2, trigger: 'blur' }
-        ]
+          { required: true, validator: validatePass2, trigger: "blur" },
+        ],
       },
       mycolumns: [
         {
-          type: 'index',
+          type: "index",
           width: 50,
-          align: 'center'
+          align: "center",
         },
         {
-          title: this.$t('khxm'),
-          key: 'nameId',
+          title: this.$t("khxm"),
+          key: "nameId",
           render: (h, params) => {
             console.log(this.itemList);
-            let str = '';
-            const temp = this.itemList.filter(item => {
+            let str = "";
+            const temp = this.itemList.filter((item) => {
               return item.id === params.row.nameId;
             });
             str = temp[0].itemName;
-            return h('span', str);
-          }
+            return h("span", str);
+          },
         },
         {
-          title: this.$t('zblx'),
-          key: 'itemType',
-          render: (h, params) => {
-            const list = [
-              { value: 1, label: this.$t('lhzb') },
-              { value: 2, label: this.$t('xwjzzb') }
-            ];
-            const temp = list.filter(item => {
-              return item.value === params.row.itemType;
-            });
-            const str = temp[0].label;
-            return h('span', str);
-          }
+          title: this.$t("mbz"),
+          key: "standardValue",
           // width: 100
         },
         {
-          title: this.$t('mbz'),
-          key: 'target'
+          title: this.$t("khbz"),
+          key: "desc1",
           // width: 100
         },
         {
-          title: this.$t('qz'),
-          key: 'weight'
-          // width: 100
-        },
-        {
-          title: this.$t('khbz'),
-          key: 'scoreDesc'
-          // width: 100
-        },
-        {
-          title: this.$t('jgzly'),
-          key: 'resultSource',
-          render: (h, params) => {
-            const list = [
-              { value: 1, label: this.$t('bkhr') },
-              { value: 2, label: this.$t('zdry') },
-              { value: 3, label: this.$t('zdzz') }
-            ];
-            const temp = list.filter(item => {
-              return item.value === params.row.resultSource;
-            });
-            const str = temp[0].label;
-            return h('span', str);
-          }
-        },
-        {
-          title: this.$t('ryzz'),
-          render: (h, params) => {
-            let str = this.$t('bkhr');
-            if (params.row.resultSource !== 1) {
-              const temp = params.row.sourceName.map(item => {
-                return item;
-              }).join(',');
-              str = temp;
-            }
-            return h('span', str);
-          }
-        },
-        {
-          title: '操作',
-          key: 'action',
+          title: "操作",
+          key: "action",
           width: 100,
-          align: 'center',
-          className: 'action-hide',
+          align: "center",
+          className: "action-hide",
           render: (h, params) => {
             return this.$tableAction(h, [
               {
-                title: '修改',
+                title: "修改",
                 action: () => {
                   this.edit_indicator_flag = true;
                   this.indicator_info = params.row;
                   this.indicator_dialog = true;
-                }
+                },
               },
               {
-                title: '删除',
+                title: "删除",
                 action: () => {
                   this.$Modal.confirm({
-                    title: '友情提醒',
-                    content: '确定要删除吗？',
+                    title: "友情提醒",
+                    content: "确定要删除吗？",
                     onOk: () => {
-                      console.log('删除');
+                      console.log("删除");
                       this.mydataList.splice(params.index, 1);
-                    }
+                    },
                   });
-                }
-              }
+                },
+              },
             ]);
-          }
-        }
+          },
+        },
       ],
       mydataList: [],
       levelList: [],
       indicator_dialog: false,
       indicator_info: null,
       edit_indicator_flag: false,
-      indicatorlist: this.itemList
+      indicatorlist: this.itemList,
     };
   },
   watch: {
-    modalstat () {
+    modalstat() {
       this.mymoadlStat = this.modalstat;
       //
       if (this.mymoadlStat) {
-        this.getLevelList();
-        // this.getindicatorlist();
         this.indicatorlist = this.itemList;
         console.log(this.editinfo);
         this.addformbase = this._.cloneDeep(this.editinfo);
-        this.mydataList = this.addformbase.assessmentItemVos;
+        this.mydataList = this.addformbase.postItemVos;
+        this.getlist()
       }
-    }
+    },
   },
   methods: {
-    updateStat_indicator (stat, value) {
+    selectPost() {
+      this.$set(this.addformbase,'levelId',null)
+      const data = this.postData.filter((item) => {
+        return item.id === this.addformbase.postId;
+      });
+      this.levelList = data[0].levelVos;
+    },
+    getlist() {
+      const searchFrom = {
+        pageNum: 1,
+        pageSize: 9999,
+      };
+      positionApi.postList(searchFrom).then((res) => {
+        if (res.ret === 200) {
+          this.postData = res.data.content.list;
+          const data = this.postData.filter((item) => {
+            return item.id === this.addformbase['postId'];
+          });
+          this.levelList = data[0].levelVos;
+        } else {
+          console.log("列表出错");
+        }
+      });
+    },
+    updateStat_indicator(stat, value) {
       this.indicator_dialog = stat;
       if (value && this.edit_indicator_flag) {
         this.mydataList.splice(value._index, 1, value);
@@ -259,55 +335,55 @@ export default {
         this.mydataList.push(value);
       }
     },
-    getLevelList () {
+    getLevelList() {
       const searchform = {
         pageNum: 1,
-        pageSize: 9999
+        pageSize: 9999,
       };
-      SalesRoomlevel.getSalesRoomlevel(searchform).then(res => {
+      SalesRoomlevel.getSalesRoomlevel(searchform).then((res) => {
         console.log(res.data.content.list);
         this.levelList = res.data.content.list;
       });
     },
-    additem () {
+    additem() {
       this.indicator_dialog = true;
       this.edit_indicator_flag = false;
     },
-    cancel () {
-      this.$emit('updateStat', false);
+    cancel() {
+      this.$emit("updateStat", false);
     },
-    handsave () {
+    handsave() {
       this.modal_loading = true;
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.itemJson = JSON.stringify(this.mydataList);
           console.log(this.addformbase);
-          indicatorSetApi.updateIndicator(this.addformbase).then(res => {
-            this.$Message.success(this.$t('addSuccess'));
+          personnelAnalysis.updatePostTaskSet(this.addformbase).then((res) => {
+            this.$Message.success(this.$t("addSuccess"));
             this.modal_loading = false;
-            this.$emit('updateStat', false);
+            this.$emit("updateStat", false);
           });
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error("Fail!");
           this.modal_loading = false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
-     .add /deep/ .ivu-modal-header {
-        background-color: #2d8cf0;
-    }
-    .add /deep/ .ivu-modal-content {
-        background-color: #eee;
-    }
-    .add /deep/ .ivu-modal-footer {
-        border: none;
-    }
-    .ivu-tree-children {
+.add /deep/ .ivu-modal-header {
+  background-color: #2d8cf0;
+}
+.add /deep/ .ivu-modal-content {
+  background-color: #eee;
+}
+.add /deep/ .ivu-modal-footer {
+  border: none;
+}
+.ivu-tree-children {
   cursor: pointer;
   width: 100%;
 }

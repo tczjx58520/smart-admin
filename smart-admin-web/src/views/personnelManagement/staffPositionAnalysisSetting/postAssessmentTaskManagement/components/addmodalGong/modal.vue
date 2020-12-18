@@ -14,8 +14,8 @@
                   <FormItem :label="$t('gwkhrwbt')" prop="title">
                         <Input v-model="addformbase.title"></Input>
                   </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.assessmentIndicatorSet')" prop="assessmentCollectId">
-                      <Select v-model="addformbase.assessmentCollectId" style="width:100%">
+                  <FormItem :label="$t('assessmentTask_view.assessmentIndicatorSet')" prop="postCollectId">
+                      <Select v-model="addformbase.postCollectId" style="width:100%">
                         <Option v-for="item in originList" :value="item.id" v-bind:key="item.id">{{ item.name }}</Option>
                       </Select>
                   </FormItem>
@@ -94,7 +94,7 @@ export default {
       }
     };
     const validatePass5 = (rule, value, callback) => {
-      if (this.addformbase.assessmentCollectId === '' || this.addformbase.assessmentCollectId === null || this.addformbase.assessmentCollectId === undefined) {
+      if (this.addformbase.postCollectId === '' || this.addformbase.postCollectId === null || this.addformbase.postCollectId === undefined) {
         callback(new Error('Please enter your emp'));
       } else {
         callback();
@@ -148,7 +148,7 @@ export default {
         deadTime: [
           { required: true, validator: validatePass6, trigger: 'blur' }
         ],
-        assessmentCollectId: [
+        postCollectId: [
           { required: true, validator: validatePass7, trigger: 'blur' }
         ]
       },
@@ -170,7 +170,7 @@ export default {
       data.pageNum = 1;
       data.pageSize = 10;
       let result = null;
-      await personnelAnalysis.querypostTaskList(data).then(res => {
+      await personnelAnalysis.getpostTaskSet(data).then(res => {
         result = res.data.content.list;
       });
       this.originList = result.map(item => {

@@ -79,7 +79,7 @@ export const personnelAnalysis = [
                             title: '岗位升降标准设置',
                             roles: ['1-8-4'],
                         },
-                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeStatusAnalysis')
+                        component: () => import('@/views/personnelManagement/staffPositionAnalysisSetting/standardSettingOfPostPromotion/standardSettingOfPostPromotion')
                     }
                 ]
             },

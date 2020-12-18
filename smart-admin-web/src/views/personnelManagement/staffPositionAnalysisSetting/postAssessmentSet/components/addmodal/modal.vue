@@ -145,8 +145,6 @@
   </div>
 </template>
 <script>
-import { indicatorSetApi } from "@/api/indicatorSet";
-import { SalesRoomlevel } from "@/api/salesroomLevel";
 import addIndicatorSingleModal from "../add-indicatorSingle-modal/add-indicatorSingle-modal";
 import Tables from "@/components/tables";
 import RoleTree from "../role-tree/role-tree";
@@ -244,12 +242,12 @@ export default {
         },
         {
           title: this.$t("mbz"),
-          key: "target",
+          key: "standardValue",
           // width: 100
         },
         {
           title: this.$t("khbz"),
-          key: "scoreDesc",
+          key: "desc1",
           // width: 100
         },
         {
@@ -357,8 +355,7 @@ export default {
         if (valid) {
           this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
           this.addformbase.itemJson = JSON.stringify(this.mydataList);
-          console.log(this.addformbase);
-          indicatorSetApi.addindicator(this.addformbase).then((res) => {
+          personnelAnalysis.addpostTaskSet(this.addformbase).then((res) => {
             this.$Message.success(this.$t("addSuccess"));
             this.modal_loading = false;
             this.addformbase = Object.assign({}, defaultForm);

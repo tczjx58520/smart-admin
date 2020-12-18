@@ -7,7 +7,7 @@
     :mask-closable="false"
   >
     <div slot="header" style="text-align: left; color: #fff">
-      <span>{{ $t("tjpmjgz") }}</span>
+      <span>{{ $t("tjzbx") }}</span>
     </div>
     <div>
       <Card dis-hover>
@@ -43,10 +43,10 @@
             </Select>
           </FormItem>
           <FormItem :label="$t('mbz')" style="width: 80%">
-            <Input v-model="addformbase.target"/>
+            <Input v-model="addformbase.standardValue"/>
           </FormItem>
           <FormItem :label="$t('ms')" style="width: 80%">
-            <Input type="textarea" v-model="addformbase.scoreDesc" />
+            <Input type="textarea" v-model="addformbase.desc1" />
           </FormItem>
         </Form>
       </Card>
@@ -84,10 +84,9 @@ import addemp from '../addemp_more/modal';
 import addorg from '../add_org/modal';
 import { personnelAnalysis } from '@/api/personnelAnalysis';
 const defaultForm = {
-  itemType: 1,
-  target: 0,
-  weight: 1,
-  resultSource: 1
+  nameId: null,
+  standardValue: 0,
+  desc1: '',
 };
 export default {
   name: 'add-team-modal',
