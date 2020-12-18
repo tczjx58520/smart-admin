@@ -190,7 +190,7 @@ export default {
           render: (h, params) => {
             let date = '';
             if (params.row.signDate) {
-              const temp = new Date(params.row.signDate / 1000);
+              const temp = new Date(params.row.signDate);
               date = utils.getDate(temp, 'YMDHM');
             }
             return h('div', [

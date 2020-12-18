@@ -12,7 +12,7 @@ const productionGzipExtensions = ['js', 'css'];
 // 如果您的应用程序部署在子路径中，则需要在这指定子路径
 // 例如：https://www.foobar.com/my-app/
 // 需要将它改为'/my-app/'
-const publicPath = process.env.NODE_ENV === 'production' ? '/dist/' : '/';
+const publicPath = process.env.NODE_ENV === 'production' ? '/nwowOa/' : '/';
 const lintOnSave = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -24,6 +24,7 @@ module.exports = {
   // https://www.foobar.com/my-app/
   // then change this to '/my-app/'
   publicPath,
+  outputDir: 'nwowOa',
   // tweak internal webpack configuration.
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   // 如果你不需要使用eslint，把lintOnSave设为false即可
