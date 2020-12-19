@@ -98,7 +98,7 @@ export const personnelAnalysis = [
                             title: '门店任务项管理',
                             roles: ['1-8-4'],
                         },
-                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeStatusAnalysis')
+                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeSetSingle/storeSetSingle')
                     },
                     {
                         path: '/personnelAnalysis/storeStatusAnalysisRelatedSettings/storeTaskSet',
@@ -107,7 +107,7 @@ export const personnelAnalysis = [
                             title: '门店任务集',
                             roles: ['1-8-4'],
                         },
-                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeStatusAnalysis')
+                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeSet/storeSet')
                     },
                     {
                         path: '/personnelAnalysis/storeStatusAnalysisRelatedSettings/storeTaskEntry',
@@ -116,7 +116,7 @@ export const personnelAnalysis = [
                             title: '门店任务量录入',
                             roles: ['1-8-4'],
                         },
-                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeStatusAnalysis')
+                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeSetSingle/storeSetSingle')
                     }
                 ]
             }

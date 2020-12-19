@@ -1,7 +1,32 @@
 <template>
   <div>
     <TabPane :label="$t('ygzt')" name="name3">
-      123
+      <Form
+        :model="showformBase"
+        label-position="left"
+        :label-width="100"
+        inline
+        style="padding: 24px"
+      >
+        <FormItem :label="$t('gongzuoxingzhi')" style="width: 48%">
+          <span>1835156789</span>
+        </FormItem>
+        <FormItem :label="$t('ruzhiriqi')" style="width: 48%">
+          <span>8373@qq.com</span>
+        </FormItem>
+        <FormItem :label="$t('yonggongnianxian')" style="width: 48%">
+          <span>南京嗯哇</span>
+        </FormItem>
+        <FormItem :label="$t('zhuangzhengriqi')" style="width: 48%">
+          <span>0255555555</span>
+        </FormItem>
+        <FormItem :label="$t('shiyongqixian')" style="width: 48%">
+          <span>沈中平</span>
+        </FormItem>
+        <FormItem :label="$t('gongnian')" style="width: 48%">
+          <span>13000000000</span>
+        </FormItem>
+      </Form>
     </TabPane>
   </div>
 </template>

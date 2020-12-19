@@ -211,6 +211,7 @@ export default {
                   },
                   style: {
                     marginRight: "5px",
+                    display: params.row.stat !== 3 ? 'inline-block' : 'none' 
                   },
                   directives: [
                     {
@@ -232,6 +233,10 @@ export default {
                   props: {
                     type: "error",
                     size: "small",
+                    
+                  },
+                  style: {
+                    display: params.row.stat !== 3 ? 'inline-block' : 'none'
                   },
                   directives: [
                     {

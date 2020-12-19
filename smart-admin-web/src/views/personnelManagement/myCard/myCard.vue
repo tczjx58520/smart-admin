@@ -21,14 +21,13 @@
         <Icon type="md-list" />
       </div>
       <Tabs value="name1" :animated="false">
-        <!-- <TabPane :label="$t('zaizhixinxi')" name="name1">标签一的内容</TabPane> -->
         <userInfo />
         <linkinfo />
         <empstat />
         <myexperson/>
         <workwelfare />
         <assetinformation />
-        <schedule />
+        <!-- <schedule /> -->
         <attendance-information />
         <training-information />
       </Tabs>
