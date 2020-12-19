@@ -1,35 +1,70 @@
 <template>
   <div>
-    <Card class="warp-card" dis-hover style="height: calc(100vh - 75px)">
-    <Tabs :animated="false">
-        <TabPane v-privilege="['10-18-4']" label="我的薪酬">
-            <div style="margin-bottom:20px;">
-              <Button style="margin-right:15px;" @click="resetGong" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-              <DatePicker type="month" v-model="Gongsearchform.yearAndMonth" format="yyyy-MM-dd" split-panels placeholder="Select date" style="width: 200px;margin-right:15px;" @on-change="showmytime"></DatePicker>
-              <!-- <Button style="margin-right:15px;" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button> -->
-              <Button style="margin-right:15px;" @click="search" icon="md-search" type="default">{{ $t('Search') }}</Button>
-            </div>
-            <Table :columns="Gongcolumns" :data="Gongdata" :loading="Gongloading" @on-selection-change="selectGong"></Table>
-            <Page :current="Gongsearchform.pageNum" :page-size="Gongsearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
-            :total="GongpageTotal" @on-change="GongchangePage" @on-page-size-change="GongchangePageSize" show-elevator show-sizer
-            show-total style="margin:24px 0;text-align:right;"></Page>
+    <Card class="warp-card"
+          dis-hover
+          style="height: calc(100vh - 75px)">
+      <Tabs :animated="false">
+        <TabPane v-privilege="['10-18-4']"
+                 label="我的薪酬">
+          <div style="margin-bottom:20px;">
+            <Button style="margin-right:15px;"
+                    @click="resetGong"
+                    icon="md-refresh"
+                    type="default">{{ $t('Reflash') }}</Button>
+            <DatePicker type="month"
+                        v-model="Gongsearchform.yearAndMonth"
+                        format="yyyy-MM-dd"
+                        split-panels
+                        placeholder="Select date"
+                        style="width: 200px;margin-right:15px;"
+                        @on-change="showmytime"></DatePicker>
+            <!-- <Button style="margin-right:15px;" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button> -->
+            <Button style="margin-right:15px;"
+                    @click="search"
+                    icon="md-search"
+                    type="default">{{ $t('Search') }}</Button>
+          </div>
+          <Table :columns="Gongcolumns"
+                 :data="Gongdata"
+                 :loading="Gongloading"
+                 @on-selection-change="selectGong"></Table>
+          <Page :current="Gongsearchform.pageNum"
+                :page-size="Gongsearchform.pageSize"
+                :page-size-opts="[10, 20, 30, 50, 100]"
+                :total="GongpageTotal"
+                @on-change="GongchangePage"
+                @on-page-size-change="GongchangePageSize"
+                show-elevator
+                show-sizer
+                show-total
+                style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
-        <TabPane v-privilege="['10-17-4']" label="我的福利">
-            <div style="margin-bottom:20px;">
-                <Button style="margin-right:15px;" @click="resetShe" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-            </div>
-            <Table :columns="Shecolumns" :data="Shedata" :loading="Sheloading" @on-selection-change="selectShe"></Table>
-            <!-- <Page :current="Shesearchform.pageNum" :page-size="Shesearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
+        <TabPane v-privilege="['10-17-4']"
+                 label="我的福利">
+          <div style="margin-bottom:20px;">
+            <Button style="margin-right:15px;"
+                    @click="resetShe"
+                    icon="md-refresh"
+                    type="default">{{ $t('Reflash') }}</Button>
+          </div>
+          <Table :columns="Shecolumns"
+                 :data="Shedata"
+                 :loading="Sheloading"
+                 @on-selection-change="selectShe"></Table>
+          <!-- <Page :current="Shesearchform.pageNum" :page-size="Shesearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
             :total="ShepageTotal" @on-change="ShechangePage" @on-page-size-change="ShechangePageSize" show-elevator show-sizer
             show-total style="margin:24px 0;text-align:right;"></Page> -->
         </TabPane>
-    </Tabs>
+      </Tabs>
     </Card>
     <!-- 新建社保弹窗 -->
-        <addGong :modalstat = "Gongvisiable" :editinfo = "editinfo" @updateStat = "updateStat_gong"></addGong>
+    <addGong :modalstat="Gongvisiable"
+             :editinfo="editinfo"
+             @updateStat="updateStat_gong"></addGong>
     <!-- 新建结束============= -->
     <!-- 新建公积金弹窗 -->
-        <addShe :modalstat = "Shevisiable" @updateStat = "updateStat_she"></addShe>
+    <addShe :modalstat="Shevisiable"
+            @updateStat="updateStat_she"></addShe>
     <!-- 新建结束============= -->
   </div>
 </template>
@@ -269,7 +304,7 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created () {},
+  created () { },
   mounted () {
     this.$Modal.confirm({
       title: '验证密码',
@@ -421,7 +456,12 @@ export default {
       try {
         this.Sheloading = true;
         this.Shesearchform.empId = this.$store.state.user.userLoginInfo.userId;
-        this.Shesearchform.organizeId = this.$store.state.user.userLoginInfo.organizationOa;
+        if (!this.$store.state.user.userLoginInfo.organizationOa) {
+          this.Shesearchform.organizeId = 3;
+        } else {
+          this.Shesearchform.organizeId = this.$store.state.user.userLoginInfo.organizationOa;
+        }
+
         // this.Shesearchform.empId = this.$store.state.user.userLoginInfo.userId;
         let result = await welfareApi.getmywelfare(this.Shesearchform);
         this.Sheloading = false;
@@ -464,7 +504,7 @@ export default {
 
 </script>
 <style lang="less" scoped>
-    .ivu-form-item {
-        margin-bottom: 0;
-    }
+.ivu-form-item {
+  margin-bottom: 0;
+}
 </style>
