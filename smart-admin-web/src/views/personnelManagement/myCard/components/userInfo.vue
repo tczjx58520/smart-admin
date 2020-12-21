@@ -55,7 +55,7 @@
             style="padding:24px;"
           >
             <FormItem :label="$t('gonghao')" style="width:48%;">
-              <span>沈中平</span>
+              <span>325522155664</span>
             </FormItem>
             <FormItem :label="$t('gongzuodidian')" style="width:48%;">
               <span>2020-12-18 11:40:20</span>

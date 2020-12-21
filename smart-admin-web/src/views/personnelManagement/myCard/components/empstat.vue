@@ -9,22 +9,22 @@
         style="padding: 24px"
       >
         <FormItem :label="$t('gongzuoxingzhi')" style="width: 48%">
-          <span>1835156789</span>
+          <span>技术开发</span>
         </FormItem>
         <FormItem :label="$t('ruzhiriqi')" style="width: 48%">
-          <span>8373@qq.com</span>
+          <span>2020-12-19 02:13:00</span>
         </FormItem>
         <FormItem :label="$t('yonggongnianxian')" style="width: 48%">
-          <span>南京嗯哇</span>
+          <span>20</span>
         </FormItem>
         <FormItem :label="$t('zhuangzhengriqi')" style="width: 48%">
-          <span>0255555555</span>
+          <span>2020-12-19 02:13:00</span>
         </FormItem>
         <FormItem :label="$t('shiyongqixian')" style="width: 48%">
-          <span>沈中平</span>
+          <span>2020-9-19 02:13:00 - 2020-12-19 02:13:00</span>
         </FormItem>
         <FormItem :label="$t('gongnian')" style="width: 48%">
-          <span>13000000000</span>
+          <span>12</span>
         </FormItem>
       </Form>
     </TabPane>
@@ -36,7 +36,9 @@ export default {
   components: {},
   props: {},
   data () {
-    return {};
+    return {
+      showformBase: {}
+    };
   },
   computed: {},
   watch: {},

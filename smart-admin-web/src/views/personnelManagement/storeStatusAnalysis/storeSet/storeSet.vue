@@ -45,6 +45,7 @@ import { roleApi } from '@/api/role';
 import { repoTaskItem } from '@/api/repoTaskItem';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
+import { utils } from 'xlsx/types';
 // import newModal from './components/editmodalGong/modal';
 export default {
   name: 'indicatorSet',
@@ -85,12 +86,25 @@ export default {
           align: 'center'
         },
         {
-          title: this.$t('zbxmc'),
-          key: 'itemName'
+          title: this.$t('mdmc'),
+          key: 'repositoryName'
         },
         {
-          title: this.$t('ms'),
-          key: 'desc1',
+          title: this.$t('mdjb'),
+          key: 'repositoryLevelName',
+        },
+        {
+          title: this.$t('cjsj'),
+          key: 'createDate',
+          render: (h, params) => {
+            const mydate = new Date(params.row.createDate)
+            const str = utils.getDate(mydate,'YMDhmd')
+            return h('span', str)
+          }
+        },
+        {
+          title: this.$t('cjr'),
+          key: 'createName',
         },
         {
           title: this.$t('action'),
@@ -136,7 +150,8 @@ export default {
       ],
       indicatorlist: [],
       loading: false,
-      moreaction: ''
+      moreaction: '',
+      storData: []
     };
   },
   computed: {},
@@ -155,6 +170,20 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    // 查询用户登录日志
+    async getwelfareList () {
+      const searchform = {
+        pageNum:1,
+        pageSize: 999
+      }
+      try {
+        let result = await salesroom.getSalesRoomList(searchform);
+        this.storData = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
     // 分页
     changePage (pageNum) {
       this.searchform.pageNum = pageNum;

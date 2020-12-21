@@ -153,107 +153,148 @@ export default {
     return {
       columns1: [
         {
-          title: this.$t('gongsimingchen'),
+          title: this.$t("gongsimingchen"),
           slot: "companyName",
         },
         {
-          title: this.$t('gangweimingchen'),
+          title: this.$t("gangweimingchen"),
           slot: "postName",
         },
         {
-          title: this.$t('kaishishijian'),
+          title: this.$t("kaishishijian"),
           slot: "beginTime",
         },
         {
-          title: this.$t('jieshushijian'),
+          title: this.$t("jieshushijian"),
           slot: "endTime",
         },
         {
-          title: this.$t('lizhiyuanyin'),
+          title: this.$t("lizhiyuanyin"),
           slot: "leaveReason",
         },
         {
-          title: this.$t('miaoshu'),
+          title: this.$t("miaoshu"),
           slot: "describution",
         },
       ],
-      data1: [],
+      data1: [
+        {
+          companyName: "阿里巴巴",
+          postName: "技术总监",
+          beginTime: "2020-12-19 02:18:00",
+          endTime: "2020-8-19 02:18:00",
+          leaveReason: "个人原因",
+          describution: "好",
+        },
+      ],
       columns2: [
         {
-          title: this.$t('xuexiaomingchen'),
+          title: this.$t("xuexiaomingchen"),
           slot: "schoolName",
         },
         {
-          title: this.$t('zhuanye'),
+          title: this.$t("zhuanye"),
           slot: "major",
         },
         {
-          title: this.$t('kaishishijian'),
+          title: this.$t("kaishishijian"),
           slot: "beginTime",
         },
         {
-          title: this.$t('jieshushijian'),
+          title: this.$t("jieshushijian"),
           slot: "endTime",
         },
         {
-          title: this.$t('xueli'),
+          title: this.$t("xueli"),
           slot: "education",
         },
       ],
-      data3: [],
+      data2: [
+        {
+          schoolName: "哈佛大学",
+          major: "计算机",
+          beginTime: "2020-12-19 02:18:00",
+          endTime: "2020-8-19 02:18:00",
+          education: "本科",
+        },
+      ],
       columns3: [
         {
-          title: this.$t('peixunjigoumingchen'),
+          title: this.$t("peixunjigoumingchen"),
           slot: "trainingSchoolName",
         },
         {
-          title: this.$t('peixundemingchen'),
+          title: this.$t("peixundemingchen"),
           slot: "trainingName",
         },
         {
-          title: this.$t('kaishishijian'),
+          title: this.$t("kaishishijian"),
           slot: "beginTime",
         },
         {
-          title: this.$t('jieshushijian'),
+          title: this.$t("jieshushijian"),
           slot: "endTime",
         },
       ],
-      data3: [],
+      data3: [
+        {
+          trainingSchoolName: '新东方',
+          trainingName: '英语',
+          beginTime: '2020-12-19 02:18:00',
+          endTime: '2020-8-19 02:18:00',
+        }
+      ],
       columns4: [
         {
-          title: this.$t('zigezhengshumingchen'),
+          title: this.$t("zigezhengshumingchen"),
           slot: "qualifications",
         },
         {
-          title: this.$t('kaishishijian'),
+          title: this.$t("kaishishijian"),
           slot: "beginTime",
         },
         {
-          title: this.$t('jieshushijian'),
+          title: this.$t("jieshushijian"),
           slot: "endTime",
         },
         {
-          title: this.$t('banfadanwei'),
+          title: this.$t("banfadanwei"),
           slot: "issuingUnit",
         },
         {
-          title: this.$t('zhengshubianhao'),
+          title: this.$t("zhengshubianhao"),
           slot: "certificateNumber",
+        },
+      ],
+      data4: [
+        {
+          qualifications: '南京五好青年',
+          beginTime: '2020-12-19 02:18:00',
+          endTime: '2020-8-19 02:18:00',
+          issuingUnit: '南京市政府',
+          certificateNumber: '32554448822255'
         }
       ],
-      data4: [],
       columns5: [
         {
-          title: this.$t('yuyan'),
+          title: this.$t("yuyan"),
           slot: "language",
         },
         {
-          title: this.$t('shuipin'),
+          title: this.$t("shuipin"),
           slot: "level",
         },
       ],
-      data5: [],
+      data5: [
+        {
+          language: '英语',
+          level: '四级'
+        },
+        {
+          language: '菲律宾语',
+          level: '四级'
+        }
+      ],
     };
   },
   computed: {},

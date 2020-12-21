@@ -36,7 +36,9 @@ export default {
   components: {},
   props: {},
   data() {
-    return {};
+    return {
+      showformBase: {}
+    };
   },
   computed: {},
   watch: {},

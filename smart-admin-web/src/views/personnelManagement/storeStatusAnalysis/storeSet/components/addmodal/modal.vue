@@ -9,16 +9,26 @@
       :transfer="false"
       :styles="{ top: '10px' }"
     >
-      <div slot="header" style="text-align:left;color:#fff;">
+      <div slot="header" style="text-align: left; color: #fff">
         <span>{{ $t("tjzbxmc") }}</span>
       </div>
       <div>
         <Card dis-hover>
           <div
-            style="display:flex; align-items: center; border-bottom: 1px solid #e1e1e1;padding-bottom: 20px;"
+            style="
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid #e1e1e1;
+              padding-bottom: 20px;
+            "
           >
             <div
-              style="width: 4px; height: 20px;background: #2d8cf0;margin-right: 15px"
+              style="
+                width: 4px;
+                height: 20px;
+                background: #2d8cf0;
+                margin-right: 15px;
+              "
             ></div>
             <div>{{ $t("BaseData") }}</div>
           </div>
@@ -30,11 +40,25 @@
             :label-width="100"
             :rules="ruleValidate"
           >
-            <FormItem :label="$t('zbxmc')" prop="itemName">
-              <Input v-model="addformbase.itemName"></Input>
+            <FormItem :label="$t('mdmc')" prop="repositoryId">
+              <Select v-model="addformbase.repositoryId">
+                <Option
+                  v-for="item in storData"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.repositoryName }}</Option
+                >
+              </Select>
             </FormItem>
-            <FormItem :label="$t('ms')" prop="desc">
-              <Input v-model="addformbase.desc" type="textarea"></Input>
+            <FormItem :label="$t('zbxmc')" prop="items">
+              <Select v-model="addformbase.items">
+                <Option
+                  v-for="item in itemList"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.itemName }}</Option
+                >
+              </Select>
             </FormItem>
           </Form>
         </Card>
@@ -57,91 +81,133 @@
   </div>
 </template>
 <script>
-import Tables from '@/components/tables';
-import RoleTree from '../role-tree/role-tree';
-import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
-import { repoTaskItem } from '@/api/repoTaskItem';
+import Tables from "@/components/tables";
+import RoleTree from "../role-tree/role-tree";
+import DepartmentEmployeeTree from "../department-employee-tree/department-employee-tree";
+import { repoTaskItem } from "@/api/repoTaskItem";
+import { salesroom } from "@/api/salesroom";
 const defaultForm = {
-  type: 2,
-  itemName: ''
+  repositoryId: null,
+  items: null,
 };
 export default {
-  name: 'addModal',
+  name: "addModal",
   components: {
     DepartmentEmployeeTree,
-    Tables
+    Tables,
   },
   props: {
     modalstat: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    copyfile: null
+    copyfile: null,
   },
-  created () {
+  created() {
     //
   },
-  data () {
+  data() {
+    const validatePass1 = (rule, value, callback) => {
+      if (
+        this.addformbase.repositoryId === '' ||
+        this.addformbase.repositoryId === null ||
+        this.addformbase.repositoryId === undefined
+      ) {
+        callback(new Error('Please enter your repository'));
+      } else {
+        callback();
+      }
+    };
+    const validatePass2 = (rule, value, callback) => {
+      if (
+        this.addformbase.items === '' ||
+        this.addformbase.items === null ||
+        this.addformbase.items === undefined
+      ) {
+        callback(new Error('Please enter your item'));
+      } else {
+        callback();
+      }
+    };
     return {
-      typeList: [
-        {
-          label: this.$t('xtx'),
-          value: 1
-        },
-        {
-          label: this.$t('zdyx'),
-          value: 2
-        }
-      ],
+      storData: [],
+      itemList:[],
       modal_loading: false,
       mymoadlStat: this.modalstat,
       addformbase: Object.assign({}, defaultForm),
       ruleValidate: {
-        itemName: [
+        repositoryId: [
           {
             required: true,
-            message: 'The itemName cannot be empty',
-            trigger: 'blur'
-          }
+            trigger: "change",
+            validator: validatePass1,
+          },
         ],
-        desc: [
+        items: [
           {
             required: true,
-            message: 'The desc cannot be empty',
-            trigger: 'blur'
-          }
-        ]
+            trigger: "change",
+            validator: validatePass2,
+          },
+        ],
       },
-      mydataList: []
     };
   },
   watch: {
-    modalstat () {
+    modalstat() {
       this.mymoadlStat = this.modalstat;
-    }
+      if (this.mymoadlStat) {
+        this.getwelfareList()
+        this.getindicatorlist()
+      }
+    },
   },
   methods: {
-    cancel () {
-      this.$emit('updateStat', false);
+    getindicatorlist () {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 99999,
+      };
+      repoTaskItem.getTaskItem(searchform).then(res => {
+        this.itemList = res.data.content.list;
+      });
+    },
+    // 查询用户登录日志
+    async getwelfareList() {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 99999,
+      };
+      try {
+        let result = await salesroom.getSalesRoomList(searchform);
+        this.storData = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
+    cancel() {
+      this.$emit("updateStat", false);
       this.addformbase = Object.assign({}, defaultForm);
     },
-    handsave () {
+    handsave() {
       this.modal_loading = true;
-      this.$refs['form'].validate(valid => {
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId
+      this.$refs["form"].validate((valid) => {
         if (valid) {
-          repoTaskItem.addTaskItems(this.addformbase).then(res => {
-            this.$Message.success(this.$t('addSuccess'));
+          repoTaskItem.addTaskItems(this.addformbase).then((res) => {
+            this.$Message.success(this.$t("addSuccess"));
             this.modal_loading = false;
-            this.$emit('updateStat', false);
+            this.$emit("updateStat", false);
             this.addformbase = Object.assign({}, defaultForm);
           });
         } else {
-          this.$Message.error('Fail!');
+          this.$Message.error("Fail!");
           this.modal_loading = false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
