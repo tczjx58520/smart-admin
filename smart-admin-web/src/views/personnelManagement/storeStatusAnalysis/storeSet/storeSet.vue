@@ -45,7 +45,7 @@ import { roleApi } from '@/api/role';
 import { repoTaskItem } from '@/api/repoTaskItem';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
-import { utils } from 'xlsx/types';
+import { utils } from '@/lib/util';
 // import newModal from './components/editmodalGong/modal';
 export default {
   name: 'indicatorSet',
@@ -91,20 +91,20 @@ export default {
         },
         {
           title: this.$t('mdjb'),
-          key: 'repositoryLevelName',
+          key: 'repositoryLevelName'
         },
         {
           title: this.$t('cjsj'),
           key: 'createDate',
           render: (h, params) => {
-            const mydate = new Date(params.row.createDate)
-            const str = utils.getDate(mydate,'YMDhmd')
-            return h('span', str)
+            const mydate = new Date(params.row.createDate);
+            const str = utils.getDate(mydate, 'YMDhmd');
+            return h('span', str);
           }
         },
         {
           title: this.$t('cjr'),
-          key: 'createName',
+          key: 'createName'
         },
         {
           title: this.$t('action'),
@@ -173,9 +173,9 @@ export default {
     // 查询用户登录日志
     async getwelfareList () {
       const searchform = {
-        pageNum:1,
+        pageNum: 1,
         pageSize: 999
-      }
+      };
       try {
         let result = await salesroom.getSalesRoomList(searchform);
         this.storData = result.data.content.list;
@@ -221,7 +221,7 @@ export default {
       repoTaskItem.getTaskItems(this.searchform).then(res => {
         this.loading = false;
         this.indicatorlist = res.data.content.list;
-        this.pageTotal = res.data.content.totalCount
+        this.pageTotal = res.data.content.totalCount;
       });
     },
     rowClick (data, index) { // data 该行数据 ，index该行索引
@@ -236,9 +236,9 @@ export default {
       console.log(row);
       const itemNameId = row.id;
       const data = {
-        id : row.id,
+        id: row.id,
         operatId: this.$store.state.user.userLoginInfo.userId
-      }
+      };
       repoTaskItem.delTaskItems(data).then(res => {
         this.$Message.success(this.$t('sccg'));
         this.getindicatorlist();
