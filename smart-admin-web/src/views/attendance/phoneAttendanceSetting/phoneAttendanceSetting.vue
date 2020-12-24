@@ -1,46 +1,33 @@
 <template>
   <div>
     <div class="rightTop">
-      <Button
-        @click="resetFirstTable"
-        icon="md-refresh"
-        type="default"
-        style="margin-right: 15px"
-        >{{ $t("Reflash") }}</Button
-      >
-      <Button
-        style="margin-right: 15px"
-        @click="handleAdd"
-        icon="md-add"
-        type="warning"
-        >{{ $t("Create") }}</Button
-      >
-      <Button
-        style="margin-right: 15px"
-        @click="clearFirstTable"
-        icon="md-close"
-        type="error"
-        >{{ $t("Delete") }}</Button
-      >
+      <Button @click="resetFirstTable"
+              icon="md-refresh"
+              type="default"
+              style="margin-right: 15px">{{ $t("Reflash") }}</Button>
+      <Button style="margin-right: 15px"
+              @click="handleAdd"
+              icon="md-add"
+              type="warning">{{ $t("Create") }}</Button>
+      <Button style="margin-right: 15px"
+              @click="clearFirstTable"
+              icon="md-close"
+              type="error">{{ $t("Delete") }}</Button>
     </div>
-    <Tables
-      :value="firstData"
-      :columns="firstColumns"
-      :loading="firstLoading"
-      :total="fistTotal"
-      :pageShow="true"
-      :current="seachParms.pageNum"
-      :page-size="seachParms.pageSize"
-      @on-change="firstChangePage"
-      @on-selection-change="selectFirst"
-      show-elevator
-    ></Tables>
-    <firstFrom
-      :modalstat.sync="modalstat"
-      :modalState.sync="modalState"
-      :editData.sync="editData"
-      @restList="restList"
-    />
+    <Tables :value="firstData"
+            :columns="firstColumns"
+            :loading="firstLoading"
+            :total="fistTotal"
+            :pageShow="true"
+            :current="seachParms.pageNum"
+            :page-size="seachParms.pageSize"
+            @on-change="firstChangePage"
+            @on-selection-change="selectFirst"
+            show-elevator></Tables>
+    <firstFrom :modalstat.sync="modalstat"
+               :modalState.sync="modalState"
+               :editData.sync="editData"
+               @restList="restList" />
   </div>
 </template>
 
@@ -137,15 +124,15 @@ export default {
     },
     clearFirstTable () {
       let sendParms = {
-        ids: [],
-        createId: this.$store.state.user.userLoginInfo.userId
+        ids: []
       };
+      let createId = this.$store.state.user.userLoginInfo.userId;
       for (const i in this.selectData) {
         sendParms.ids.push(this.selectData[i].id);
       }
 
       console.log(sendParms);
-      attendance.removeAddressForMobile(sendParms).then((res) => {
+      attendance.removeAddressForMobile(sendParms, createId).then((res) => {
         if (res.ret === 200) {
           this.$Message.success(res.msg);
           this.getFirstTableData();
