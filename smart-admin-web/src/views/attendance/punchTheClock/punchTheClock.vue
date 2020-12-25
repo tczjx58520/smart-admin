@@ -25,19 +25,19 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
-import firstFrom from "./components/firstFrom";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
+import firstFrom from './components/firstFrom';
 
 export default {
-  name: "punchTheClock",
+  name: 'punchTheClock',
   components: {
     Tables,
     organization,
-    firstFrom,
+    firstFrom
   },
-  data() {
+  data () {
     return {
       editData: {},
       employeeId: this.$store.state.user.userLoginInfo.userId,
@@ -46,113 +46,106 @@ export default {
       firstLoading: false,
       firstColumns: [
         {
-          type: "selection",
+          type: 'selection',
           width: 50,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("kqgl.bc"),
-          key: "shiftName",
+          title: this.$t('kqgl.bc'),
+          key: 'shiftName'
         },
         {
-          title: this.$t("kqgl.dengjilexing"),
-          key: "punchType",
-          render: (h, params) => {
-            if (params.row.whetherVocation === 0) {
-              return h("span", this.$t("kqgl.sb"));
-            } else {
-              return h("span", this.$t("kqgl.xb"));
-            }
-          },
+          title: this.$t('kqgl.dengjilexing'),
+          key: 'punchType'
         },
         {
-          title: this.$t("kqgl.guidingshijian"),
-          key: "setTime",
+          title: this.$t('kqgl.guidingshijian'),
+          key: 'setTime'
         },
         {
-          title: this.$t("kqgl.ksdjsj"),
-          key: "punchStartTime",
+          title: this.$t('kqgl.ksdjsj'),
+          key: 'punchStartTime'
         },
         {
-          title: this.$t("kqgl.jsdjsj"),
-          key: "punchEndTime",
+          title: this.$t('kqgl.jsdjsj'),
+          key: 'punchEndTime'
         },
         {
-          title: this.$t("kqgl.shijidakashi"),
-          key: "punchRealTime",
+          title: this.$t('kqgl.shijidakashi'),
+          key: 'punchRealTime'
         },
         {
-          title: this.$t("kqgl.djzt"),
-          key: "punchStatus",
+          title: this.$t('kqgl.djzt'),
+          key: 'punchStatus',
           render: (h, params) => {
             if (params.row.punchStatus === 0) {
-              return h("span", this.$t("kqgl.zhengchang"));
+              return h('span', this.$t('kqgl.zhengchang'));
             } else if (params.row.punchStatus === 1) {
-              return h("span", this.$t("kqgl.weidaka"));
+              return h('span', this.$t('kqgl.weidaka'));
             } else if (params.row.punchStatus === 2) {
               return h(
-                "span",
-                { style: { color: "red" } },
-                this.$t("kqgl.chidao")
+                'span',
+                { style: { color: 'red' } },
+                this.$t('kqgl.chidao')
               );
             } else if (params.row.punchStatus === 3) {
               return h(
-                "span",
-                { style: { color: "red" } },
-                this.$t("kqgl.zaotui")
+                'span',
+                { style: { color: 'red' } },
+                this.$t('kqgl.zaotui')
               );
             }
-          },
+          }
         },
         {
-          title: this.$t("kqgl.qkshuom"),
-          key: "note",
+          title: this.$t('kqgl.qkshuom'),
+          key: 'note'
         },
         {
-          title: this.$t("usermanage_view.action"),
-          key: "action",
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
           width: 200,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "info",
-                    size: "small",
+                    type: 'info',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.Edit(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
-                this.$t("kqgl.smqk")
-              ),
+                this.$t('kqgl.smqk')
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    Edit(row) {
+    Edit (row) {
       this.editData = row;
       this.modalstat = true;
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findPunchInfo(this.employeeId);
@@ -167,16 +160,16 @@ export default {
       }
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.firstTable.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
