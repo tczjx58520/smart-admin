@@ -332,9 +332,9 @@ export const attendance = {
     }
   },
   // 手机考勤设置删除
-  removeAddressForMobile: data => {
+  removeAddressForMobile: (data, data2) => {
     if (data) {
-      return postAxios('/attendanceSet/removeAddressForMobile?createId=' + data.createId, data);
+      return postAxios('/attendanceSet/removeAddressForMobile?createId=' + data2, data);
     }
   },
   // 设置考勤人员修改

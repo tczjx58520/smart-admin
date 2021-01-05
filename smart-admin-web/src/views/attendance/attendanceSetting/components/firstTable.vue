@@ -85,6 +85,14 @@ export default {
           title: this.$t('kqgl.sbsj'),
           key: 'startWorkTimeMorning'
         },
+        // {
+        //   title: this.$t('kqgl.xbsj'),
+        //   key: 'overWorkTimeMorning'
+        // },
+        // {
+        //   title: this.$t('kqgl.sbsj'),
+        //   key: 'startWorkTimeAfternoon'
+        // },
         {
           title: this.$t('kqgl.xbsj'),
           key: 'overWorkTimeMorning'
@@ -112,7 +120,7 @@ export default {
           title: this.$t('kqgl.sfsx'),
           key: 'whetherEffect',
           render: (h, params) => {
-            if (params.row.whetherVocation === 0) {
+            if (params.row.whetherEffect === 0) {
               return h('span', this.$t('kqgl.yes'));
             } else {
               return h('span', this.$t('kqgl.no'));
