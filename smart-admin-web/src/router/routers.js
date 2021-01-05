@@ -9,6 +9,7 @@ import { salary } from './module/salary';
 import { flow } from './module/flow';
 import { workAttendance } from './module/workAttendance';
 import { personnelManagement } from './module/personnelManagement';
+import { assetManagement } from './module/assetManagement';
 /**
  *
  * meta除了原生参数外可配置的参数:
@@ -46,5 +47,6 @@ export const routers = [
   ...salary,
   ...flow,
   ...workAttendance,
-  ...personnelManagement
+  ...personnelManagement,
+  ...assetManagement
 ];

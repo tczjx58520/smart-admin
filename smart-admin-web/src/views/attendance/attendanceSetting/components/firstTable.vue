@@ -53,132 +53,132 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import firstForm from "./firstFrom";
+import { attendance } from '@/api/attendance';
+import firstForm from './firstFrom';
 
 export default {
-  name: "firstTable",
+  name: 'firstTable',
   components: {
-    firstForm,
+    firstForm
   },
-  data() {
+  data () {
     return {
-      selectData: "",
+      selectData: '',
       editData: null,
       firstLoading: false,
       firstTable: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       fistTotal: 0,
       firstColumns: [
         {
-          type: "selection",
+          type: 'selection',
           width: 50,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("kqgl.bcmc"),
-          key: "shiftName",
+          title: this.$t('kqgl.bcmc'),
+          key: 'shiftName'
         },
         {
-          title: this.$t("kqgl.sbsj"),
-          key: "startWorkTimeMorning",
+          title: this.$t('kqgl.sbsj'),
+          key: 'startWorkTimeMorning'
         },
         {
-          title: this.$t("kqgl.xbsj"),
-          key: "overWorkTimeMorning",
+          title: this.$t('kqgl.xbsj'),
+          key: 'overWorkTimeMorning'
         },
         {
-          title: this.$t("kqgl.sbsj"),
-          key: "startWorkTimeAfternoon",
+          title: this.$t('kqgl.sbsj'),
+          key: 'startWorkTimeAfternoon'
         },
         {
-          title: this.$t("kqgl.xbsj"),
-          key: "overWorkTimeAfternoon",
+          title: this.$t('kqgl.xbsj'),
+          key: 'overWorkTimeAfternoon'
         },
         {
-          title: this.$t("kqgl.sfswxj"),
-          key: "whetherVocation",
+          title: this.$t('kqgl.sfswxj'),
+          key: 'whetherVocation',
           render: (h, params) => {
             if (params.row.whetherVocation === 0) {
-              return h("span", this.$t("kqgl.yes"));
+              return h('span', this.$t('kqgl.yes'));
             } else {
-              return h("span", this.$t("kqgl.no"));
+              return h('span', this.$t('kqgl.no'));
             }
-          },
+          }
         },
         {
-          title: this.$t("kqgl.sfsx"),
-          key: "whetherEffect",
+          title: this.$t('kqgl.sfsx'),
+          key: 'whetherEffect',
           render: (h, params) => {
             if (params.row.whetherVocation === 0) {
-              return h("span", this.$t("kqgl.yes"));
+              return h('span', this.$t('kqgl.yes'));
             } else {
-              return h("span", this.$t("kqgl.no"));
+              return h('span', this.$t('kqgl.no'));
             }
-          },
+          }
         },
         {
-          title: this.$t("usermanage_view.action"),
-          key: "action",
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
           width: 200,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "info",
-                    size: "small",
+                    type: 'info',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.Edit(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
-                this.$t("Edit")
-              ),
+                this.$t('Edit')
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    Edit(row) {
+    Edit (row) {
       // if (this.$judge(['1-4-2'])) {
       //   this.editinfo = row;
       //   this.visiable_edit = true;
       // } else {
       //   console.log('needroles');
       // }
-      this.modalState = "修改";
+      this.modalState = '修改';
       this.editData = Object.assign({}, row);
 
       // this.firstLoading = true;
       this.modalstat = true;
     },
-    selectFirst(selection) {
+    selectFirst (selection) {
       this.selectData = selection;
     },
-    clearFirstTable() {
+    clearFirstTable () {
       let sendParms = {
         ids: [],
-        createId: this.$store.state.user.userLoginInfo.userId,
+        createId: this.$store.state.user.userLoginInfo.userId
       };
       for (const i in this.selectData) {
         sendParms.ids.push(this.selectData[i].id);
@@ -194,7 +194,7 @@ export default {
         }
       });
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findAllShiftInfo(this.firstTable);
@@ -209,26 +209,26 @@ export default {
       }
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.firstTable.pageNum = pageNum;
       this.getFirstTableData();
     },
     // 改变一页展示数
-    firstChangePageSize(pageSize) {
+    firstChangePageSize (pageSize) {
       this.firstTable.pageNum = 1;
       this.firstTable.pageSize = pageSize;
       this.getFirstTableData();
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.firstTable.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>

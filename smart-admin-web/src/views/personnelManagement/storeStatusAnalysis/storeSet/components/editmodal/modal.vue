@@ -30,11 +30,25 @@
             :label-width="100"
             :rules="ruleValidate"
           >
-            <FormItem :label="$t('zbxmc')" prop="itemName">
-              <Input v-model="addformbase.itemName"></Input>
+            <FormItem :label="$t('mdmc')" prop="repositoryId">
+              <Select v-model="addformbase.repositoryId">
+                <Option
+                  v-for="item in storData"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.repositoryName }}</Option
+                >
+              </Select>
             </FormItem>
-            <FormItem :label="$t('ms')" prop="desc">
-              <Input v-model="addformbase.desc" type="textarea"></Input>
+            <FormItem :label="$t('zbxmc')" prop="items">
+              <Select v-model="addformbase.items" multiple>
+                <Option
+                  v-for="item in itemList"
+                  :value="item.id"
+                  :key="item.id"
+                  >{{ item.itemName }}</Option
+                >
+              </Select>
             </FormItem>
           </Form>
         </Card>
@@ -61,6 +75,7 @@ import Tables from '@/components/tables';
 import RoleTree from '../role-tree/role-tree';
 import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
 import { repoTaskItem } from '@/api/repoTaskItem';
+import { salesroom } from "@/api/salesroom";
 const defaultForm = {
   type: 2,
   itemName: ''
@@ -83,16 +98,8 @@ export default {
   },
   data () {
     return {
-      typeList: [
-        {
-          label: this.$t('xtx'),
-          value: 1
-        },
-        {
-          label: this.$t('zdyx'),
-          value: 2
-        }
-      ],
+      storData: [],
+      itemList:[],
       modal_loading: false,
       mymoadlStat: this.modalstat,
       addformbase: Object.assign({}, defaultForm),
@@ -112,18 +119,43 @@ export default {
           }
         ]
       },
-      mydataList: []
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
-      this.addformbase = Object.assign({}, this.editinfo);
-      this.addformbase.desc = this.addformbase.desc1;
-      console.log(this.addformbase);
+      if (this.mymoadlStat) {
+        this.getwelfareList()
+        this.getindicatorlist()
+        this.addformbase = Object.assign({}, this.editinfo);
+        this.addformbase.items = this.addformbase.items.split(',').map(Number)
+      }
     }
   },
   methods: {
+    getindicatorlist () {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 99999,
+      };
+      repoTaskItem.getTaskItem(searchform).then(res => {
+        this.itemList = res.data.content.list;
+      });
+    },
+    // 查询用户登录日志
+    async getwelfareList() {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 99999,
+      };
+      try {
+        let result = await salesroom.getSalesRoomList(searchform);
+        this.storData = result.data.content.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
+    },
     cancel () {
       this.$emit('updateStat', false);
       this.addformbase = Object.assign({}, defaultForm);
@@ -131,9 +163,11 @@ export default {
     handsave () {
       this.modal_loading = true;
       this.addformbase.operatId = this.$store.state.user.userLoginInfo.userId
+      this.addformbase.items = this.addformbase.items.join(',')
+      console.log(this.addformbase.items);
       this.$refs['form'].validate(valid => {
         if (valid) {
-          repoTaskItem.updateTaskItem(this.addformbase).then(res => {
+          repoTaskItem.updateTaskItems(this.addformbase).then(res => {
             this.$Message.success(this.$t('addSuccess'));
             this.modal_loading = false;
             this.$emit('updateStat', false);

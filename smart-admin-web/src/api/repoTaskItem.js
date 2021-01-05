@@ -96,6 +96,7 @@ export const repoTaskItem = {
   },
   // 修改任务集
   updateTaskItems: (data) => {
+    console.log('data====='), data;
     let Form = new FormData();
     if (data.id !== undefined && data.id !== null && data.id !== '') {
       Form.append('id', data.id);

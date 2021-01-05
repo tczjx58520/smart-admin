@@ -108,15 +108,6 @@ export const personnelAnalysis = [
                             roles: ['1-8-4'],
                         },
                         component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeSet/storeSet')
-                    },
-                    {
-                        path: '/personnelAnalysis/storeStatusAnalysisRelatedSettings/storeTaskEntry',
-                        name: 'storeTaskEntry',
-                        meta: {
-                            title: '门店任务量录入',
-                            roles: ['1-8-4'],
-                        },
-                        component: () => import('@/views/personnelManagement/storeStatusAnalysis/storeSetSingle/storeSetSingle')
                     }
                 ]
             }
