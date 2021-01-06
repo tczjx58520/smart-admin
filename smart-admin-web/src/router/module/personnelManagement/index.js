@@ -25,7 +25,7 @@ export const personnelManagement = [
       ...traning,
       ...examination,
       ...personnelAnalysis,
-      ...employeeFile,
+      ...employeeFile
     ]
   }
 ];

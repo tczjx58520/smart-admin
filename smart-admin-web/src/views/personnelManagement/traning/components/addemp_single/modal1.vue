@@ -223,7 +223,6 @@ export default {
       roleList: [],
       curPageSelected: [], // 存放当前页选中项
       formValidate: {},
-      selectedData: [],
       curPageSelectedName: [] // 存放当前页名字
     };
   },
@@ -274,15 +273,6 @@ export default {
       this.$emit('updateStat', false);
     },
     handsave () {
-      console.log(11111111, this.selectedData);
-      if (this.selectedData.length === 0) {
-        this.$Message.error('必须选择一名员工');
-        return false;
-      }
-      if (this.selectedData.length > 1) {
-        this.$Message.error('只能选择一名员工');
-        return false;
-      }
       this.modal_loading = true;
       let data = {};
       try {
@@ -377,7 +367,6 @@ export default {
     },
     // 保存分页选中
     selectService (selection) {
-      this.selectedData = selection;
       this.curPageSelected = selection.map((item) => item.id);
       // otherPageIds其他页面选中项 为所有选中项减去当前页所有数据
       let otherPageIds = this._.without(this.formValidate.serviceIdList, ...this.curPageAllIds);

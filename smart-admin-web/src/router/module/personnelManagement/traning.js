@@ -28,6 +28,43 @@ export const traning = [
           hideInMenu: true
         },
         component: () => import('@/views/personnelManagement/traning/traningDetail')
+      },
+      {
+        path: '/traning/myTraning',
+        name: 'myTraning',
+        meta: {
+          title: '我的培训',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/traning/myTraning')
+      },
+      {
+        path: '/traning/traningType',
+        name: 'traningType',
+        meta: {
+          title: '培训类型',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/traning/traningType')
+      },
+      {
+        path: '/traning/traningTask',
+        name: 'traningTask',
+        meta: {
+          title: '培训任务',
+          roles: ['1-8-4']
+        },
+        component: () => import('@/views/personnelManagement/traning/traningTask')
+      },
+      {
+        path: '/traning/traningTaskDetail',
+        name: 'taskDetail',
+        meta: {
+          title: '培训任务详情',
+          roles: ['1-8-4'],
+          hideInMenu: true
+        },
+        component: () => import('@/views/personnelManagement/traning/taskDetail')
       }
     ]
   }

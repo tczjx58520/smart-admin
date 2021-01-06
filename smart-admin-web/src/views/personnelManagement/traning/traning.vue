@@ -1,30 +1,27 @@
 <template>
   <div>
-    <Card class="warp-card" dis-hover>
+    <Card class="warp-card"
+          dis-hover>
       <div style="display:flex;flex-wrap: wrap;">
         <div style="padding:16px;width:30%;">
-          <Card
-            style="height:25vh;cursor:pointer;"
-            class="position_mid"
-            @click.native="additem"
-          >
+          <Card style="height:25vh;cursor:pointer;"
+                class="position_mid"
+                @click.native="additem">
             <div style="height:100%;width:100%;">
               <Icon type="md-add" /> <span>{{ $t("tj") }}</span>
             </div>
           </Card>
         </div>
-        <div
-          style="padding:16px;width:30%;"
-          v-for="(item, index) in items"
-          :key="index"
-        >
+        <div style="padding:16px;width:30%;"
+             v-for="(item, index) in items"
+             :key="index">
           <Card style="height:25vh;cursor:pointer;">
-            <div
-              style="height:100%;width:100%;display:flex;"
-              @click="goitem(item.id)"
-            >
-              <div class="detail_left" style="height:100px;">
-                <Icon type="md-filing" size="25" />
+            <div style="height:100%;width:100%;display:flex;"
+                 @click="goitem(item.id)">
+              <div class="detail_left"
+                   style="height:100px;">
+                <Icon type="md-filing"
+                      size="25" />
               </div>
               <div class="detail_right">
                 <div class="title">{{ item.materialsName }}</div>
@@ -33,21 +30,18 @@
                 </div>
               </div>
             </div>
-            <div
-              style="display:flex;justify-content: space-around;"
-              class="bottom_menu"
-            >
-              <Poptip
-                confirm
-                :title="$t('isokdel')"
-                @on-ok="ok_del(item.id)"
-                @on-cancel="cancel_del"
-              >
+            <div style="display:flex;justify-content: space-around;"
+                 class="bottom_menu">
+              <Poptip confirm
+                      :title="$t('isokdel')"
+                      @on-ok="ok_del(item.id)"
+                      @on-cancel="cancel_del">
                 <Button type="text">{{ $t("sc") }}</Button>
               </Poptip>
 
               <span style="color:#ebebeb;">|</span>
-              <Button type="text" @click="Edit_form(item)">{{
+              <Button type="text"
+                      @click="Edit_form(item)">{{
                 $t("Edit")
               }}</Button>
             </div>
@@ -56,88 +50,74 @@
       </div>
     </Card>
     <!-- 添加类型 -->
-    <Modal
-      v-model="typeDialog"
-      title="添加类型"
-    >
-      <Form
-        ref="formInline"
-        :model="addformbase"
-        :rules="ruleInline"
-        :label-width="80"
-      >
-        <FormItem prop="materialsName" :label="$t('lbmc')">
-          <Input
-            type="text"
-            v-model="addformbase.materialsName"
-            placeholder="请输入类别名称"
-          >
+    <Modal v-model="typeDialog"
+           title="添加类型">
+      <Form ref="formInline"
+            :model="addformbase"
+            :rules="ruleInline"
+            :label-width="80">
+        <FormItem prop="materialsName"
+                  :label="$t('lbmc')">
+          <Input type="text"
+                 v-model="addformbase.materialsName"
+                 placeholder="请输入类别名称">
           </Input>
         </FormItem>
-        <FormItem prop="describe" :label="$t('ms')">
-          <Input
-            type="textarea"
-            v-model="addformbase.describe"
-            placeholder="请输入描述"
-          >
+        <FormItem prop="describe"
+                  :label="$t('ms')">
+          <Input type="textarea"
+                 v-model="addformbase.describe"
+                 placeholder="请输入描述">
           </Input>
         </FormItem>
       </Form>
       <div slot="footer">
         <ButtonGroup>
-          <Button
-            type="primary"
-            size="large"
-            :loading="modal_loading_new"
-            @click="ok"
-            >{{ $t("Save") }}</Button
-          >
-          <Button type="error" size="large" @click="cancel">{{
+          <Button type="primary"
+                  size="large"
+                  :loading="modal_loading_new"
+                  @click="ok">{{ $t("Save") }}</Button>
+          <Button type="error"
+                  size="large"
+                  @click="cancel">{{
             $t("Close")
           }}</Button>
         </ButtonGroup>
       </div>
     </Modal>
     <!-- 修改类型 -->
-    <Modal
-      v-model="typeDialog_edit"
-      title="添加类型"
-      @on-ok="ok_edit"
-      @on-cancel="cancel_edit"
-    >
-      <Form
-        ref="formInline"
-        :model="addformbase"
-        :rules="ruleInline"
-        :label-width="80"
-      >
-        <FormItem prop="materialsName" :label="$t('lbmc')">
-          <Input
-            type="text"
-            v-model="addformbase.materialsName"
-            placeholder="请输入类别名称"
-          >
+    <Modal v-model="typeDialog_edit"
+           title="添加类型"
+           @on-ok="ok_edit"
+           @on-cancel="cancel_edit">
+      <Form ref="formInline"
+            :model="addformbase"
+            :rules="ruleInline"
+            :label-width="80">
+        <FormItem prop="materialsName"
+                  :label="$t('lbmc')">
+          <Input type="text"
+                 v-model="addformbase.materialsName"
+                 placeholder="请输入类别名称">
           </Input>
         </FormItem>
-        <FormItem prop="describe" :label="$t('ms')">
-          <Input
-            type="textarea"
-            v-model="addformbase.describe"
-            placeholder="请输入描述"
-          >
+        <FormItem prop="describe"
+                  :label="$t('ms')">
+          <Input type="textarea"
+                 v-model="addformbase.describe"
+                 placeholder="请输入描述">
           </Input>
         </FormItem>
       </Form>
       <div slot="footer">
         <ButtonGroup>
-          <Button
-            type="primary"
-            size="large"
-            :loading="modal_loading"
-            @click="ok_edit"
-            >{{ $t("Save") }}</Button
-          >
-          <Button type="error" size="large" @click="cancel_edit">{{
+          <Button type="primary"
+                  size="large"
+                  :loading="modal_loading"
+                  @click="ok_edit">{{ $t("Save") }}</Button>
+          <Button type="error"
+                  size="large"
+                  @click="cancel_edit">{{
             $t("Close")
           }}</Button>
         </ButtonGroup>
@@ -146,16 +126,16 @@
   </div>
 </template>
 <script>
-import { training } from "@/api/traning";
+import { training } from '@/api/traning';
 const defaultform = {
-  materialsName: "",
-  describe: ""
+  materialsName: '',
+  describe: ''
 };
 export default {
-  name: "traning",
+  name: 'traning',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       items: [],
       addformbase: Object.assign({}, defaultform),
@@ -165,15 +145,15 @@ export default {
         materialsName: [
           {
             required: true,
-            message: "Please fill in the materialsName",
-            trigger: "blur"
+            message: 'Please fill in the materialsName',
+            trigger: 'blur'
           }
         ],
         describe: [
           {
             required: true,
-            message: "Please fill in the describe",
-            trigger: "blur"
+            message: 'Please fill in the describe',
+            trigger: 'blur'
           }
         ]
       },
@@ -184,71 +164,71 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.getItem();
   },
   methods: {
-    Edit_form(val) {
+    Edit_form (val) {
       this.addformbase = Object.assign({}, val);
-      this.$refs.formInline.resetFields()
+      this.$refs.formInline.resetFields();
       this.typeDialog_edit = true;
     },
-    ok_edit() {
-      this.modal_loading = true
+    ok_edit () {
+      this.modal_loading = true;
       const data = {
         materialsName: this.addformbase.materialsName,
         describe: this.addformbase.describe,
         id: this.addformbase.id
       };
       this.$refs.formInline.validate(res => {
-        console.log("res===========", res);
+        console.log('res===========', res);
         if (res) {
           training.updateTraining(data).then(res => {
             console.log(res);
             this.typeDialog_edit = false;
             this.addformbase = Object.assign({}, defaultform);
             this.getItem();
-            this.this.modal_loading = false
+            this.this.modal_loading = false;
           });
         } else {
-          this.$Message.warning(this.$t("yzbtg"));
-          this.this.modal_loading = false
+          this.$Message.warning(this.$t('yzbtg'));
+          this.this.modal_loading = false;
         }
       });
     },
-    cancel_edit() {
+    cancel_edit () {
       this.typeDialog_edit = false;
       this.addformbase = Object.assign({}, defaultform);
     },
-    ok_del(id) {
+    ok_del (id) {
       training.delTraining(id).then(res => {
-        this.$Message.success(this.$t('sccg'))
+        this.$Message.success(this.$t('sccg'));
         this.getItem();
       });
     },
-    cancel_del() {},
-    delItem(id) {},
-    getItem() {
+    cancel_del () { },
+    delItem (id) { },
+    getItem () {
       training.getTraining(this.searchForm).then(res => {
         this.items = res.data;
         console.log(res);
       });
     },
-    additem() {
-      this.$refs.formInline.resetFields()
+    additem () {
+      this.$refs.formInline.resetFields();
       this.typeDialog = true;
     },
-    goitem(id) {
+    goitem (id) {
       this.$router.push({
-        path: "/traning/trainingMaterialsList",
+        path: '/traning/trainingMaterialsList',
         query: {
           id: id
         }
       });
     },
-    ok() {
-      this.modal_loading_new = true
+    ok () {
+      this.modal_loading_new = true;
       const data = {
         materialsName: this.addformbase.materialsName,
         describe: this.addformbase.describe
@@ -257,18 +237,18 @@ export default {
         if (res) {
           training.addTraining(data).then(res => {
             console.log(res);
-            this.typeDialog = false
+            this.typeDialog = false;
             this.addformbase = Object.assign({}, defaultform);
             this.getItem();
-            this.modal_loading_new = false
+            this.modal_loading_new = false;
           });
         } else {
-          this.$Message.warning(this.$t("yzbtg"));
-          this.this.modal_loading_new = false
+          this.$Message.warning(this.$t('yzbtg'));
+          this.this.modal_loading_new = false;
         }
       });
     },
-    cancel() {
+    cancel () {
       this.addformbase = Object.assign({}, defaultform);
       this.typeDialog = false;
     }

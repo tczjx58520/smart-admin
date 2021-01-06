@@ -1,37 +1,33 @@
 <template>
-  <Modal
-    v-model="mymoadlStat"
-    class="add"
-    width="460"
-    :closable="false"
-    :mask-closable="false"
-    :styles="{ top: '10px' }"
-  >
-    <div slot="header" style="text-align:left;color:#fff;">
+  <Modal v-model="mymoadlStat"
+         class="add"
+         width="460"
+         :closable="false"
+         :mask-closable="false"
+         :styles="{ top: '10px' }">
+    <div slot="header"
+         style="text-align:left;color:#fff;">
       <span>{{ $t("usermanage_view.adduser") }}</span>
     </div>
     <div>
       <Card dis-hover>
         <div class="department-wrap">
-          <Tree
-            ref="mytree"
-            :data="treedata"
-            :render="renderDepartmentTreeButton"
-            style="height: 485px;overflow-x: scroll"
-          ></Tree>
+          <Tree ref="mytree"
+                :data="treedata"
+                :render="renderDepartmentTreeButton"
+                style="height: 485px;overflow-x: scroll"></Tree>
         </div>
       </Card>
     </div>
     <div slot="footer">
       <ButtonGroup>
-        <Button
-          type="primary"
-          size="large"
-          :loading="modal_loading"
-          @click="handsave"
-          >{{ $t("Save") }}</Button
-        >
-        <Button type="error" size="large" @click="cancel">{{
+        <Button type="primary"
+                size="large"
+                :loading="modal_loading"
+                @click="handsave">{{ $t("Save") }}</Button>
+        <Button type="error"
+                size="large"
+                @click="cancel">{{
           $t("Close")
         }}</Button>
       </ButtonGroup>
@@ -87,8 +83,8 @@ export default {
     //   console.log(this.addformbase.organizationOaName);
     // },
     loadEmployeeTable (event, root, node, data) {
-      this.addformbase.organizationOa = data.id
-      this.addformbase.organizationOaName = data.title
+      this.addformbase.organizationOa = data.id;
+      this.addformbase.organizationOaName = data.title;
       $('.departmentSelect').css({ background: '#ffffff', color: 'black' });
       let target = event.target;
       let tagName = target.tagName;
@@ -104,7 +100,7 @@ export default {
       const result = [];
       // 遍历 tree
       tree.forEach(item => {
-        console.log(item);
+        // console.log(item);
         // 读取 map 的键值映射
         const title = item[map.title];
         const parentId = item[map.parentId];
@@ -147,7 +143,7 @@ export default {
       this.$Message.info('Clicked ok');
     },
     renderDepartmentTreeButton (h, { root, node, data }) {
-      console.log(root, node, data);
+      // console.log(root, node, data);
       let newName = data.title;
       if (newName.length > 8) {
         newName = data.title.substring(0, 8) + '...';
