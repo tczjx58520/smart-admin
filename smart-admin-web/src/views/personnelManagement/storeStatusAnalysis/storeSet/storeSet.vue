@@ -1,57 +1,129 @@
 <template>
-
-<div>
-    <div style="display:flex">
-        <div style="width:100%;height:calc(80vh)">
-            <Card class="warp-card" dis-hover>
-                <Row :gutter="16">
-                    <Form :model="searchform" class="tools" inline ref="searchform" :label-width="80" label-position="left">
-                      <Col span="5">
-                      <FormItem prop="person" :label="$t('zbxmc')" style="width:100%">
-                        <Input placeholder="请输入" type="text" v-model="searchform.name" clearable style="width:100%" />
-                      </FormItem>
-                      </Col>
-                      <Col span="4">
-                      <FormItem>
-                        <ButtonGroup>
-                          <Button @click="search" icon="ios-search" type="primary">{{ $t('Search') }}</Button>
-                        </ButtonGroup>
-                      </FormItem>
-                      </Col>
-                    </Form>
-                </Row>
-            </Card>
-            <Card class="warp-card" dis-hover>
-                <div style="margin-bottom:20px;">
-                    <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
-                </div>
-                <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
-                <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
-                :total="pageTotal" @on-change="changePage" @on-page-size-change="changePageSize" show-elevator show-sizer
-                show-total style="margin:24px 0;text-align:right;"></Page>
-            </Card>
-            <!-- 新建弹窗 -->
-            <addModal :modalstat = "visiable" @updateStat = "updateStat"></addModal>
-            <editModal :modalstat = "visiable_edit" :editinfo="editinfo" @updateStat = "updateStat_edit"></editModal>
-            <!-- 新建结束============= -->
-        </div>
+  <div>
+    <div style="display: flex">
+      <div style="width: 100%; height: calc(80vh)">
+        <Card class="warp-card" dis-hover>
+          <Row :gutter="16">
+            <Form
+              :model="searchform"
+              class="tools"
+              inline
+              ref="searchform"
+              :label-width="80"
+              label-position="left"
+            >
+              <Col span="5">
+                <FormItem
+                  prop="person"
+                  :label="$t('zbxmc')"
+                  style="width: 100%"
+                >
+                  <Input
+                    placeholder="请输入"
+                    type="text"
+                    v-model="searchform.name"
+                    clearable
+                    style="width: 100%"
+                  />
+                </FormItem>
+              </Col>
+              <Col span="4">
+                <FormItem>
+                  <ButtonGroup>
+                    <Button @click="search" icon="ios-search" type="primary">{{
+                      $t("Search")
+                    }}</Button>
+                  </ButtonGroup>
+                </FormItem>
+              </Col>
+            </Form>
+          </Row>
+        </Card>
+        <Card class="warp-card" dis-hover>
+          <div style="margin-bottom: 20px">
+            <Button
+              style="margin-right: 15px"
+              @click="refresh"
+              icon="md-refresh"
+              type="default"
+              >{{ $t("Reflash") }}</Button
+            >
+            <Button
+              style="margin-right: 15px"
+              v-privilege="['1-4-1']"
+              @click="created"
+              icon="md-add"
+              type="warning"
+              >{{ $t("Create") }}</Button
+            >
+            <Button
+              style="margin-right: 15px"
+              v-privilege="['1-4-3']"
+              @click="creatDate"
+              icon="md-create"
+              type="info"
+              >{{ $t("lrsj") }}</Button
+            >
+            <Button
+              style="margin-right: 15px"
+              v-privilege="['1-4-3']"
+              @click="del"
+              icon="md-trash"
+              type="error"
+              >{{ $t("Delete") }}</Button
+            >
+          </div>
+          <Table
+            border
+            ref="selection"
+            :columns="columns4"
+            :data="indicatorlist"
+            max-height="calc(70vh)"
+            @on-selection-change="getmoreaction"
+            @on-row-click="rowClick"
+            :loading="loading"
+            @on-row-dblclick="Edit"
+          ></Table>
+          <Page
+            :current="searchform.pageNum"
+            :page-size="searchform.pageSize"
+            :page-size-opts="[10, 20, 30, 50, 100]"
+            :total="pageTotal"
+            @on-change="changePage"
+            @on-page-size-change="changePageSize"
+            show-elevator
+            show-sizer
+            show-total
+            style="margin: 24px 0; text-align: right"
+          ></Page>
+        </Card>
+        <!-- 新建弹窗 -->
+        <addModal :modalstat="visiable" @updateStat="updateStat"></addModal>
+        <editModal
+          :modalstat="visiable_edit"
+          :editinfo="editinfo"
+          @updateStat="updateStat_edit"
+        ></editModal>
+        <!-- 新建结束============= -->
+        <addDateModal :modalstat="visiable_date" :editinfo="editinfo" @updateStat="updateStat_date"/>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import { roleApi } from '@/api/role';
 import { repoTaskItem } from '@/api/repoTaskItem';
 import addModal from './components/addmodal/modal';
 import editModal from './components/editmodal/modal';
+import addDateModal from './components/addDateModal/modal';
 import { utils } from '@/lib/util';
 // import newModal from './components/editmodalGong/modal';
 export default {
   name: 'indicatorSet',
   components: {
     addModal,
-    editModal
+    editModal,
+    addDateModal
   },
   data () {
     return {
@@ -60,6 +132,7 @@ export default {
       editinfo: {},
       visiable: false,
       visiable_edit: false,
+      visiable_date: false,
       pageTotal: 0,
       statList: [
         {
@@ -98,7 +171,7 @@ export default {
           key: 'createDate',
           render: (h, params) => {
             const mydate = new Date(params.row.createDate);
-            const str = utils.getDate(mydate, 'YMDhmd');
+            const str = utils.getDate(mydate, 'YMDHM');
             return h('span', str);
           }
         },
@@ -113,37 +186,45 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.Edit(params.row);
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.Edit(params.row);
+                    }
                   }
-                }
-              }, this.$t('Edit')),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
                 },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-4-2']
+                this.$t('Edit')
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'error',
+                    size: 'small'
+                  },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['1-4-2']
+                    }
+                  ],
+                  on: {
+                    click: () => {
+                      this.delSingle(params.row);
+                    }
                   }
-                ],
-                on: {
-                  click: () => {
-                    this.delSingle(params.row);
-                  }
-                }
-              }, this.$t('sc'))
+                },
+                this.$t('sc')
+              )
             ]);
           }
         }
@@ -157,8 +238,7 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created () {
-  },
+  created () {},
   mounted () {
     this.getindicatorlist();
   },
@@ -170,6 +250,14 @@ export default {
   destroyed () {},
   activated () {},
   methods: {
+    creatDate () {
+      if (this.moreaction.length === 0) {
+        this.$Message.error('请选择录入数据');
+        return false;
+      }
+      this.editinfo = this.moreaction;
+      this.visiable_date = true;
+    },
     // 查询用户登录日志
     async getwelfareList () {
       const searchform = {
@@ -210,6 +298,9 @@ export default {
     updateStat_new (stat) {
       this.visiable3 = stat;
     },
+    updateStat_date (stat) {
+      this.visiable_date = stat;
+    },
     to_conduct (stat) {
       this.visiable3 = stat;
       this.$router.push({
@@ -218,14 +309,15 @@ export default {
     },
     getindicatorlist () {
       this.loading = true;
-      repoTaskItem.getTaskItems(this.searchform).then(res => {
+      repoTaskItem.getTaskItems(this.searchform).then((res) => {
         this.loading = false;
         this.indicatorlist = res.data.content.list;
         this.pageTotal = res.data.content.totalCount;
       });
     },
-    rowClick (data, index) { // data 该行数据 ，index该行索引
-    //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
+    rowClick (data, index) {
+      // data 该行数据 ，index该行索引
+      //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
     },
     Edit (row) {
       console.log(row);
@@ -239,7 +331,7 @@ export default {
         id: row.id,
         operatId: this.$store.state.user.userLoginInfo.userId
       };
-      repoTaskItem.delTaskItems(data).then(res => {
+      repoTaskItem.delTaskItems(data).then((res) => {
         this.$Message.success(this.$t('sccg'));
         this.getindicatorlist();
       });
@@ -269,25 +361,30 @@ export default {
     del () {
       console.log('del');
       for (const i in this.moreaction) {
-        const id = this.moreaction[i].id;
-        let data = id;
-        personnelAnalysis.delpostTaskSingleSet(data).then(res => {
-          if (res.ret === 200) {
-            console.log(res.msg);
-            this.$Message['success']({
-              background: true,
-              content: res.msg
-            });
-          } else {
-            console.log(res.msg);
-            this.$Message['error']({
-              background: true,
-              content: res.msg
-            });
-          }
-        }).then(res => {
-          this.getindicatorlist();
-        });
+        const data = {
+          id: this.moreaction[i].id,
+          operatId: this.$store.state.user.userLoginInfo.userId
+        };
+        repoTaskItem
+          .delTaskItems(data)
+          .then((res) => {
+            if (res.ret === 200) {
+              console.log(res.msg);
+              this.$Message['success']({
+                background: true,
+                content: res.msg
+              });
+            } else {
+              console.log(res.msg);
+              this.$Message['error']({
+                background: true,
+                content: res.msg
+              });
+            }
+          })
+          .then((res) => {
+            this.getindicatorlist();
+          });
       }
     },
     forbid () {

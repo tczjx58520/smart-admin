@@ -51,7 +51,7 @@
               </Select>
             </FormItem>
             <FormItem :label="$t('zbxmc')" prop="items">
-              <Select v-model="addformbase.items">
+              <Select v-model="addformbase.items" multiple>
                 <Option
                   v-for="item in itemList"
                   :value="item.id"
@@ -193,6 +193,7 @@ export default {
     handsave() {
       this.modal_loading = true;
       this.addformbase.createId = this.$store.state.user.userLoginInfo.userId
+      this.addformbase.items = this.addformbase.items.join(',')
       this.$refs["form"].validate((valid) => {
         if (valid) {
           repoTaskItem.addTaskItems(this.addformbase).then((res) => {

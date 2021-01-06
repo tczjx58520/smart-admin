@@ -53,10 +53,10 @@
                         <template v-for="(fourLevelItem,m) in childrenPages.children">
                           <MenuItem :key="m" v-if="fourLevelItem.hideInMenu" :name="hideInMenu.menuKey">
                              <Icon type="md-open" /><i style="font-size:0.85rem"> {{fourLevelItem.menuName}}</i>
-                          </MenuItem>    
+                          </MenuItem>
                           <MenuItem  :key="m" v-else :name="fourLevelItem.menuKey">
                              <Icon type="md-menu" /> {{fourLevelItem.menuName}}
-                          </MenuItem>    
+                          </MenuItem>
                         </template>
                     </Submenu>
 
@@ -129,7 +129,7 @@ export default {
   components: {
     PrivilegeForm
   },
-  data() {
+  data () {
     return {
       typeDisabled: true,
       activeName: 0,
@@ -146,11 +146,11 @@ export default {
       },
       menuTree: [],
       menusChange: false,
-      //菜单差异数量
+      // 菜单差异数量
       menusChangeNum: 0,
       menuList: [],
-      //功能点差异数量
-      pointsChangeNum:0,
+      // 功能点差异数量
+      pointsChangeNum: 0,
       routerMap: new Map(),
       privilegeTableData: [],
       privilegeTableColumn: [
@@ -191,21 +191,21 @@ export default {
       ]
     };
   },
-  mounted() {
+  mounted () {
     this.initRouters();
   },
   methods: {
     // 关闭模态框
-    closeModal() {
+    closeModal () {
       this.formData.show = false;
     },
     // 初始化菜单
-    initRouters() {
+    initRouters () {
       this.resetMenuChange();
       this.buildPrivilegeTree();
     },
     // 获取全部菜单列表
-    async buildPrivilegeTree() {
+    async buildPrivilegeTree () {
       this.$Spin.show();
       let getMenuListResult = await privilegeApi.getMenuList();
       let serverMenuList = getMenuListResult.data;
@@ -218,16 +218,16 @@ export default {
       let privilegeTree = [];
 
       for (const router of routers) {
-        //过滤非菜单
+        // 过滤非菜单
         if (!router.meta.noValidatePrivilege) {
           this.routerMap.set(router.name, router);
-          let menu = this.convert2Menu(router,null);
-          console.log('change menu : ', JSON.stringify(menu))
+          let menu = this.convert2Menu(router, null);
+          console.log('change menu : ', JSON.stringify(menu));
           privilegeTree.push(menu);
           privilegeList.push(menu);
-          //判断是否有更新菜单
+          // 判断是否有更新菜单
           this.hasMenuChange(menu, serverMenuMap);
-          //存在孩子节点，开始递归
+          // 存在孩子节点，开始递归
           if (router.children && router.children.length > 0) {
             this.recursion(router.children, menu, privilegeList, serverMenuMap);
           }
@@ -240,37 +240,36 @@ export default {
           this.menusChangeNum +
           Math.abs(privilegeList.length - serverMenuList.length);
       }
-console.error(privilegeTree)
+      console.error(privilegeTree);
       this.menuTree = privilegeTree;
       this.menuList = privilegeList;
       this.$Spin.hide();
     },
 
-    convert2Menu(router, parent){
+    convert2Menu (router, parent) {
       return {
-            type: PRIVILEGE_TYPE_ENUM.MENU.value,
-            menuName: router.meta.title,
-            menuKey: router.name,
-            parentKey: parent,
-            url: router.path,
-            children: [],
-            sort: 0,
-            hideInMenu:router.meta.hideInMenu
-          };
-
+        type: PRIVILEGE_TYPE_ENUM.MENU.value,
+        menuName: router.meta.title,
+        menuKey: router.name,
+        parentKey: parent,
+        url: router.path,
+        children: [],
+        sort: 0,
+        hideInMenu: router.meta.hideInMenu
+      };
     },
 
-    recursion(children, parentMenu, menuList, serverMenuMap) {
+    recursion (children, parentMenu, menuList, serverMenuMap) {
       for (const router of children) {
-        //过滤非需要权限的
+        // 过滤非需要权限的
         if (!router.meta.noValidatePrivilege) {
           this.routerMap.set(router.name, router);
-          let menu = this.convert2Menu(router,parentMenu.menuKey);
+          let menu = this.convert2Menu(router, parentMenu.menuKey);
           parentMenu.children.push(menu);
           menuList.push(menu);
-          //判断是否有更新菜单
+          // 判断是否有更新菜单
           this.hasMenuChange(menu, serverMenuMap);
-          //存在孩子节点，开始递归
+          // 存在孩子节点，开始递归
           if (router.children && router.children.length > 0) {
             this.recursion(router.children, menu, menuList, serverMenuMap);
           }
@@ -279,41 +278,41 @@ console.error(privilegeTree)
     },
 
     // reset菜单有更新
-    resetMenuChange() {
+    resetMenuChange () {
       this.menusChange = false;
       this.menusChangeNum = 0;
     },
 
     // 菜单有更新
-    hasMenuChange(menu, serverMenuMap) {
+    hasMenuChange (menu, serverMenuMap) {
       let isChange = false;
       let serverMenu = serverMenuMap.get(menu.menuKey);
       if (serverMenu) {
         isChange =
           serverMenu.menuName !== menu.menuName ||
           serverMenu.menuKey !== menu.menuKey ||
-          serverMenu.parentKey !== menu.parentKey||
+          serverMenu.parentKey !== menu.parentKey ||
           serverMenu.url !== menu.url;
       } else {
         isChange = true;
       }
 
       if (isChange) {
-        console.log('==============  change menu : ', menu, serverMenu,'   ===================')
+        console.log('==============  change menu : ', menu, serverMenu, '   ===================');
         this.menusChange = true;
         this.menusChangeNum = this.menusChangeNum + 1;
       }
     },
     // 批量保存功能点
-    async addBatchSavePoints(){
+    async addBatchSavePoints () {
       this.$Spin.show();
       let result = await privilegeApi.addBatchSavePoints(
-        this.privilegeTableData.map(e =>{
-          return Object.assign({},{
-            functionName:e.title,
-            menuKey:e.parentKey,
-            functionKey:e.name,
-            sort:e.sort
+        this.privilegeTableData.map(e => {
+          return Object.assign({}, {
+            functionName: e.title,
+            menuKey: e.parentKey,
+            functionKey: e.name,
+            sort: e.sort
           });
         })
       );
@@ -322,16 +321,16 @@ console.error(privilegeTree)
       this.loadPrivilegeTableData(this.privilegeTableData[0].parentKey);
     },
     // 批量保存菜单
-    async addBatchSaveMenu() {
+    async addBatchSaveMenu () {
       this.$Spin.show();
       let result = await privilegeApi.addBatchSaveMenu(this.menuList);
       this.$Message.success('批量保存成功');
       this.$Spin.hide();
-      //重新获取数据
+      // 重新获取数据
       this.initRouters();
     },
     // 编辑功能点
-    updatePrivilege(item, sort) {
+    updatePrivilege (item, sort) {
       this.formData.privilege = {
         functionKey: item.name,
         functionName: item.title,
@@ -343,26 +342,26 @@ console.error(privilegeTree)
       this.formData.show = true;
     },
     // 查询菜单对应的页面以及功能点
-    async getPrivilegeList(menuKey,frontPrivilegeData) {
+    async getPrivilegeList (menuKey, frontPrivilegeData) {
       this.$Spin.show();
       this.formData.show = false;
       let result = await privilegeApi.queryPrivilegeFunctionList(menuKey);
       this.$Spin.hide();
-      //处理服务端存储的功能点
+      // 处理服务端存储的功能点
       let serverPointData = result.data;
       let serverFunctionKeyUrlMap = new Map();
       serverPointData.map(item => {
-        serverFunctionKeyUrlMap.set(item.functionKey, {url:item.url?item.url:''});
+        serverFunctionKeyUrlMap.set(item.functionKey, { url: item.url ? item.url : '' });
       });
-      
+
       let pointsChangeNum = 0;
       for (let frontPrivilege of frontPrivilegeData) {
         let serverUrlObject = serverFunctionKeyUrlMap.get(frontPrivilege.name);
-        if(serverUrlObject){
-            frontPrivilege.url = serverUrlObject.url;
-        }else{
+        if (serverUrlObject) {
+          frontPrivilege.url = serverUrlObject.url;
+        } else {
           frontPrivilege.url = '';
-          //服务端没有此功能点
+          // 服务端没有此功能点
           pointsChangeNum++;
         }
       }
@@ -370,18 +369,18 @@ console.error(privilegeTree)
       this.privilegeTableData = frontPrivilegeData;
     },
     // 点击菜单事件
-    loadPrivilegeTableData(name) {
+    loadPrivilegeTableData (name) {
       let router = this.routerMap.get(name);
       let frontPrivilegeData = [];
       if (!_.isUndefined(router) && router.meta && router.meta.privilege) {
         let sort = 0;
-        frontPrivilegeData = router.meta.privilege.map(e =>{
-            sort++;
-           return Object.assign({}, e, { parentKey: name },{sort});
-          }
+        frontPrivilegeData = router.meta.privilege.map(e => {
+          sort++;
+          return Object.assign({}, e, { parentKey: name }, { sort });
+        }
         );
       }
-      this.getPrivilegeList(name,frontPrivilegeData);
+      this.getPrivilegeList(name, frontPrivilegeData);
     }
   }
 };

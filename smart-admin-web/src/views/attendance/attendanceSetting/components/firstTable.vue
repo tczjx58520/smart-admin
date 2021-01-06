@@ -95,6 +95,14 @@ export default {
         // },
         {
           title: this.$t('kqgl.xbsj'),
+          key: 'overWorkTimeMorning'
+        },
+        {
+          title: this.$t('kqgl.sbsj'),
+          key: 'startWorkTimeAfternoon'
+        },
+        {
+          title: this.$t('kqgl.xbsj'),
           key: 'overWorkTimeAfternoon'
         },
         {
