@@ -139,6 +139,11 @@ export const training = {
   // 考评
   evaluation: data => {
     return postAxios('/trainning/givePoint', data);
+  },
+
+  // 签到
+  sign: data => {
+    return postAxios('/trainning/sign', data);
   }
 
 }

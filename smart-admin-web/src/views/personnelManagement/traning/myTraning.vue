@@ -20,7 +20,8 @@
             <template slot-scope="{ row, index }"
                       slot="action">
               <Button type="error"
-                      size="small">{{$t('qiandao')}}</Button>
+                      size="small"
+                      @click="qiandao(row)">{{$t('qiandao')}}</Button>
             </template>
           </Table>
         </TabPane>
@@ -86,7 +87,7 @@ export default {
         },
         {
           title: this.$t('traningName'),
-          key: 'examName'
+          key: 'taskName'
         },
         {
           title: this.$t('startTime'),
@@ -98,11 +99,24 @@ export default {
         },
         {
           title: this.$t('traningType'),
-          key: 'point'
+          key: 'taskType',
+          render: (h, params) => {
+            if (params.row.status === 0) {
+              return h('span', '本组织自行培训');
+            } if (params.row.status === 1) {
+              return h('span', '公司集体培训');
+            } else {
+              return h('span', '外训');
+            }
+          }
         },
         {
           title: this.$t('traningPlace'),
-          key: 'createTime'
+          key: 'address'
+        },
+        {
+          title: this.$t('signTimes'),
+          key: 'address'
         },
         {
           title: this.$t('traningTeacher'),
@@ -113,6 +127,10 @@ export default {
           key: 'createTime'
         },
         {
+          title: this.$t('signDays'),
+          key: 'sign_days'
+        },
+        {
           title: this.$t('action'),
           slot: 'action',
           width: 150,
@@ -121,7 +139,8 @@ export default {
       ],
 
       data1: [],
-      data2: []
+      data2: [],
+      todayTime: null
 
     };
   },
@@ -138,6 +157,13 @@ export default {
       });
     },
     getList1 () {
+      let date = new Date();
+      let YY = date.getFullYear() + '-';
+      let MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      let DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+      this.todayTime = YY + MM + DD;
+      console.log(33333, this.todayTime);
+
       this.listQuery.status = 1;
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       training.findMytraningArrange(this.listQuery).then(res => {
@@ -147,6 +173,24 @@ export default {
     },
     changeTab (val) {
       // console.log(val);
+    },
+    qiandao (row) {
+      console.log(row);
+      if (this.todayTime === row.signTime) {
+        this.$Message.error('今日已签到！');
+        return false;
+      }
+
+      const data = {
+        signDays: row.sign_days + 1,
+        taskId: row.id,
+        employeeId: this.$store.state.user.userLoginInfo.userId
+      };
+      training.sign(data).then(res => {
+        console.log(res);
+        this.getList();
+        this.getList1();
+      });
     }
 
   }
