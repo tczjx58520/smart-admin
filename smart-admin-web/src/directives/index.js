@@ -26,6 +26,7 @@ const importDirective = Vue => {
    * }
    */
   Vue.directive('privilege', directive.privilege);
+  Vue.directive('debounce', directive.debounce);
 };
 
 export default importDirective;

@@ -56,7 +56,7 @@
 </template>
 <script>
 import AddDetailModal from './components/addmodal/add-detail-modal.vue';
-import { training } from "@/api/traning";
+import { training } from '@/api/traning';
 import EditDialog from './components/editmodal/editmodal.vue';
 const defaultform = {
   name: '',
@@ -90,25 +90,25 @@ export default {
   filters: {},
   created () {},
   mounted () {
-    this.getItemList()
+    this.getItemList();
   },
   methods: {
-    ok_del(id) {
-      training.delTrainingDetail(id).then( res => {
-        this.$Message.success(this.$t('sccg'))
+    ok_del (id) {
+      training.delTrainingDetail(id).then(res => {
+        this.$Message.success(this.$t('sccg'));
         this.getItemList();
-      })
+      });
     },
-    cancel_del() {},
-    getItemList() {
-      training.getTrainingDetail(this.$route.query.id).then( res=> {
+    cancel_del () {},
+    getItemList () {
+      training.getTrainingDetail(this.$route.query.id).then(res => {
         console.log(res);
-        this.items = res.data
-      })
+        this.items = res.data;
+      });
     },
     updateStat (stat, value) {
       this.addDialog = stat;
-      this.getItemList()
+      this.getItemList();
     },
     updateStat_edit (stat, value) {
       this.editDialog = stat;
@@ -116,9 +116,9 @@ export default {
     additem () {
       this.addDialog = true;
     },
-    editItem(value) {
+    editItem (value) {
       console.log('执行=====');
-      this.editInfo = value
+      this.editInfo = value;
       this.editDialog = true;
     },
     ok () {

@@ -11,7 +11,8 @@ export const home = [
       noKeepAlive: true,
       hideInMenu: true,
       noValidatePrivilege: true,
-      icon: 'icon iconfont iconxitongshezhi'
+      icon: 'icon iconfont iconxitongshezhi',
+      roles: ['10-11-4']
     },
     children: [
       {
@@ -20,7 +21,8 @@ export const home = [
         meta: {
           title: '首页',
           noValidatePrivilege: true,
-          noKeepAlive: true
+          noKeepAlive: true,
+          roles: ['10-11-4']
         },
         component: () => import('@/views/home')
       }

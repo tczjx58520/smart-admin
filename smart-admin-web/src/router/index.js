@@ -75,13 +75,11 @@ router.beforeEach((to, from, next) => {
     // 特殊页面直接放行
     if (to.meta.noValidatePrivilege) {
       next();
-      return;
     }
 
     // 如果是超管，直接放行
     if (store.state.user.userLoginInfo.isSuperMan) {
       next();
-      return;
     }
 
     // 去掉/之后第一个字母
@@ -95,6 +93,7 @@ router.beforeEach((to, from, next) => {
     //   next();
     // }
     let junglerole = localStorage.getItem('userRouterPrivilege');
+    console.log('to=============', to.meta);
     if (
       to.meta.roles.some(role => {
         // console.log(storeSelf.state.user.privilegeMenuKeyList);

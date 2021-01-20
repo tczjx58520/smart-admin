@@ -2,7 +2,7 @@ import Main from '@/components/main';
 export const basicSettings = [
   {
     path: '/ASSbasicSettings',
-    name: 'basicSettings',
+    name: 'ASSbasicSettings',
     component: Main,
     meta: {
       title: '基础设置',

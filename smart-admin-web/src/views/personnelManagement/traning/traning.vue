@@ -146,16 +146,16 @@
   </div>
 </template>
 <script>
-import { training } from "@/api/traning";
+import { training } from '@/api/traning';
 const defaultform = {
-  materialsName: "",
-  describe: ""
+  materialsName: '',
+  describe: ''
 };
 export default {
-  name: "traning",
+  name: 'traning',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       items: [],
       addformbase: Object.assign({}, defaultform),
@@ -165,15 +165,15 @@ export default {
         materialsName: [
           {
             required: true,
-            message: "Please fill in the materialsName",
-            trigger: "blur"
+            message: 'Please fill in the materialsName',
+            trigger: 'blur'
           }
         ],
         describe: [
           {
             required: true,
-            message: "Please fill in the describe",
-            trigger: "blur"
+            message: 'Please fill in the describe',
+            trigger: 'blur'
           }
         ]
       },
@@ -184,71 +184,71 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     this.getItem();
   },
   methods: {
-    Edit_form(val) {
+    Edit_form (val) {
       this.addformbase = Object.assign({}, val);
-      this.$refs.formInline.resetFields()
+      this.$refs.formInline.resetFields();
       this.typeDialog_edit = true;
     },
-    ok_edit() {
-      this.modal_loading = true
+    ok_edit () {
+      this.modal_loading = true;
       const data = {
         materialsName: this.addformbase.materialsName,
         describe: this.addformbase.describe,
         id: this.addformbase.id
       };
       this.$refs.formInline.validate(res => {
-        console.log("res===========", res);
+        console.log('res===========', res);
         if (res) {
           training.updateTraining(data).then(res => {
             console.log(res);
             this.typeDialog_edit = false;
             this.addformbase = Object.assign({}, defaultform);
             this.getItem();
-            this.this.modal_loading = false
+            this.this.modal_loading = false;
           });
         } else {
-          this.$Message.warning(this.$t("yzbtg"));
-          this.this.modal_loading = false
+          this.$Message.warning(this.$t('yzbtg'));
+          this.this.modal_loading = false;
         }
       });
     },
-    cancel_edit() {
+    cancel_edit () {
       this.typeDialog_edit = false;
       this.addformbase = Object.assign({}, defaultform);
     },
-    ok_del(id) {
+    ok_del (id) {
       training.delTraining(id).then(res => {
-        this.$Message.success(this.$t('sccg'))
+        this.$Message.success(this.$t('sccg'));
         this.getItem();
       });
     },
-    cancel_del() {},
-    delItem(id) {},
-    getItem() {
+    cancel_del () {},
+    delItem (id) {},
+    getItem () {
       training.getTraining(this.searchForm).then(res => {
         this.items = res.data;
         console.log(res);
       });
     },
-    additem() {
-      this.$refs.formInline.resetFields()
+    additem () {
+      this.$refs.formInline.resetFields();
       this.typeDialog = true;
     },
-    goitem(id) {
+    goitem (id) {
       this.$router.push({
-        path: "/traning/trainingMaterialsList",
+        path: '/traning/trainingMaterialsList',
         query: {
           id: id
         }
       });
     },
-    ok() {
-      this.modal_loading_new = true
+    ok () {
+      this.modal_loading_new = true;
       const data = {
         materialsName: this.addformbase.materialsName,
         describe: this.addformbase.describe
@@ -257,18 +257,18 @@ export default {
         if (res) {
           training.addTraining(data).then(res => {
             console.log(res);
-            this.typeDialog = false
+            this.typeDialog = false;
             this.addformbase = Object.assign({}, defaultform);
             this.getItem();
-            this.modal_loading_new = false
+            this.modal_loading_new = false;
           });
         } else {
-          this.$Message.warning(this.$t("yzbtg"));
-          this.this.modal_loading_new = false
+          this.$Message.warning(this.$t('yzbtg'));
+          this.this.modal_loading_new = false;
         }
       });
     },
-    cancel() {
+    cancel () {
       this.addformbase = Object.assign({}, defaultform);
       this.typeDialog = false;
     }

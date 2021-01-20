@@ -17,14 +17,14 @@
           type="warning"
           >{{ $t("Create") }}</Button
         >
-        <Button
+        <!-- <Button
           v-privilege="['10-16-3']"
           style="margin-right: 15px"
           @click="clear"
           icon="md-close"
           type="error"
           >{{ $t("Delete") }}</Button
-        >
+        > -->
       </div>
       <Table :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="companyName">
@@ -35,10 +35,10 @@
         <template slot-scope="{ row, index }" slot="action">
           <div v-if="editIndex === index">
             <Button style="margin-right:16px;" type="info" @click="handleSave(row, index)">保存</Button>
-            <Button type="error" @click="editIndex = -1">取消</Button>
+            <Button type="error" @click="handleCancle(row)">取消</Button>
           </div>
           <div v-else>
-            <Button style="margin-right:16px;" @click="handleEdit(row, index)">操作</Button>
+            <Button style="margin-right:16px;" @click="handleEdit(row, index)">修改</Button>
             <Button @click="handleDelete(row, index)">删除</Button>
           </div>
         </template>
@@ -81,6 +81,16 @@ export default {
     this.getList();
   },
   methods: {
+    // editIndex = -1
+    handleCancle (row) {
+      console.log(this.edit);
+      if (this.edit && !row.companyName) {
+        this.$Message.warning(this.$t('qsrmc'));
+        return false;
+      }
+      this.edit = false;
+      this.editIndex = -1;
+    },
     getList () {
       this.$Spin.show({
         render: (h) => {
@@ -111,14 +121,18 @@ export default {
 
     },
     created () {
-      const data = {
-        companyName: ''
-      };
-      //   this.data.unshift(data);
-      unitOfMeasure.addstorage(data).then(res => {
-        this.edit = true;
-        this.getList();
-      });
+      if (!this.edit) {
+        const data = {
+          companyName: ''
+        };
+        //   this.data.unshift(data);
+        unitOfMeasure.addstorage(data).then(res => {
+          this.edit = true;
+          this.getList();
+        });
+      } else {
+        this.$Message.warning(this.$t('pleaseEnterEdit'));
+      }
     },
     clear () {
       console.log('this.moreWelfare', this.moreWelfare);
@@ -143,7 +157,10 @@ export default {
     handleSave (row, index) {
       row.companyName = this.companyName;
       this.data[index].companyName = this.companyName;
-      console.log(row);
+      if (!this.data[index].companyName) {
+        this.$Message.warning(this.$t('qsrmc'));
+        return false;
+      }
       this.editIndex = -1;
       unitOfMeasure.updatestorage(row).then(res => {
         if (res.ret === 200) {

@@ -16,7 +16,7 @@ export const classification = {
   // 删除
   // 新增级别
   deletestorage: (data) => {
-    return deleteAxios(`/classifySetting/${data}`);
+    return deleteAxios(`/classifySetting/${data.id}`);
   }
 }
 ;

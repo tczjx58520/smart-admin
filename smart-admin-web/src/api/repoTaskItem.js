@@ -122,6 +122,17 @@ export const repoTaskItem = {
       Form.append('operatId', data.operatId);
     }
     return postAxios('/repoTaskItem/deleteCollect', Form);
+  },
+  // 任务量录入
+  addTaskScore: (data) => {
+    let Form = new FormData();
+    if (data.itemScoreJson !== undefined && data.itemScoreJson !== null && data.itemScoreJson !== '') {
+      Form.append('itemScoreJson', data.itemScoreJson);
+    }
+    if (data.operatId !== undefined && data.operatId !== null && data.operatId !== '') {
+      Form.append('operatId', data.operatId);
+    }
+    return postAxios('/repoTaskItem/addItemScore', Form);
   }
 }
 ;

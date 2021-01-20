@@ -8,6 +8,13 @@ export const fixedField = {
   // 更新级别
   updatestorage: (data) => {
     return putAxios('/fixedField', data);
+  },
+  // 查询固定字段1
+  getEditShow: () => {
+    return getAxios('/findEditStatus');
+  },
+  getListShow: () => {
+    return getAxios('/findListStatus');
   }
 }
 ;
