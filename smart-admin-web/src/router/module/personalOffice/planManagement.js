@@ -19,21 +19,14 @@ export const PlanManagement = [
         },
         component: () => import('@/views/personalOffice/planManagement/personalPlan')
       },
-      {
-        path: '/planManagement/addPersonalPlan',
-        name: 'addPersonalPlan',
-        meta: {
-          title: '添加个人计划',
-          roles: ['1-3-4']
-        },
-        component: () => import('@/views/personalOffice/planManagement/addPersonalPlan')
-      },
+
       {
         path: '/planManagement/viewPlan',
         name: 'viewPlan',
         meta: {
           title: '查看计划',
-          roles: ['1-3-4']
+          roles: ['1-3-4'],
+          hideInMenu: true
         },
         component: () => import('@/views/personalOffice/planManagement/viewPlan')
       },
@@ -47,15 +40,6 @@ export const PlanManagement = [
         component: () => import('@/views/personalOffice/planManagement/organizePlan')
       },
       {
-        path: '/planManagement/addOrganizePlan',
-        name: 'addOrganizePlan',
-        meta: {
-          title: '添加组织计划',
-          roles: ['1-3-4']
-        },
-        component: () => import('@/views/personalOffice/planManagement/addOrganizePlan')
-      },
-      {
         path: '/planManagement/workSummary',
         name: 'workSummary',
         meta: {
@@ -65,8 +49,8 @@ export const PlanManagement = [
         component: () => import('@/views/personalOffice/planManagement/workSummary')
       },
       {
-        path: '/planManagement/workReport',
-        name: 'workReport',
+        path: '/planManagement/workreport',
+        name: 'workreport',
         meta: {
           title: '工作汇报',
           roles: ['1-3-4']
@@ -90,7 +74,7 @@ export const PlanManagement = [
           roles: ['1-3-4']
         },
         component: () => import('@/views/personalOffice/planManagement/sharedPlan')
-      },
+      }
 
     ]
   }

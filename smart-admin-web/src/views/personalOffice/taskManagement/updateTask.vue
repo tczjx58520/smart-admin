@@ -10,7 +10,7 @@
            :transfer="false">
       <div slot="header"
            style="text-align:left;color:#fff;">
-        <span>添加任务</span>
+        <span>修改任务</span>
       </div>
 
       <Card dis-hover>
@@ -35,7 +35,7 @@
           <FormItem :label="$t('select')"
                     v-if="formItem.source===1"
                     style="width:40%">
-            <Select v-model="formItem.personalPlanTask.planId">
+            <Select v-model="formItem.planId">
               <Option v-for="item in organizationList"
                       :value="item.id"
                       :key="item.id">{{item.title}}</Option>
@@ -45,7 +45,7 @@
           <FormItem :label="$t('select')"
                     v-else
                     style="width:40%">
-            <Select v-model="formItem.personalPlanTask.planId"
+            <Select v-model="formItem.planId"
                     disabled>
               <Option v-for="item in organizationList"
                       :value="item.id"
@@ -67,7 +67,7 @@
                         format="yyyy-MM-dd HH:mm:ss"
                         @on-change="changeDate"
                         ref="changeDatePicker"
-                        v-model="formItem.startTime"
+                        v-model="startTime"
                         placeholder="Select date"></DatePicker>
           </FormItem>
           <FormItem :label="$t('endTime')"
@@ -78,7 +78,7 @@
                         format="yyyy-MM-dd HH:mm:ss"
                         @on-change="changeDate1"
                         ref="changeDatePicker1"
-                        v-model="formItem.endTime"
+                        v-model="endTime"
                         placeholder="Select date"></DatePicker>
           </FormItem>
 
@@ -191,11 +191,15 @@ export default {
     userSelect,
     controllerSelect
   },
-  name: 'assignment',
+  name: 'updateTask',
   props: {
-    visible: {
+    updateVisible: {
       type: Boolean,
       default: false
+    },
+    taskData: {
+      type: Object,
+      default: null
     }
 
   },
@@ -204,19 +208,7 @@ export default {
     return {
       myupLoadUrl: baseUrl + '/upload/uploadpic',
       modal1: false,
-      formItem: {
-        creatorId: null,
-        personalTaskAttachments: [],
-        personalPlanTask: {},
-        personalTaskParticipant: [],
-        pesronalTaskContent: [
-          {
-            content: null,
-            quote: null,
-            type: 0
-          }
-        ]
-      },
+      formItem: this.taskData,
       options3: {
         disabledDate (date) {
           return date && date.valueOf() < Date.now() - 86400000;
@@ -225,15 +217,25 @@ export default {
       visiable_emp: false,
       visiable_emp1: false,
       mytype: 3,
-      listQuery: Object.assign({}, defaultListQuery),
-      organizationList: []
+      startTime: null,
+      endTime: null,
+      organizationList: [],
+      listQuery: Object.assign({}, defaultListQuery)
     };
   },
   watch: {
-    visible () {
-      this.modal1 = this.visible;
+    updateVisible () {
+      this.modal1 = this.updateVisible;
       console.log(this.modal1);
-    }
+    },
+    taskData () {
+      this.formItem = this.taskData;
+      this.startTime = this.formItem.startTime;
+      this.endTime = this.formItem.endTime;
+      console.log(1, this.formItem);
+    },
+    deep: true,
+    immediate: false
   },
   methods: {
     changeVisible (val) {
@@ -245,18 +247,17 @@ export default {
         });
       }
     },
-
     ok () {
       this.formItem.creatorId = this.$store.state.user.userLoginInfo.userId;
       console.log('=========formItem', this.formItem);
-      taskManage.arrangeTask(this.formItem).then(res => {
+      taskManage.updateTask(this.formItem).then(res => {
         console.log(11111111, res);
-        this.$Message.success('添加成功');
-        this.$emit('updateStat', false);
+        this.$Message.success('修改成功');
+        this.$emit('updateStat2', false);
       });
     },
     cancel () {
-      this.$emit('updateStat', false);
+      this.$emit('updateStat2', false);
     },
     successUpload (response, file, fileList) {
       console.log(111, response);
@@ -268,6 +269,7 @@ export default {
         attachmentUrl: file.response.data.content.picPath[0]
       };
 
+      this.formItem.personalTaskAttachments = [];
       this.formItem.personalTaskAttachments.push(data);
     },
     // 选择负责人

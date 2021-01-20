@@ -8,12 +8,10 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
                 @click="addGong"
                 icon="md-add"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-3']"
                 @click="deleteMore"
                 icon="md-close"
                 type="error">{{ $t('Delete') }}</Button>
@@ -478,7 +476,7 @@ export default {
         },
         {
           title: this.$t('traningPController'),
-          key: 'headerId'
+          key: 'headName'
         },
         {
           title: this.$t('traningType'),
@@ -494,8 +492,10 @@ export default {
               return h('span', '已开始');
             } if (params.row.status === 2) {
               return h('span', '已终止');
-            } else {
+            } if (params.row.status === 3) {
               return h('span', '已结束');
+            } if (params.row.status === 4) {
+              return h('span', '已考评');
             }
           }
         },
@@ -525,7 +525,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.status !== 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -539,7 +540,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.status !== 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -553,7 +555,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.status !== 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -581,11 +584,19 @@ export default {
                   type: 'warning',
                   size: 'small'
                 },
-
+                style: {
+                  marginRight: '5px',
+                  display: params.row.status !== 3 ? 'none' : 'inline-block'
+                },
                 on: {
                   click: () => {
                     this.evaluation = true;
+                    console.log(params.row);
                     this.evaluationTableData = params.row.taskVo;
+                    for (let i = 0; i < this.evaluationTableData.length; i++) {
+                      this.evaluationTableData[i].taskId = params.row.id;
+                    }
+                    console.log(this.evaluationTableData);
                   }
                 }
               }, this.$t('Evaluation'))
@@ -811,9 +822,13 @@ export default {
     },
 
     GongchangePage (val) {
+      this.listQuery.pageNum = val;
+      this.getList();
       console.log(val);
     },
     GongchangePageSize (val) {
+      this.listQuery.pageSize = val;
+      this.getList();
       console.log(val);
     },
     addGong () {

@@ -10,15 +10,15 @@ export const TaskManage = [
       roles: ['1-3-4']
     },
     children: [
-      {
-        path: '/taskManage/assignment',
-        name: 'assignment',
-        meta: {
-          title: '布置任务',
-          roles: ['1-3-4']
-        },
-        component: () => import('@/views/personalOffice/taskManagement/assignment')
-      },
+      // {
+      //   path: '/taskManage/assignment',
+      //   name: 'assignment',
+      //   meta: {
+      //     title: '布置任务',
+      //     roles: ['1-3-4']
+      //   },
+      //   component: () => import('@/views/personalOffice/taskManagement/assignment')
+      // },
       {
         path: '/taskManage/taskList',
         name: 'taskList',
@@ -33,7 +33,8 @@ export const TaskManage = [
         name: 'taskDetail1',
         meta: {
           title: '任务详情',
-          roles: ['1-3-4']
+          roles: ['1-3-4'],
+          hideInMenu: true
         },
         component: () => import('@/views/personalOffice/taskManagement/taskDetail')
       }

@@ -4,30 +4,30 @@
       <Button type="primary"
               @click="save">保存</Button>
       <div style="margin-left:30px">
-        <div style="margin-top: 20px;font-weight: 600;font-size: 24px;">月报</div>
+        <div style="margin-top: 20px;font-weight: 600;font-size: 24px;">周报</div>
         <Divider />
-        <div class="fontStyle">本月完成工作</div>
-        <Input v-model="formItem.monthlyReport.thisMonthWork"
+        <div class="fontStyle">本周完成工作</div>
+        <Input v-model="formItem.weeklyReport.thisWeekWork"
                placeholder="Enter something..."
                style="width: 300px" />
 
-        <div class="fontStyle">下月工作计划</div>
-        <Input v-model="formItem.monthlyReport.nextMonthPlan"
+        <div class="fontStyle">下周工作计划</div>
+        <Input v-model="formItem.weeklyReport.nextWeekPlan"
                placeholder="Enter something..."
                style="width: 300px" />
 
-        <div class="fontStyle">本月工作总结</div>
-        <Input v-model="formItem.monthlyReport.thisMonthWorkConclusion"
+        <div class="fontStyle">本周工作总结</div>
+        <Input v-model="formItem.weeklyReport.thisWeekWorkConclusion"
                placeholder="Enter something..."
                style="width: 300px" />
 
         <div class="fontStyle">需要协调与帮助</div>
-        <Input v-model="formItem.monthlyReport.help"
+        <Input v-model="formItem.weeklyReport.help"
                placeholder="Enter something..."
                style="width: 300px" />
 
         <div class="fontStyle">备注</div>
-        <Input v-model="formItem.monthlyReport.note"
+        <Input v-model="formItem.weeklyReport.note"
                placeholder="Enter something..."
                style="width: 300px" />
 
@@ -84,11 +84,12 @@ export default {
     let baseUrl = process.env.VUE_APP_URL;
     return {
       formItem: {
-        monthlyReport: {},
+        weeklyReport: {},
         weeklyReportAttachments: null,
         workReportReceives: []
       },
       myupLoadUrl: baseUrl + '/upload/uploadpic',
+      value: null,
       single: 0,
       mytype: 3,
       visiable_emp: false,
@@ -97,8 +98,8 @@ export default {
   },
   methods: {
     save () {
-      this.formItem.monthlyReport.employeeId = this.$store.state.user.userLoginInfo.userId;
-      workReport.addMonthReport(this.formItem).then(res => {
+      this.formItem.weeklyReport.employeeId = this.$store.state.user.userLoginInfo.userId;
+      workReport.addWeekReport(this.formItem).then(res => {
         this.$Message.success('保存成功');
         this.$router.back();
       });
@@ -111,7 +112,7 @@ export default {
       const data = {
         // attachmentName: file.name,
         imgUrl: file.response.data.content.picPath[0],
-        category: 2
+        category: 1
       };
       this.formItem.weeklyReportAttachments = [];
       this.formItem.weeklyReportAttachments.push(data);
@@ -133,7 +134,7 @@ export default {
           for (let i = 0; i < list.length; i++) {
             const data = {
               receiverId: Number(list[i]),
-              category: 2,
+              category: 1,
               receiveType: 0,
               status: this.single
             };

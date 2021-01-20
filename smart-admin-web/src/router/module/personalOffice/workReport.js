@@ -20,6 +20,15 @@ export const WorkReport = [
         component: () => import('@/views/personalOffice/workReport/dayReport')
       },
       {
+        path: '/workReport/weekReport',
+        name: 'weekReport',
+        meta: {
+          title: '周报',
+          roles: ['1-3-4']
+        },
+        component: () => import('@/views/personalOffice/workReport/weekReport')
+      },
+      {
         path: '/workReport/monthReport',
         name: 'monthReport',
         meta: {
@@ -27,15 +36,6 @@ export const WorkReport = [
           roles: ['1-3-4']
         },
         component: () => import('@/views/personalOffice/workReport/monthReport')
-      },
-      {
-        path: '/workReport/yearReport',
-        name: 'yearReport',
-        meta: {
-          title: '年报',
-          roles: ['1-3-4']
-        },
-        component: () => import('@/views/personalOffice/workReport/yearReport')
       }
     ]
   }
