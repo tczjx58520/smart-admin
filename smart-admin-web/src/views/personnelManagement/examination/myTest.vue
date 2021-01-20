@@ -16,6 +16,16 @@
                       @click="immediatelyTest(row)">{{$t('immediatelyExam')}}</Button>
             </template>
           </Table>
+          <Page :current="listQuery.pageNum"
+                :page-size="listQuery.pageSize"
+                :page-size-opts="[10, 20, 30, 50, 100]"
+                :total="total1"
+                @on-change="changePage1"
+                @on-page-size-change="changePageSize1"
+                show-elevator
+                show-sizer
+                show-total
+                style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
         <TabPane :label="$t('wwcd')"
                  name="tab2">
@@ -30,6 +40,16 @@
                       >{{$t('look')}}</Button>
             </template> -->
           </Table>
+          <Page :current="listQuery.pageNum"
+                :page-size="listQuery.pageSize"
+                :page-size-opts="[10, 20, 30, 50, 100]"
+                :total="total2"
+                @on-change="changePage2"
+                @on-page-size-change="changePageSize2"
+                show-elevator
+                show-sizer
+                show-total
+                style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
         <TabPane :label="$t('wqkd')"
                  name="tab3">
@@ -37,6 +57,16 @@
                  ref="selection"
                  :columns="columns3"
                  :data="data3">
+            <Page :current="listQuery.pageNum"
+                  :page-size="listQuery.pageSize"
+                  :page-size-opts="[10, 20, 30, 50, 100]"
+                  :total="total3"
+                  @on-change="changePage3"
+                  @on-page-size-change="changePageSize3"
+                  show-elevator
+                  show-sizer
+                  show-total
+                  style="margin:24px 0;text-align:right;"></Page>
             <!-- <template slot-scope="{ row, index }"
                       slot="action">
               <Button type="error"
@@ -60,6 +90,9 @@ const defaultListQuery = {
 export default {
   data () {
     return {
+      total1: 0,
+      total2: 0,
+      total3: 0,
       listQuery: Object.assign({}, defaultListQuery),
       columns1: [
         {
@@ -184,6 +217,7 @@ export default {
       examination.findMyExam(this.listQuery).then(res => {
         console.log(res);
         this.data1 = res.data.list;
+        this.total1 = res.data.total;
       });
     },
     getList1 () {
@@ -192,6 +226,7 @@ export default {
       examination.findMyExam(this.listQuery).then(res => {
         console.log(res);
         this.data2 = res.data.list;
+        this.total2 = res.data.total;
       });
     },
     getList2 () {
@@ -200,10 +235,35 @@ export default {
       examination.findMyExam(this.listQuery).then(res => {
         console.log(res);
         this.data3 = res.data.list;
+        this.total3 = res.data.total;
       });
     },
     changeTab (val) {
       // console.log(val);
+    },
+    changePage1 (val) {
+      this.listQuery.pageNum = val;
+      this.getList();
+    },
+    changePageSize1 (val) {
+      this.listQuery.pageNum = val;
+      this.getList();
+    },
+    changePage2 (val) {
+      this.listQuery.pageNum = val;
+      this.getList1();
+    },
+    changePageSize2 (val) {
+      this.listQuery.pageNum = val;
+      this.getList1();
+    },
+    changePage3 (val) {
+      this.listQuery.pageNum = val;
+      this.getList2();
+    },
+    changePageSize3 (val) {
+      this.listQuery.pageNum = val;
+      this.getList2();
     }
 
   }

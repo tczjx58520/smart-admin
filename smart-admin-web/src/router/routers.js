@@ -11,6 +11,7 @@ import { workAttendance } from './module/workAttendance';
 import { personnelManagement } from './module/personnelManagement';
 import { assetManagement } from './module/assetManagement';
 import { publicRelationShip } from './module/publicRelationShip';
+import { office } from './module/personalOffice';
 /**
  *
  * meta除了原生参数外可配置的参数:
@@ -50,5 +51,6 @@ export const routers = [
   ...workAttendance,
   ...personnelManagement,
   ...assetManagement,
-  ...publicRelationShip
+  ...publicRelationShip,
+  ...office
 ];

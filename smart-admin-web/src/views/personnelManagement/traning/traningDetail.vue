@@ -1,27 +1,26 @@
 <template>
   <div>
-    <Card class="warp-card" dis-hover>
+    <Card class="warp-card"
+          dis-hover>
       <div style="display:flex;flex-wrap: wrap;">
         <div style="padding:16px;width:30%;">
-          <Card
-            style="height:25vh;cursor:pointer;"
-            class="position_mid"
-            @click.native="additem"
-          >
+          <Card style="height:25vh;cursor:pointer;"
+                class="position_mid"
+                @click.native="additem">
             <div style="height:100%;width:100%;">
               <Icon type="md-add" /> <span>{{ $t("tj") }}</span>
             </div>
           </Card>
         </div>
-        <div
-          style="padding:16px;width:30%;"
-          v-for="(item, index) in items"
-          :key="index"
-        >
+        <div style="padding:16px;width:30%;"
+             v-for="(item, index) in items"
+             :key="index">
           <Card style="height:25vh;cursor:pointer;">
             <div style="height:100%;width:100%;display:flex;">
-              <div class="detail_left" style="height:100px;">
-                <Icon type="md-filing" size="25" />
+              <div class="detail_left"
+                   style="height:100px;">
+                <Icon type="md-filing"
+                      size="25" />
               </div>
               <div class="detail_right">
                 <div class="title">{{ item.materialName }}</div>
@@ -30,28 +29,28 @@
                 </div>
               </div>
             </div>
-            <div
-              style="display:flex;justify-content: space-around;"
-              class="bottom_menu"
-            >
-              <Poptip
-                confirm
-                :title="$t('isokdel')"
-                @on-ok="ok_del(item.id)"
-                @on-cancel="cancel_del"
-              >
+            <div style="display:flex;justify-content: space-around;"
+                 class="bottom_menu">
+              <Poptip confirm
+                      :title="$t('isokdel')"
+                      @on-ok="ok_del(item.id)"
+                      @on-cancel="cancel_del">
                 <Button type="text">{{ $t("sc") }}</Button>
               </Poptip>
               <span style="color:#ebebeb;">|</span>
-              <Button type="text" @click.native="editItem(item)">{{ $t("Edit") }}</Button>
+              <Button type="text"
+                      @click.native="editItem(item)">{{ $t("Edit") }}</Button>
             </div>
           </Card>
         </div>
       </div>
     </Card>
     <!-- 添加类型 -->
-    <add-detail-modal :modalstat="addDialog" @updateStat="updateStat"/>
-    <edit-dialog :modalstat="editDialog" :editInfo="editInfo" @updateStat="updateStat_edit" />
+    <add-detail-modal :modalstat="addDialog"
+                      @updateStat="updateStat" />
+    <edit-dialog :modalstat="editDialog"
+                 :editInfo="editInfo"
+                 @updateStat="updateStat_edit" />
   </div>
 </template>
 <script>
@@ -88,7 +87,7 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created () {},
+  created () { },
   mounted () {
     this.getItemList();
   },
@@ -99,7 +98,7 @@ export default {
         this.getItemList();
       });
     },
-    cancel_del () {},
+    cancel_del () { },
     getItemList () {
       training.getTrainingDetail(this.$route.query.id).then(res => {
         console.log(res);
@@ -117,7 +116,7 @@ export default {
       this.addDialog = true;
     },
     editItem (value) {
-      console.log('执行=====');
+      console.log('执行=====', value);
       this.editInfo = value;
       this.editDialog = true;
     },
