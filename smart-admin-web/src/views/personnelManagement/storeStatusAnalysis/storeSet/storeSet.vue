@@ -258,20 +258,20 @@ export default {
       this.editinfo = this.moreaction;
       this.visiable_date = true;
     },
-    // 查询用户登录日志
-    async getwelfareList () {
-      const searchform = {
-        pageNum: 1,
-        pageSize: 999
-      };
-      try {
-        let result = await salesroom.getSalesRoomList(searchform);
-        this.storData = result.data.content.list;
-      } catch (e) {
-        // TODO zhuoda sentry
-        console.error(e);
-      }
-    },
+    // // 查询用户登录日志
+    // async getwelfareList () {
+    //   const searchform = {
+    //     pageNum: 1,
+    //     pageSize: 999
+    //   };
+    //   try {
+    //     let result = await salesroom.getSalesRoomList(searchform);
+    //     this.storData = result.data.content.list;
+    //   } catch (e) {
+    //     // TODO zhuoda sentry
+    //     console.error(e);
+    //   }
+    // },
     // 分页
     changePage (pageNum) {
       this.searchform.pageNum = pageNum;

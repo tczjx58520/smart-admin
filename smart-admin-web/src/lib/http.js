@@ -132,6 +132,9 @@ export const putAxios = (url, data) => {
 export const deleteAxios = (url, data) => {
   return axios.delete(url, data);
 };
+export const patchAxios = (url, data) => {
+  return axios.patch(url, data);
+};
 
 function download (res) {
   let reader = new FileReader();

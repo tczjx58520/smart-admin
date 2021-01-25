@@ -17,14 +17,14 @@
           type="warning"
           >{{ $t("Create") }}</Button
         >
-        <Button
+        <!-- <Button
           v-privilege="['10-16-3']"
           style="margin-right: 15px"
           @click="clear"
           icon="md-close"
           type="error"
           >{{ $t("Delete") }}</Button
-        >
+        > -->
       </div>
       <Table :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="supplierName">
@@ -44,11 +44,11 @@
               @click="handleSave(row, index)"
               >保存</Button
             >
-            <Button type="error" @click="editIndex = -1">取消</Button>
+            <Button type="error" @click="handleCancle(row)">取消</Button>
           </div>
           <div v-else>
             <Button style="margin-right: 16px" @click="handleEdit(row, index)"
-              >操作</Button
+              >修改</Button
             >
             <Button @click="handleDelete(row, index)">删除</Button>
           </div>
@@ -90,6 +90,15 @@ export default {
     this.getList();
   },
   methods: {
+    handleCancle (row) {
+      console.log(this.edit);
+      if (this.edit && !row.supplierName) {
+        this.$Message.warning(this.$t('qsrmc'));
+        return false;
+      }
+      this.edit = false;
+      this.editIndex = -1;
+    },
     getList () {
       this.$Spin.show({
         render: (h) => {
@@ -118,14 +127,18 @@ export default {
     },
     reset () {},
     created () {
-      const data = {
-        supplierName: ''
-      };
-      //   this.data.unshift(data);
-      supplier.addstorage(data).then((res) => {
-        this.edit = true;
-        this.getList();
-      });
+      if (!this.edit) {
+        const data = {
+          supplierName: ''
+        };
+        //   this.data.unshift(data);
+        supplier.addstorage(data).then(res => {
+          this.edit = true;
+          this.getList();
+        });
+      } else {
+        this.$Message.warning(this.$t('pleaseEnterEdit'));
+      }
     },
     clear () {
       console.log('this.moreWelfare', this.moreWelfare);
@@ -151,6 +164,10 @@ export default {
       row.supplierName = this.supplierName;
       this.data[index].supplierName = this.supplierName;
       console.log(row);
+      if (!this.data[index].supplierName) {
+        this.$Message.warning(this.$t('qsrmc'));
+        return false;
+      }
       this.editIndex = -1;
       supplier.updatestorage(row).then((res) => {
         if (res.ret === 200) {

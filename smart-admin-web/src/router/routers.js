@@ -10,6 +10,7 @@ import { flow } from './module/flow';
 import { workAttendance } from './module/workAttendance';
 import { personnelManagement } from './module/personnelManagement';
 import { assetManagement } from './module/assetManagement';
+import { publicRelationShip } from './module/publicRelationShip';
 import { office } from './module/personalOffice';
 /**
  *
@@ -50,5 +51,6 @@ export const routers = [
   ...workAttendance,
   ...personnelManagement,
   ...assetManagement,
+  ...publicRelationShip,
   ...office
 ];

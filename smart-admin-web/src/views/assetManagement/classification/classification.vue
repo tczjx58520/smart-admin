@@ -159,7 +159,22 @@ export default {
       this.isShowAddModal = true;
     },
     clear () {
-      console.log('删除=============');
+      console.log(this.detailItem);
+      this.$Modal.confirm({
+        title: this.$t('friendlyNotice'),
+        content: this.$t('sureDel3'),
+        onOk: () => {
+          const data = {
+            id: this.detailItem.id
+          };
+          classification.deletestorage(data).then(res => {
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.getList();
+            }
+          });
+        }
+      });
     },
     cancelSaveData () {
       this.isShowAddModal = false;

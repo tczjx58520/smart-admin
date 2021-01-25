@@ -60,17 +60,17 @@
   </div>
 </template>
 <script>
-import Tables from "@/components/tables";
-import RoleTree from "../role-tree/role-tree";
-import DepartmentEmployeeTree from "../department-employee-tree/department-employee-tree";
-import { repoTaskItem } from "@/api/repoTaskItem";
-import expand from './expand'
+import Tables from '@/components/tables';
+import RoleTree from '../role-tree/role-tree';
+import DepartmentEmployeeTree from '../department-employee-tree/department-employee-tree';
+import { repoTaskItem } from '@/api/repoTaskItem';
+import expand from './expand';
 const defaultForm = {
   repositoryId: null,
-  items: null,
+  items: null
 };
 export default {
-  name: "addModal",
+  name: 'addModal',
   components: {
     DepartmentEmployeeTree,
     Tables,
@@ -79,14 +79,14 @@ export default {
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    editinfo: null,
+    editinfo: null
   },
-  created() {
+  created () {
     //
   },
-  data() {
+  data () {
     return {
       storData: [],
       itemList: [],
@@ -96,35 +96,35 @@ export default {
       addformbase: Object.assign({}, defaultForm),
       Columns: [
         {
-          type: "expand",
+          type: 'expand',
           width: 50,
           render: (h, params) => {
             return h(expand, {
               props: {
                 row: params.row.repoItemScores,
-                index: params.row.index,
-              },
+                index: params.row.index
+              }
             });
-          },
+          }
         },
         {
-          title: this.$t("mdmc"),
-          key: "repositoryName",
+          title: this.$t('mdmc'),
+          key: 'repositoryName'
         },
         {
-          title: this.$t("mdjb"),
-          key: "repositoryLevelName",
-        },
+          title: this.$t('mdjb'),
+          key: 'repositoryLevelName'
+        }
       ],
-      Data: [],
+      Data: []
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
         this.addformbase = this._.cloneDeep(this.editinfo);
-        console.log("this.addformbase========", this.addformbase);
+        console.log('this.addformbase========', this.addformbase);
         const data = this.addformbase.map((item) => {
           return {
             repositoryName: item.repositoryName,
@@ -134,32 +134,34 @@ export default {
         });
         this.Data = data;
       }
-    },
+    }
   },
   methods: {
-    cancel() {
-      this.$emit("updateStat", false);
+    cancel () {
+      this.$emit('updateStat', false);
       this.addformbase = Object.assign({}, defaultForm);
     },
-    handsave() {
+    handsave () {
       console.log(this.Data);
       this.modal_loading = true;
-      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          // repoTaskItem.addTaskItems(this.addformbase).then((res) => {
-          //   this.$Message.success(this.$t("addSuccess"));
-          //   this.modal_loading = false;
-          //   this.$emit("updateStat", false);
-          //   this.addformbase = Object.assign({}, defaultForm);
-          // });
-        } else {
-          this.$Message.error("Fail!");
-          this.modal_loading = false;
-        }
+      console.log('data=========================================', this.Data);
+      const itemScoreJson = [];
+      this.Data.map(item => {
+        item.repoItemScores.map(items => {
+          itemScoreJson.push(items);
+        });
       });
-    },
-  },
+      const data = {
+        itemScoreJson: JSON.stringify(itemScoreJson),
+        operatId: this.$store.state.user.userLoginInfo.userId
+      };
+      repoTaskItem.addTaskScore(data).then((res) => {
+        this.$Message.success(this.$t('addSuccess'));
+        this.modal_loading = false;
+        this.$emit('updateStat', false);
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -71,6 +71,8 @@ export default {
       console.log('baocun=====');
       numSetting.updatestorage(this.saveItem).then(res => {
         console.log('res=====', res.data);
+        this.$Message.success(this.$t('bccg'));
+        this.$router.closeCurrentPage();
         this.getList();
       });
     }

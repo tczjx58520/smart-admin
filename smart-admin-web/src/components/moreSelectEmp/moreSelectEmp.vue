@@ -219,7 +219,7 @@ export default {
       this.$refs.searchform.resetFields();
     },
     cancel () {
-      this.mymoadlStat = false
+      this.mymoadlStat = false;
       this.$emit('update:modalstat', false);
     },
     handsave () {
@@ -231,14 +231,14 @@ export default {
         setTimeout(() => {
           this.modal_loading = false;
           this.$emit('empData', data);
-           this.mymoadlStat = false
-      this.$emit('update:modalstat', false);
+          this.mymoadlStat = false;
+          this.$emit('update:modalstat', false);
         }, 1000);
       } catch (error) {
         setTimeout(() => {
           this.modal_loading = false;
-           this.mymoadlStat = false
-      this.$emit('update:modalstat', false);
+          this.mymoadlStat = false;
+          this.$emit('update:modalstat', false);
         }, 1000);
       }
     },

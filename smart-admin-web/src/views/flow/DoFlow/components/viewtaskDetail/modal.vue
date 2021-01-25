@@ -374,13 +374,13 @@ export default {
     }
   },
   methods: {
-    filterDate(date) {
+    filterDate (date) {
       if (!date) {
-        return ''
+        return '';
       }
       const temp = new Date(date);
-      const value = utils.getDate(temp,'YMDHM')
-      return value
+      const value = utils.getDate(temp, 'YMDHM');
+      return value;
     },
     filter (val) {
       let map = [];

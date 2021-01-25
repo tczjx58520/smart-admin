@@ -15,6 +15,7 @@
       <Table
         border
         ref="selection"
+        stripe
         :max-height="500"
         :columns="columns4"
         :data="tableData"
@@ -28,6 +29,32 @@
 import { fixedField } from '@/api/fixedField';
 export default {
   components: {},
+  computed: {
+    listshow () {
+      const value = this.tableData.every(item => {
+        console.log(item.listDisplay);
+        return item.listDisplay === 1;
+      });
+      console.log(value);
+      return value ? 1 : 0;
+    },
+    editshow () {
+      const value = this.tableData.every(item => {
+        console.log(item.editDisplay);
+        return item.editDisplay === 1;
+      });
+      console.log(value);
+      return value ? 1 : 0;
+    }
+  },
+  watch: {
+    // tableData: {
+    //   handler () {
+
+    //   },
+    //   deep: true
+    // }
+  },
   data () {
     return {
       columns4: [
@@ -57,12 +84,38 @@ export default {
                 input: function (event) {
                   console.log(event);
                   params.row.listDisplay = event;
+                  that.$set(that.tableData[params.index], 'listDisplay', event);
                 },
                 'on-change': function (event) {
                   that.update(params.row);
                 }
               }
             });
+          },
+          renderHeader: (h, params) => {
+            const that = this;
+            return h('div', [
+              h('span', params.column.title),
+              h('i-switch', {
+                props: {
+                  'true-value': 1,
+                  'false-value': 0,
+                  value: this.listshow
+                },
+                on: {
+                  'on-change': function (event) {
+                    that.Gongloading = true;
+                    const arr = that.tableData.map(item => {
+                      item.listDisplay = event;
+                      return that.update(item);
+                    });
+                    Promise.all(arr).then(res => {
+                      that.getList();
+                    });
+                  }
+                }
+              })
+            ]);
           }
         },
         {
@@ -79,40 +132,89 @@ export default {
               },
               on: {
                 input: function (event) {
-                  console.log(event);
+                  console.log(event, params.index);
+                  that.$set(that.tableData[params.index], 'editDisplay', event);
                   params.row.editDisplay = event;
+                  that.update(params.row);
                 },
                 'on-change': function (event) {
-                  that.update(params.row);
+                //   that.update(params.row);
                 }
               }
             });
-          }
-        },
-        {
-          title: this.$t('usrequire'),
-          key: 'required',
-          align: 'center',
-          render: (h, params) => {
+          },
+          renderHeader: (h, params) => {
             const that = this;
-            return h('i-switch', {
-              props: {
-                value: params.row.required,
-                'true-value': 1,
-                'false-value': 0
-              },
-              on: {
-                input: function (event) {
-                  console.log(event);
-                  params.row.required = event;
+            return h('div', [
+              h('span', params.column.title),
+              h('i-switch', {
+                props: {
+                  'true-value': 1,
+                  'false-value': 0,
+                  value: this.editshow
                 },
-                'on-change': function (event) {
-                  that.update(params.row);
+                on: {
+                  'on-change': function (event) {
+                    that.Gongloading = true;
+                    const arr = that.tableData.map(item => {
+                      // that.$set(item, 'editDisplay', event);
+                      item.editDisplay = event;
+                      return that.update(item);
+                    });
+                    Promise.all(arr).then(res => {
+                      that.getList();
+                    });
+                  }
                 }
-              }
-            });
+              })
+            ]);
           }
         }
+        // {
+        //   title: this.$t('usrequire'),
+        //   key: 'required',
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     const that = this;
+        //     return h('i-switch', {
+        //       props: {
+        //         value: params.row.required,
+        //         'true-value': 1,
+        //         'false-value': 0
+        //       },
+        //       on: {
+        //         input: function (event) {
+        //           console.log(event);
+        //           params.row.required = event;
+        //           that.update(params.row);
+        //         },
+        //         'on-change': function (event) {
+        //         //   that.update(params.row);
+        //         }
+        //       }
+        //     });
+        //   },
+        //   renderHeader: (h, params) => {
+        //     const that = this;
+        //     return h('div', [
+        //       h('span', params.column.title),
+        //       h('i-switch', {
+        //         props: {
+        //           'true-value': 1,
+        //           'false-value': 0
+        //         },
+        //         on: {
+        //           'on-change': function (event) {
+        //             that.tableData.map(item => {
+        //               item.required = event;
+        //               that.update(item);
+        //             });
+        //           }
+        //         }
+        //       })
+        //     ]);
+        //   }
+        // }
       ],
       Gongsearchform: {
         pageNum: 1,
@@ -151,13 +253,12 @@ export default {
       this.getList();
     },
     refresh () {
-      this.listQuery.pageNum = 1;
       this.getList();
     },
     update (item) {
       console.log('item=======', item);
-      fixedField.updatestorage(item).then((res) => {
-        this.getList();
+      return fixedField.updatestorage(item).then((res) => {
+        // this.getList();
       });
     }
   }
