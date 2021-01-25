@@ -237,6 +237,9 @@ export default {
       }
     }
   },
+  computed: {
+
+  },
   methods: {
     // formate (val) {
     //   let date = new Date(val);
@@ -257,7 +260,7 @@ export default {
         attachmentName: file.name,
         createName: this.$store.state.user.userLoginInfo.actualName,
         attachmentUrl: file.response.data.content.picPath[0],
-        createId: this.$store.state.user.userLoginInfo.id
+        createId: this.$store.state.user.userLoginInfo.userId
       };
 
       this.leaderform.attachments.push(data);
@@ -330,10 +333,26 @@ export default {
       this.leaderform = {};
     },
     handsave () {
+      if (this.leaderform.materialName === null || this.leaderform.materialName === '' || this.leaderform.materialName === undefined) {
+        return this.$Message.error('档案名称不能为空');
+      }
+      if (this.leaderform.materialNo === null || this.leaderform.materialNo === '' || this.leaderform.materialNo === undefined) {
+        return this.$Message.error('档案编号不能为空');
+      }
+      if (this.leaderform.ownerName === null || this.leaderform.ownerName === '' || this.leaderform.ownerName === undefined) {
+        return this.$Message.error('文档所有者不能为空');
+      }
+      if (this.leaderform.organizationName === null || this.leaderform.organizationName === '' || this.leaderform.organizationName === undefined) {
+        return this.$Message.error('保管组织不能为空');
+      }
+      if (this.leaderform.employeeName === null || this.leaderform.employeeName === '' || this.leaderform.employeeName === undefined) {
+        return this.$Message.error('保管员不能为空');
+      }
       console.log(this.leaderform, this.leaderform.materialBody);
       this.leaderform.classificationId = Number(this.$route.query.id);
       this.$refs['form2'].validate((valid) => {
         if (valid) {
+          console.log('vuex', this.$store);
           training.addTrainingDetail(this.leaderform).then((res) => {
             if (res.ret === 200) {
               this.$emit('updateStat', false);

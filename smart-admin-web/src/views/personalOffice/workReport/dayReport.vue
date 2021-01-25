@@ -38,14 +38,14 @@
         <div class="fontStyle">图片</div>
         <Upload :action="myupLoadUrl"
                 :data="{ type: 7 } "
-                :on-progress="successImgUpload">
+                :on-success="successImgUpload">
           <Button icon="ios-add"></Button>
         </Upload>
 
         <div class="fontStyle">附件</div>
         <Upload :action="myupLoadUrl"
                 :data="{ type: 7 } "
-                :on-progress="successFjUpload">
+                :on-success="successFjUpload">
           <Button icon="ios-add"></Button>
         </Upload>
 
@@ -263,17 +263,19 @@ export default {
       });
     },
     successImgUpload (response, file, fileList) {
-      // console.log(111, response);
-      // console.log(222, file);
-      // console.log(333, fileList);
+      console.log(111, response);
+      console.log(222, file);
+      console.log(333, fileList);
 
-      const data = {
-        // attachmentName: file.name,
+      console.log(11111, file.response);
+
+      const imgInfo = {
+        attachmentName: file.name,
         imgUrl: file.response.data.content.picPath[0],
         category: 2
       };
       this.formItem.weeklyReportAttachments = [];
-      this.formItem.weeklyReportAttachments.push(data);
+      this.formItem.weeklyReportAttachments.push(imgInfo);
     },
 
     goSelectPeople () {

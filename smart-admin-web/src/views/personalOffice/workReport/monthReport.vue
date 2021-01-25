@@ -34,14 +34,14 @@
         <div class="fontStyle">图片</div>
         <Upload :action="myupLoadUrl"
                 :data="{ type: 7 } "
-                :on-progress="successImgUpload">
+                :on-success="successImgUpload">
           <Button icon="ios-add"></Button>
         </Upload>
 
         <div class="fontStyle">附件</div>
         <Upload :action="myupLoadUrl"
                 :data="{ type: 7 } "
-                :on-progress="successFjUpload">
+                :on-success="successFjUpload">
           <Button icon="ios-add"></Button>
         </Upload>
 

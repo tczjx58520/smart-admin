@@ -319,7 +319,7 @@ export default {
         }
       }
       let newarr3 = this.uniqueArray(testarr, 'createPersonName');
-      console.log('newarr3', newarr3)
+      console.log('newarr3', newarr3);
 
       return newarr3;
     },
