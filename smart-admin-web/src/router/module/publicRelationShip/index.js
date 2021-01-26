@@ -1,6 +1,7 @@
 
 import Main from '@/components/main';
 import { classifiCation } from './classifiCation';
+import { customerCenter } from './customerCenter';
 import { customerComplaints } from './customerComplaints';
 import { publicEvents } from './publicEvents';
 import { publicRelationsContact } from './publicRelationsContact';
@@ -23,7 +24,8 @@ export const publicRelationShip = [
       ...publicRelationsContact,
       ...typesOfComplaints,
       ...classifiCation,
-      ...customerComplaints
+      ...customerComplaints,
+      ...customerCenter
     ]
   }
 ];

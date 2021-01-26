@@ -249,17 +249,14 @@ export default {
     //   return YY + MM + DD + ' ' + hh + mm + ss;
     // },
     mysuccess (response, file, fileList) {
-      console.log(111, response);
-      console.log(222, file);
-      console.log(333, fileList);
-
+      // console.log(this.$store.state.user.userLoginInfo.userId);
       const data = {
         attachmentName: file.name,
         createName: this.$store.state.user.userLoginInfo.actualName,
         attachmentUrl: file.response.data.content.picPath[0],
-        createId: this.$store.state.user.userLoginInfo.id
+        createId: this.$store.state.user.userLoginInfo.userId
       };
-
+      // console.log();
       this.leaderform.attachments.push(data);
     },
     load (index) {
@@ -330,7 +327,6 @@ export default {
       this.leaderform = {};
     },
     handsave () {
-      console.log(this.leaderform, this.leaderform.materialBody);
       this.leaderform.classificationId = Number(this.$route.query.id);
       this.$refs['form2'].validate((valid) => {
         if (valid) {

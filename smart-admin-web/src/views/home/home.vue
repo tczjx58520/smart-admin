@@ -49,7 +49,6 @@
       </i-col>
     </Row>
 
-
   <!-- <Modal
         v-model="adModal" width="800">
         <Ad/>
@@ -87,9 +86,9 @@ export default {
     Ad
   },
   props: {},
-  data() {
+  data () {
     return {
-      adModal:true,
+      adModal: true,
       infoCardData: [
         {
           title: '新增用户',
@@ -134,15 +133,15 @@ export default {
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {},
-  beforeCreate() {},
-  beforeMount() {},
-  beforeUpdate() {},
-  updated() {},
-  beforeDestroy() {},
-  destroyed() {},
-  activated() {},
+  created () {},
+  mounted () {},
+  beforeCreate () {},
+  beforeMount () {},
+  beforeUpdate () {},
+  updated () {},
+  beforeDestroy () {},
+  destroyed () {},
+  activated () {},
   methods: {}
 };
 </script>
