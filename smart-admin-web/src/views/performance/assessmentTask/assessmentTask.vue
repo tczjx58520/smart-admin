@@ -55,6 +55,7 @@
     <!-- 修改任务 -->
     <editGong :modalstat = "visiable_edit" :editinfo="editinfo" @updateStat = "updateStat_edit"></editGong>
     <viewtaskDetail :modalstat = "visiable_view" :editinfo="editinfo" @updateStat = "updateStat_view"></viewtaskDetail>
+    <assessmentMark :modalstat = "visiable_assessmentMark" :editinfo="editinfo" @updateStat = "updateStat_assessmentMark"></assessmentMark>
   </div>
 </template>
 
@@ -67,13 +68,15 @@ import addemp from './components/addemp/modal';
 import addGong from './components/addmodalGong/modal';
 import editGong from './components/editmodalGong/modal';
 import viewtaskDetail from './components/viewtaskDetail/modal';
+import assessmentMark from './components/assessmentMark/modal';
 export default {
   name: 'assessmentTask',
   components: {
     addemp,
     addGong,
     editGong,
-    viewtaskDetail
+    viewtaskDetail,
+    assessmentMark
   },
   props: {},
   data () {
@@ -87,8 +90,8 @@ export default {
       loading: false,
       searchform: {
         pageNum: 1,
-        pageSize: 10,
-        empId: this.$store.state.user.userLoginInfo.userId
+        pageSize: 10
+        // empId: this.$store.state.user.userLoginInfo.userId
       },
       originList: [],
       pageTotal: 0,
@@ -107,9 +110,19 @@ export default {
           // fixed: 'left'
         },
         {
+          title: this.$t('assessmentTask_view.zhibiaojileixing'),
+          key: 'testName',
+          render: (h, params) => {
+            if (params.row.collectType === 1) {
+              return h('span', this.$t('ry'));
+            } else if (params.row.collectType === 2) {
+              return h('span', this.$t('md'));
+            }
+          }
+        },
+        {
           title: this.$t('assessmentTask_view.examiner'),
           key: 'testName',
-          width: 200,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -123,14 +136,13 @@ export default {
                 domProps: {
                   title: params.row.testName
                 }
-              }, params.row.testName)
+              }, params.row.testName || 'N/A')
             ]);
           }
         },
         {
           title: this.$t('assessmentTask_view.assessee'),
           key: 'empName',
-          width: 200,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -144,29 +156,25 @@ export default {
                 domProps: {
                   title: params.row.empName
                 }
-              }, params.row.empName)
+              }, params.row.empName || 'N/A')
             ]);
           }
         },
         {
           title: this.$t('assessmentTask_view.assessmentIndicatorSet'),
-          key: 'assessmentCollectName',
-          width: '200'
+          key: 'assessmentCollectName'
         },
         {
           title: this.$t('assessmentTask_view.effectiveDate'),
-          key: 'effectiveDate',
-          width: '200'
+          key: 'effectiveDate'
         },
         {
           title: this.$t('assessmentTask_view.deadline'),
-          key: 'deadDate',
-          width: '100'
+          key: 'deadDate'
         },
         {
           title: this.$t('assessmentTask_view.stat'),
           key: 'stat',
-          width: '100',
           render: (h, params) => {
             return h('span', this.$options.filters.statfilter(params.row.stat));
           }
@@ -185,7 +193,23 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.collectType === 1 ? 'none' : 'inline-block'
+                },
+                on: {
+                  click: () => {
+                    this.handleDoneAsseMarket(params.row);
+                  }
+                }
+              }, this.$t('assessmentTask_view.luruyingxiaotouru')),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px',
+                  display: params.row.collectType === 2 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -221,7 +245,7 @@ export default {
                 },
                 style: {
                   marginRight: '5px',
-                  display:params.row.stat === 2 || params.row.stat === 3 ? 'none' : 'inline-block'
+                  display: params.row.stat === 2 || params.row.stat === 3 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -236,7 +260,8 @@ export default {
       // table数据
       data: [],
       today: '',
-      moreaction: ''
+      moreaction: '',
+      visiable_assessmentMark: false
     };
   },
   filters: {
@@ -274,6 +299,10 @@ export default {
           this.$Message.info('cancel');
         }
       });
+    },
+    handleDoneAsseMarket (row) {
+      this.visiable_assessmentMark = true;
+      this.editinfo = row;
     },
     View_list (row) {
       this.visiable_view = true;
@@ -345,6 +374,10 @@ export default {
       this.visiable_view = state;
       this.getUserLoginLogPage();
     },
+    updateStat_assessmentMark (state) {
+      this.visiable_assessmentMark = state;
+      this.getUserLoginLogPage();
+    },
     clear () {
       console.log('清楚');
     },
@@ -352,6 +385,7 @@ export default {
       this.searchform = {
         pageNum: 1,
         pageSize: 10
+        // empId: this.$store.state.user.userLoginInfo.userId
       };
       this.getUserLoginLogPage();
     },
@@ -406,12 +440,14 @@ export default {
         await assessmentTaskApi.delassessmentTask(data).then(res => {
           if (res.ret === 200) {
             console.log(res.msg);
+            this.$Spin.hide();
             this.$Message['success']({
               background: true,
               content: res.msg
             });
           } else {
             console.log(res.msg);
+            this.$Spin.hide();
             this.$Message['error']({
               background: true,
               content: res.msg

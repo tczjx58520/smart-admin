@@ -484,6 +484,8 @@ export default {
   },
   assessmentTask: '考核任务管理',
   assessmentTask_view: {
+    luruyingxiaotouru: '录入营销投入',
+    zhibiaojileixing: '指标集类型',
     taskName: '任务名称',
     examiner: '考核人',
     hadexaminer: '已考核人',
@@ -1401,6 +1403,10 @@ export default {
   year: '年',
   week: '周',
   all: '全部',
+  renyuan: '人员',
+  mengdian: '门店',
+  addAssessmentMark: '添加营销投入',
+  yinxiaotourufeiyong: '营销投入费用',
   kqgl: {
     qjrs: '请假人数',
     ccrs: '出差人数',

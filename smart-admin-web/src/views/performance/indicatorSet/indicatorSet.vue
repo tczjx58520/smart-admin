@@ -90,6 +90,17 @@ export default {
           align: 'center'
         },
         {
+          title: this.$t('assessmentTask_view.zhibiaojileixing'),
+          key: 'testName',
+          render: (h, params) => {
+            if (params.row.collectType === 1) {
+              return h('span', this.$t('ry'));
+            } else {
+              return h('span', this.$t('md'));
+            }
+          }
+        },
+        {
           title: this.$t('indicatorSet_view.metricSetName'),
           key: 'name'
         },

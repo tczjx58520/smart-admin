@@ -12,9 +12,18 @@ export const assessmentTaskApi = {
     if (data.deadDate !== undefined && data.deadDate !== null && data.deadDate !== '') {
       Form.append('deadDate', data.deadDate);
     }
-    Form.append('testHandle', data.testHandle);
-    Form.append('checkPerson', data.checkPerson);
-    Form.append('empIds', data.empIds);
+    if (data.collectType !== undefined && data.collectType !== null && data.collectType !== '') {
+      Form.append('collectType', data.collectType);
+    }
+    if (data.testHandle !== undefined && data.testHandle !== null && data.testHandle !== '') {
+      Form.append('testHandle', data.testHandle);
+    }
+    if (data.checkPerson !== undefined && data.checkPerson !== null && data.checkPerson !== '') {
+      Form.append('checkPerson', data.checkPerson);
+    }
+    if (data.empIds !== undefined && data.empIds !== null && data.empIds !== '') {
+      Form.append('empIds', data.empIds);
+    }
     Form.append('assessmentCollectId', data.assessmentCollectId);
     Form.append('createId', data.createId);
     return postAxios('/assessmentTask/addAssessmentTask', Form);
@@ -65,6 +74,9 @@ export const assessmentTaskApi = {
     if (data.deadDate !== undefined && data.deadDate !== null && data.deadDate !== '') {
       Form.append('deadDate', data.deadDate);
     }
+    if (data.collectType !== undefined && data.collectType !== null && data.collectType !== '') {
+      Form.append('collectType', data.collectType);
+    }
     Form.append('taskId', data.taskId);
     Form.append('operatId', data.operatId);
     return postAxios('/assessmentTask/updateAssessmentTask', Form);
@@ -111,5 +123,17 @@ export const assessmentTaskApi = {
     Form.append('operatId', data.operatId);
     Form.append('taskId', data.taskId);
     return postAxios('/assessmentTask/handAssessment', Form);
+  },
+  // 录入营销投入
+  addAssessmentMarket: data => {
+    let Form = new FormData();
+    Form.append('assessmentMarketJson', data);
+    return postAxios('/assessmentTask/addAssessmentMarket', Form);
+  },
+  // 查询营销投入byId
+  getAssessmentMarket: data => {
+    let Form = new FormData();
+    Form.append('taskId', data);
+    return postAxios('/assessmentTask/assessmentMarketList', Form);
   }
 };

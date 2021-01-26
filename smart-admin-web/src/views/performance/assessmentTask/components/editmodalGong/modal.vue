@@ -14,10 +14,15 @@
                   <FormItem :label="$t('assessmentTask_view.taskName')" prop="title">
                         <Input v-model="addformbase.title"></Input>
                   </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.examiner')" prop="empList">
+                  <FormItem :label="$t('assessmentTask_view.zhibiaojileixing')" prop="collectType">
+                        <Select v-model="addformbase.collectType" style="width:100%">
+                          <Option v-for="item in collectTypeList" :value="item.id" v-bind:key="item.id">{{ item.name }}</Option>
+                        </Select>
+                  </FormItem>
+                  <FormItem v-if="addformbase.collectType === 1" :label="$t('assessmentTask_view.examiner')" prop="empList">
                       <Input v-model="addformbase.testHandleNames" readonly @click.native="showemp_exa" style="width: 100%"></Input>
                   </FormItem>
-                  <FormItem :label="$t('assessmentTask_view.assessee')" prop="empList2">
+                  <FormItem v-if="addformbase.collectType === 1" :label="$t('assessmentTask_view.assessee')" prop="empList2">
                       <Input v-model="addformbase.empNames" readonly @click.native="showemp_ass" style="width: 100%"></Input>
                   </FormItem>
                   <FormItem :label="$t('assessmentTask_view.viewer')" prop="empList3">
@@ -67,7 +72,7 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
     this.getindicator();
@@ -115,6 +120,13 @@ export default {
         callback();
       }
     };
+    const validatePass8 = (rule, value, callback) => {
+      if (this.addformbase.collectType === '' || this.addformbase.collectType === null || this.addformbase.collectType === undefined) {
+        callback(new Error('Please enter your collectType'));
+      } else {
+        callback();
+      }
+    };
     return {
       originList: [],
       mytype: null,
@@ -137,6 +149,9 @@ export default {
         empList: [
           { required: true, validator: validatePass2, trigger: 'change' }
         ],
+        collectType: [
+          { required: true, validator: validatePass8, trigger: 'change' }
+        ],
         empList2: [
           { required: true, validator: validatePass3, trigger: 'change' }
         ],
@@ -154,7 +169,17 @@ export default {
         ]
       },
       // 新建员工弹窗
-      visiable_emp: false
+      visiable_emp: false,
+      collectTypeList: [
+        {
+          id: 1,
+          name: this.$t('renyuan')
+        },
+        {
+          id: 2,
+          name: this.$t('mengdian')
+        }
+      ]
     };
   },
   watch: {

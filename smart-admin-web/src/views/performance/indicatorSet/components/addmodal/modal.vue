@@ -69,7 +69,7 @@ const defaultForm = {
   content: '',
   collectType: null,
   repositoryLevelId: null
-}
+};
 export default {
   name: 'addModal',
   components: {
@@ -280,8 +280,8 @@ export default {
       this.edit_indicator_flag = false;
     },
     cancel () {
-      this.addformbase = Object.assign({},defaultForm)
-      this.mydataList = []
+      this.addformbase = Object.assign({}, defaultForm);
+      this.mydataList = [];
       this.$emit('updateStat', false);
     },
     handsave () {
@@ -294,8 +294,8 @@ export default {
           indicatorSetApi.addindicator(this.addformbase).then(res => {
             this.$Message.success(this.$t('addSuccess'));
             this.modal_loading = false;
-            this.addformbase = Object.assign({},defaultForm)
-            this.mydataList = []
+            this.addformbase = Object.assign({}, defaultForm);
+            this.mydataList = [];
             this.$emit('updateStat', false);
           });
         } else {

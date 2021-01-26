@@ -28,6 +28,9 @@ export const indicatorSetApi = {
     if (data.name !== undefined && data.name !== null && data.name !== '') {
       Form.append('name', data.name);
     }
+    if (data.collectType !== undefined && data.collectType !== null && data.collectType !== '') {
+      Form.append('collectType', data.collectType);
+    }
     Form.append('pageNum', data.pageNum);
     Form.append('pageSize', data.pageSize);
     return postAxios('/assessmentCollect/assessmentCollectList', Form);
