@@ -11,13 +11,14 @@
         <div>
           <DatePicker type="daterange"
                       placement="bottom-end"
+                       @on-change="changeDate"
                       placeholder="Select date"
                       style="width: 200px"></DatePicker>
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("state") }}</div>
         <div>
-          <Select v-model="listQuery.model1"
+          <Select v-model="listQuery.status"
                   style="width:200px">
             <Option v-for="item in selectList"
                     :value="item.value"
@@ -27,7 +28,13 @@
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("planType") }}</div>
         <div>
-          <Input v-model="listQuery.group" />
+          <Select v-model="listQuery.type"
+                  style="width:200px">
+            <Option :value="0">日计划</Option>
+            <Option :value="1">周计划</Option>
+            <Option :value="2">月计划</Option>
+            <Option :value="3">年计划</Option>
+          </Select>
         </div>
         <Button type="primary"
                 style="margin-left: 15px"
@@ -125,10 +132,13 @@ export default {
           key: 'status',
           render: (h, params) => {
             if (params.row.status === 0) {
-              return h('span', '未阅');
+              return h('span', '未开始');
             }
             if (params.row.status === 1) {
-              return h('span', '已阅');
+              return h('span', '进行中');
+            }
+            if (params.row.status === 1) {
+              return h('span', '已完成');
             }
           }
         },
@@ -165,12 +175,16 @@ export default {
       listQuery: Object.assign({}, defaultListQuery),
       selectList: [
         {
+          value: '0',
+          label: '未开始'
+        },
+        {
           value: '1',
-          label: 'New York'
+          label: '进行中'
         },
         {
           value: '2',
-          label: 'London'
+          label: '已完成'
         }
       ],
       selectedData: []
@@ -187,6 +201,11 @@ export default {
         this.total = res.data.total;
         console.log(111111111, this.tableData);
       });
+    },
+    changeDate (val) {
+      this.listQuery.createStartTime = val[0];
+      this.listQuery.createEndTime = val[1];
+      console.log(val);
     },
     changePageNum (val) {
       this.listQuery.pageNum = val;

@@ -41,7 +41,6 @@
            v-model="modal1"
            :title="$t('addTrainingTask1')">
       <Form :model="formItem"
-            ref="formRef"
             :rules="ruleInline"
             :label-width="100">
         <FormItem :label="$t('TrainingTypeName')"
@@ -146,7 +145,6 @@
            v-model="modal_edit"
            :title="$t('updateTrainingTask')">
       <Form :model="formItem"
-            ref="formRef"
             :rules="ruleInline"
             :label-width="100">
         <FormItem :label="$t('TrainingTypeName')"
@@ -842,25 +840,49 @@ export default {
       this.getList();
     },
     ok () {
-      this.$refs.formRef.validate(valid => {
-        console.log(valid);
-        if (!valid) {
-          this.$Message.error(this.$t('qsrwzxx'));
-        } else {
-          this.formItem.operationId = this.$store.state.user.userLoginInfo.id;
-          this.formItem.status = 0;
-          this.formItem.taskType = Number(this.formItem.taskType);
-          this.formItem.trainningTypeId = Number(this.formItem.trainningTypeId);
-          this.formItem.startTime = this.startTime;
-          this.formItem.endTime = this.endTime;
-          const data = JSON.stringify(this.formItem);
-          training.addTrainingTask(data).then(res => {
-            this.getList();
-            this.formItem = Object.assign({}, defaultFormItem);
-            this.$Message.success('添加成功');
-            this.modal1 = false;
-          });
-        }
+      this.formItem.operationId = this.$store.state.user.userLoginInfo.id;
+      this.formItem.status = 0;
+      this.formItem.taskType = Number(this.formItem.taskType);
+      this.formItem.trainningTypeId = Number(this.formItem.trainningTypeId);
+      this.formItem.startTime = this.startTime;
+      this.formItem.endTime = this.endTime;
+
+      if (this.formItem.taskName === null || this.formItem.taskName === '' || this.formItem.taskName === undefined) {
+        return this.$Message.error('培训活动名称不能为空');
+      }
+      if (this.formItem.taskType === null || this.formItem.taskType === '' || this.formItem.taskType === undefined) {
+        return this.$Message.error('培训方式不能为空');
+      }
+      if (this.formItem.trainningTypeId === null || this.formItem.trainningTypeId === '' || this.formItem.trainningTypeId === undefined) {
+        return this.$Message.error('培训类型不能为空');
+      }
+      if (this.formItem.address === null || this.formItem.address === '' || this.formItem.address === undefined) {
+        return this.$Message.error('培训地点不能为空');
+      }
+      if (this.formItem.startTime === null || this.formItem.startTime === '' || this.formItem.startTime === undefined) {
+        return this.$Message.error('开始时间不能为空');
+      }
+      if (this.formItem.endTime === null || this.formItem.endTime === '' || this.formItem.endTime === undefined) {
+        return this.$Message.error('结束时间不能为空');
+      }
+      if (this.formItem.startTime === null || this.formItem.startTime === '' || this.formItem.startTime === undefined) {
+        return this.$Message.error('开始时间不能为空');
+      }
+      if (this.formItem.endTime === null || this.formItem.endTime === '' || this.formItem.endTime === undefined) {
+        return this.$Message.error('结束时间不能为空');
+      }
+      if (this.formItem.headName === null || this.formItem.headName === '' || this.formItem.headName === undefined) {
+        return this.$Message.error('负责人不能为空');
+      }
+      if (this.formItem.trainingPeople === null || this.formItem.trainingPeople === '' || this.formItem.trainingPeople === undefined) {
+        return this.$Message.error('培训人员不能为空');
+      }
+      const data = JSON.stringify(this.formItem);
+      training.addTrainingTask(data).then(res => {
+        this.getList();
+        this.formItem = Object.assign({}, defaultFormItem);
+        this.$Message.success('添加成功');
+        this.modal1 = false;
       });
     },
     cancel () {
@@ -869,6 +891,36 @@ export default {
       this.$Message.info('Clicked cancel');
     },
     ok_edit () {
+      if (this.formItem.taskName === null || this.formItem.taskName === '' || this.formItem.taskName === undefined) {
+        return this.$Message.error('培训活动名称不能为空');
+      }
+      if (this.formItem.taskType === null || this.formItem.taskType === '' || this.formItem.taskType === undefined) {
+        return this.$Message.error('培训方式不能为空');
+      }
+      if (this.formItem.trainningTypeId === null || this.formItem.trainningTypeId === '' || this.formItem.trainningTypeId === undefined) {
+        return this.$Message.error('培训类型不能为空');
+      }
+      if (this.formItem.address === null || this.formItem.address === '' || this.formItem.address === undefined) {
+        return this.$Message.error('培训地点不能为空');
+      }
+      if (this.formItem.startTime === null || this.formItem.startTime === '' || this.formItem.startTime === undefined) {
+        return this.$Message.error('开始时间不能为空');
+      }
+      if (this.formItem.endTime === null || this.formItem.endTime === '' || this.formItem.endTime === undefined) {
+        return this.$Message.error('结束时间不能为空');
+      }
+      if (this.formItem.startTime === null || this.formItem.startTime === '' || this.formItem.startTime === undefined) {
+        return this.$Message.error('开始时间不能为空');
+      }
+      if (this.formItem.endTime === null || this.formItem.endTime === '' || this.formItem.endTime === undefined) {
+        return this.$Message.error('结束时间不能为空');
+      }
+      if (this.formItem.headName === null || this.formItem.headName === '' || this.formItem.headName === undefined) {
+        return this.$Message.error('负责人不能为空');
+      }
+      if (this.formItem.trainingPeople === null || this.formItem.trainingPeople === '' || this.formItem.trainingPeople === undefined) {
+        return this.$Message.error('培训人员不能为空');
+      }
       this.formItem.operationId = this.$store.state.user.userLoginInfo.id;
       training.updateTrainingTask(this.formItem).then(res => {
         this.getList();

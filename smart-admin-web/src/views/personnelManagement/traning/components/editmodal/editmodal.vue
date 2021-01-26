@@ -315,6 +315,21 @@ export default {
       this.addformaccount = {};
     },
     handsave () {
+      if (this.leaderform.materialName === null || this.leaderform.materialName === '' || this.leaderform.materialName === undefined) {
+        return this.$Message.error('档案名称不能为空');
+      }
+      if (this.leaderform.materialNo === null || this.leaderform.materialNo === '' || this.leaderform.materialNo === undefined) {
+        return this.$Message.error('档案编号不能为空');
+      }
+      if (this.leaderform.ownerName === null || this.leaderform.ownerName === '' || this.leaderform.ownerName === undefined) {
+        return this.$Message.error('文档所有者不能为空');
+      }
+      if (this.leaderform.organizationName === null || this.leaderform.organizationName === '' || this.leaderform.organizationName === undefined) {
+        return this.$Message.error('保管组织不能为空');
+      }
+      if (this.leaderform.employeeName === null || this.leaderform.employeeName === '' || this.leaderform.employeeName === undefined) {
+        return this.$Message.error('保管员不能为空');
+      }
       console.log(this.leaderform, this.leaderform.materialBody);
       this.leaderform.classificationId = this.$route.query.id;
       this.$refs['form2'].validate((valid) => {

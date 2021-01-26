@@ -113,7 +113,7 @@ export default {
   testCondition: '考试情况',
   fqr: '发起人',
   qiandao: '签到',
-  TrainingTypeName: '培训类型名称',
+  TrainingTypeName: '培训活动名称',
   addTrainingKind: '添加培训类型',
   updateTrainingKind: '修改培训类型',
   TrainingActivityName: '培训活动名称',
@@ -260,6 +260,13 @@ export default {
   xgtxl: '修改通讯录',
   selectTask: '选择任务',
   selectOrganization: '组织选择',
+  monday: '周一',
+  thuesday: '周二',
+  wednesday: '周三',
+  thursday: '周四',
+  friday: '周五',
+  saturday: '周六',
+  sunday: '周日',
 
   // 通用
   calc: '计算结果',
@@ -289,6 +296,11 @@ export default {
   Disagree: '不同意',
   sured: '已确认',
   cancel: '已取消',
+  firstWeek: '第一周',
+  secondWeek: '第二周',
+  thirdWeek: '第三周',
+  fourthWeek: '第四周',
+
   // 签章
   empName: '用户名',
   signatureName: '印章名',

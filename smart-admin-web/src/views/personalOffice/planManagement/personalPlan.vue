@@ -4,12 +4,13 @@
       <div style="display: flex;align-items: center;">
         <div style="margin-right: 7px">{{ $t("planTitle") }}</div>
         <div>
-          <Input v-model="listQuery.name" />
+          <Input v-model="listQuery.title" />
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("createTime") }}</div>
         <div>
           <DatePicker type="daterange"
+                      @on-change="changeDate"
                       placement="bottom-end"
                       placeholder="Select date"
                       style="width: 200px"></DatePicker>
@@ -17,7 +18,7 @@
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("state") }}</div>
         <div>
-          <Select v-model="listQuery.model1"
+          <Select v-model="listQuery.status"
                   style="width:200px">
             <Option v-for="item in selectList"
                     :value="item.value"
@@ -27,7 +28,13 @@
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("planType") }}</div>
         <div>
-          <Input v-model="listQuery.group" />
+          <Select v-model="listQuery.type"
+                  style="width:200px">
+            <Option :value="0">日计划</Option>
+            <Option :value="1">周计划</Option>
+            <Option :value="2">月计划</Option>
+            <Option :value="3">年计划</Option>
+          </Select>
         </div>
         <Button type="primary"
                 style="margin-left: 15px"
@@ -95,7 +102,9 @@ const defaultListQuery = {
   pageNum: 1,
   pageSize: 10,
   employeeId: null,
-  category: 0
+  category: 0,
+  createStartTime: null,
+  createEndTime: null
 };
 export default {
   components: {
@@ -130,10 +139,13 @@ export default {
           key: 'status',
           render: (h, params) => {
             if (params.row.status === 0) {
-              return h('span', '未阅');
+              return h('span', '未开始');
             }
             if (params.row.status === 1) {
-              return h('span', '已阅');
+              return h('span', '进行中');
+            }
+            if (params.row.status === 2) {
+              return h('span', '已完成');
             }
           }
         },
@@ -170,12 +182,16 @@ export default {
       listQuery: Object.assign({}, defaultListQuery),
       selectList: [
         {
+          value: '0',
+          label: '未开始'
+        },
+        {
           value: '1',
-          label: 'New York'
+          label: '进行中'
         },
         {
           value: '2',
-          label: 'London'
+          label: '已完成'
         }
       ],
       selectedData: []
@@ -185,6 +201,11 @@ export default {
     this.getList();
   },
   methods: {
+    changeDate (val) {
+      this.listQuery.createStartTime = val[0];
+      this.listQuery.createEndTime = val[1];
+      console.log(val);
+    },
     getList () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       planManage.findPlan(this.listQuery).then(res => {
