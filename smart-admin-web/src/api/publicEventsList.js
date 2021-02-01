@@ -62,6 +62,23 @@ export const publicEventsList = {
   },
   doFollowStorage: (data) => {
     return postAxios('/eventsFollow', data);
+  },
+  // 文档操作
+  getDocumentList: (data) => {
+    let Form = {};
+    if (data.pageNum !== undefined || data.pageNum !== null || data.pageNum !== '') {
+      Form.pageNum = data.pageNum;
+    }
+    if (data.pageSize !== undefined || data.pageSize !== null || data.pageSize !== '') {
+      Form.pageSize = data.pageSize;
+    }
+    if (data.id !== undefined || data.id !== null || data.id !== '') {
+      Form.id = data.id;
+    }
+    return getAxios('/eventDocuments', Form);
+  },
+  delDocument: (data) => {
+    return deleteAxios(`/eventDocuments?id=${data.id}`);
   }
 }
 ;

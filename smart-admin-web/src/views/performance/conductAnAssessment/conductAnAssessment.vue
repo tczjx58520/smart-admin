@@ -123,7 +123,7 @@ export default {
                 domProps: {
                   title: params.row.testName
                 }
-              }, params.row.testName)
+              }, params.row.testName || 'N/A')
             ]);
           }
         },
@@ -144,7 +144,7 @@ export default {
                 domProps: {
                   title: params.row.empName
                 }
-              }, params.row.empName)
+              }, params.row.empName || 'N/A')
             ]);
           }
         },

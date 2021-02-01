@@ -233,7 +233,7 @@ export default {
             let date = 'N/A';
             if (params.row.endTime) {
               const temp = new Date(params.row.endTime);
-              date = utils.getDate(temp, 'YMDHM');
+              date = utils.getDate(temp, 'YMD');
             }
             return h('span', date);
           }

@@ -9,15 +9,9 @@
           type="default"
           >{{ $t("Back") }}</Button
         >
-        <Button
-          v-privilege="['10-12-1']"
-          v-if="addformbase.status === 0 "
-          style="margin-right: 15px"
-          @click="addGong"
-          icon="md-add"
-          type="warning"
-          >{{ $t("Tjwj") }}</Button
-        >
+        <Upload ref="upload" v-if="addformbase.status === 0" :action="myupLoadUrl" style="display:inline-block;margin-right: 15px" :data="uploadObject" :before-upload="handleUpload" :show-upload-list="false" :on-success="handleRefresh">
+          <Button icon="ios-cloud-upload-outline">{{ $t("Tjwj") }}</Button>
+        </Upload>
         <Button
           v-privilege="['10-12-1']"
           v-if="addformbase.status === 0 "
@@ -101,11 +95,11 @@
           ></Table>
         </TabPane>
         <TabPane v-privilege="['10-11-4']" :label="$t('wendangqu')">
-          <!-- <Table
-            :columns="Shecolumns"
-            :data="Shedata"
-            :loading="Sheloading"
-          ></Table> -->
+          <Table
+            :columns="documentColumns"
+            :data="documentData"
+            :loading="documentLoading"
+          ></Table>
         </TabPane>
       </Tabs>
     </Card>
@@ -120,7 +114,84 @@ export default {
   components: {},
   props: {},
   data () {
+    let baseUrl = process.env.VUE_APP_URL;
     return {
+      myupLoadUrl: baseUrl + '/uploadDocuments/uploadDocument',
+      uploadObject: {
+        name: '',
+        uploadPersonId: this.$store.state.user.userLoginInfo.userId,
+        type: 2,
+        id: this.$route.query.id
+      },
+      documentData: [],
+      documentColumns: [
+        {
+          title: this.$t('wenjianming'),
+          key: 'name'
+        },
+        {
+          title: this.$t('shangchuanshijian'),
+          key: 'uploadTime',
+          render: (h, params) => {
+            let date = 'N/A';
+            if (params.row.uploadTime) {
+              const temp = new Date(params.row.uploadTime);
+              date = utils.getDate(temp, 'YMDHM');
+            }
+            return h('span', date);
+          }
+        },
+        {
+          title: this.$t('shangchuanren'),
+          key: 'uploadPersonName'
+        },
+        {
+          title: this.$t('action'),
+          key: 'followContent',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'Button',
+                {
+                  props: {
+                    size: 'small',
+                    type: 'text'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.download(params.row);
+                    }
+                  }
+                },
+                this.$t('download')
+              ),
+              h(
+                'Button',
+                {
+                  props: {
+                    size: 'small',
+                    type: 'text'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.delDocument(params.row);
+                    }
+                  }
+                },
+                this.$t('Delete')
+              )
+            ]);
+          }
+        }
+      ],
+      documentLoading: false,
       addformbase: {},
       //   社保
       Shevisiable: false,
@@ -190,8 +261,71 @@ export default {
   mounted () {
     this.getwelfareList();
     this.getprocessList();
+    this.getdocumentList();
   },
   methods: {
+    download (row) {
+      const elt = document.createElement('a');
+      elt.setAttribute('href', row.path);
+      elt.setAttribute('download', row.name);
+      elt.style.display = 'none';
+      document.body.appendChild(elt);
+      elt.click();
+      document.body.removeChild(elt);
+    },
+    delDocument (row) {
+      this.$Modal.confirm({
+        title: this.$t('friendlyNotice'),
+        content: this.$t('sureending4'),
+        onOk: () => {
+          const data = {
+            id: row.id
+          };
+          customerComplaintsList.delDocument(data).then(res => {
+            if (res.ret === 200) {
+              this.$Message.success(res.msg);
+              this.getdocumentList();
+            }
+          });
+        }
+      });
+    },
+    handleUpload (file) {
+      this.file = file;
+      console.log('this.file=============', this.file);
+      this.$Modal.confirm({
+        title: this.$t('tianjiawenjianbiaoti'),
+        render: (h) => {
+          return h('Input', {
+            props: {
+              value: this.value,
+              placeholder: 'Please enter your fileName'
+            },
+            on: {
+              input: (val) => {
+                this.value = val;
+              }
+            }
+          });
+        },
+        onOk: async () => {
+          if (!this.value) {
+            this.$Message(this.$t('qsrmc'));
+            return false;
+          }
+          this.uploadObject.name = this.value;
+          this.value = '';
+          this.$refs.upload.post(this.file);
+        },
+        onCancel: () => {
+          this.$Message.warning('cacel');
+        }
+      });
+      return false;
+    },
+    handleRefresh () {
+      this.getdocumentList();
+    },
     endEvent () {
       this.$Modal.confirm({
         title: this.$t('friendlyNotice'),
@@ -199,7 +333,8 @@ export default {
         onOk: () => {
           const data = {
             id: this.$route.query.id,
-            status: 1
+            status: 1,
+            endTime: utils.getDateStr(0, 'YMD')
           };
           customerComplaintsList.updatestorage(data).then(res => {
             if (res.ret === 200) {
@@ -209,6 +344,20 @@ export default {
           });
         }
       });
+    },
+    async getdocumentList () {
+      const searchform = {
+        pageNum: 1,
+        pageSize: 99,
+        id: this.$route.query.id
+      };
+      try {
+        let result = await customerComplaintsList.getDocumentList(searchform);
+        this.documentData = result.data.list;
+      } catch (e) {
+        // TODO zhuoda sentry
+        console.error(e);
+      }
     },
     delEvent () {
       this.$Modal.confirm({

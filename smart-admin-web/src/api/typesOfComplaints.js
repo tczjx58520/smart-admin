@@ -24,6 +24,25 @@ export const typesOfComplaints = {
   // 新增级别
   deletestorage: (data) => {
     return deleteAxios(`/complaintsTypes/${data}`);
+  },
+  getallstorage: () => {
+    return getAxios('/customerComplaints/sumComplaint');
+  },
+  getChart: (data) => {
+    let Form = {};
+    if (data.year !== undefined && data.year !== null && data.year !== '') {
+      Form.year = data.year;
+    }
+    if (data.months !== undefined && data.months !== null && data.months !== '') {
+      Form.months = data.months;
+    }
+    if (data.day !== undefined && data.day !== null && data.day !== '') {
+      Form.day = data.day;
+    }
+    if (data.type !== undefined && data.type !== null && data.type !== '') {
+      Form.type = data.type;
+    }
+    return getAxios('/customerComplaints/dataStatisticsChart', Form);
   }
 }
 ;

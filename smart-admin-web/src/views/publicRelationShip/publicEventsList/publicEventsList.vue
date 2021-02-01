@@ -217,7 +217,7 @@ export default {
             let date = 'N/A';
             if (params.row.updateTime) {
               const temp = new Date(params.row.updateTime);
-              date = utils.getDate(temp, 'YMDHM');
+              date = utils.getDate(temp, 'YMD');
             }
             return h('span', date);
           }
