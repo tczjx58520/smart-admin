@@ -63,6 +63,9 @@ export const planManage = {
     if (data.planId !== undefined && data.planId !== null && data.planId !== '') {
       Form.append('planId', data.planId);
     }
+    if (data.flag !== undefined && data.flag !== null && data.flag !== '') {
+      Form.append('flag', data.flag);
+    }
     return postAxios('/plan/modifyRead', Form);
   }
 

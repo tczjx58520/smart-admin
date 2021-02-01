@@ -33,7 +33,7 @@
                  class="bottom_menu">
               <Poptip confirm
                       :title="$t('isokdel')"
-                      @on-ok="ok_del(item.id)"
+                      @on-ok="ok_del(item.id,item.attachments)"
                       @on-cancel="cancel_del">
                 <Button type="text">{{ $t("sc") }}</Button>
               </Poptip>
@@ -92,11 +92,22 @@ export default {
     this.getItemList();
   },
   methods: {
-    ok_del (id) {
-      training.delTrainingDetail(id).then(res => {
-        this.$Message.success(this.$t('sccg'));
-        this.getItemList();
+    ok_del (id, attachment) {
+      console.log(attachment);
+      const ids = [];
+      for (let i = 0; i < attachment.length; i++) {
+        ids.push(attachment[i].id);
+      }
+      const data = {
+        picId: ids
+      };
+      training.delPic(data).then(res => {
+        console.log(res);
       });
+      // training.delTrainingDetail(id).then(res => {
+      //   this.$Message.success(this.$t('sccg'));
+      //   this.getItemList();
+      // });
     },
     cancel_del () { },
     getItemList () {
