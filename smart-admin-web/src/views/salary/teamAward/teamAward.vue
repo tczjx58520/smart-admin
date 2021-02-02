@@ -29,7 +29,7 @@
               <div style="flex:1;">{{ item.label }}</div>
               <div style="flex:1;text-align:right;">
                 <ButtonGroup>
-                  <Button type="text" @click="addrule(item.data)">
+                  <Button type="text" @click="addrule(item.data,item.value)">
                     <Icon type="md-add-circle"></Icon>
                     {{ $t("tj") }}
                   </Button>
@@ -145,7 +145,7 @@ export default {
                   ],
                   on: {
                     click: () => {
-                      this.delleaderrule(params.index);
+                      this.delleaderrule(params.row, params.index);
                     }
                   }
                 },
@@ -163,7 +163,8 @@ export default {
       edit_rule_flag: false,
       data: [],
       isedit: false,
-      id: null
+      id: null,
+      parentId: null
     };
   },
   computed: {},
@@ -191,32 +192,36 @@ export default {
             for (let i = 0; i < temp.length; i++) {
               for (let j = 0; j < res.data.content.list[0].grantRules.length; j++) {
                 if (res.data.content.list[0].grantRules[j].itemType === Number(temp[i])) {
+                  res.data.content.list[0].grantRules[j].parentId = this.ruleList[i].value;
                   this.ruleList[i].data.push(res.data.content.list[0].grantRules[j]);
                 }
               }
             }
+            console.log('this.ruleList======', this.ruleList);
           }, 100);
-
-          console.log(this.ruleList);
         }
       });
     },
     updateStat_rule (stat, value) {
-      console.log(value);
       this.rule_dialog = stat;
       if (value) {
         if (this.edit_rule_flag) {
-          console.log(value);
-          this.data.splice(value._index, 1, value);
+          const index = this.ruleList.findIndex(item => {
+            return item.value === value.parentId;
+          });
+          console.log('index=====', index);
+          this.ruleList[index].data.splice(value._index, 1, value);
         } else {
+          value.parentId = this.parentId;
           this.data.push(value);
         }
       }
       console.log(this.ruleList);
     },
-    addrule (value) {
+    addrule (value, id) {
       this.rule_dialog = true;
       this.data = value;
+      this.parentId = id;
       this.edit_rule_flag = false;
     },
     getassessmentList () {
@@ -270,6 +275,17 @@ export default {
           console.log(res);
         });
       }
+    },
+    Edit_leader (row) {
+      this.edit_rule_flag = true;
+      this.rule_info = Object.assign({}, row);
+      this.rule_dialog = true;
+    },
+    delleaderrule (value, rowIndex) {
+      const index = this.ruleList.findIndex(item => {
+        return item.value === value.parentId;
+      });
+      this.ruleList[index].data.splice(rowIndex, 1);
     }
   }
 };

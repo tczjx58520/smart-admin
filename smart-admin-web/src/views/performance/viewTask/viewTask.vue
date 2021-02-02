@@ -98,6 +98,17 @@ export default {
           // fixed: 'left'
         },
         {
+          title: this.$t('assessmentTask_view.zhibiaojileixing'),
+          key: 'testName',
+          render: (h, params) => {
+            if (params.row.collectType === 1) {
+              return h('span', this.$t('ry'));
+            } else if (params.row.collectType === 2) {
+              return h('span', this.$t('md'));
+            }
+          }
+        },
+        {
           title: this.$t('assessmentTask_view.examiner'),
           key: 'testName',
           width: 200,
@@ -121,7 +132,6 @@ export default {
         {
           title: this.$t('assessmentTask_view.assessee'),
           key: 'empName',
-          width: 200,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -141,8 +151,7 @@ export default {
         },
         {
           title: this.$t('assessmentTask_view.assessmentIndicatorSet'),
-          key: 'assessmentCollectName',
-          width: '200'
+          key: 'assessmentCollectName'
         },
         {
           title: this.$t('assessmentTask_view.effectiveDate'),
@@ -176,7 +185,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.collectType === 1 ? 'inline-block' : 'none'
                 },
                 on: {
                   click: () => {

@@ -90,13 +90,17 @@
             </Input>
           </FormItem>
           <FormItem :label="$t('jsx')" style="width: 80%">
-            <CheckboxGroup v-model="addformbase.calItem2Array">
+            <CheckboxGroup v-model="addformbase.calItem2Array" @on-change="selectArray">
               <Checkbox
                 v-for="(item, index) in calItme"
                 :key="index"
                 :label="item.value"
-                >{{ item.label }}</Checkbox
-              >
+                >{{ item.label }}
+                <i-switch v-model="addformbase.testObj[item.value]" size="large" @on-change="selectThisItem($event,item)">
+                    <span slot="open">{{ $t('half') }}</span>
+                    <span slot="close">{{ $t('all') }}</span>
+                </i-switch>
+              </Checkbox>
             </CheckboxGroup>
           </FormItem>
           </div>
@@ -110,11 +114,11 @@
           size="large"
           :loading="modal_loading"
           @click="handsave"
-          >{{ $t("Save") }}</Button
-        >
-        <Button type="error" size="large" @click="cancel">{{
-          $t("Close")
-        }}</Button>
+          >{{ $t("Save") }}
+        </Button>
+        <Button type="error" size="large" @click="cancel">
+          {{ $t("Close") }}
+        </Button>
       </ButtonGroup>
     </div>
   </Modal>
@@ -173,21 +177,46 @@ export default {
         ]
       },
       tranferValue: null,
-      mytype: null
+      mytype: null,
+      testObj: {}
     };
   },
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
+        this.addformbase.testObj = {};
+        this.calItme.map((item, index) => {
+          this.addformbase.testObj[item.value] = false;
+        });
         if (this.isedit) {
           this.addformbase = Object.assign({}, this.editinfo);
-          console.log(this.addformbase);
         }
       }
     }
   },
   methods: {
+    selectThisItem (val, item) {
+      const jungle = this.addformbase.calItem2Array.findIndex(son => {
+        return Number(son) === Number(item.value);
+      });
+      console.log('jungle====', jungle, val);
+      if (val && (jungle === -1)) {
+        this.addformbase.calItem2Array.push(item.value);
+      } else if (!val && (jungle !== -1)) {
+        this.addformbase.calItem2Array.splice(jungle, 1);
+      }
+    },
+    selectArray (val) {
+      let temp = this._.cloneDeep(this.calItme);
+      const array = [];
+      for (const key of val) {
+        const empty = temp.filter(item => {
+          return item.value === key;
+        });
+        console.log('empty==========', empty);
+      }
+    },
     delteamrule () {},
     selectedFormlua (id, item) {
       const hadExistStatus = item.selected;

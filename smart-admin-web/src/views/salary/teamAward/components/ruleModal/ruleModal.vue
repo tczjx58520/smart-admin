@@ -125,6 +125,7 @@ export default {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
         if (this.isedit) {
+          console.log('this.editinfo====', this.editinfo);
           this.addformbase = Object.assign({}, this.editinfo);
         }
       }

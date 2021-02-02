@@ -1,7 +1,7 @@
 <template>
         <Modal v-model="mymoadlStat" class="add" width="1024" :closable="false" :mask-closable="false" :transfer="false" :styles="{top: '10px'}">
         <div slot="header" style="text-align:left;color:#fff;">
-            <span>{{ $t('usermanage_view.adduser123') }}</span>
+            <span>{{ $t('usermanage_view.adduser') }}</span>
         </div>
         <div>
             <Card dis-hover>
@@ -26,6 +26,7 @@
 <script>
 import { indicatorSetApi } from '@/api/indicatorSet';
 import { assessmentTaskApi } from '@/api/assessmentTask';
+import { utils } from '@/lib/util';
 export default {
   name: 'editGong',
   components: {
@@ -39,7 +40,7 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -63,7 +64,9 @@ export default {
       addformbase: {
       },
       // 新建员工弹窗
-      visiable_emp: false
+      visiable_emp: false,
+      beginTime: null,
+      endTime: null
     };
   },
   watch: {
@@ -71,35 +74,67 @@ export default {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
         this.addformbase = this.editinfo;
-        console.log('this.addformbase=================?', this.addformbase);
         this.getscore();
+        this.getTimeRange();
       }
     }
   },
   methods: {
+    getTimeRange () {
+      let date = new Date();
+      let y = date.getFullYear();
+      let m = date.getMonth();
+      let firstDay = new Date(y, m, 1);
+      let lastDay = new Date(y, m + 1, 0);
+      this.beginTime = utils.getDate(firstDay, 'YMD');
+      this.endTime = utils.getDate(lastDay, 'YMD');
+      console.log(this.beginTime, this.endTime);
+    },
     async getscore () {
-      this.columns = [
-        {
-          title: this.$t('OrganizationName'),
-          key: 'organizeName',
-          width: 200
-        },
-        {
-          title: this.$t('usermanage_view.name'),
-          key: 'empName',
-          width: 200
-        },
-        {
-          title: this.$t('usermanage_view.role'),
-          key: 'rolesOaName ',
-          width: 100
-        },
-        {
-          title: this.$t('viewTask_view.totalScore'),
-          key: 'totalScore',
-          width: 100
-        }
-      ];
+      console.log('this.editinfo======', this.editinfo.collectType);
+      const jungleFlag = this.editinfo.collectType;
+      if (jungleFlag === 2) {
+        this.columns = [
+          {
+            title: this.$t('mdmc'),
+            key: 'repositoryName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('mdjb'),
+            key: 'repositoryLevelName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('viewTask_view.totalScore'),
+            key: 'totalScore',
+            minWidth: 100
+          }
+        ];
+      } else {
+        this.columns = [
+          {
+            title: this.$t('OrganizationName'),
+            key: 'organizeName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('usermanage_view.name'),
+            key: 'empName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('usermanage_view.role'),
+            key: 'rolesOaName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('viewTask_view.totalScore'),
+            key: 'totalScore',
+            minWidth: 100
+          }
+        ];
+      }
       let data = {};
       data.taskId = this.editinfo.id;
       data.testStat = 0;
@@ -107,9 +142,136 @@ export default {
       await assessmentTaskApi.viewallscore(data).then(res => {
         result = res.data.content;
       });
-      console.log(result);
       let mycolumns = [];
-      mycolumns = result[0].itemScoreVos.map(item => {
+      console.log('result===========', result);
+      mycolumns = await result[0].itemScoreVos.map(item => {
+        // if (item.nameId === 1 && this.editinfo.collectType === 2) {
+        //   const arrayRes = result.map(item => {
+        //     return item.repositoryId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     repositoryIds: queryData
+        //   };
+        //   const queryResult = assessmentTaskApi.getRepositorySale(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].repositoryId === result[j].repositoryId) {
+        //           result[j][item.itemName] = res.data.content[i].saleQuantity;
+        //         }
+        //       }
+        //     }
+        //   });
+        // } else if (item.nameId === 2 && this.editinfo.collectType === 2) {
+        //   const arrayRes = result.map(item => {
+        //     return item.repositoryId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     repositoryIds: queryData
+        //   };
+        //   const queryResult = assessmentTaskApi.getRepositoryService(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].repositoryId === result[j].repositoryId) {
+        //           result[j][item.itemName] = res.data.content[i].service;
+        //         }
+        //       }
+        //     }
+        //   });
+        // } else if (item.nameId === 3 && this.editinfo.collectType === 2) {
+        //   const arrayRes = result.map(item => {
+        //     return item.repositoryId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     repositoryIds: queryData
+        //   };
+        //   const queryResult = assessmentTaskApi.getRepositoryInstallment(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].repositoryId === result[j].repositoryId) {
+        //           result[j][item.itemName] = res.data.content[i].installment;
+        //         }
+        //       }
+        //     }
+        //   });
+        // } else if (item.nameId === 1 && this.editinfo.collectType === 1) {
+        //   const arrayRes = result.map(item => {
+        //     return item.empId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     empIds: queryData
+        //   };
+        //   const queryResult = assessmentTaskApi.getRepositorySale(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].empId === result[j].empId) {
+        //           result[j][item.itemName] = res.data.content[i].saleQuantity;
+        //         }
+        //       }
+        //     }
+        //   });
+        // } else if (item.nameId === 2 && this.editinfo.collectType === 1) {
+        //   const arrayRes = result.map(item => {
+        //     return item.empId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     empIds: queryData
+        //   };
+        //   assessmentTaskApi.getRepositorySale(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].empId === result[j].empId) {
+        //           result[j][item.itemName] = res.data.content[i].service;
+        //         }
+        //       }
+        //     }
+        //   });
+        // } else if (item.nameId === 3 && this.editinfo.collectType === 1) {
+        //   const arrayRes = result.map(item => {
+        //     return item.empId;
+        //   });
+        //   const queryData = arrayRes.join(',');
+        //   const data = {
+        //     // beginTime: this.beginTime,
+        //     beginTime: '2020-10-01',
+        //     // endTime: this.endTime,
+        //     endTime: '2020-10-31',
+        //     empIds: queryData
+        //   };
+        //   const queryResult = assessmentTaskApi.getRepositorySale(data).then(res => {
+        //     for (let i = 0; i < res.data.content.length; i++) {
+        //       for (let j = 0; j < result.length; j++) {
+        //         if (res.data.content[i].empId === result[j].empId) {
+        //           result[j][item.itemName] = res.data.content[i].installment;
+        //         }
+        //       }
+        //     }
+        //   });
+        // }
         return {
           title: item.itemName,
           minWidth: 150,
@@ -122,11 +284,9 @@ export default {
               },
               on: {
                 input: (val) => {
-                  console.log('val========>', val, item);
                   this.mydata[params.index][item.itemName] = val;
                   console.log(this.mydata[params.index]);
                   let index = this.mydata[params.index].itemScoreVos.findIndex(val => val.itemName === item.itemName);
-                  console.log('index===========', index);
                   this.mydata[params.index].totalScore = 0;
                   this.mydata[params.index].flag = true;
                   for (const i in this.mydata[params.index].itemScoreVos) {
@@ -148,7 +308,6 @@ export default {
       }
       this.mydata = result;
       this.loading = false;
-      console.log('this.mydata============', this.mydata);
     },
     cancel () {
       this.reset();

@@ -109,7 +109,8 @@ export default {
     reset () {},
     getDetailLIst () {
       assessmentTaskApi.getAssessmentMarket(this.editinfo.id).then(res => {
-        if (res.data.length === 0) {
+        console.log(res.data.content.length);
+        if (res.data.content.length === 0) {
           const repositoryNameList = this.editinfo.repositoryNames.split(',');
           const id = this.editinfo.repositoryIds.split(',').map(Number);
           let result = repositoryNameList.map((repositoryName, i) => ({ repositoryName, repositoryId: id[i], marketCost: 0, taskId: this.editinfo.id }));

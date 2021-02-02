@@ -7,10 +7,12 @@ export const indicatorSingle = {
     // if (data.itemName !== undefined && data.content !== null && data.content !== '') {
     //   Form.append('content', data.content);
     // }
-    // if (data.itemJson !== undefined && data.itemJson !== null && data.itemJson !== '') {
-    //   Form.append('itemJson', data.itemJson);
-    // }
-    Form.append('createId', data.createId);
+    if (data.type !== undefined && data.type !== null && data.type !== '') {
+      Form.append('type', data.type);
+    }
+    if (data.createId !== undefined && data.createId !== null && data.createId !== '') {
+      Form.append('createId', data.createId);
+    }
     return postAxios('/assessmentCollect/addItemName', Form);
   },
   // 查询指标集

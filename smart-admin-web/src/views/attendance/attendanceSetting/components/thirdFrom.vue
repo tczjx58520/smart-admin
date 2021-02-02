@@ -120,9 +120,9 @@ export default {
     }
   },
   methods: {
-    moreOrganizationData(val) {
-      this.fromBaseData.organizationId = val.organizationOa
-      this.selectTextData = val.organizationOaName
+    moreOrganizationData (val) {
+      this.fromBaseData.organizationId = val.organizationOa;
+      this.selectTextData = val.organizationOaName;
     },
     chooseOrganzation () {
       console.log('test');
@@ -166,7 +166,7 @@ export default {
       this.fromBaseData = {
         createId: this.$store.state.user.userLoginInfo.userId
       };
-      this.selectTextData = ''
+      this.selectTextData = '';
       this.$refs['form'].resetFields();
     },
     handsave () {

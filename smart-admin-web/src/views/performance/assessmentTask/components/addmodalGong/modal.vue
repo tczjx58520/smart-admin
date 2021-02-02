@@ -19,6 +19,9 @@
                           <Option v-for="item in collectTypeList" :value="item.id" v-bind:key="item.id">{{ item.name }}</Option>
                         </Select>
                   </FormItem>
+                  <FormItem v-if="addformbase.collectType === 2" :label="$t('assessmentTask_view.qishitangjian')" prop="timeRange">
+                        <DatePicker v-model="addformbase.timeRange" type="daterange" split-panels placeholder="Select date" style="width: 100%" @on-change="selectTime"></DatePicker>
+                  </FormItem>
                   <FormItem v-if="addformbase.collectType === 1" :label="$t('assessmentTask_view.examiner')" prop="empList">
                       <Input v-model="addformbase.testHandleNames" readonly @click.native="showemp_exa" style="width: 100%"></Input>
                   </FormItem>
@@ -132,6 +135,13 @@ export default {
         callback();
       }
     };
+    const validatePass9 = (rule, value, callback) => {
+      if (this.addformbase.beginTime === '' || this.addformbase.beginTime === null || this.addformbase.beginTime === undefined) {
+        callback(new Error('Please enter your Time'));
+      } else {
+        callback();
+      }
+    };
     return {
       originList: [],
       mytype: null,
@@ -163,6 +173,9 @@ export default {
         ],
         empList3: [
           { required: true, validator: validatePass4, trigger: 'change' }
+        ],
+        timeRange: [
+          { required: true, validator: validatePass8, trigger: 'change' }
         ],
         effectiveTime: [
           { required: true, validator: validatePass5, trigger: 'blur' }
@@ -198,6 +211,11 @@ export default {
     }
   },
   methods: {
+    selectTime (val) {
+      console.log('val=========', val);
+      this.addformbase.beginTime = val[0];
+      this.addformbase.endTime = val[1];
+    },
     changeIndicatorset () {
       this.getindicator();
     },
@@ -255,7 +273,6 @@ export default {
       }
     },
     addorg (selection) {
-      console.log('selection==========>', selection);
       console.log(selection.map(item => { return item.title; }).join(','));
       this.addformbase.organizationOaName = selection.map(item => { return item.title; }).join(',');
       this.addformbase.organizationOa = selection.map(item => { return item.id; }).join(',');

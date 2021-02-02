@@ -130,6 +130,7 @@ export default {
     },
     handsave () {
       this.modal_loading = true;
+      this.addformbase.createId = this.$store.state.user.userLoginInfo.userId;
       this.$refs['form'].validate(valid => {
         if (valid) {
           indicatorSingle.addindicatorSingle(this.addformbase).then(res => {

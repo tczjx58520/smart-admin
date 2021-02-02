@@ -348,10 +348,19 @@ export default {
             if (item.calItem1 && item.conditionType === 1) {
               item.calItem1Array = item.calItem1.split(',').map(Number);
               item.calItem2Array = [];
+              item.halfList = [];
             }
             if (item.calItem2 && item.conditionType === 2) {
               item.calItem1Array = [];
-              item.calItem2Array = item.calItem2.split(',').map(Number);
+              const data = item.calItem2.split(',');
+              item.calItem2Array = [];
+              item.testObj = {};
+              data.map(itemSon => {
+                const temp = itemSon.split('-');
+                item.calItem2Array.push(Number(temp[0]));
+                item.testObj[String(temp[0])] = Boolean(Number(temp[1]));
+              });
+              item.halfList = [];
             }
           });
           this.data_rule = res.data.content[0].personalRuleItemVos;
@@ -376,9 +385,14 @@ export default {
       this.data_formula.splice(index, 1);
     },
     updateStat_formula (stat, value) {
-      console.log('value========', value);
       this.formula_dialog = stat;
       if (value) {
+        value.halfList = [];
+        if (value.conditionType === 2) {
+          for (let i = 0; i < value.calItem2Array.length; i++) {
+            value.halfList[i] = value.calItem2Array[i] + '-' + Number(value.testObj[String(value.calItem2Array[i])]);
+          }
+        }
         if (this.edit_formula_flag) {
           this.data_formula.splice(value._index, 1, value);
         } else {
@@ -438,10 +452,10 @@ export default {
         };
       }
       console.log(temp);
+      console.log('this.data_formula==========', this.data_formula);
       for (let i = 0; i < this.data_formula.length; i++) {
-        console.log(this.data_formula[i].calItem1Array, this.data_formula[i].calItem2Array);
         const str = this.data_formula[i].calItem1Array.join(',');
-        const str2 = this.data_formula[i].calItem2Array.join(',');
+        const str2 = this.data_formula[i].halfList.join(',');
         if (str && this.data_formula[i].conditionType === 1) {
           this.data_formula[i].calItem1 = str;
         }

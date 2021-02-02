@@ -116,22 +116,36 @@
   </div>
 </template>
 <script>
+import { empCard } from '@/api/empCard';
 export default {
-  name: "userInfo_tab",
+  name: 'userInfo_tab',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
-      mypath: require("../../../../assets/images/myPic/avater.jpg"),
-      showformBase: {},
+      mypath: require('../../../../assets/images/myPic/avater.jpg'),
+      showformBase: {}
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {},
-  methods: {},
+  created () {},
+  mounted () {
+    this.getInfo();
+  },
+  methods: {
+    getInfo () {
+      const data = {
+        // employeeId: this.$store.state.user.userLoginInfo.userId
+        employeeId: 75568
+      };
+      console.log('data=======', data);
+      empCard.getEmpInfo(data).then(res => {
+        console.log('res=============', res);
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

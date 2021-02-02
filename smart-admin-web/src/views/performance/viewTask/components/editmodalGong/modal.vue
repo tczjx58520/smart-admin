@@ -38,7 +38,7 @@ export default {
     editinfo: null
   },
   created () {
-    
+
   },
   mounted () {
   },
@@ -78,28 +78,49 @@ export default {
   },
   methods: {
     async getscore () {
-      this.columns = [
-        {
-          title: this.$t('OrganizationName'),
-          key: 'organizeName',
-          width: 200
-        },
-        {
-          title: this.$t('usermanage_view.name'),
-          key: 'empName',
-          width: 200
-        },
-        {
-          title: this.$t('usermanage_view.role'),
-          key: 'roleName',
-          width: 100
-        },
-        {
-          title: this.$t('viewTask_view.totalScore'),
-          key: 'totalScore',
-          width: 100
-        }
-      ];
+      const jungleFlag = this.editinfo.collectType;
+      if (jungleFlag === 2) {
+        this.columns = [
+          {
+            title: this.$t('mdmc'),
+            key: 'repositoryName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('mdjb'),
+            key: 'repositoryLevelName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('viewTask_view.totalScore'),
+            key: 'totalScore',
+            minWidth: 100
+          }
+        ];
+      } else {
+        this.columns = [
+          {
+            title: this.$t('OrganizationName'),
+            key: 'organizeName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('usermanage_view.name'),
+            key: 'empName',
+            minWidth: 100
+          },
+          {
+            title: this.$t('usermanage_view.role'),
+            key: 'rolesOaName ',
+            minWidth: 100
+          },
+          {
+            title: this.$t('viewTask_view.totalScore'),
+            key: 'totalScore',
+            minWidth: 100
+          }
+        ];
+      }
       let data = {};
       data.taskId = this.editinfo.id;
       let result = null;

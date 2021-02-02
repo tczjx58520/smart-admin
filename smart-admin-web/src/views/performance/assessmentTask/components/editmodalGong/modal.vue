@@ -19,6 +19,9 @@
                           <Option v-for="item in collectTypeList" :value="item.id" v-bind:key="item.id">{{ item.name }}</Option>
                         </Select>
                   </FormItem>
+                  <FormItem v-if="addformbase.collectType === 2" :label="$t('assessmentTask_view.qishitangjian')" prop="timeRange">
+                      <DatePicker v-model="addformbase.timeRange" type="daterange" split-panels placeholder="Select date" style="width: 100%" @on-change="selectTime"></DatePicker>
+                  </FormItem>
                   <FormItem v-if="addformbase.collectType === 1" :label="$t('assessmentTask_view.examiner')" prop="empList">
                       <Input v-model="addformbase.testHandleNames" readonly @click.native="showemp_exa" style="width: 100%"></Input>
                   </FormItem>
@@ -59,6 +62,7 @@ import $ from 'jquery';
 import { indicatorSetApi } from '@/api/indicatorSet';
 import { assessmentTaskApi } from '@/api/assessmentTask';
 import addemp from '../addemp_more/modal';
+import { utils } from '@/lib/util';
 export default {
   name: 'editGong',
   components: {
@@ -188,24 +192,33 @@ export default {
       if (this.mymoadlStat) {
         this.addformbase = this.editinfo;
         console.log('this.addformbase=================?', this.addformbase);
+        const mydate = new Date(this.addformbase.beginTime);
+        const mydate2 = new Date(this.addformbase.endTime);
+        const date = utils.getDate(mydate, 'YMD');
+        const date2 = utils.getDate(mydate2, 'YMD');
         this.addformbase.testHandleNames = this.addformbase.testName;
         this.addformbase.empNames = this.addformbase.empName;
         this.addformbase.checkPersonNames = this.addformbase.checkPersonName;
         this.addformbase.effectiveTime = this.addformbase.effectiveDate;
         this.addformbase.deadTime = this.addformbase.deadDate;
+        if (this.addformbase.collectType === 2) {
+          this.addformbase.timeRange = [date, date2];
+        }
         // 去除字符串前后逗号
-        if (this.addformbase.testHandle.substr(0, 1) === ',') {
+        if (this.addformbase.collectType === 1 && this.addformbase.testHandle.substr(0, 1) === ',') {
           this.addformbase.testHandle = this.addformbase.testHandle.substr(1);
+        }
+        if (this.addformbase.collectType === 1 && this.addformbase.empIds.substr(0, 1) === ',') {
+          this.addformbase.empIds = this.addformbase.empIds.substr(1);
         }
         if (this.addformbase.checkPerson.substr(0, 1) === ',') {
           this.addformbase.checkPerson = this.addformbase.checkPerson.substr(1);
         }
-        if (this.addformbase.empIds.substr(0, 1) === ',') {
-          this.addformbase.empIds = this.addformbase.empIds.substr(1);
+        if (this.addformbase.collectType === 1) {
+          this.addformbase.empIds = (this.addformbase.empIds.substring(this.addformbase.empIds.length - 1) === ',') ? this.addformbase.empIds.substring(0, this.addformbase.empIds.length - 1) : this.addformbase.empIds;
+          this.addformbase.testHandle = (this.addformbase.testHandle.substring(this.addformbase.testHandle.length - 1) === ',') ? this.addformbase.testHandle.substring(0, this.addformbase.testHandle.length - 1) : this.addformbase.testHandle;
         }
-        this.addformbase.testHandle = (this.addformbase.testHandle.substring(this.addformbase.testHandle.length - 1) === ',') ? this.addformbase.testHandle.substring(0, this.addformbase.testHandle.length - 1) : this.addformbase.testHandle;
         this.addformbase.checkPerson = (this.addformbase.checkPerson.substring(this.addformbase.checkPerson.length - 1) === ',') ? this.addformbase.checkPerson.substring(0, this.addformbase.checkPerson.length - 1) : this.addformbase.checkPerson;
-        this.addformbase.empIds = (this.addformbase.empIds.substring(this.addformbase.empIds.length - 1) === ',') ? this.addformbase.empIds.substring(0, this.addformbase.empIds.length - 1) : this.addformbase.empIds;
         console.log('this.addformbase=================2222', this.addformbase);
 
         // this.gettoday();
@@ -213,6 +226,11 @@ export default {
     }
   },
   methods: {
+    selectTime (val) {
+      console.log('val=========', val);
+      this.addformbase.beginTime = val[0];
+      this.addformbase.endTime = val[1];
+    },
     async getindicator () {
       let data = {};
       data.pageNum = 1;

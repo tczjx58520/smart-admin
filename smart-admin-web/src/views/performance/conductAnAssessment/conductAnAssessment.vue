@@ -55,6 +55,7 @@
     <addGong :modalstat = "visiable" @updateStat = "updateStat"></addGong>
     <!-- 修改任务 -->
     <editGong :modalstat = "visiable_edit" :editinfo="editinfo" @updateStat = "updateStat_edit"></editGong>
+    <typeCompleteNumber :modalstat = "visiable_type" :editinfo="editinfo" @updateStat = "updateStat_type"></typeCompleteNumber>
     <viewtaskDetail :modalstat = "visiable_view" :editinfo="editinfo" @updateStat = "updateStat_view"></viewtaskDetail>
   </div>
 </template>
@@ -68,13 +69,15 @@ import addemp from './components/addemp/modal';
 import addGong from './components/addmodalGong/modal';
 import editGong from './components/editmodalGong/modal';
 import viewtaskDetail from './components/viewtaskDetail/modal';
+import typeCompleteNumber from './components/typeCompleteNumber/modal';
 export default {
   name: 'conductAnAssessment',
   components: {
     addemp,
     addGong,
     editGong,
-    viewtaskDetail
+    viewtaskDetail,
+    typeCompleteNumber
   },
   props: {},
   data () {
@@ -83,6 +86,7 @@ export default {
       mytype: null,
       visiable: false,
       visiable_edit: false,
+      visiable_type: false,
       visiable_view: false,
       visiable_emp: false,
       loading: false,
@@ -102,14 +106,12 @@ export default {
         },
         {
           title: this.$t('assessmentTask_view.taskName'),
-          key: 'title',
-          width: 200
+          key: 'title'
           // fixed: 'left'
         },
         {
           title: this.$t('assessmentTask_view.examiner'),
           key: 'testName',
-          width: 200,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -178,7 +180,7 @@ export default {
           align: 'center',
           fixed: 'right',
           render: (h, params) => {
-            if (params.row.stat === 0) {
+            if (new Date(params.row.deadDate).getTime() > new Date().getTime()) {
               return h('div', [
                 h('Button', {
                   props: {
@@ -193,9 +195,21 @@ export default {
                       this.Stop(params.row);
                     }
                   }
-                }, this.$t('conductAnAssessment_view.manualAssessment'))
+                }, this.$t('conductAnAssessment_view.manualAssessment')),
+                h('Button', {
+                  props: {
+                    type: 'info',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      this.handleTypecompleteNumber(params.row);
+                    }
+                  }
+                }, this.$t('lurushijiwanchengshu'))
               ]);
             }
+            console.log();
           }
         }
       ],
@@ -224,6 +238,10 @@ export default {
     this.getindicator();
   },
   methods: {
+    handleTypecompleteNumber (row) {
+      this.visiable_type = true;
+      this.editinfo = row;
+    },
     autotask () {},
     Stop (row) {
       this.visiable_edit = true;
@@ -293,6 +311,10 @@ export default {
     },
     updateStat_edit (state) {
       this.visiable_edit = state;
+      this.getUserLoginLogPage();
+    },
+    updateStat_type (state) {
+      this.visiable_type = state;
       this.getUserLoginLogPage();
     },
     updateStat_view (state) {

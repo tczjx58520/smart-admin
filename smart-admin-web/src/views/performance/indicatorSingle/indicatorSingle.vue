@@ -112,7 +112,8 @@ export default {
                   size: 'small'
                 },
                 style: {
-                  marginRight: '5px'
+                  marginRight: '5px',
+                  display: params.row.type !== 1 ? 'inline-block' : 'none'
                 },
                 on: {
                   click: () => {
@@ -124,6 +125,9 @@ export default {
                 props: {
                   type: 'error',
                   size: 'small'
+                },
+                style: {
+                  display: params.row.type !== 1 ? 'inline-block' : 'none'
                 },
                 directives: [
                   {

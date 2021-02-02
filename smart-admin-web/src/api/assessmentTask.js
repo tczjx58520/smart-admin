@@ -24,6 +24,12 @@ export const assessmentTaskApi = {
     if (data.empIds !== undefined && data.empIds !== null && data.empIds !== '') {
       Form.append('empIds', data.empIds);
     }
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
     Form.append('assessmentCollectId', data.assessmentCollectId);
     Form.append('createId', data.createId);
     return postAxios('/assessmentTask/addAssessmentTask', Form);
@@ -77,6 +83,12 @@ export const assessmentTaskApi = {
     if (data.collectType !== undefined && data.collectType !== null && data.collectType !== '') {
       Form.append('collectType', data.collectType);
     }
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
     Form.append('taskId', data.taskId);
     Form.append('operatId', data.operatId);
     return postAxios('/assessmentTask/updateAssessmentTask', Form);
@@ -124,6 +136,13 @@ export const assessmentTaskApi = {
     Form.append('taskId', data.taskId);
     return postAxios('/assessmentTask/handAssessment', Form);
   },
+  handItemFinish: data => {
+    let Form = new FormData();
+    Form.append('itemFinishJson', data.itemFinishJson);
+    Form.append('operatId', data.operatId);
+    Form.append('taskId', data.taskId);
+    return postAxios('/assessmentTask/handItemFinish', Form);
+  },
   // 录入营销投入
   addAssessmentMarket: data => {
     let Form = new FormData();
@@ -135,5 +154,85 @@ export const assessmentTaskApi = {
     let Form = new FormData();
     Form.append('taskId', data);
     return postAxios('/assessmentTask/assessmentMarketList', Form);
+  },
+  // 获取奖金
+  // 员工实际分期收款
+  getEmpInstallment: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.empIds !== undefined && data.empIds !== null && data.empIds !== '') {
+      Form.append('empIds', data.empIds);
+    }
+    return postAxios('/rewardCal/getEmpInstallment', Form);
+  },
+  getEmpSale: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.empIds !== undefined && data.empIds !== null && data.empIds !== '') {
+      Form.append('empIds', data.empIds);
+    }
+    return postAxios('/rewardCal/getEmpSale', Form);
+  },
+  getEmpService: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.empIds !== undefined && data.empIds !== null && data.empIds !== '') {
+      Form.append('empIds', data.empIds);
+    }
+    return postAxios('/rewardCal/getEmpService', Form);
+  },
+  getRepositoryInstallment: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.repositoryIds !== undefined && data.repositoryIds !== null && data.repositoryIds !== '') {
+      Form.append('repositoryIds', data.repositoryIds);
+    }
+    return postAxios('/rewardCal/getRepositoryInstallment', Form);
+  },
+  getRepositorySale: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.repositoryIds !== undefined && data.repositoryIds !== null && data.repositoryIds !== '') {
+      Form.append('repositoryIds', data.repositoryIds);
+    }
+    return postAxios('/rewardCal/getRepositorySale', Form);
+  },
+  getRepositoryService: data => {
+    let Form = new FormData();
+    if (data.beginTime !== undefined && data.beginTime !== null && data.beginTime !== '') {
+      Form.append('beginTime', data.beginTime);
+    }
+    if (data.endTime !== undefined && data.endTime !== null && data.endTime !== '') {
+      Form.append('endTime', data.endTime);
+    }
+    if (data.repositoryIds !== undefined && data.repositoryIds !== null && data.repositoryIds !== '') {
+      Form.append('repositoryIds', data.repositoryIds);
+    }
+    return postAxios('/rewardCal/getRepositoryService', Form);
   }
 };
