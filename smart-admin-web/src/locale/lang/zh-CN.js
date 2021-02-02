@@ -2,6 +2,7 @@ export default {
   Home: '首页',
   home: '首页',
   login: '登录',
+  dayReport: '日报',
   unitOfMeasure: '计量单位',
   storageLocation: '存放地址',
   assetManagement: '资产管理',

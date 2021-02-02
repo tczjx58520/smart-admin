@@ -12,7 +12,7 @@
           <DatePicker type="daterange"
                       placement="bottom-end"
                       placeholder="Select date"
-                       @on-change="changeDate"
+                      @on-change="changeDate"
                       style="width: 200px"></DatePicker>
         </div>
 
@@ -245,7 +245,8 @@ export default {
       });
       planInfomation.userName = nameList.join(',');
       const data = {
-        planId: row.id
+        planId: row.id,
+        flag: 1
       };
       planManage.readPlan(data).then(res => {
         console.log(222222222, res);

@@ -144,6 +144,15 @@ export const training = {
   // 签到
   sign: data => {
     return postAxios('/trainning/sign', data);
+  },
+
+  // 删除附件
+  delPic: data => {
+    let Form = new FormData();
+    if (data.picId !== undefined && data.picId !== null && data.picId !== '') {
+      Form.append('picId', data.picId);
+    }
+    return postAxios('/upload/delpic', Form);
   }
 
 }

@@ -203,6 +203,12 @@ export default {
   methods: {
     immediatelyTest (row) {
       console.log(row);
+      const nowTime = new Date().getTime();
+      const startTime = new Date(row.startTime).getTime();
+      if (nowTime < startTime) {
+        return this.$Message.error('未到开始时间！！！');
+      }
+
       const data = {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         examId: row.examId

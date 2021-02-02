@@ -77,7 +77,6 @@
                       @on-change="changeDate"
                       ref="changeDatePicker"
                       placeholder="Select date"
-                      v-model="startTime"
                       style="width: 200px"></DatePicker>
         </FormItem>
         <FormItem :label="$t('endTime')"
@@ -88,7 +87,6 @@
                       @on-change="changeDate1"
                       ref="changeDatePicker1"
                       placeholder="Select date"
-                      v-model="endTime"
                       style="width: 200px"></DatePicker>
         </FormItem>
         <FormItem :label="$t('traningPController')"
@@ -680,21 +678,13 @@ export default {
         this.typeList = res.data.list;
       });
     },
-    changeDate () {
-      console.log(this.formItem);
-      if (this.startTime) {
-        this.$refs['changeDatePicker'].onSelectionModeChange('time');// 弹出时间选择框
-        this.startTime = this.$refs.changeDatePicker.visualValue;
-        this.formItem.startTime = this.startTime;
-      }
+    changeDate (val) {
+      console.log(val);
+      this.formItem.startTime = val;
     },
-    changeDate1 () {
-      console.log(this.formItem);
-      if (this.endTime) {
-        this.$refs['changeDatePicker1'].onSelectionModeChange('time');// 弹出时间选择框
-        this.endTime = this.$refs.changeDatePicker1.visualValue;
-        this.formItem.endTime = this.endTime;
-      }
+    changeDate1 (val) {
+      console.log(val);
+      this.formItem.endTime = val;
     },
     // 选择负责人
     updateStat_emp1 (stat, empList, type) {
@@ -844,8 +834,6 @@ export default {
       this.formItem.status = 0;
       this.formItem.taskType = Number(this.formItem.taskType);
       this.formItem.trainningTypeId = Number(this.formItem.trainningTypeId);
-      this.formItem.startTime = this.startTime;
-      this.formItem.endTime = this.endTime;
 
       if (this.formItem.taskName === null || this.formItem.taskName === '' || this.formItem.taskName === undefined) {
         return this.$Message.error('培训活动名称不能为空');

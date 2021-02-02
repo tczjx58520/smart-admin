@@ -20,7 +20,6 @@
                 :rules="ruleValidate"
                 inline>
             <FormItem :label="$t('testName')"
-                      prop="examName"
                       style="width:40%;">
               <Input v-model="testForm.examName"></Input>
             </FormItem>
@@ -40,8 +39,6 @@
                           :options="options3"
                           format="yyyy-MM-dd HH:mm:ss"
                           @on-change="changeDate"
-                          ref="changeDatePicker"
-                          v-model="testForm.startTime"
                           placeholder="Select date"
                           style="width: 200px"></DatePicker>
             </FormItem>
@@ -52,8 +49,6 @@
                           :options="options3"
                           format="yyyy-MM-dd HH:mm:ss"
                           @on-change="changeDate1"
-                          ref="changeDatePicker1"
-                          v-model="testForm.endTime"
                           placeholder="Select date"
                           style="width: 200px"></DatePicker>
             </FormItem>
@@ -359,6 +354,18 @@ export default {
       examination.releaseExam(data).then(res => {
         console.log(res);
         this.$emit('updateStat', false);
+        this.testForm = {
+          examEmployeeList: [],
+          examQuestionBankList: [],
+          typeName: '',
+          endTime: null,
+          examTypeId: null,
+          passPoint: null,
+          questionCount: null,
+          startTime: null,
+          totalPoint: null,
+          totalTime: null
+        };
       });
     },
     cancel () {
@@ -428,19 +435,13 @@ export default {
     cancel_type () {
       this.kindModal = false;
     },
-    changeDate () {
-      if (this.testForm.startTime) {
-        this.$refs['changeDatePicker'].onSelectionModeChange('time');// 弹出时间选择框
-
-        this.testForm.startTime = this.$refs.changeDatePicker.visualValue;
-      }
+    changeDate (val) {
+      console.log(val);
+      this.testForm.startTime = val;
     },
-    changeDate1 () {
-      if (this.testForm.endTime) {
-        this.$refs['changeDatePicker1'].onSelectionModeChange('time');// 弹出时间选择框
-
-        this.testForm.endTime = this.$refs.changeDatePicker1.visualValue;
-      }
+    changeDate1 (val) {
+      console.log(val);
+      this.testForm.endTime = val;
     }
 
   }
