@@ -7,7 +7,7 @@ export const position = [
     meta: {
       title: '岗位管理',
       icon: 'ios-paper-outline',
-      roles: ['1-5-4']
+      roles: ['1-4-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const position = [
         name: 'PositionList',
         meta: {
           title: '岗位管理',
-          roles: ['1-5-4']
+          roles: ['1-4-4']
         },
         component: () => import('@/views/systemSetting/employee/position/position-list.vue')
       }

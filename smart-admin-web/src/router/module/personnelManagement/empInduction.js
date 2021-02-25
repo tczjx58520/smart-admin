@@ -32,7 +32,7 @@ export const personnelRelations = [
     meta: {
       title: '人事关系',
       icon: 'icon iconfont iconxitongjiankong',
-      roles: ['1-8-4']
+      roles: ['59-61-4', '59-62-4', '59-63-4', '59-64-4', '59-65-4']
     },
     children: [
       {
@@ -40,7 +40,7 @@ export const personnelRelations = [
         name: 'empInduction',
         meta: {
           title: '员工入职',
-          roles: ['1-8-4']
+          roles: ['59-61-4']
         },
         component: () => import('@/views/personnelManagement/empInduction/empInduction')
       },
@@ -49,7 +49,7 @@ export const personnelRelations = [
         name: 'contractManagement',
         meta: {
           title: '合同管理',
-          roles: ['1-8-4']
+          roles: ['59-62-4']
         },
         component: () => import('@/views/personnelManagement/empContract/empContract')
       },
@@ -58,7 +58,7 @@ export const personnelRelations = [
         name: 'regularWorkerManagement',
         meta: {
           title: '员工转正管理',
-          roles: ['1-8-4']
+          roles: ['59-63-4']
         },
         component: () => import('@/views/personnelManagement/regularWorker/regularWorker')
       },
@@ -67,7 +67,7 @@ export const personnelRelations = [
         name: 'jobTransferManagement',
         meta: {
           title: '员工转岗管理',
-          roles: ['1-8-4']
+          roles: ['59-64-4']
         },
         component: () => import('@/views/personnelManagement/jobTransfer/jobTransfer')
       },
@@ -76,7 +76,7 @@ export const personnelRelations = [
         name: 'empQuitManagement',
         meta: {
           title: '员工离职管理',
-          roles: ['1-8-4']
+          roles: ['59-65-4']
         },
         component: () => import('@/views/personnelManagement/empQuit/empQuit')
       }

@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%">
-    <Card class="warp-card" dis-hover style="height:100%;">
+    <Card class="warp-card" dis-hover style="height:100%;margin-bottom: 75px;">
       <div style="margin-bottom:15px;">{{ $t("dmgrjgz") }}</div>
       <div>
         <div>
@@ -52,6 +52,7 @@
           <Table :columns="columns_formula" :data="data_formula"></Table>
         </div>
       </div>
+      <div style="height:75px;width:100%;"></div>
       <div class="button-warp">
         <div class="button-group">
           <Button type="primary" @click="handlerSave()">

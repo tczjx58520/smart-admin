@@ -328,8 +328,10 @@ export default {
       this.addformbase = this.editinfo;
       this.addformbase.manageEmpName = this.addformbase.leadersName;
       this.addformbase.manageEmp = this.addformbase.leaders;
-      const mydate = new Date(this.addformbase.openTime);
-      this.addformbase.openTimeStr = utils.getDate(mydate, 'YMDHMS');
+      if (this.addformbase.openTime) {
+        const mydate = new Date(this.addformbase.openTime);
+        this.addformbase.openTimeStr = utils.getDate(mydate, 'YMDHMS');
+      }
       this.addformbase.time = new Date(this.addformbase.openTime);
       this.getwelfareList();
       this.getrepos();
@@ -521,26 +523,25 @@ export default {
       console.log(this.addformbase);
       this.addformbase.createPersonId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.leaders = this.addformbase.manageEmp;
-      this.addformbase.repositoryLevelId = 1;
       // repositoryLevelId
       this.$refs['form'].validate(valid => {
         if (valid) {
           if (this.isedit) {
             salesroom.updateSalesRoomList(this.addformbase).then(res => {
-            if (res.ret === 200) {
-              this.$emit('updateStat', false);
-              this.addformbase = Object.assign({}, defaultForm);
-              this.$Message.success(res.msg);
-            }
-          });
+              if (res.ret === 200) {
+                this.$emit('updateStat', false);
+                this.addformbase = Object.assign({}, defaultForm);
+                this.$Message.success(res.msg);
+              }
+            });
           } else {
             salesroom.addSalesRoomList(this.addformbase).then(res => {
-            if (res.ret === 200) {
-              this.$emit('updateStat', false);
-              this.addformbase = Object.assign({}, defaultForm);
-              this.$Message.success(res.msg);
-            }
-          });
+              if (res.ret === 200) {
+                this.$emit('updateStat', false);
+                this.addformbase = Object.assign({}, defaultForm);
+                this.$Message.success(res.msg);
+              }
+            });
           }
         } else {
           this.$Message.error('Fail!');

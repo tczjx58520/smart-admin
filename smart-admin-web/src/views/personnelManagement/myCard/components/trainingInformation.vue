@@ -94,50 +94,50 @@ export default {
       columns1: [
         {
           title: this.$t('kaoshizhiti'),
-          slot: "traningName",
+          slot: 'traningName'
         },
         {
           title: this.$t('kaishishijian'),
-          slot: "beginTime",
+          slot: 'beginTime'
         },
         {
           title: this.$t('jieshushijian'),
-          slot: "endTime",
+          slot: 'endTime'
         },
         {
           title: this.$t('kaopinqingkuang'),
-          slot: "result",
-        },
+          slot: 'result'
+        }
       ],
       data1: [
         {
           traningName: '技能培训',
           result: '良好',
           endTime: '2020-12-19 14:06:00',
-          beginTime: '2020-12-30 24:00:00',
-        },
+          beginTime: '2020-12-30 24:00:00'
+        }
       ],
       columns2: [
         {
           title: this.$t('peixunzhuti'),
-          slot: "traningName",
+          slot: 'traningName'
         },
         {
           title: this.$t('zuzhiren'),
-          slot: "orangizeName",
+          slot: 'orangizeName'
         },
         {
           title: this.$t('kaishishijian'),
-          slot: "beginTime",
+          slot: 'beginTime'
         },
         {
           title: this.$t('jieshushijian'),
-          slot: "endTime",
+          slot: 'endTime'
         },
         {
           title: this.$t('peixundidian'),
-          slot: "traningPlace",
-        },
+          slot: 'traningPlace'
+        }
       ],
       data2: [
         {
@@ -145,30 +145,30 @@ export default {
           orangizeName: '沈中平',
           beginTime: '2020-12-19 14:06:00',
           endTime: '2020-12-30 24:00:00',
-          traningPlace: '南京嗯哇',
-        },
+          traningPlace: '南京嗯哇'
+        }
       ],
       columns3: [
         {
           title: this.$t('kaoshimingcheng'),
-          slot: "examName",
+          slot: 'examName'
         },
         {
           title: this.$t('kaoshifenshu'),
-          slot: "examScore",
+          slot: 'examScore'
         },
         {
           title: this.$t('kaoshishijian'),
-          slot: "examTime",
-        },
+          slot: 'examTime'
+        }
       ],
       data3: [
         {
           examName: '考试培训',
           examScore: '90',
-          examTime: '2020-12-19 14:06:00',
-        },
-      ],
+          examTime: '2020-12-19 14:06:00'
+        }
+      ]
     };
   },
   computed: {

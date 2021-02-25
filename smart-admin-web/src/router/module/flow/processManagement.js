@@ -7,7 +7,7 @@ export const processManagement = [
     meta: {
       title: '流程管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['31-38-4', '31-39-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const processManagement = [
         name: 'standingbook',
         meta: {
           title: '流程台账',
-          roles: ['1-3-4']
+          roles: ['31-38-4']
         },
         component: () => import('@/views/flow/standingbook/standingbook')
       },
@@ -24,7 +24,7 @@ export const processManagement = [
         name: 'timeout',
         meta: {
           title: '办理时限',
-          roles: ['1-3-4']
+          roles: ['31-39-4']
         },
         component: () => import('@/views/flow/timeout/timeout')
       }

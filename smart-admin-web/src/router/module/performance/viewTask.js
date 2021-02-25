@@ -7,7 +7,7 @@ export const viewTask = [
     meta: {
       title: '考核任务查看',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['13-17-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const viewTask = [
         name: 'viewTask',
         meta: {
           title: '考核任务查看',
-          roles: ['1-3-4']
+          roles: ['13-17-4']
         },
         component: () => import('@/views/performance/viewTask/viewTask.vue')
       }

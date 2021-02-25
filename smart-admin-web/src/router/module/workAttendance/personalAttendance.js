@@ -7,7 +7,7 @@ export const personalAttendance = [
     meta: {
       title: '个人考勤',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['42-43-4', '42-44-4', '42-45-4', '42-46-4', '42-47-4', '42-48-4', '42-49-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const personalAttendance = [
         name: 'myAttendance',
         meta: {
           title: '在岗状态',
-          roles: ['1-3-4']
+          roles: ['42-43-4']
         },
         component: () => import('@/views/attendance/myAttendance/myAttendance.vue')
       },
@@ -24,7 +24,7 @@ export const personalAttendance = [
         name: 'punchTheClock',
         meta: {
           title: '在岗状态',
-          roles: ['1-3-4']
+          roles: ['42-44-4']
         },
         component: () => import('@/views/attendance/punchTheClock/punchTheClock.vue')
       },
@@ -33,7 +33,7 @@ export const personalAttendance = [
         name: 'workOvertimeRegistration',
         meta: {
           title: 'workOvertimeRegistration',
-          roles: ['1-3-4']
+          roles: ['42-45-4']
         },
         component: () => import('@/views/attendance/workOvertimeRegistration/workOvertimeRegistration.vue')
       },
@@ -42,7 +42,7 @@ export const personalAttendance = [
         name: 'businessTravel',
         meta: {
           title: 'businessTravel',
-          roles: ['1-3-4']
+          roles: ['42-46-4']
         },
         component: () => import('@/views/attendance/businessTravel/businessTravel.vue')
       },
@@ -51,7 +51,7 @@ export const personalAttendance = [
         name: 'leaveRegister',
         meta: {
           title: '请假登记',
-          roles: ['1-3-4']
+          roles: ['42-47-4']
         },
         component: () => import('@/views/attendance/leaveRegister/leaveRegister.vue')
       },
@@ -60,7 +60,7 @@ export const personalAttendance = [
         name: 'goOutRegister',
         meta: {
           title: 'goOutRegister',
-          roles: ['1-3-4']
+          roles: ['42-48-4']
         },
         component: () => import('@/views/attendance/goOutRegister/goOutRegister.vue')
       },
@@ -69,7 +69,7 @@ export const personalAttendance = [
         name: 'fillClock',
         meta: {
           title: 'fillClock',
-          roles: ['1-3-4']
+          roles: ['42-49-4']
         },
         component: () => import('@/views/attendance/fillClock/fillClock.vue')
       }

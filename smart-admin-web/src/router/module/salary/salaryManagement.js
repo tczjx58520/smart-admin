@@ -7,7 +7,7 @@ export const salaryManagement = [
     meta: {
       title: '薪酬管理',
       icon: 'ios-paper-outline',
-      roles: ['10-15-4']
+      roles: ['19-20-4', '19-120-4', '19-21-4', '19-22-4', '19-23-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const salaryManagement = [
         name: 'mysalary',
         meta: {
           title: '我的薪酬',
-          roles: ['10-17-4', '10-18-4']
+          roles: ['19-20-4', '19-120-4']
         },
         component: () => import('@/views/salary/mywelfare/mywelfare.vue')
       },
@@ -24,7 +24,7 @@ export const salaryManagement = [
         name: 'salaryEntry',
         meta: {
           title: '薪酬录入',
-          roles: ['10-19-4']
+          roles: ['19-21-1']
         },
         component: () => import('@/views/salary/salaryEntry/salaryEntry.vue')
       },
@@ -33,7 +33,7 @@ export const salaryManagement = [
         name: 'salaryjudge',
         meta: {
           title: '薪酬审批',
-          roles: ['10-20-4']
+          roles: ['19-22-4']
         },
         component: () => import('@/views/salary/salaryjudge/salaryjudge.vue')
       },
@@ -42,9 +42,18 @@ export const salaryManagement = [
         name: 'salarycount',
         meta: {
           title: '薪酬统计',
-          roles: ['10-21-4', '10-22-4']
+          roles: ['19-23-4']
         },
         component: () => import('@/views/salary/salarycount/salarycount.vue')
+      },
+      {
+        path: '/salary/repRewardList',
+        name: 'repRewardList',
+        meta: {
+          title: '店面奖金统计',
+          roles: ['19-119-4']
+        },
+        component: () => import('@/views/salary/repRewardList/repRewardList.vue')
       }
     ]
   }

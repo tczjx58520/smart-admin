@@ -7,7 +7,7 @@ export const basicSettings = [
     meta: {
       title: '基础设置',
       icon: 'ios-paper-outline',
-      roles: ['10-15-4']
+      roles: ['19-24-4', '19-25-4', '19-26-4', '19-27-4', '19-28-4', '19-29-4', '19-30-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const basicSettings = [
         name: 'socialSecurityFund',
         meta: {
           title: '社保公积金',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['19-24-4']
         },
         component: () => import('@/views/salary/socialSecurityFund/socialSecurityFund.vue')
       },
@@ -25,7 +25,7 @@ export const basicSettings = [
         name: 'welfare',
         meta: {
           title: '福利设置',
-          roles: ['10-16-4']
+          roles: ['19-25-4']
         },
         component: () => import('@/views/salary/welfare/welfare.vue')
       },
@@ -34,7 +34,7 @@ export const basicSettings = [
         name: 'salaryOption',
         meta: {
           title: '指标集管理',
-          roles: ['10-19-4']
+          roles: ['19-26-4']
         },
         component: () => import('@/views/salary/salaryOption/salaryOption.vue')
       },
@@ -43,7 +43,7 @@ export const basicSettings = [
         name: 'collectAccounts',
         meta: {
           title: '套账',
-          roles: ['10-15-4']
+          roles: ['19-27-4']
         },
         component: () => import('@/views/salary/collectAccounts/collectAccounts.vue')
       },
@@ -52,7 +52,7 @@ export const basicSettings = [
         name: 'teamAward',
         meta: {
           title: '团队奖发放规则设置',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['19-28-4']
         },
         component: () => import('@/views/salary/teamAward/teamAward.vue')
       },
@@ -61,7 +61,7 @@ export const basicSettings = [
         name: 'soloAward',
         meta: {
           title: '个人奖发放规则设置',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['19-29-4']
         },
         component: () => import('@/views/salary/soloAward/soloAward.vue')
       },
@@ -70,7 +70,7 @@ export const basicSettings = [
         name: 'storeIndividualAward',
         meta: {
           title: '店面个人奖发放规则设置',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['19-30-4']
         },
         component: () => import('@/views/salary/storeIndividualAward/storeIndividualAward.vue')
       }

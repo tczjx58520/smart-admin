@@ -18,12 +18,12 @@
         <Button :loading="btnLoading" @click="login" long type="primary">登录</Button>
       </FormItem>
       <div class="other-way">
-        <p class="inline" style="float:left">其他方式登陆(账号：demo/123456   demo1/123456)</p>
-        <div class="inline align" style="float:right">
+        <!-- <p class="inline" style="float:left">其他方式登陆(账号：demo/123456   demo1/123456)</p> -->
+        <!-- <div class="inline align" style="float:right">
           <img alt class="marginLeft" src="../../../assets/images/login-taobao.png" />
           <img alt class="marginLeft" src="../../../assets/images/login-alipay.png" />
           <img alt class="marginLeft" src="../../../assets/images/login-sina.png" />
-        </div>
+        </div> -->
       </div>
     </Form>
   </div>
@@ -56,7 +56,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       // 防止重复提交 按钮加载状态
       btnLoading: false,
@@ -70,15 +70,15 @@ export default {
     };
   },
   computed: {
-    rules() {
+    rules () {
       return {
         username: this.loginNameRules,
-        passwd: this.loginPwdRules,
+        passwd: this.loginPwdRules
         // code: this.codedRules
       };
     }
   },
-  mounted() {
+  mounted () {
     // this.verificationCode();
   },
   methods: {
@@ -90,7 +90,7 @@ export default {
     //   this.codeUrl = datas.code;
     // },
     // 登录
-    login() {
+    login () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loginSuccess();
@@ -98,7 +98,7 @@ export default {
       });
     },
     // 登录 - 异步
-    async loginSuccess() {
+    async loginSuccess () {
       try {
         this.btnLoading = true;
         let Form = new FormData();
@@ -106,6 +106,12 @@ export default {
         Form.append('passwd', this.formData.passwd);
         let loginResult = await loginApi.login(Form);
         let loginInfo = loginResult.data.content;
+        if (loginResult.ret === 100) {
+          this.$Message.error(loginResult.msg);
+          this.btnLoading = false;
+          return false;
+        }
+        console.log('loginInfo=========', loginResult.ret);
         localStorage.clear();
         this.$store.commit('setToken', loginInfo.token);
         // 保存用户登录
@@ -125,7 +131,7 @@ export default {
           level: loginInfo.levelOa,
           levelOaName: loginInfo.levelOaName
         });
-        //设置权限
+        // 设置权限
         localStorage.setItem('token', loginInfo.token);
         this.$store.commit('setUserPrivilege', loginInfo.rolesOa);
         this.btnLoading = false;
@@ -134,7 +140,7 @@ export default {
           name: this.$config.homeName
         });
       } catch (e) {
-        //TODO zhuoda sentry
+        // TODO zhuoda sentry
         console.error(e);
         this.btnLoading = false;
         // this.verificationCode();

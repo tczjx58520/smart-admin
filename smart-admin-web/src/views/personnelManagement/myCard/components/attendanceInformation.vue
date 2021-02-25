@@ -110,7 +110,6 @@ export default {
       firstTable: {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
-
         pageNum: 1,
         pageSize: 10
       },

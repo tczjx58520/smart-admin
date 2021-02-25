@@ -7,7 +7,7 @@ export const examination = [
     meta: {
       title: '考试管理',
       icon: 'icon iconfont iconxitongjiankong',
-      roles: ['1-8-4']
+      roles: ['59-70-4', '59-71-4', '59-72-4', '59-73-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const examination = [
         name: 'questionManager',
         meta: {
           title: '题库管理',
-          roles: ['1-8-4']
+          roles: ['59-70-4']
         },
         component: () => import('@/views/personnelManagement/examination/questionManager')
       },
@@ -24,7 +24,7 @@ export const examination = [
         name: 'questionList',
         meta: {
           title: '题库列表',
-          roles: ['1-8-4'],
+          roles: ['59-70-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personnelManagement/examination/questionList')
@@ -34,7 +34,7 @@ export const examination = [
         name: 'myTest',
         meta: {
           title: '我的考试',
-          roles: ['1-8-4']
+          roles: ['59-71-4']
         },
         component: () => import('@/views/personnelManagement/examination/myTest')
       },
@@ -43,7 +43,7 @@ export const examination = [
         name: 'test',
         meta: {
           title: '考试',
-          roles: ['1-8-4'],
+          roles: ['59-71-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personnelManagement/examination/test')
@@ -53,7 +53,7 @@ export const examination = [
         name: 'testTask',
         meta: {
           title: '考试任务',
-          roles: ['1-8-4']
+          roles: ['59-72-4']
         },
         component: () => import('@/views/personnelManagement/examination/testTask')
       },
@@ -62,7 +62,7 @@ export const examination = [
         name: 'testType',
         meta: {
           title: '考试类型',
-          roles: ['1-8-4']
+          roles: ['59-73-4']
         },
         component: () => import('@/views/personnelManagement/examination/testType')
       }

@@ -7,7 +7,7 @@ export const signature = [
     meta: {
       title: '签章管理',
       icon: 'ios-paper-outline',
-      roles: ['1-2-1']
+      roles: ['1-10-1']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const signature = [
         name: 'signatureManage',
         meta: {
           title: '签章列表',
-          roles: ['1-2-1']
+          roles: ['1-10-1']
         },
         component: () => import('@/views/systemSetting/employee/signature/signature-list.vue')
       }

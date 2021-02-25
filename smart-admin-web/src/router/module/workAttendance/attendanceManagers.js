@@ -7,7 +7,7 @@ export const attendanceManagers = [
     meta: {
       title: '个人考勤',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['42-50-4', '42-51-4', '42-52-4', '42-53-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const attendanceManagers = [
         name: 'jobStatus',
         meta: {
           title: '在岗状态',
-          roles: ['1-3-4']
+          roles: ['42-50-4']
         },
         component: () => import('@/views/attendance/jobStatus/jobStatus.vue')
       },
@@ -24,7 +24,7 @@ export const attendanceManagers = [
         name: 'attendanceRecord',
         meta: {
           title: 'attendanceRecord',
-          roles: ['1-3-4']
+          roles: ['42-51-4']
         },
         component: () => import('@/views/attendance/attendanceRecord/attendanceRecord.vue')
       },
@@ -33,7 +33,7 @@ export const attendanceManagers = [
         name: 'attendanceStatistical',
         meta: {
           title: 'attendanceStatistical',
-          roles: ['1-3-4']
+          roles: ['42-52-4']
         },
         component: () => import('@/views/attendance/attendanceStatistical/attendanceStatistical.vue')
       },
@@ -42,7 +42,7 @@ export const attendanceManagers = [
         name: 'attendanceMachineRecords',
         meta: {
           title: 'attendanceMachineRecords',
-          roles: ['1-3-4']
+          roles: ['42-53-4']
         },
         component: () => import('@/views/attendance/attendanceMachineRecords/attendanceMachineRecords.vue')
       }

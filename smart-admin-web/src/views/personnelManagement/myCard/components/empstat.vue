@@ -12,25 +12,26 @@
           <span>技术开发</span>
         </FormItem>
         <FormItem :label="$t('ruzhiriqi')" style="width: 48%">
-          <span>2020-12-19 02:13:00</span>
+          <span>{{ showformBase.onDate }}</span>
         </FormItem>
-        <FormItem :label="$t('yonggongnianxian')" style="width: 48%">
+        <!-- <FormItem :label="$t('yonggongnianxian')" style="width: 48%">
           <span>20</span>
-        </FormItem>
+        </FormItem> -->
         <FormItem :label="$t('zhuangzhengriqi')" style="width: 48%">
-          <span>2020-12-19 02:13:00</span>
+          <span>{{ showformBase.conversionDate }}</span>
         </FormItem>
         <FormItem :label="$t('shiyongqixian')" style="width: 48%">
-          <span>2020-9-19 02:13:00 - 2020-12-19 02:13:00</span>
+          <span>{{ showformBase.probation }}</span>
         </FormItem>
         <FormItem :label="$t('gongnian')" style="width: 48%">
-          <span>12</span>
+          <span>{{ showformBase.workYear }}</span>
         </FormItem>
       </Form>
     </TabPane>
   </div>
 </template>
 <script>
+import { empCard } from '@/api/empCard';
 export default {
   name: 'userInfo_tab',
   components: {},
@@ -44,8 +45,21 @@ export default {
   watch: {},
   filters: {},
   created () {},
-  mounted () {},
-  methods: {}
+  mounted () {
+    this.getInfo();
+  },
+  methods: {
+    getInfo () {
+      const data = {
+        empId: this.$store.state.user.userLoginInfo.userId
+        // empId: 75568
+      };
+      empCard.getEmpStat(data).then(res => {
+        console.log('res=============', res.data.content[0]);
+        this.showformBase = Object.assign({}, res.data.content[0]);
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped></style>

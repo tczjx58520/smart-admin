@@ -19,7 +19,7 @@
         inline
         style="padding: 24px"
       >
-        <FormItem :label="$t('gongzizhanghuming')" style="width: 48%">
+        <!-- <FormItem :label="$t('gongzizhanghuming')" style="width: 48%">
           <span>5465456462316</span>
         </FormItem>
         <FormItem :label="$t('yinghang')" style="width: 48%">
@@ -27,12 +27,12 @@
         </FormItem>
         <FormItem :label="$t('zhanghao')" style="width: 48%">
           <span>54554566</span>
-        </FormItem>
+        </FormItem> -->
         <FormItem :label="$t('gongjijinzhanghu')" style="width: 48%">
-          <span>58894565</span>
+          <span>{{ showformBase.accumulation_fund_id }}</span>
         </FormItem>
         <FormItem :label="$t('shebaohao')" style="width: 48%">
-          <span>23165463</span>
+          <span>{{ showformBase.social_security_id }}</span>
         </FormItem>
       </Form>
 
@@ -182,154 +182,155 @@
       <Divider />
       <Table stripe :columns="firstColumns" :data="data5">
         <template slot-scope="{ row }" slot="annualLeaveTotalDays">
-          <strong>{{ row.annualLeaveTotalDays }}</strong>
+          <strong>{{ row.annual_leave_total_days }}</strong>
         </template>
         <template slot-scope="{ row }" slot="annualLeaveUsedDays">
-          <strong>{{ row.annualLeaveUsedDays }}</strong>
+          <strong>{{ row.annual_leave_used_days }}</strong>
         </template>
         <template slot-scope="{ row }" slot="annualLeaveRemainDays">
-          <strong>{{ row.annualLeaveRemainDays }}</strong>
+          <strong>{{ row.annual_leave_remain_days }}</strong>
         </template>
         <template slot-scope="{ row }" slot="exchangeDayRemain">
-          <strong>{{ row.exchangeDayRemain }}</strong>
+          <strong>{{ row.exchangeDay }}</strong>
         </template>
       </Table>
     </TabPane>
   </div>
 </template>
 <script>
+import { empCard } from '@/api/empCard';
 export default {
-  name: "userInfo_tab",
+  name: 'userInfo_tab',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       showformBase: {},
       columns1: [
         {
-          title: this.$t("riqi"),
-          slot: "myDate",
+          title: this.$t('riqi'),
+          slot: 'myDate'
         },
         {
-          title: this.$t("jibengongzi"),
-          slot: "baseSalary",
+          title: this.$t('jibengongzi'),
+          slot: 'baseSalary'
         },
         {
-          title: this.$t("yingfagongzi"),
-          slot: "shouldSalary",
+          title: this.$t('yingfagongzi'),
+          slot: 'shouldSalary'
         },
         {
-          title: this.$t("shifagongzi"),
-          slot: "actuallySalary",
+          title: this.$t('shifagongzi'),
+          slot: 'actuallySalary'
         },
         {
-          title: this.$t("geshuikouchu"),
-          slot: "personTax",
+          title: this.$t('geshuikouchu'),
+          slot: 'personTax'
         },
         {
-          title: this.$t("shebaokouchu"),
-          slot: "socialSecurity",
+          title: this.$t('shebaokouchu'),
+          slot: 'socialSecurity'
         },
         {
-          title: this.$t("gongjijinkouchu"),
-          slot: "accumulationFund",
-        },
+          title: this.$t('gongjijinkouchu'),
+          slot: 'accumulationFund'
+        }
       ],
       data1: [
         {
-          myDate: "2020-11",
-          baseSalary: "5000",
-          shouldSalary: "5000",
-          actuallySalary: "4200",
-          personTax: "0",
-          socialSecurity: "700",
-          accumulationFund: "100",
-        },
+          myDate: '2020-11',
+          baseSalary: '5000',
+          shouldSalary: '5000',
+          actuallySalary: '4200',
+          personTax: '0',
+          socialSecurity: '700',
+          accumulationFund: '100'
+        }
       ],
       data2: [
         {
-          myDate: "2020-10",
-          baseSalary: "5000",
-          shouldSalary: "5000",
-          actuallySalary: "4200",
-          personTax: "0",
-          socialSecurity: "700",
-          accumulationFund: "100",
+          myDate: '2020-10',
+          baseSalary: '5000',
+          shouldSalary: '5000',
+          actuallySalary: '4200',
+          personTax: '0',
+          socialSecurity: '700',
+          accumulationFund: '100'
         },
         {
-          myDate: "2020-9",
-          baseSalary: "5000",
-          shouldSalary: "5000",
-          actuallySalary: "4200",
-          personTax: "0",
-          socialSecurity: "700",
-          accumulationFund: "100",
+          myDate: '2020-9',
+          baseSalary: '5000',
+          shouldSalary: '5000',
+          actuallySalary: '4200',
+          personTax: '0',
+          socialSecurity: '700',
+          accumulationFund: '100'
         },
         {
-          myDate: "2020-8",
-          baseSalary: "5000",
-          shouldSalary: "5000",
-          actuallySalary: "4200",
-          personTax: "0",
-          socialSecurity: "700",
-          accumulationFund: "100",
-        },
+          myDate: '2020-8',
+          baseSalary: '5000',
+          shouldSalary: '5000',
+          actuallySalary: '4200',
+          personTax: '0',
+          socialSecurity: '700',
+          accumulationFund: '100'
+        }
       ],
       columns2: [
         {
-          title: this.$t("tiaozhengxiangmu"),
-          slot: "doProject",
+          title: this.$t('tiaozhengxiangmu'),
+          slot: 'doProject'
         },
         {
-          title: this.$t("tiaozhengriqi"),
-          slot: "doDate",
+          title: this.$t('tiaozhengriqi'),
+          slot: 'doDate'
         },
         {
-          title: this.$t("tiaozhengqianxingzi"),
-          slot: "beforeSalary",
+          title: this.$t('tiaozhengqianxingzi'),
+          slot: 'beforeSalary'
         },
         {
-          title: this.$t("tiaozhengleixing"),
-          slot: "doType",
+          title: this.$t('tiaozhengleixing'),
+          slot: 'doType'
         },
         {
-          title: this.$t("tiaozhengjine"),
-          slot: "muchSalary",
+          title: this.$t('tiaozhengjine'),
+          slot: 'muchSalary'
         },
         {
-          title: this.$t("tiaozhenghouxinzi"),
-          slot: "afterSalary",
+          title: this.$t('tiaozhenghouxinzi'),
+          slot: 'afterSalary'
         },
         {
-          title: this.$t("tiaozhengren"),
-          slot: "doPerson",
-        },
+          title: this.$t('tiaozhengren'),
+          slot: 'doPerson'
+        }
       ],
       data3: [
         {
-          doProject: "erp",
-          doDate: "2020-10-09 12:00:00",
-          beforeSalary: "3000",
-          doType: "研究项目",
-          muchSalary: "2000",
-          afterSalary: "5000",
-          doPerson: "沈中平",
-        },
+          doProject: 'erp',
+          doDate: '2020-10-09 12:00:00',
+          beforeSalary: '3000',
+          doType: '研究项目',
+          muchSalary: '2000',
+          afterSalary: '5000',
+          doPerson: '沈中平'
+        }
       ],
 
       columns3: [
         {
-          title: this.$t("biaoti"),
-          slot: "title",
+          title: this.$t('biaoti'),
+          slot: 'title'
         },
         {
-          title: this.$t("neirong"),
-          slot: "content",
+          title: this.$t('neirong'),
+          slot: 'content'
         },
         {
-          title: this.$t("tianjiaren"),
-          slot: "handlePerson",
-        },
+          title: this.$t('tianjiaren'),
+          slot: 'handlePerson'
+        }
       ],
       data4: [
         {
@@ -337,45 +338,55 @@ export default {
           content: '端午发福利啦',
           handlePerson: '王雪敏'
         }
-        
+
       ],
 
       firstColumns: [
         {
-          title: this.$t("kqgl.nj"),
-          key: "annualLeaveTotalDays",
+          title: this.$t('kqgl.nj'),
+          slot: 'annualLeaveTotalDays'
         },
         {
-          title: this.$t("kqgl.yxnj"),
-          key: "annualLeaveUsedDays",
+          title: this.$t('kqgl.yxnj'),
+          slot: 'annualLeaveUsedDays',
           editable: true,
-          editType: "input",
+          editType: 'input'
         },
         {
-          title: this.$t("kqgl.wxnj"),
-          key: "annualLeaveRemainDays",
+          title: this.$t('kqgl.wxnj'),
+          slot: 'annualLeaveRemainDays'
         },
         {
-          title: this.$t("kqgl.sytx"),
-          key: "exchangeDayRemain",
-        },
-      ],
-      data5: [
-        {
-          annualLeaveTotalDays: 6,
-          annualLeaveUsedDays: 1,
-          annualLeaveRemainDays: 5,
-          exchangeDayRemain: 3
+          title: this.$t('kqgl.sytx'),
+          slot: 'exchangeDayRemain'
         }
       ],
+      data5: [
+      ]
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {},
-  methods: {},
+  created () {},
+  mounted () {
+    this.getInfo();
+  },
+  methods: {
+    getInfo () {
+      const data = {
+        employeeId: this.$store.state.user.userLoginInfo.userId
+        // empId: 75568
+      };
+      empCard.getWelfare(data).then(res => {
+        this.showformBase = Object.assign({}, res.data.baseInfo);
+        const data = [];
+        data.push(res.data.holidayMap);
+        this.data5 = data;
+        console.log(this.data5);
+      });
+    }
+  }
 };
 </script>
 <style lang="less" scoped></style>

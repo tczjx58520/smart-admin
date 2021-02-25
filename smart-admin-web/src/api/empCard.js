@@ -29,6 +29,20 @@ export const empCard = {
       Form.append('employeeId', data.employeeId);
     }
     return postAxios('/personalInfo/welfare', Form);
+  },
+  getEmpJob: (data) => {
+    let Form = new FormData();
+    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
+      Form.append('empId', data.empId);
+    }
+    return postAxios('/empFiles/empOnJobInfo', Form);
+  },
+  getEmpStat: (data) => {
+    let Form = new FormData();
+    if (data.empId !== undefined && data.empId !== null && data.empId !== '') {
+      Form.append('empId', data.empId);
+    }
+    return postAxios('/empFiles/empStat', Form);
   }
 }
 ;
