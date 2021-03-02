@@ -4,21 +4,21 @@
       <div style="display: flex;align-items: center;">
         <div style="margin-right: 7px">{{ $t("planTitle") }}</div>
         <div>
-          <Input v-model="listQuery.name" />
+          <Input v-model="listQuery.title" />
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("createTime") }}</div>
         <div>
           <DatePicker type="daterange"
                       placement="bottom-end"
-                       @on-change="changeDate"
+                      @on-change="changeDate"
                       placeholder="Select date"
                       style="width: 200px"></DatePicker>
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("state") }}</div>
         <div>
-          <Select v-model="listQuery.status"
+          <Select v-model="listQuery.planStatus"
                   style="width:200px">
             <Option v-for="item in selectList"
                     :value="item.value"
@@ -44,7 +44,21 @@
     <Card class="warp-card"
           dis-hover>
       <div>
+
         <Button style="margin-right:15px;"
+                icon="md-refresh"
+                @click="refresh">{{ $t('Reflash') }}</Button>
+
+        <RadioGroup v-model="listQuery.category"
+                    type="button"
+                    @on-change="changeType">
+          <Radio label="">所有</Radio>
+          <Radio label="0">个人计划</Radio>
+          <Radio label="1">组织计划</Radio>
+          <Radio label="2">工作汇报</Radio>
+          <Radio label="3">工作总结</Radio>
+        </RadioGroup>
+        <!-- <Button style="margin-right:15px;"
                 icon="md-refresh"
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
@@ -67,7 +81,7 @@
         <Button style="margin-right:15px;"
                 v-privilege="['10-15-1']"
                 @click="worksummary"
-                type="error">{{ $t('worksummary') }}</Button>
+                type="error">{{ $t('worksummary') }}</Button> -->
       </div>
     </Card>
 
@@ -129,15 +143,15 @@ export default {
         },
         {
           title: this.$t('planState'),
-          key: 'status',
+          key: 'planStatus',
           render: (h, params) => {
-            if (params.row.status === 0) {
+            if (params.row.planStatus === 0) {
               return h('span', '未开始');
             }
-            if (params.row.status === 1) {
+            if (params.row.planStatus === 1) {
               return h('span', '进行中');
             }
-            if (params.row.status === 1) {
+            if (params.row.planStatus === 1) {
               return h('span', '已完成');
             }
           }
@@ -194,6 +208,9 @@ export default {
     this.getList();
   },
   methods: {
+    changeType () {
+      this.getList();
+    },
     getList () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       planManage.findPlan(this.listQuery).then(res => {

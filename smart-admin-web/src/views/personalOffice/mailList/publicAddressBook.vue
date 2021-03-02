@@ -121,7 +121,7 @@ export default {
         },
         {
           title: this.$t('sharePerson'),
-          key: 'position'
+          key: 'employeeName'
         }
       ],
       tableData: [],
@@ -138,6 +138,7 @@ export default {
       addressBook.findPublicAddressBook(this.searchForm, this.listQuery.pageNum, this.listQuery.pageSize).then(res => {
         console.log(22222222, res);
         this.tableData = res.data.list;
+        this.total = res.data.totalCount;
       });
     },
     changePageNum (val) {

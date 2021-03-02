@@ -91,9 +91,12 @@
       </div>
       <Divider />
       <Form :model="formItem"
+            ref="addFormRef"
+            :rules="addFormRules"
             :label-width="80"
             inline>
         <FormItem label="姓名"
+                  prop="name"
                   style="width:40%">
           <Input v-model="formItem.name"
                  placeholder="Enter something..."></Input>
@@ -141,51 +144,60 @@
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="手机号"
+                  prop="mobile"
                   style="width:40%">
-          <Input v-model.number="formItem.mobile"
+          <Input v-model="formItem.mobile"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="传真"
+                  prop="fax"
                   style="width:40%">
           <Input v-model="formItem.fax"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="电子邮箱"
+                  prop="mail"
                   style="width:40%">
           <Input v-model="formItem.mail"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="家庭住址"
+                  prop="homeAddress"
                   style="width:80%">
           <Input v-model="formItem.homeAddress"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="工作单位"
+                  prop="company"
                   style="width:80%">
           <Input v-model="formItem.company"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="职位"
+                  prop="post"
                   style="width:40%">
           <Input v-model="formItem.post"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="办公电话"
+                  prop="officePhone"
                   style="width:40%">
           <Input v-model="formItem.officePhone"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="单位地址"
+                  prop="companyAddress"
                   style="width:80%">
           <Input v-model="formItem.companyAddress"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="备注"
+                  prop="note"
                   style="width:80%">
           <Input v-model="formItem.note"
                  type="textarea"
@@ -217,9 +229,12 @@
       </div>
       <Divider />
       <Form :model="updateForm"
+            ref="updateFormRef"
             :label-width="80"
+            :rules="addFormRules"
             inline>
         <FormItem label="姓名"
+                  prop="name"
                   style="width:40%">
           <Input v-model="updateForm.name"
                  placeholder="Enter something..."></Input>
@@ -268,51 +283,60 @@
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="手机号"
+                  prop="mobile"
                   style="width:40%">
-          <Input v-model.number="updateForm.mobile"
+          <Input v-model="updateForm.mobile"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="传真"
+                  prop="fax"
                   style="width:40%">
           <Input v-model="updateForm.fax"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="电子邮箱"
+                  prop="mail"
                   style="width:40%">
           <Input v-model="updateForm.mail"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="家庭住址"
+                  prop="homeAddress"
                   style="width:80%">
           <Input v-model="updateForm.homeAddress"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="工作单位"
+                  prop="company"
                   style="width:80%">
           <Input v-model="updateForm.company"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="职位"
+                  prop="post"
                   style="width:40%">
           <Input v-model="updateForm.post"
                  placeholder="Enter something..."></Input>
         </FormItem>
         <FormItem label="办公电话"
+                  prop="officePhone"
                   style="width:40%">
           <Input v-model="updateForm.officePhone"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="单位地址"
+                  prop="companyAddress"
                   style="width:80%">
           <Input v-model="updateForm.companyAddress"
                  placeholder="Enter something..."></Input>
         </FormItem>
 
         <FormItem label="备注"
+                  prop="note"
                   style="width:80%">
           <Input v-model="updateForm.note"
                  type="textarea"
@@ -414,7 +438,47 @@ export default {
       selectedData: [],
       updatemodal: false,
       updateForm: {},
-      updateBirthDay: null
+      updateBirthDay: null,
+      addFormRules: {
+        name: [
+          { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+        ],
+        gender: [
+          { required: true, message: 'The gender cannot be empty', trigger: 'blur' }
+        ],
+        groupId: [
+          { required: true, message: 'The group cannot be empty', trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: 'The mobile cannot be empty', trigger: 'blur' },
+          { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }
+        ],
+        fax: [
+          { required: true, message: 'The fax cannot be empty', trigger: 'blur' }
+        ],
+        homeAddress: [
+          { required: true, message: 'The homeAddress cannot be empty', trigger: 'blur' }
+        ],
+        company: [
+          { required: true, message: 'The company cannot be empty', trigger: 'blur' }
+        ],
+        post: [
+          { required: true, message: 'The post cannot be empty', trigger: 'blur' }
+        ],
+        officePhone: [
+          { required: true, message: 'The required cannot be empty', trigger: 'blur' }
+        ],
+        companyAddress: [
+          { required: true, message: 'The companyAddress cannot be empty', trigger: 'blur' }
+        ],
+        note: [
+          { required: true, message: 'The note cannot be empty', trigger: 'blur' }
+        ],
+        mail: [
+          { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
+          { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+        ]
+      }
     };
   },
   created () {
@@ -426,6 +490,7 @@ export default {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       addressBook.findMyAddressBook(this.listQuery).then(res => {
         this.tableData = res.data.list;
+        this.total = res.data.totalCount;
         console.log(res);
       });
     },
@@ -493,14 +558,20 @@ export default {
       this.updateForm.birthday = val;
     },
     ok () {
-      this.formItem.gender = Number(this.formItem.gender);
-      this.formItem.whetherShare = Number(this.formItem.whetherShare);
-      this.formItem.employeeId = this.$store.state.user.userLoginInfo.userId;
-      addressBook.addAddressBook(this.formItem).then(res => {
-        this.modal1 = false;
-        this.$Message.success('添加成功');
-        this.formItem = {};
-        this.getList();
+      this.$refs.addFormRef.validate((valid) => {
+        if (valid) {
+          this.formItem.gender = Number(this.formItem.gender);
+          this.formItem.whetherShare = Number(this.formItem.whetherShare);
+          this.formItem.employeeId = this.$store.state.user.userLoginInfo.userId;
+          addressBook.addAddressBook(this.formItem).then(res => {
+            this.modal1 = false;
+            this.$Message.success('添加成功');
+            this.formItem = {};
+            this.getList();
+          });
+        } else {
+          this.$Message.error('Plaese Fill All Infomation!');
+        }
       });
     },
     cancel () {
@@ -508,10 +579,16 @@ export default {
       this.formItem = {};
     },
     ok_edit () {
-      addressBook.updateAddressBook(this.updateForm).then(res => {
-        this.$Message.success('修改成功');
-        this.updatemodal = false;
-        this.getList();
+      this.$refs.updateFormRef.validate((valid) => {
+        if (valid) {
+          addressBook.updateAddressBook(this.updateForm).then(res => {
+            this.$Message.success('修改成功');
+            this.updatemodal = false;
+            this.getList();
+          });
+        } else {
+          this.$Message.error('Plaese Fill All Infomation!');
+        }
       });
     },
     cancel_edit () {

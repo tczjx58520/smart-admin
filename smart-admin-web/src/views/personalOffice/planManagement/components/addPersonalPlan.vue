@@ -186,6 +186,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    planType: {
+      type: Number,
+      default: null
     }
   },
   data () {
@@ -217,6 +221,8 @@ export default {
   watch: {
     visible () {
       this.modal1 = this.visible;
+      this.formItem.category = this.planType;
+      this.getNowTime();
     }
   },
   methods: {
@@ -232,6 +238,19 @@ export default {
           this.formItem.organizationName = empList.organizationOaName;
         }
       }
+    },
+    getNowTime () {
+      let nowDate = new Date();
+      let year = nowDate.getFullYear();
+      let month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+      let day = nowDate.getDate() < 10 ? '0' + nowDate.getDate() : nowDate.getDate();
+      let hours = nowDate.getHours() < 10 ? '0' + nowDate.getHours() : nowDate.getHours();
+      let minutes = nowDate.getMinutes() < 10 ? '0' + nowDate.getMinutes() : nowDate.getMinutes();
+      let seconds = nowDate.getSeconds() < 10 ? '0' + nowDate.getSeconds() : nowDate.getSeconds();
+      const end = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      console.log('111111111', end);
+      this.formItem.startTime = end;
+      this.formItem.date = end;
     },
     goSelectOrganization () {
       this.visiable_org = true;

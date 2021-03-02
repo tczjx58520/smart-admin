@@ -67,7 +67,7 @@
                         format="yyyy-MM-dd HH:mm:ss"
                         @on-change="changeDate"
                         ref="changeDatePicker"
-                        v-model="formItem.startTime"
+                        v-model="startTime"
                         placeholder="Select date"></DatePicker>
           </FormItem>
           <FormItem :label="$t('endTime')"
@@ -120,6 +120,10 @@
               <Input v-model="item.quote"
                      placeholder="Enter something..."></Input>
             </FormItem>
+            <Button type="primary"
+                    ghost
+                    v-if="index!==0"
+                    @click="delHang(item,index)">删除</Button>
           </div>
 
           <FormItem style="width:80%">
@@ -171,6 +175,7 @@
     <userSelect :modalstat="visiable_emp"
                 :type="mytype"
                 :memberId="formItem"
+                :organizationId="oId"
                 @updateStat="updateStat_emp">
     </userSelect>
   </div>
@@ -205,6 +210,7 @@ export default {
       myupLoadUrl: baseUrl + '/upload/uploadpic',
       modal1: false,
       formItem: {
+        startTime: null,
         creatorId: null,
         personalTaskAttachments: [],
         personalPlanTask: {},
@@ -226,7 +232,9 @@ export default {
       visiable_emp1: false,
       mytype: 3,
       listQuery: Object.assign({}, defaultListQuery),
-      organizationList: []
+      organizationList: [],
+      oId: null,
+      startTime: null
     };
   },
   watch: {
@@ -244,8 +252,21 @@ export default {
           console.log('=========organizationList', this.organizationList);
         });
       }
+      this.getNowTime();
     },
-
+    getNowTime () {
+      let nowDate = new Date();
+      let year = nowDate.getFullYear();
+      let month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+      let day = nowDate.getDate() < 10 ? '0' + nowDate.getDate() : nowDate.getDate();
+      let hours = nowDate.getHours() < 10 ? '0' + nowDate.getHours() : nowDate.getHours();
+      let minutes = nowDate.getMinutes() < 10 ? '0' + nowDate.getMinutes() : nowDate.getMinutes();
+      let seconds = nowDate.getSeconds() < 10 ? '0' + nowDate.getSeconds() : nowDate.getSeconds();
+      const end = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+      console.log('111111111', end);
+      this.startTime = end;
+      this.formItem.startTime = end;
+    },
     ok () {
       this.formItem.creatorId = this.$store.state.user.userLoginInfo.userId;
       console.log('=========formItem', this.formItem);
@@ -304,7 +325,7 @@ export default {
     changeDate () {
       if (this.formItem.startTime) {
         this.$refs['changeDatePicker'].onSelectionModeChange('time');// 弹出时间选择框
-
+        this.startTime = this.$refs.changeDatePicker.visualValue;
         this.formItem.startTime = this.$refs.changeDatePicker.visualValue;
       }
     },
@@ -319,6 +340,14 @@ export default {
       this.visiable_emp1 = true;
     },
     goSelectPeople () {
+      if (this.formItem.source === 1 && this.formItem.personalPlanTask.planId) {
+        for (let i = 0; i < this.organizationList.length; i++) {
+          if (this.organizationList[i].id === this.formItem.personalPlanTask.planId) {
+            this.oId = this.organizationList[i].organizationId;
+          }
+        }
+      }
+      console.log(this.oId);
       this.visiable_emp = true;
     },
     handleAdd () {
@@ -327,6 +356,9 @@ export default {
         quote: null,
         type: 0
       });
+    },
+    delHang (item, index) {
+      this.formItem.pesronalTaskContent.splice(index, 1);
     }
 
   }

@@ -6,6 +6,15 @@ export const taskManage = {
     return postAxios('/personalTask/addPersonalTask', data);
   },
 
+  // 查询任务关联日报
+  findDayReport: data => {
+    let Form = new FormData();
+    if (data.taskId !== undefined && data.taskId !== null && data.taskId !== '') {
+      Form.append('taskId', data.taskId);
+    }
+    return postAxios('/personalTask/findDailyReport', Form);
+  },
+
   // 查询任务列表
   findTaskList: data => {
     let Form = new FormData();

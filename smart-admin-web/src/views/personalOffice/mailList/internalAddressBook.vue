@@ -102,7 +102,7 @@ export default {
         },
         {
           title: this.$t('belongOrganization'),
-          key: 'position'
+          key: 'organizationName'
         },
         {
           title: this.$t('position1'),
@@ -131,6 +131,7 @@ export default {
     getList () {
       addressBook.findInnerAddressBook(this.listQuery).then(res => {
         this.tableData = res.data.list;
+        this.total = res.data.totalCount;
       });
     },
     getOrganizationList () {
@@ -166,9 +167,11 @@ export default {
     },
     changePageNum (val) {
       this.listQuery.pageNum = val;
+      this.getList();
     },
     changePageSize (val) {
       this.listQuery.pageSize = val;
+      this.getList();
     },
     refresh () {
       this.getList();

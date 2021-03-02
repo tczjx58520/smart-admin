@@ -75,6 +75,9 @@ export const addressBook = {
     if (data.mail !== undefined && data.mail !== null && data.mail !== '') {
       Form.append('mail', data.mail);
     }
+    if (data.qq !== undefined && data.qq !== null && data.qq !== '') {
+      Form.append('qq', data.qq);
+    }
     if (data.organizationId !== undefined && data.organizationId !== null && data.organizationId !== '') {
       Form.append('organizationId', data.organizationId);
     }

@@ -9,26 +9,31 @@
         <div class="fontStyle">本月完成工作</div>
         <Input v-model="formItem.monthlyReport.thisMonthWork"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">下月工作计划</div>
         <Input v-model="formItem.monthlyReport.nextMonthPlan"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">本月工作总结</div>
         <Input v-model="formItem.monthlyReport.thisMonthWorkConclusion"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">需要协调与帮助</div>
         <Input v-model="formItem.monthlyReport.help"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">备注</div>
         <Input v-model="formItem.monthlyReport.note"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">图片</div>

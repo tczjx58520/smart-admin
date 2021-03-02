@@ -1,6 +1,7 @@
 <template>
   <div>
     <Card class="warp-card"
+          v-if="taskInfo.status===1"
           dis-hover>
       <div>
         <Button style="margin-right:15px;"
@@ -27,7 +28,10 @@
               <span>当前状态：</span>
               <span v-if="taskInfo.status===0">未开始</span>
               <span v-if="taskInfo.status===1">进行中</span>
-              <span v-if="taskInfo.status===2">已完成</span>
+              <span v-if="taskInfo.status===2">已结束</span>
+              <span v-if="taskInfo.status===3">已撤销</span>
+              <span v-if="taskInfo.status===4">延期</span>
+              <span v-if="taskInfo.status===5">已完成</span>
             </div>
 
             <div style="margin-right:200px">
@@ -123,6 +127,20 @@
             </template>
           </Table>
         </TabPane>
+
+        <TabPane label="任务日报"
+                 name="name4">
+          <Timeline v-for="(item,index) in dayReportList"
+                    :key="index">
+            <TimelineItem color="green"
+                          v-for="(item1,index1) in item"
+                          :key="index1">
+              <div class="time">{{item1.createTime}} ({{item1.createPersonName}})</div>
+              <p class="content">{{item1.todayWork}}</p>
+            </TimelineItem>
+            <Divider />
+          </Timeline>
+        </TabPane>
       </Tabs>
     </Card>
   </div>
@@ -158,15 +176,27 @@ export default {
       ],
       data1: [],
       taskInfo: null,
-      taskReport: []
+      taskReport: [],
+      dayReportList: []
     };
   },
   created () {
     this.taskInfo = this.$route.query.taskInfo;
     console.log(333333, this.taskInfo);
     this.findTaskReport();
+    this.findDayReport();
   },
   methods: {
+    findDayReport () {
+      const data = {
+        taskId: this.taskInfo.id
+      };
+      taskManage.findDayReport(data).then(res => {
+        console.log(222222222, res);
+        this.dayReportList = res.data;
+        console.log('this.dayReportList', this.dayReportList);
+      });
+    },
     findTaskReport () {
       const data = {
         employeeId: this.$store.state.user.userLoginInfo.userId,
@@ -174,7 +204,6 @@ export default {
       };
       taskManage.findTaskReport(data).then(res => {
         this.taskReport = res.data;
-        console.log(11111111, this.taskReport);
       });
     },
     report () {
@@ -187,7 +216,7 @@ export default {
       };
       taskManage.endTask(data).then(res => {
         this.$Message.success('修改成功');
-        this.getList();
+        this.$router.closeCurrentPage();
       });
     },
     taskFinish () {
@@ -197,7 +226,7 @@ export default {
       };
       taskManage.endTask(data).then(res => {
         this.$Message.success('修改成功');
-        this.getList();
+        this.$router.closeCurrentPage();
       });
     },
     load () {

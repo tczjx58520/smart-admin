@@ -1,6 +1,7 @@
 <template>
   <div>
     <Card class="warp-card"
+          v-if="formItem.planStatus===1"
           dis-hover>
       <div>
         <Button style="margin-right:15px;"
@@ -37,13 +38,26 @@
               <span>{{formItem.endTime}}</span>
             </FormItem>
             <FormItem :label="$t('planStat1')"
+                      v-if="formItem.reviewPlan===1"
                       style="width:20%">
-              <span>{{formItem.status || '无'}}</span>
+              <span v-if="formItem.status===0">未阅</span>
+              <span v-if="formItem.status===1">已阅</span>
+            </FormItem>
+            <FormItem :label="$t('planStat1')"
+                      v-else
+                      style="width:20%">
+              <span v-if="formItem.planStatus===0">未开始</span>
+              <span v-if="formItem.planStatus===1">进行中</span>
+              <span v-if="formItem.planStatus===2">已完成</span>
             </FormItem>
 
             <FormItem :label="$t('planMan1')"
                       style="width:20%">
               <span>{{formItem.planMan}}</span>
+            </FormItem>
+            <FormItem :label="$t('planDate')"
+                      style="width:20%">
+              <span>{{formItem.date}}</span>
             </FormItem>
             <FormItem :label="$t('reportMan1')"
                       style="width:20%">
@@ -54,8 +68,12 @@
               <span>{{formItem.userName}}</span>
             </FormItem>
 
+            <FormItem :label="$t('planTitle')"
+                      style="width:20%">
+              <span>{{formItem.title}}</span>
+            </FormItem>
             <FormItem :label="$t('planContent1')"
-                      style="width:80%">
+                      style="width:20%">
               <span>{{formItem.content}}</span>
             </FormItem>
 
@@ -217,7 +235,13 @@ export default {
       });
     },
     setFinish () {
-
+      const data = {
+        planId: this.formItem.id
+      };
+      planManage.setFinish(data).then(res => {
+        console.log(res);
+        this.$router.closeCurrentPage();
+      });
     },
     deleteTask () {
 

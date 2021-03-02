@@ -46,28 +46,30 @@
       <div>
         <Button style="margin-right:15px;"
                 icon="md-refresh"
-                @click="refresh"
-                type="default">{{ $t('Reflash') }}</Button>
+                @click="refresh">{{ $t('Reflash') }}</Button>
+
+        <RadioGroup v-model="listQuery.category"
+                    type="button"
+                    @on-change="changeType">
+          <Radio label="">所有</Radio>
+          <Radio label="0">个人计划</Radio>
+          <Radio label="1">组织计划</Radio>
+          <Radio label="2">工作汇报</Radio>
+          <Radio label="3">工作总结</Radio>
+        </RadioGroup>
+        <!-- <Button style="margin-right:15px;"
+                icon="md-refresh"
+                @click="refresh">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
-                @click="findAll"
-                type="warning">{{ $t('All') }}</Button>
+                @click="findAll">{{ $t('All') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
-                @click="personalPlan"
-                type="error">{{ $t('personalPlan') }}</Button>
+                @click="personalPlan">{{ $t('personalPlan') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
-                @click="organizationPlan"
-                type="error">{{ $t('organizationPlan') }}</Button>
+                @click="organizationPlan">{{ $t('organizationPlan') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
-                @click="workreport"
-                type="error">{{ $t('workreport') }}</Button>
+                @click="workreport">{{ $t('workreport') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
-                @click="worksummary"
-                type="error">{{ $t('worksummary') }}</Button>
+                @click="worksummary">{{ $t('worksummary') }}</Button> -->
       </div>
     </Card>
 
@@ -213,6 +215,9 @@ export default {
       this.listQuery.category = null;
       this.getList();
     },
+    changeType () {
+      this.getList();
+    },
     findAll () {
       this.listQuery.category = null;
       this.getList();
@@ -251,6 +256,7 @@ export default {
       planManage.readPlan(data).then(res => {
         console.log(222222222, res);
       });
+      planInfomation.reviewPlan = 1;
       this.$router.push({ path: '/planManagement/viewPlan', query: { planInfo: planInfomation } });
     }
   }
