@@ -41,17 +41,18 @@
   </div>
 </template>
 <script>
-import { roleApi } from "@/api/role";
-import { empInduction } from "@/api/empInduction";
-import { positionApi } from "@/api/position";
+import { roleApi } from '@/api/role';
+import { empInduction } from '@/api/empInduction';
+import { personnelAnalysis } from '@/api/personnelAnalysis';
+import { positionApi } from '@/api/position';
 export default {
-  name: "storeStatusAnalysis",
+  name: 'storeStatusAnalysis',
   components: {
   },
-  data() {
+  data () {
     return {
       postData: [],
-      id: "",
+      id: '',
       copyfile: null,
       editinfo: {},
       visiable: false,
@@ -60,227 +61,248 @@ export default {
       statList: [
         {
           value: 1,
-          label: "启用",
+          label: '启用'
         },
         {
           value: 2,
-          label: "停用",
-        },
+          label: '停用'
+        }
       ],
       treedata: [],
       formdata: {
-        organizeParent: "",
+        organizeParent: ''
       },
       searchform: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       columns4: [
         {
-          type: "selection",
+          type: 'selection',
           width: 60,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("xm"),
-          key: "employeeName",
+          title: this.$t('mdmc'),
+          key: 'repositoryName'
         },
         {
-          title: this.$t("sszz"),
-          key: "organizeName",
+          title: this.$t('mdjb'),
+          key: 'repositoryLevelName'
         },
         {
-          title: this.$t("ssgw"),
-          key: "postName",
+          title: this.$t('mdrs'),
+          key: 'empNum'
         },
         {
-          title: this.$t("jhrzsj"),
-          key: "onDate",
-        },
-        {
-          title: this.$t("xb"),
-          render: (h, params) => {
-            if (params.row.gender === 1) {
-              return h("span", this.$t("nan"));
-            } else {
-              return h("span", this.$t("nv"));
+          title: this.$t('benyuerenwuzongliang'),
+          children: [
+            {
+              title: this.$t('shijizhi'),
+              key: 'thisMonth',
+              align: 'center'
+            },
+            {
+              title: this.$t('pingjunzhi'),
+              key: 'totalAvg1',
+              align: 'center'
             }
-          },
+          ]
         },
         {
-          title: this.$t("sjh"),
-          key: "phone",
+          title: this.$t('shangyuemengdianrenwuzongliang'),
+          children: [
+            {
+              title: this.$t('shijizhi'),
+              key: 'lastMonth',
+              align: 'center'
+            },
+            {
+              title: this.$t('pingjunzhi'),
+              key: 'totalAvg2',
+              align: 'center'
+            }
+          ]
         },
-        // {
-        //   title: this.$t("htqssj"),
-        //   key: "itemName",
-        // },
-        // {
-        //   title: this.$t("zzrq"),
-        //   key: "itemName",
-        // },
         {
-          title: this.$t("action"),
-          key: "action",
-          width: 200,
-          align: "center",
+          title: this.$t('shangshangyuemengdianrenwuzongliang'),
+          children: [
+            {
+              title: this.$t('shijizhi'),
+              key: 'lastMonth2',
+              align: 'center'
+            },
+            {
+              title: this.$t('pingjunzhi'),
+              key: 'totalAvg3',
+              align: 'center'
+            }
+          ]
+        },
+        {
+          title: this.$t('panduanjieguo'),
           render: (h, params) => {
-            return h("div", [
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small",
-                  },
-                  style: {
-                    marginRight: "5px",
-                  },
-                  on: {
-                    click: () => {
-                      this.haveAcontract(params.row);
-                    },
-                  },
-                },
-                this.$t("qsht")
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "error",
-                    size: "small",
-                  },
-                  directives: [
-                    {
-                      name: "privilege",
-                      value: ["1-4-2"],
-                    },
-                  ],
-                  on: {
-                    click: () => {
-                      this.delSingle(params.row);
-                    },
-                  },
-                },
-                this.$t("ryzhuanzheng")
-              ),
-            ]);
-          },
-        },
+            if (params.row.type === 1) {
+              return h('span', this.$t('renyuanbuzi'));
+            } else {
+              return h('span', this.$t('renyuanguoduo'));
+            }
+          }
+        }
+        // {
+        //   title: this.$t('action'),
+        //   key: 'action',
+        //   width: 200,
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h(
+        //         'Button',
+        //         {
+        //           props: {
+        //             type: 'primary',
+        //             size: 'small'
+        //           },
+        //           style: {
+        //             marginRight: '5px'
+        //           },
+        //           on: {
+        //             click: () => {
+        //               this.haveAcontract(params.row);
+        //             }
+        //           }
+        //         },
+        //         this.$t('qsht')
+        //       ),
+        //       h(
+        //         'Button',
+        //         {
+        //           props: {
+        //             type: 'error',
+        //             size: 'small'
+        //           },
+        //           directives: [
+        //             {
+        //               name: 'privilege',
+        //               value: ['1-4-2']
+        //             }
+        //           ],
+        //           on: {
+        //             click: () => {
+        //               this.delSingle(params.row);
+        //             }
+        //           }
+        //         },
+        //         this.$t('ryzhuanzheng')
+        //       )
+        //     ]);
+        //   }
+        // }
       ],
       indicatorlist: [],
       loading: false,
-      moreaction: "",
+      moreaction: ''
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     this.getlist();
     this.getempInductionList();
   },
-  beforeCreate() {},
-  beforeMount() {},
-  beforeUpdate() {},
-  updated() {},
-  beforeDestroy() {},
-  destroyed() {},
-  activated() {},
+  beforeCreate () {},
+  beforeMount () {},
+  beforeUpdate () {},
+  updated () {},
+  beforeDestroy () {},
+  destroyed () {},
+  activated () {},
   methods: {
-    haveAcontract(row) {
-      this.$router.push({path:'/processDo/flowStart',query:{id:row.id}})
-    },
-    getlist() {
+    getlist () {
       const searchFrom = {
         pageNum: 1,
-        pageSize: 9999,
+        pageSize: 9999
       };
       positionApi.postList(searchFrom).then((res) => {
         if (res.ret === 200) {
           this.postData = res.data.content.list;
         } else {
-          console.log("列表出错");
+          console.log('列表出错');
         }
       });
     },
     // 分页
-    changePage(pageNum) {
+    changePage (pageNum) {
       this.searchform.pageNum = pageNum;
       this.getempInductionList();
     },
     // 分页
-    changePageSize(pageSize) {
+    changePageSize (pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
       this.getempInductionList();
     },
-    getmoreaction(list) {
+    getmoreaction (list) {
       this.moreaction = list;
-      console.log("list===>", list);
+      console.log('list===>', list);
     },
-    updateStat(stat) {
+    updateStat (stat) {
       this.visiable = stat;
       this.getempInductionList();
     },
-    updateStat_edit(stat) {
+    updateStat_edit (stat) {
       this.visiable_edit = stat;
       this.getempInductionList();
     },
-    updateStat_new(stat) {
+    updateStat_new (stat) {
       this.visiable3 = stat;
     },
-    to_conduct(stat) {
-      this.visiable3 = stat;
-      this.$router.push({
-        name: "conductAnAssessment",
-      });
-    },
-    getempInductionList() {
+    getempInductionList () {
       this.loading = true;
-      empInduction.getempInductionList(this.searchform).then((res) => {
+      personnelAnalysis.queryRepositoryAnalysis(this.searchform).then((res) => {
         this.loading = false;
         this.indicatorlist = res.data.content.list;
       });
     },
-    rowClick(data, index) {
+    rowClick (data, index) {
       // data 该行数据 ，index该行索引
-      //   this.$refs.selection.toggleSelect(index);// 选中/取消该行（若已选中则是取消，若已取消则是选中）
+      // this.$refs.selection.toggleSelect(index);
+      // 选中/取消该行（若已选中则是取消，若已取消则是选中）
     },
-    Edit(row) {
+    Edit (row) {
       console.log(row);
       this.visiable_edit = true;
       this.editinfo = row;
     },
-    delSingle(row) {
+    delSingle (row) {
       console.log(row);
-      this.$router.push({path: '/processDo/flowStart'})
+      this.$router.push({ path: '/processDo/flowStart' });
     },
-    newtask(row) {
+    newtask (row) {
       this.visiable3 = true;
       this.id = row.id;
     },
-    search() {
+    search () {
       this.getempInductionList();
     },
-    remove(row) {
-      console.log("发起考核");
+    remove (row) {
+      console.log('发起考核');
     },
-    refresh() {
-      console.log("refresh");
+    refresh () {
+      console.log('refresh');
       this.searchform = {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       };
       this.getempInductionList();
     },
-    created() {
-      this.$router.push({path: '/processDo/flowStart'})
+    created () {
+      this.$router.push({ path: '/processDo/flowStart' });
     },
-    del() {
-      console.log("del");
+    del () {
+      console.log('del');
       for (const i in this.moreaction) {
         const id = this.moreaction[i].id;
         let data = id;
@@ -289,15 +311,15 @@ export default {
           .then((res) => {
             if (res.ret === 200) {
               console.log(res.msg);
-              this.$Message["success"]({
+              this.$Message['success']({
                 background: true,
-                content: res.msg,
+                content: res.msg
               });
             } else {
               console.log(res.msg);
-              this.$Message["error"]({
+              this.$Message['error']({
                 background: true,
-                content: res.msg,
+                content: res.msg
               });
             }
           })
@@ -306,13 +328,13 @@ export default {
           });
       }
     },
-    forbid() {
-      console.log("forbid");
+    forbid () {
+      console.log('forbid');
     },
-    open() {
-      console.log("open");
-    },
-  },
+    open () {
+      console.log('open');
+    }
+  }
 };
 </script>
 

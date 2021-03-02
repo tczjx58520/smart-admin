@@ -59,10 +59,10 @@
           </FormItem>
           <FormItem :label="$t('jgzly')" style="width: 80%">
             <RadioGroup v-model="addformbase.resultSource">
-              <Radio :label="1">
+              <Radio :label="1" :disabled="selectType === 2">
                 <span>{{ $t("bkhr") }}</span>
               </Radio>
-              <Radio :label="2">
+              <Radio :label="2" :disabled="selectType === 2">
                 <span>{{ $t("zdry") }}</span>
               </Radio>
               <Radio :label="3">
@@ -139,6 +139,7 @@ export default {
       default: false
     },
     editinfo: null,
+    selectType: null,
     isedit: {
       type: Boolean,
       default: false
@@ -245,6 +246,7 @@ export default {
       this.mymoadlStat = this.modalstat;
       if (this.mymoadlStat) {
         this.getindicatorlist();
+        console.log('this.addformbase========', this.addformbase);
         if (this.isedit) {
           this.addformbase = Object.assign({}, this.editinfo);
           if (this.addformbase.resultSource === 2 && !this.addformbase.distributionPermissionPersons) {
@@ -261,6 +263,10 @@ export default {
             this.addformbase.distribution__permission_organizeNames = temp;
           }
           console.log(this.addformbase);
+        } else {
+          if (this.selectType === 2) {
+            this.addformbase.resultSource = 3;
+          }
         }
       }
     }

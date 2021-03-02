@@ -7,7 +7,7 @@ export const level = [
     meta: {
       title: '级别管理',
       icon: 'ios-paper-outline',
-      roles: ['1-8-4']
+      roles: ['1-2-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const level = [
         name: 'levelManage',
         meta: {
           title: '级别管理',
-          roles: ['1-8-4']
+          roles: ['1-2-4']
         },
         component: () => import('@/views/systemSetting/employee/level/level-list.vue')
       }

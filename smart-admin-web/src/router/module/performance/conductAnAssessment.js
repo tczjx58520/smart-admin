@@ -7,7 +7,7 @@ export const conductAnAssessment = [
     meta: {
       title: '进行考核',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['13-15-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const conductAnAssessment = [
         name: 'conductAnAssessment',
         meta: {
           title: '进行考核',
-          roles: ['1-3-4']
+          roles: ['13-15-4']
         },
         component: () => import('@/views/performance/conductAnAssessment/conductAnAssessment.vue')
       }

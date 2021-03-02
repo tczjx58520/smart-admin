@@ -17,7 +17,7 @@ export const personnelManagement = [
       title: '人事管理',
       topMenu: true,
       icon: 'icon iconfont iconxitongshezhi',
-      roles: ['1-2-4']
+      roles: ['59-60-4', '59-61-4', '59-62-4', '59-63-4', '59-64-4', '59-65-4', '59-66-4', '59-67-4', '59-68-4', '59-69-4']
     },
     children: [
       ...personnelProfile,

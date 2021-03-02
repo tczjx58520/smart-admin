@@ -17,7 +17,7 @@ export const performance = [
       title: '绩效管理',
       topMenu: true,
       icon: 'icon iconfont iconjiekouwendang',
-      roles: ['1-3-4']
+      roles: ['13-14-4', '13-15-4', '13-16-4', '13-17-4', '13-17-4']
     },
     children: [
       ...assessmentTask,

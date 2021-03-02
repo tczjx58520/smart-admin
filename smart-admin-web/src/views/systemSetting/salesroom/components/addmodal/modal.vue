@@ -329,8 +329,8 @@ export default {
     }
   },
   methods: {
-    selectDate(val) {
-      this.addformbase.openTimeStr = val
+    selectDate (val) {
+      this.addformbase.openTimeStr = val;
     },
     // 查询用户登录日志
     async getrepos () {
@@ -513,7 +513,7 @@ export default {
       console.log(this.addformbase);
       this.addformbase.createPersonId = this.$store.state.user.userLoginInfo.userId;
       this.addformbase.leaders = this.addformbase.manageEmp;
-      this.addformbase.repositoryLevelId = 1;
+      // this.addformbase.repositoryLevelId = 1;
       // repositoryLevelId
       this.$refs['form'].validate(valid => {
         if (valid) {

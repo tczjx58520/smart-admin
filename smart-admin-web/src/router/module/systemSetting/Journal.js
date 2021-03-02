@@ -7,7 +7,7 @@ export const Journal = [
     meta: {
       title: '日志管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['1-6-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const Journal = [
         name: 'JournalManage',
         meta: {
           title: '级别管理',
-          roles: ['1-3-4']
+          roles: ['1-6-4']
         },
         component: () => import('@/views/systemSetting/Journal/Journal.vue')
       }

@@ -19,7 +19,7 @@
                           <Input v-model="addformbase.content" type="textarea"></Input>
                       </FormItem>
                       <FormItem :label="$t('kezbjlx')" prop="collectType">
-                          <Select v-model="addformbase.collectType">
+                          <Select v-model="addformbase.collectType" @on-change="select">
                             <Option :value="1">{{ $t('ry') }}</Option>
                             <Option :value="2">{{ $t('md') }}</Option>
                             <Option :value="3">{{ $t('gw') }}</Option>
@@ -51,6 +51,7 @@
     <addIndicatorSingleModal
       :modalstat="indicator_dialog"
       :editinfo="indicator_info"
+      :selectType="selectType"
       :isedit="edit_indicator_flag"
       @updateStat="updateStat_indicator"
     />
@@ -235,8 +236,8 @@ export default {
       levelList: [],
       indicator_dialog: false,
       indicator_info: null,
-      edit_indicator_flag: false
-
+      edit_indicator_flag: false,
+      selectType: null
     };
   },
   watch: {
@@ -250,6 +251,10 @@ export default {
     }
   },
   methods: {
+    select (val) {
+      console.log('val===========', val);
+      this.selectType = val;
+    },
     getindicatorlist () {
       this.loading = true;
       indicatorSingle.queryindicatorSingle().then(res => {

@@ -51,8 +51,8 @@ export default {
   methods: {
     getInfo () {
       const data = {
-        // employeeId: this.$store.state.user.userLoginInfo.userId
-        employeeId: 75568
+        employeeId: this.$store.state.user.userLoginInfo.userId
+        // employeeId: 75568
       };
       empCard.getContract(data).then(res => {
         this.showformBase = Object.assign({}, res.data);

@@ -26,7 +26,7 @@
         <empstat />
         <myexperson/>
         <workwelfare />
-        <assetinformation />
+        <!-- <assetinformation /> -->
         <!-- <schedule /> -->
         <attendance-information />
         <training-information />

@@ -7,7 +7,7 @@ export const processDo = [
     meta: {
       title: '流程办理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['31-32-4', '31-33-4', '31-34-4', '31-35-4', '31-36-4', '31-37-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const processDo = [
         name: 'flowStart',
         meta: {
           title: '流程发起',
-          roles: ['1-3-4']
+          roles: ['31-32-4']
         },
         component: () => import('@/views/flow/flowStart/flowStart.vue')
       },
@@ -24,26 +24,17 @@ export const processDo = [
         name: 'actionflowStart',
         meta: {
           title: '新建流程工单',
-          roles: ['1-3-4'],
+          roles: ['31-32-4'],
           hideInMenu: true
         },
         component: () => import('@/views/flow/flowStart/actionFlowStart')
       },
-      // {
-      //   path: '/processDo/drafts',
-      //   name: 'drafts',
-      //   meta: {
-      //     title: '草稿箱',
-      //     roles: ['1-3-4']
-      //   },
-      //   component: () => import('@/views/flow/drafts/drafts')
-      // },
       {
         path: '/processDo/toDoFlow',
         name: 'toDoFlow',
         meta: {
           title: '流程代办',
-          roles: ['1-3-4']
+          roles: ['31-33-4']
         },
         component: () => import('@/views/flow/toDoFlow/toDoFlow')
       },
@@ -52,7 +43,7 @@ export const processDo = [
         name: 'DoFlow',
         meta: {
           title: '流程已办',
-          roles: ['1-3-4']
+          roles: ['31-34-4']
         },
         component: () => import('@/views/flow/DoFlow/DoFlow')
       },
@@ -61,7 +52,7 @@ export const processDo = [
         name: 'workDelegation',
         meta: {
           title: '工作委托',
-          roles: ['1-3-4']
+          roles: ['31-35-4']
         },
         component: () => import('@/views/flow/workDelegation/workDelegation')
       },
@@ -70,7 +61,7 @@ export const processDo = [
         name: 'flowWatch',
         meta: {
           title: '流程阅看',
-          roles: ['1-3-4']
+          roles: ['31-36-4']
         },
         component: () => import('@/views/flow/flowWatch/flowWatch')
       },
@@ -78,8 +69,8 @@ export const processDo = [
         path: '/processDo/recall',
         name: 'recall',
         meta: {
-          title: '流程代办',
-          roles: ['1-3-4']
+          title: '流程召回',
+          roles: ['31-37-4']
         },
         component: () => import('@/views/flow/recall/recall')
       }

@@ -7,7 +7,7 @@ export const personnelProfile = [
     meta: {
       title: '人事概况',
       icon: 'icon iconfont iconxitongjiankong',
-      roles: ['1-8-4']
+      roles: ['59-60-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const personnelProfile = [
         name: 'personnelPro',
         meta: {
           title: '人事概况',
-          roles: ['1-8-4']
+          roles: ['59-60-4']
         },
         component: () => import('@/views/personnelManagement/personnelProfile/index')
       }

@@ -7,7 +7,7 @@ export const indicatorSingle = [
     meta: {
       title: '指标项管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['13-18-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const indicatorSingle = [
         name: 'indicatorSingle',
         meta: {
           title: '指标项列表',
-          roles: ['1-3-4']
+          roles: ['13-18-4']
         },
         component: () => import('@/views/performance/indicatorSingle/indicatorSingle.vue')
       }

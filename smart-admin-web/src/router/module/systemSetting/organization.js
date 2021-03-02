@@ -5,9 +5,9 @@ export const organization = [
     name: 'organization',
     component: Main,
     meta: {
-      title: '岗位管理',
+      title: '组织架构管理',
       icon: 'ios-paper-outline',
-      roles: ['1-2-4']
+      roles: ['1-5-4']
     },
     children: [
       //  发送email
@@ -15,8 +15,8 @@ export const organization = [
         path: '/organization/organizationManage',
         name: 'organizationManage',
         meta: {
-          title: '岗位管理',
-          roles: ['1-2-4']
+          title: '组织架构管理',
+          roles: ['1-5-4']
         },
         component: () => import('@/views/systemSetting/organizations/organization.vue')
       }

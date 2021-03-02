@@ -7,7 +7,7 @@ export const traning = [
     meta: {
       title: '员工培训',
       icon: 'icon iconfont iconxitongjiankong',
-      roles: ['1-8-4']
+      roles: ['59-66-4', '59-67-4', '59-68-4', '59-69-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const traning = [
         name: 'trainingMaterials',
         meta: {
           title: '培训资料分类列表',
-          roles: ['1-8-4']
+          roles: ['59-66-4']
         },
         component: () => import('@/views/personnelManagement/traning/traning')
       },
@@ -24,7 +24,7 @@ export const traning = [
         name: 'trainingMaterialsList',
         meta: {
           title: '培训资料列表',
-          roles: ['1-8-4'],
+          roles: ['59-66-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personnelManagement/traning/traningDetail')
@@ -34,7 +34,7 @@ export const traning = [
         name: 'myTraning',
         meta: {
           title: '我的培训',
-          roles: ['1-8-4']
+          roles: ['59-67-4']
         },
         component: () => import('@/views/personnelManagement/traning/myTraning')
       },
@@ -43,7 +43,7 @@ export const traning = [
         name: 'traningType',
         meta: {
           title: '培训类型',
-          roles: ['1-8-4']
+          roles: ['59-68-4']
         },
         component: () => import('@/views/personnelManagement/traning/traningType')
       },
@@ -52,7 +52,7 @@ export const traning = [
         name: 'traningTask',
         meta: {
           title: '培训任务',
-          roles: ['1-8-4']
+          roles: ['59-69-4']
         },
         component: () => import('@/views/personnelManagement/traning/traningTask')
       },
@@ -61,7 +61,7 @@ export const traning = [
         name: 'taskDetail',
         meta: {
           title: '培训任务详情',
-          roles: ['1-8-4'],
+          roles: ['59-69-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personnelManagement/traning/taskDetail')

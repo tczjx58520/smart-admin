@@ -7,7 +7,7 @@ export const processSettings = [
     meta: {
       title: '流程管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['31-40-4', '31-41-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const processSettings = [
         name: 'flowClassification',
         meta: {
           title: '流程种类管理',
-          roles: ['1-3-4']
+          roles: ['31-40-4']
         },
         component: () => import('@/views/flow/flowClassification/flowClassification.vue')
       },
@@ -24,7 +24,7 @@ export const processSettings = [
         name: 'processDesign',
         meta: {
           title: '流程设计',
-          roles: ['1-3-4']
+          roles: ['31-41-4']
         },
         component: () => import('@/views/flow/processDesign/processDesign.vue')
       }

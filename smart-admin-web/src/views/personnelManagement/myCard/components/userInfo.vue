@@ -19,11 +19,11 @@
               :label-width="100"
             >
               <FormItem :label="$t('zssj')">
-                <span>沈中平</span>
+                <span>{{ showformBase.superiorName }}</span>
               </FormItem>
-              <FormItem :label="$t('zhdlrq')">
+              <!-- <FormItem :label="$t('zhdlrq')">
                 <span>2020-12-18 11:40:20</span>
-              </FormItem>
+              </FormItem> -->
               <FormItem :label="$t('gwjsxx')">
                 <div>
                   <div>从中国开发调岗菲律宾开发</div>
@@ -55,28 +55,28 @@
             style="padding:24px;"
           >
             <FormItem :label="$t('gonghao')" style="width:48%;">
-              <span>325522155664</span>
+              <span>{{ showformBase.jobNumber }}</span>
             </FormItem>
             <FormItem :label="$t('gongzuodidian')" style="width:48%;">
-              <span>2020-12-18 11:40:20</span>
+              <span>{{ showformBase.workAddress }}</span>
             </FormItem>
             <FormItem :label="$t('suozaizuzhi')" style="width:48%;">
-              <span>南京嗯哇</span>
+              <span>{{ showformBase.organizeName }}</span>
             </FormItem>
             <FormItem :label="$t('zhishushangji')" style="width:48%;">
-              <span>沈中平</span>
+              <span>{{ showformBase.superiorName }}</span>
             </FormItem>
             <FormItem :label="$t('usoshugangwei')" style="width:48%;">
-              <span>前端开发</span>
+              <span>{{ showformBase.postName }}</span>
             </FormItem>
             <FormItem :label="$t('jibie')" style="width:48%;">
-              <span>组长</span>
+              <span>{{ showformBase.levelName }}</span>
             </FormItem>
             <FormItem :label="$t('suoshumengdian')" style="width:48%;">
-              <span>N/A</span>
+              <span>{{ showformBase.repositoryName }}</span>
             </FormItem>
             <FormItem :label="$t('xitongzhanghao')" style="width:48%;">
-              <span>test</span>
+              <span>{{ showformBase.account }}</span>
             </FormItem>
           </Form>
           <div style="display: flex; align-items: center">
@@ -137,12 +137,12 @@ export default {
   methods: {
     getInfo () {
       const data = {
-        // employeeId: this.$store.state.user.userLoginInfo.userId
-        employeeId: 75568
+        employeeId: this.$store.state.user.userLoginInfo.userId
+        // empId: 75568
       };
-      console.log('data=======', data);
-      empCard.getEmpInfo(data).then(res => {
-        console.log('res=============', res);
+      empCard.getEmpJob(data).then(res => {
+        console.log('res=============', res.data.content[0]);
+        this.showformBase = Object.assign({}, res.data.content[0]);
       });
     }
   }

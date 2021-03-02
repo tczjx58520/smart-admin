@@ -7,7 +7,7 @@ export const salesRoomLevel = [
     meta: {
       title: '门店级别管理',
       icon: 'ios-paper-outline',
-      roles: ['1-4-4']
+      roles: ['1-12-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const salesRoomLevel = [
         name: 'salesRoomLevel',
         meta: {
           title: '门店级别',
-          roles: ['1-4-4']
+          roles: ['1-12-4']
         },
         component: () => import('@/views/systemSetting/salesroomLevel/salesroomLevel')
       }

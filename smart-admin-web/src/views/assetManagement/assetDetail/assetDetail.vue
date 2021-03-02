@@ -34,9 +34,7 @@
           <Col span="4">
             <FormItem>
               <ButtonGroup>
-                <Button @click="search" icon="ios-search" type="primary">{{
-                  $t("Search")
-                }}</Button>
+                <Button @click="search" icon="ios-search" type="primary">{{ $t("Search") }}</Button>
               </ButtonGroup>
             </FormItem>
           </Col>

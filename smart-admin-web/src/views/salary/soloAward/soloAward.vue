@@ -161,7 +161,7 @@ export default {
           this.isedit = true;
           this.id = res.data.content[0].id;
           const temp = JSON.parse(res.data.content[0].myformlua);
-          this.baseMoney = res.data.content[0].baseMoney
+          this.baseMoney = res.data.content[0].baseMoney;
           this.myformlua = temp;
         }
       });
@@ -190,7 +190,7 @@ export default {
       this.myformlua.push({
         label: fin,
         selected: false,
-        formal: `${temp2 || ''} ${this.stepFormInfo.calcCadition1 || ''} ${temp || ''} ${addvalue}`
+        formal: `${temp2 || ''} value(${this.stepFormInfo.calcCadition1 || ''}) ${temp || ''} ${addvalue}`
       });
       this.stepFormInfo = Object.assign({}, defaultForm);
       // const formula = `${this.stepFormInfo.calcCadition1}${temp}${addvalue}`;
@@ -217,8 +217,8 @@ export default {
       }
       console.log('item======', this.selectIndex);
     },
-    clearContent() {
-      this.myformlua = []
+    clearContent () {
+      this.myformlua = [];
     },
     handlerSave () {
       this.isloading = true;

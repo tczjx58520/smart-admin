@@ -7,7 +7,7 @@ export const groupmanage = [
     meta: {
       title: '群组管理',
       icon: 'ios-paper-outline',
-      roles: ['1-6-4']
+      roles: ['1-8-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const groupmanage = [
         name: 'groupmanage',
         meta: {
           title: '群组管理',
-          roles: ['1-6-4']
+          roles: ['1-8-4']
         },
         component: () => import('@/views/systemSetting/groupmanage/groupmanage.vue')
       }
