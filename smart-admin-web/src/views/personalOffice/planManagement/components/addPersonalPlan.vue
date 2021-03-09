@@ -59,7 +59,7 @@
                         format="yyyy-MM-dd HH:mm:ss"
                         @on-change="changeDate0"
                         ref="changeDatePicker0"
-                        v-model="formItem.date"
+                        v-model="date"
                         placeholder="Select date"></DatePicker>
           </FormItem>
 
@@ -71,7 +71,7 @@
                         format="yyyy-MM-dd HH:mm:ss"
                         @on-change="changeDate1"
                         ref="changeDatePicker1"
-                        v-model="formItem.startTime"
+                        v-model="startTime"
                         placeholder="Select date"></DatePicker>
           </FormItem>
           <FormItem :label="$t('endTime')"
@@ -215,7 +215,9 @@ export default {
         disabledDate (date) {
           return date && date.valueOf() < Date.now() - 86400000;
         }
-      }
+      },
+      date: null,
+      startTime: null
     };
   },
   watch: {
@@ -249,6 +251,8 @@ export default {
       let seconds = nowDate.getSeconds() < 10 ? '0' + nowDate.getSeconds() : nowDate.getSeconds();
       const end = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
       console.log('111111111', end);
+      this.date = end;
+      this.startTime = end;
       this.formItem.startTime = end;
       this.formItem.date = end;
     },

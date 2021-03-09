@@ -410,7 +410,7 @@ export default {
       console.log(data);
       console.log(event);
       const sendData = {
-        employeeId: this.$store.state.user.userLoginInfo.userId,
+        employeeId: row.employeeId,
         date: column.title,
         category: this.searchform.category
       };

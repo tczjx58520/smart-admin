@@ -147,6 +147,7 @@ export default {
     this.formItem = this.$route.query.planInfo;
     console.log(222222, this.formItem);
     this.formItem.planMan = this.$store.state.user.userLoginInfo.nickName;
+    this.findRelationTask(this.formItem.id);
     this.findPlanReport();
   },
   data () {
@@ -161,15 +162,15 @@ export default {
         },
         {
           title: this.$t('taskSpeed'),
-          key: 'taskSpeed'
+          key: 'progress'
         },
         {
           title: this.$t('controller'),
-          key: 'controller'
+          key: 'headerName'
         },
         {
           title: this.$t('participateMan'),
-          key: 'participateMan'
+          key: 'nameList'
         },
         {
           title: this.$t('startTime'),
@@ -209,6 +210,24 @@ export default {
   methods: {
     viweTask (row) {
       this.$router.push({ path: '/taskManage/taskList', query: { id: row.id } });
+    },
+    findRelationTask (id) {
+      const data = {
+        planId: id
+      };
+      planManage.findRelationTasl(data).then(res => {
+        console.log(33333333, res);
+        this.formItem.personalPlanTasks = res.data;
+        console.log(this.formItem.personalPlanTasks);
+        for (let i = 0; i < this.formItem.personalPlanTasks.length; i++) {
+          for (let j = 0; j < this.formItem.personalPlanTasks[i].personalTaskParticipant.length; j++) {
+            const list = [];
+            list.push(this.formItem.personalPlanTasks[i].personalTaskParticipant[j].participantName);
+            const name = String(list);
+            this.formItem.personalPlanTasks[i].nameList = name;
+          }
+        }
+      });
     },
     findPlanReport () {
       const data = {

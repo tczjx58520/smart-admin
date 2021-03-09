@@ -162,7 +162,7 @@ export default {
         },
         {
           title: this.$t('finishNum'),
-          key: 'finishNum',
+          key: 'alreadyQuote',
           width: 100
         },
         {

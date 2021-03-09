@@ -199,7 +199,7 @@ export default {
           key: 'headerName'
         },
         {
-          title: this.$t('assignPeople'),
+          title: '参与人',
           key: 'personalTaskParticipant',
           render: (h, params) => {
             console.log(1111, params.row.personalTaskParticipant);
@@ -238,8 +238,10 @@ export default {
   methods: {
     getList () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
+      console.log(123, this.listQuery);
       taskManage.findTaskList(this.listQuery).then(res => {
         this.tableData = res.data.list;
+        this.total = res.data.total;
       });
     },
     changePageNum (val) {
