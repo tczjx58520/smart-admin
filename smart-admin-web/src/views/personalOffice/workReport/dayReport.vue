@@ -249,7 +249,7 @@ export default {
     changeTable (val) {
       this.selectedData = val;
     },
-    visiblChange (val) {
+    visiblChange () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       taskManage.findTaskList(this.listQuery).then(res => {
         this.selectTaskData = res.data.list;
