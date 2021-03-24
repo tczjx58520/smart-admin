@@ -54,6 +54,10 @@ export const roleApi = {
     }
     return postAxios('/role/getrolelist', Form);
   },
+  // 加载角色列表
+  getAllRole2: () => {
+    return postAxios('/role/getrolelist');
+  },
   // 根据id获取角色
   getDetailById: (data) => {
     let Form = new FormData();

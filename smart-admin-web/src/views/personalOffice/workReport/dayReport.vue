@@ -9,6 +9,7 @@
         <div class="fontStyle">今日完成工作</div>
         <Input v-model="formItem.dailyReportVo.todayWork"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div style="margin: 10px 0;">
@@ -23,16 +24,19 @@
         <div class="fontStyle">未完成的工作</div>
         <Input v-model="formItem.dailyReportVo.unfinishedWork"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">需协调的工作</div>
         <Input v-model="formItem.dailyReportVo.help"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">备注</div>
         <Input v-model="formItem.dailyReportVo.note"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">图片</div>
@@ -141,7 +145,15 @@ export default {
         {
           title: this.$t('type'),
           key: 'type',
-          width: 100
+          width: 100,
+          render: (h, params) => {
+            if (params.row.type === 0) {
+              return h('span', '非量化');
+            }
+            if (params.row.type === 1) {
+              return h('span', '量化');
+            }
+          }
         },
         {
           title: this.$t('taskNum'),
@@ -150,7 +162,7 @@ export default {
         },
         {
           title: this.$t('finishNum'),
-          key: 'finishNum',
+          key: 'alreadyQuote',
           width: 100
         },
         {
@@ -237,7 +249,7 @@ export default {
     changeTable (val) {
       this.selectedData = val;
     },
-    visiblChange (val) {
+    visiblChange () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
       taskManage.findTaskList(this.listQuery).then(res => {
         this.selectTaskData = res.data.list;
@@ -259,7 +271,7 @@ export default {
       console.log('======formItem', this.formItem);
       workReport.addDayReport(this.formItem).then(res => {
         this.$Message.success('保存成功');
-        // this.$router.back();
+        this.$router.closeCurrentPage();
       });
     },
     successImgUpload (response, file, fileList) {

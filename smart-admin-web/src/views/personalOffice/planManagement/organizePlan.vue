@@ -4,21 +4,21 @@
       <div style="display: flex;align-items: center;">
         <div style="margin-right: 7px">{{ $t("planTitle") }}</div>
         <div>
-          <Input v-model="listQuery.name" />
+          <Input v-model="listQuery.title" />
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("createTime") }}</div>
         <div>
           <DatePicker type="daterange"
                       placement="bottom-end"
-                       @on-change="changeDate"
+                      @on-change="changeDate"
                       placeholder="Select date"
                       style="width: 200px"></DatePicker>
         </div>
 
         <div style="margin-left: 50px;margin-right: 7px">{{ $t("state") }}</div>
         <div>
-          <Select v-model="listQuery.status"
+          <Select v-model="listQuery.planStatus"
                   style="width:200px">
             <Option v-for="item in selectList"
                     :value="item.value"
@@ -72,6 +72,7 @@
                   @click="show(row)">查看</Button>
           <Button type="error"
                   size="small"
+                  v-if="row.planStatus===0"
                   @click="update(row)">修改</Button>
         </template>
       </Table>
@@ -87,6 +88,7 @@
             style="margin:24px 0;text-align:right;"></Page>
     </Card>
     <personPlan :visible="addVisible"
+                :planType="1"
                 @updateStat="updateStatus"></personPlan>
 
     <updatePersonPlan :visible2="updateVisible"
@@ -134,13 +136,16 @@ export default {
         },
         {
           title: this.$t('planState'),
-          key: 'status',
+          key: 'planStatus',
           render: (h, params) => {
-            if (params.row.status === 0) {
-              return h('span', '未阅');
+            if (params.row.planStatus === 0) {
+              return h('span', '未开始');
             }
-            if (params.row.status === 1) {
-              return h('span', '已阅');
+            if (params.row.planStatus === 1) {
+              return h('span', '进行中');
+            }
+            if (params.row.planStatus === 2) {
+              return h('span', '已完成');
             }
           }
         },
@@ -227,6 +232,11 @@ export default {
     deleteMore () {
       if (this.selectedData.length < 1) {
         return this.$Message.error('必须先选择一项');
+      }
+      for (let i = 0; i < this.selectedData.length; i++) {
+        if (this.selectedData[i].planStatus !== 0) {
+          return this.$Message.error('只能删除未开始的计划！！！');
+        }
       }
       const ids = [];
       this.selectedData.forEach(element => {

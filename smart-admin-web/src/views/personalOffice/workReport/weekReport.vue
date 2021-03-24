@@ -9,26 +9,31 @@
         <div class="fontStyle">本周完成工作</div>
         <Input v-model="formItem.weeklyReport.thisWeekWork"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">下周工作计划</div>
         <Input v-model="formItem.weeklyReport.nextWeekPlan"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">本周工作总结</div>
         <Input v-model="formItem.weeklyReport.thisWeekWorkConclusion"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">需要协调与帮助</div>
         <Input v-model="formItem.weeklyReport.help"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">备注</div>
         <Input v-model="formItem.weeklyReport.note"
                placeholder="Enter something..."
+               type="textarea"
                style="width: 300px" />
 
         <div class="fontStyle">图片</div>

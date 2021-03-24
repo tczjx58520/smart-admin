@@ -67,6 +67,23 @@ export const planManage = {
       Form.append('flag', data.flag);
     }
     return postAxios('/plan/modifyRead', Form);
+  },
+
+  // 设置完成
+  setFinish: data => {
+    let Form = new FormData();
+    if (data.planId !== undefined && data.planId !== null && data.planId !== '') {
+      Form.append('planId', data.planId);
+    }
+    return postAxios('/plan/modifyPlanStatus', Form);
+  },
+  // 关联任务的查询
+  findRelationTasl: data => {
+    let Form = new FormData();
+    if (data.planId !== undefined && data.planId !== null && data.planId !== '') {
+      Form.append('planId', data.planId);
+    }
+    return postAxios('/plan/associateTask', Form);
   }
 
 }

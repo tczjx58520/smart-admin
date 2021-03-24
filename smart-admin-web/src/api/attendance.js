@@ -307,7 +307,7 @@ export const attendance = {
   // 设置考勤人员查询
   findAttendanceEmployeeSet: data => {
     if (data) {
-      return postAxios('/attendanceSet/findAttendanceEmployeeSet?pageSize=' + data.pageSize + '& pageNum =' + data.pageNum, data);
+      return postAxios(`/attendanceSet/findAttendanceEmployeeSet?pageSize=${data.pageSize}&pageNum=${data.pageNum}`, data);
     }
   },
   // 手机考勤设置查询

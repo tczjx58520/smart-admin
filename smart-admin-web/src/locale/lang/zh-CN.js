@@ -202,7 +202,7 @@ export default {
   delete: '删除',
   participateMan: '参与人',
   taskSource: '任务来源',
-  wrokComment: '工作评估',
+  wrokComment: '工时评估',
   fj: '附件',
   jfbz: '奖罚标准',
   cxrw: '撤销任务',

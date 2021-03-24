@@ -127,6 +127,10 @@ export default {
       default: false
     },
     type: null,
+    organizationId: {
+      type: Number,
+      default: null
+    },
     memberId: {
       type: null,
       default: () => {
@@ -341,11 +345,15 @@ export default {
     // 获取员工列表
     getemplist () {
       this.emp_loading = true;
+      if (this.organizationId !== null && this.organizationId !== '' && this.organizationId !== undefined) {
+        this.searchform.organizationOa = this.organizationId;
+      }
       usermanagelApi.queryList(this.searchform).then(res => {
         this.pageTotal = res.data.content.totalCount;
         this.emp_loading = false;
         this.emplist = this.selectFromId(res.data.content.list, this.formValidate.serviceIdList);
       });
+      this.organizationId = null;
     },
     // 分页函数
     changePage (pageNum) {

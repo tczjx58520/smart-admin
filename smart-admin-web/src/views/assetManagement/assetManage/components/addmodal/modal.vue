@@ -1,101 +1,122 @@
 <template>
-  <Modal
-    v-model="mymoadlStat"
-    class="add"
-    width="720"
-    :closable="false"
-    :mask-closable="false"
-    :transfer="false"
-  >
-    <div slot="header" style="text-align: left; color: #fff">
+  <Modal v-model="mymoadlStat"
+         class="add"
+         width="720"
+         :closable="false"
+         :mask-closable="false"
+         :transfer="false">
+    <div slot="header"
+         style="text-align: left; color: #fff">
       <span>{{ $t("tjzc") }}</span>
     </div>
     <div>
       <Card dis-hover>
-        <div
-          style="
+        <div style="
             display: flex;
             align-items: center;
             border-bottom: 1px solid #e1e1e1;
             padding-bottom: 20px;
-          "
-        >
-          <div
-            style="
+          ">
+          <div style="
               width: 4px;
               height: 20px;
               background: #2d8cf0;
               margin-right: 15px;
-            "
-          ></div>
+            "></div>
           <div>{{ $t("BaseData") }}</div>
         </div>
         <Divider />
-        <Form
-          ref="form"
-          :model="addformbase"
-          label-position="right"
-          :label-width="100"
-          :rules="ruleValidate"
-          inline
-        >
+        <Form ref="form"
+              :model="addformbase"
+              label-position="right"
+              :label-width="100"
+              :rules="ruleValidate"
+              inline>
           <Row>
             <Col span="12">
-              <FormItem v-if="!isrequireNum" :label="$t('zichanbianhao')" style="width: 100%;height:60px" prop="assetNum">
-                <Input v-model="addformbase.assetNum" :disabled="isrequireNum"/>
-              </FormItem>
+            <FormItem v-if="!isrequireNum"
+                      :label="$t('zichanbianhao')"
+                      style="width: 100%;height:60px"
+                      prop="assetNum">
+              <Input v-model="addformbase.assetNum"
+                     :disabled="isrequireNum" />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('zichanmingchen')" style="width: 100%;height:60px" prop="assetName">
-                <Input v-model="addformbase.assetName" />
-              </FormItem>
+            <FormItem :label="$t('zichanmingchen')"
+                      style="width: 100%;height:60px"
+                      prop="assetName">
+              <Input v-model="addformbase.assetName" />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('leibiemingchen')" style="width: 100%;height:60px">
-                <Cascader v-model="addformbase.parentClassifyId" :data="data_class" :load-data="loadData_class"></Cascader>
-              </FormItem>
+            <FormItem :label="$t('leibiemingchen')"
+                      prop="parentClassifyId"
+                      style="width: 100%;height:60px">
+              <Cascader v-model="addformbase.parentClassifyId"
+                        :data="data_class"
+                        :load-data="loadData_class"
+                        @on-change='changeCascader'></Cascader>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('xinghao')" style="width: 100%;height:60px">
-                <Input v-model="addformbase.speciation" />
-              </FormItem>
+            <FormItem :label="$t('xinghao')"
+                      prop="speciation"
+                      style="width: 100%;height:60px">
+              <Input v-model="addformbase.speciation" />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('danwei')" style="width: 100%;height:60px" prop="unitId">
-                <Select v-model="addformbase.unitId" filterable>
-                  <Option
-                    v-for="item in unitList"
-                    :value="item.id"
-                    :key="item.id"
-                    >{{ item.companyName }}</Option
-                  >
-                </Select>
-              </FormItem>
+            <FormItem :label="$t('danwei')"
+                      style="width: 100%;height:60px"
+                      prop="unitId">
+              <Select v-model="addformbase.unitId"
+                      filterable>
+                <Option v-for="item in unitList"
+                        :value="item.id"
+                        :key="item.id">{{ item.companyName }}</Option>
+              </Select>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('shuliang')" style="width: 100%;height:60px">
-                <InputNumber :min="0" v-model="addformbase.amount" style="width: 100%"></InputNumber>
-              </FormItem>
+            <FormItem :label="$t('shuliang')"
+                      prop="amount"
+                      style="width: 100%;height:60px">
+              <InputNumber :min="0"
+                           v-model="addformbase.amount"
+                           style="width: 100%"></InputNumber>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('danjia')" style="width: 100%;height:60px" prop="unitPrice">
-                <Input v-model="addformbase.unitPrice" />
-              </FormItem>
+            <FormItem :label="$t('danjia')"
+                      style="width: 100%;height:60px"
+                      prop="unitPrice">
+              <Input v-model="addformbase.unitPrice" />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('jiazhi')" style="width: 100%;height:60px">
-                <Input v-model="allPrice" readonly/>
-              </FormItem>
+            <FormItem :label="$t('jiazhi')"
+                      style="width: 100%;height:60px">
+              <Input v-model="allPrice"
+                     readonly />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('canzhilv')" style="width: 100%;height:60px" prop="depreciationRate">
-                <InputNumber :min="0" :max="1" :step="0.1" v-model="addformbase.depreciationRate" style="width: 100%"></InputNumber>
-              </FormItem>
+            <FormItem :label="$t('canzhilv')"
+                      style="width: 100%;height:60px">
+              <InputNumber :min="0"
+                           :max="1"
+                           :step="0.1"
+                           v-model="addformbase.depreciationRate"
+                           style="width: 100%"></InputNumber>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('nianzhejiuzijin')" style="width: 100%;height:60px">
-                <Input v-model="depreciationPrice" readonly/>
-              </FormItem>
+            <FormItem :label="$t('nianzhejiuzijin')"
+                      style="width: 100%;height:60px">
+              <Input v-model="depreciationPrice"
+                     readonly />
+            </FormItem>
             </Col>
             <!-- <Col span="12">
               <FormItem :label="$t('baoguanzuzhi')" style="width: 100%;height:60px">
@@ -104,57 +125,66 @@
               </FormItem>
             </Col> -->
             <Col span="12">
-              <FormItem :label="$t('baoguanrenyuan')" style="width: 100%;height:60px">
-                <Button @click="selectEmp(4)" style="width:100%;">{{ $t('selectemp') }}</Button>
-                <Input type="textarea" v-model="addformbase.manageEmpName" readonly/>
-              </FormItem>
+            <FormItem :label="$t('baoguanrenyuan')"
+                      prop="manageEmpName"
+                      style="width: 100%;height:60px">
+              <Button @click="selectEmp(4)"
+                      style="width:100%;">{{ $t('selectemp') }}</Button>
+              <Input type="textarea"
+                     v-model="addformbase.manageEmpName"
+                     readonly />
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('shiyongquanxian')" style="width: 100%;height:60px">
-                <Input v-model="addformbase.serviceLife">
-                  <span slot="append" style="width: 70px">{{ $t('day') }}</span>
-                </Input>
-              </FormItem>
+            <FormItem :label="$t('shiyongquanxian')"
+                      prop="serviceLife"
+                      style="width: 100%;height:60px">
+              <Input v-model="addformbase.serviceLife">
+              <span slot="append"
+                    style="width: 70px">{{ $t('day') }}</span>
+              </Input>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('cunfnagdidian')" style="width: 100%;height:60px">
-                <Select v-model="addformbase.storageId" filterable>
-                  <Option
-                    v-for="item in locationList"
-                    :value="item.id"
-                    :key="item.id"
-                    >{{ item.storageLocation }}</Option
-                  >
-                </Select>
-              </FormItem>
+            <FormItem :label="$t('cunfnagdidian')"
+                      prop="storageId"
+                      style="width: 100%;height:60px">
+              <Select v-model="addformbase.storageId"
+                      filterable>
+                <Option v-for="item in locationList"
+                        :value="item.id"
+                        :key="item.id">{{ item.storageLocation }}</Option>
+              </Select>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('gouzhiriqi')" style="width: 100%;height:60px">
-                <DatePicker
-                  v-model="addformbase.purchaseTimeStr"
-                  :options="options"
-                  type="date"
-                  placeholder="Select date"
-                  style="width: 100%"
-                  @on-change="selectDate"
-                ></DatePicker>
-              </FormItem>
+            <FormItem :label="$t('gouzhiriqi')"
+                      style="width: 100%;height:60px">
+              <DatePicker v-model="addformbase.purchaseTimeStr"
+                          :options="options"
+                          type="date"
+                          placeholder="Select date"
+                          style="width: 100%"
+                          @on-change="selectDate"></DatePicker>
+            </FormItem>
             </Col>
             <Col span="12">
-              <FormItem :label="$t('dengjiriqi')" style="width: 100%;height:60px">
-                <DatePicker
-                  v-model="addformbase.registrationTimeStr"
-                  type="date"
-                  placeholder="Select date"
-                  style="width: 100%"
-                  @on-change="selectDate2"
-                ></DatePicker>
-              </FormItem>
+            <FormItem :label="$t('dengjiriqi')"
+                      style="width: 100%;height:60px">
+              <DatePicker v-model="addformbase.registrationTimeStr"
+                          type="date"
+                          placeholder="Select date"
+                          style="width: 100%"
+                          @on-change="selectDate2"></DatePicker>
+            </FormItem>
             </Col>
             <Col span="24">
-              <FormItem :label="$t('Remark')" style="width: 100%;height:60px">
-                <Input type="textarea" v-model="addformbase.remarks" />
-              </FormItem>
+            <FormItem :label="$t('Remark')"
+                      prop="remarks"
+                      style="width: 100%;height:60px">
+              <Input type="textarea"
+                     v-model="addformbase.remarks" />
+            </FormItem>
             </Col>
           </Row>
           <!-- <FormItem :label="$t('glqx')">
@@ -178,40 +208,33 @@
     </div>
     <div slot="footer">
       <ButtonGroup>
-        <Button
-          type="primary"
-          size="large"
-          :loading="modal_loading"
-          @click="handsave"
-          >{{ $t("Save") }}</Button
-        >
-        <Button type="error" size="large" @click="cancel">{{
+        <Button type="primary"
+                size="large"
+                :loading="modal_loading"
+                @click="handsave">{{ $t("Save") }}</Button>
+        <Button type="error"
+                size="large"
+                @click="cancel">{{
           $t("Close")
         }}</Button>
       </ButtonGroup>
     </div>
     <!-- 新建员工弹窗 -->
-    <addemp
-      :modalstat="visiable_emp"
-      :type="mytype"
-      :memberId="tranferValue"
-      @updateStat="updateStat_emp"
-    ></addemp>
+    <addemp :modalstat="visiable_emp"
+            :type="mytype"
+            :memberId="tranferValue"
+            @updateStat="updateStat_emp"></addemp>
     <!-- <addorg
       :modalstat="visiable_org"
       :type="mytype"
       :memberId="tranferValue"
       @updateStat="updateStat_org"
     ></addorg> -->
-    <addpost
-      :modalstat="visiable_post"
-      :memberId="tranferValue"
-      @updateStat="updateStat_post"
-    ></addpost>
-    <organization
-      :modalstat.sync="visiable_org"
-      @organizationData="getOrganizationData"
-    />
+    <addpost :modalstat="visiable_post"
+             :memberId="tranferValue"
+             @updateStat="updateStat_post"></addpost>
+    <organization :modalstat.sync="visiable_org"
+                  @organizationData="getOrganizationData" />
     <!-- 新建结束============= -->
   </Modal>
 </template>
@@ -261,8 +284,8 @@ export default {
       default: false
     }
   },
-  created () {},
-  mounted () {},
+  created () { },
+  mounted () { },
   data () {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -319,20 +342,34 @@ export default {
           {
             required: !this.isrequireNum,
             message: 'The assetNum cannot be empty',
-            trigger: 'change'
+            trigger: 'blur'
           }
         ],
         assetName: [
           {
             required: true,
             message: 'The assetName cannot be empty',
-            trigger: 'change'
+            trigger: 'blur'
+          }
+        ],
+        amount: [
+          {
+            required: true,
+            message: 'The amount cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        speciation: [
+          {
+            required: true,
+            message: 'The speciation cannot be empty',
+            trigger: 'blur'
           }
         ],
         unitId: [
           {
             required: true,
-            trigger: 'change',
+            trigger: 'blur',
             validator: validatePass2
           }
         ],
@@ -340,16 +377,65 @@ export default {
           {
             required: true,
             message: 'The unitPrice cannot be empty',
-            trigger: 'change'
+            trigger: 'blur'
+          }
+        ],
+        depreciationRate: [
+          {
+            required: true,
+            message: 'The depreciationRate cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        manageEmpName: [
+          {
+            required: true,
+            message: 'The manageEmpName cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        serviceLife: [
+          {
+            required: true,
+            message: 'The serviceLife cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        purchaseTimeStr: [
+          {
+            required: true,
+            message: 'The purchaseTimeStr cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        registrationTimeStr: [
+          {
+            required: true,
+            message: 'The registrationTimeStr cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        remarks: [
+          {
+            required: true,
+            message: 'The remarks cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        parentClassifyId: [
+          {
+            required: true,
+            message: 'The parentClassifyId cannot be empty',
+            trigger: 'blur'
+          }
+        ],
+        storageId: [
+          {
+            required: true,
+            message: 'The storageId cannot be empty',
+            trigger: 'blur'
           }
         ]
-        // depreciationRate: [
-        //   {
-        //     required: true,
-        //     message: 'The depreciationRate cannot be empty',
-        //     trigger: 'change'
-        //   }
-        // ]
       },
       // 新建员工弹窗
       visiable_emp: false,
@@ -367,7 +453,8 @@ export default {
         disabledDate (date) {
           return date && date.valueOf() > Date.now();
         }
-      }
+      },
+      childData: null
     };
   },
   computed: {
@@ -397,6 +484,16 @@ export default {
     }
   },
   methods: {
+    changeCascader (val) {
+      console.log(1113333333, val);
+      console.log(this.childData);
+      this.childData.forEach(element => {
+        if (element.value === val[1]) {
+          console.log(111111);
+          this.addformbase.assetNum = element.classifyNo;
+        }
+      });
+    },
     selectDate (val) {
       this.addformbase.purchaseTime = val;
     },
@@ -604,10 +701,12 @@ export default {
         const data = res.data.map((items) => {
           return {
             label: items.classifyName,
+            classifyNo: items.classifyNo,
             value: items.id,
             parentId: item.id
           };
         });
+        this.childData = data;
         item.children = data;
         callback();
       });

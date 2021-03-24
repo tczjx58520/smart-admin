@@ -1,98 +1,95 @@
 <template>
   <div>
     <Row :gutter="10">
-      <Button
-        style="margin-right: 15px"
-        @click="getList(0)"
-        icon="md-refresh"
-        type="default"
-        >{{ $t("Reflash") }}</Button
-      >
-      <Button
-        v-privilege="['10-16-1']"
-        style="margin-right: 15px"
-        @click="created"
-        icon="md-add"
-        type="warning"
-        >{{ $t("Create") }}</Button
-      >
-      <Button
-        v-privilege="['10-16-3']"
-        style="margin-right: 15px"
-        @click="clear"
-        icon="md-close"
-        type="error"
-        >{{ $t("Delete") }}</Button
-      >
+      <Button style="margin-right: 15px"
+              @click="getList(0)"
+              icon="md-refresh"
+              type="default">{{ $t("Reflash") }}</Button>
+      <Button v-privilege="['10-16-1']"
+              style="margin-right: 15px"
+              @click="created"
+              icon="md-add"
+              type="warning">{{ $t("Create") }}</Button>
+      <Button v-privilege="['10-16-3']"
+              style="margin-right: 15px"
+              @click="clear"
+              icon="md-close"
+              type="error">{{ $t("Delete") }}</Button>
     </Row>
     <Row :gutter="10">
       <!--菜单管理-->
-      <Col :lg="6" :md="8">
-        <Card class="warp-card" dis-hover>
-          <div class="card-title" slot="title">
-            <Icon type="ios-switch"></Icon>菜单管理
-          </div>
-          <Tree
-            :data="data1"
-            :load-data="loadData"
-            @on-select-change="handleSelect"
-          ></Tree>
-        </Card>
+      <Col :lg="6"
+           :md="8">
+      <Card class="warp-card"
+            dis-hover>
+        <div class="card-title"
+             slot="title">
+          <Icon type="ios-switch"></Icon>菜单管理
+        </div>
+        <Tree :data="data1"
+              :load-data="loadData"
+              @on-select-change="handleSelect"></Tree>
+      </Card>
       </Col>
-      <Col :lg="18" :md="16">
-        <Card class="warp-card" dis-hover style="margin-bottom: 100px">
-          <div class="card-title" slot="title">
-            <Icon type="ios-cog"></Icon>详细信息
-          </div>
-          <div slot="extra">
-            <Button
-              @click="addBatchSavePoints"
-              icon="ios-albums-outline"
-              type="primary"
-              size="small"
-              >保存修改</Button
-            >
-          </div>
-          <Row>
-            <Form :label-width="100" :model="detailItem">
-              <FormItem :label="$t('classificationName')">
-                <Input v-model="detailItem.classifyName"></Input>
-              </FormItem>
-              <FormItem :label="$t('classificationParent')">
-                <Select v-model="detailItem.parentId" clearable>
-                  <Option :value="0">{{ $t("wu") }}</Option>
-                  <Option
-                    v-for="item in parentList"
-                    :value="item.id"
-                    :key="item.id"
-                    >{{ item.title }}</Option
-                  >
-                </Select>
-              </FormItem>
-            </Form>
-          </Row>
-        </Card>
+      <Col :lg="18"
+           :md="16">
+      <Card class="warp-card"
+            dis-hover
+            style="margin-bottom: 100px">
+        <div class="card-title"
+             slot="title">
+          <Icon type="ios-cog"></Icon>详细信息
+        </div>
+        <div slot="extra">
+          <Button @click="addBatchSavePoints"
+                  icon="ios-albums-outline"
+                  type="primary"
+                  size="small">保存修改</Button>
+        </div>
+        <Row>
+          <Form :label-width="100"
+                :model="detailItem">
+            <FormItem :label="$t('classificationName')">
+              <Input v-model="detailItem.classifyName"></Input>
+            </FormItem>
+            <FormItem label="分类编码">
+              <Input v-model="detailItem.classifyNo"></Input>
+            </FormItem>
+            <FormItem :label="$t('classificationParent')">
+              <Select v-model="detailItem.parentId"
+                      clearable>
+                <Option :value="0">{{ $t("wu") }}</Option>
+                <Option v-for="item in parentList"
+                        :value="item.id"
+                        :key="item.id">{{ item.title }}</Option>
+              </Select>
+            </FormItem>
+          </Form>
+        </Row>
+      </Card>
       </Col>
     </Row>
-    <Modal
-      @on-cancel="cancelSaveData"
-      @on-ok="validateAndAddPosition"
-      :title="$t('addsignature')"
-      v-model="isShowAddModal"
-    >
-      <Form :label-width="100" :model="saveItem">
+    <Modal @on-cancel="cancelSaveData"
+           @on-ok="validateAndAddPosition"
+           :title="$t('addsignature')"
+           v-model="isShowAddModal">
+      <Form :label-width="100"
+            :model="saveItem">
+        <FormItem label="分类编码">
+          <Input :maxlength="30"
+                 v-model="saveItem.classifyNo"></Input>
+        </FormItem>
         <FormItem :label="$t('classificationName')">
-          <Input :maxlength="30" v-model="saveItem.classifyName"></Input>
+          <Input :maxlength="30"
+                 v-model="saveItem.classifyName"></Input>
         </FormItem>
         <FormItem :label="$t('classificationParent')">
-          <Select v-model="saveItem.parentId" clearable>
+          <Select v-model="saveItem.parentId"
+                  clearable>
             <Option :value="0">{{ $t("wu") }}</Option>
-            <Option
-              v-for="item in parentList"
-              :value="item.id"
-              :key="item.id"
-              >{{ item.title }}</Option
-            >
+            <Option v-for="item in parentList"
+                    :value="item.id"
+                    :key="item.id">{{ item.title }}</Option>
           </Select>
         </FormItem>
       </Form>
@@ -125,11 +122,13 @@ export default {
         parentId: item.id
       };
       classification.getstorage(data).then((res) => {
+        console.log(111111111111, res);
         const data = res.data.map((items) => {
           return {
             title: items.classifyName,
             id: items.id,
-            parentId: item.id
+            parentId: item.id,
+            classifyNo: items.classifyNo
           };
         });
         callback(data);
@@ -145,6 +144,7 @@ export default {
           return {
             loading: false,
             title: item.classifyName,
+            classifyNo: item.classifyNo,
             id: item.id,
             parentId: 0,
             children: []
@@ -190,9 +190,11 @@ export default {
       });
     },
     handleSelect (array, item) {
+      console.log(3333333);
       console.log(array, item);
       this.detailItem = Object.assign({}, item);
       this.detailItem.classifyName = this.detailItem.title;
+      console.log(123123, this.detailItem);
     },
     addBatchSavePoints () {
       if (!this.detailItem.id) {

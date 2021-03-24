@@ -61,21 +61,26 @@
                   @click="see(row)">查看</Button>
           <Button type="error"
                   size="small"
+                  v-if="row.status===0"
                   style="margin-right: 5px"
                   @click="update(row)">修改</Button>
           <Button type="error"
                   size="small"
                   style="margin-right: 5px"
+                  v-if="row.status===0"
                   @click="revoke(row)">撤销</Button>
           <Button type="error"
                   size="small"
                   style="margin-right: 5px"
+                  v-if="row.status===1"
                   @click="over(row)">结束</Button>
           <Button type="error"
                   size="small"
                   style="margin-right: 5px"
+                  v-if="row.status===1"
                   @click="supervise(row)">督办</Button>
           <Button type="error"
+                  v-if="row.status===0"
                   size="small"
                   @click="deleteTask(row)">删除</Button>
         </template>
@@ -126,11 +131,22 @@ export default {
         },
         {
           value: '2',
-          label: '已完成'
+          label: '已结束'
+        },
+        {
+          value: '3',
+          label: '已撤销'
+        },
+        {
+          value: '4',
+          label: '延期'
+        },
+        {
+          value: '5',
+          label: '完成'
         }
       ],
       updateTaskData: {
-
         creatorId: null,
         personalPlanTask: {},
         personalTaskParticipant: [],
@@ -183,7 +199,7 @@ export default {
           key: 'headerName'
         },
         {
-          title: this.$t('assignPeople'),
+          title: '参与人',
           key: 'personalTaskParticipant',
           render: (h, params) => {
             console.log(1111, params.row.personalTaskParticipant);
@@ -222,8 +238,10 @@ export default {
   methods: {
     getList () {
       this.listQuery.employeeId = this.$store.state.user.userLoginInfo.userId;
+      console.log(123, this.listQuery);
       taskManage.findTaskList(this.listQuery).then(res => {
         this.tableData = res.data.list;
+        this.total = res.data.total;
       });
     },
     changePageNum (val) {
