@@ -7,7 +7,7 @@ export const basicSettings = [
     meta: {
       title: '基础设置',
       icon: 'ios-paper-outline',
-      roles: ['10-15-4']
+      roles: ['85-86-4', '85-87-4', '85-88-4', '85-89-4', '85-90-4', '85-91-4']
     },
     children: [
       //  发送email
@@ -16,7 +16,7 @@ export const basicSettings = [
         name: 'unitOfMeasure',
         meta: {
           title: '计量单位',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-86-4']
         },
         component: () => import('@/views/assetManagement/unitOfMeasure/unitOfMeasure.vue')
       },
@@ -25,7 +25,7 @@ export const basicSettings = [
         name: 'storageLocation',
         meta: {
           title: '存放地点',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-87-4']
         },
         component: () => import('@/views/assetManagement/storageLocation/storageLocation.vue')
       },
@@ -34,7 +34,7 @@ export const basicSettings = [
         name: 'supplier',
         meta: {
           title: '供应商',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-88-4']
         },
         component: () => import('@/views/assetManagement/supplier/supplier.vue')
       },
@@ -43,7 +43,7 @@ export const basicSettings = [
         name: 'classification',
         meta: {
           title: '资产分类',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-89-4']
         },
         component: () => import('@/views/assetManagement/classification/classification.vue')
       },
@@ -52,7 +52,7 @@ export const basicSettings = [
         name: 'numSetting',
         meta: {
           title: '编号设置',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-90-4']
         },
         component: () => import('@/views/assetManagement/numSetting/numSetting.vue')
       },
@@ -61,7 +61,7 @@ export const basicSettings = [
         name: 'fixedField',
         meta: {
           title: '固定字段',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-91-4']
         },
         component: () => import('@/views/assetManagement/fixedField/fixedField.vue')
       }

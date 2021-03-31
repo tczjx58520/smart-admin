@@ -32,8 +32,8 @@
             <Card class="warp-card" dis-hover>
                 <ButtonGroup style="margin-bottom:20px;">
                     <Button @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                    <Button v-privilege="['1-4-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
+                    <Button v-privilege="['1-3-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+                    <Button v-privilege="['1-3-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
                 </ButtonGroup>
                 <Table border ref="selection" :columns="columns4" :data="rolelist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
             </Card>
@@ -140,7 +140,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-4-2']
+                    value: ['1-3-2']
                   }
                 ],
                 on: {

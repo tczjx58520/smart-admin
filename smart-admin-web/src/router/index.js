@@ -53,6 +53,7 @@ Router.prototype.closeCurrentPageAndPush = function (pushParam) {
 let storeSelf = store;
 router.beforeEach((to, from, next) => {
   ViewUI.LoadingBar.start();
+  console.log('to=======', to);
   const token = cookie.getToken();
   if (!token && to.name !== LOGIN_PAGE_NAME) {
     // 未登录且要跳转的页面不是登录页
@@ -76,27 +77,19 @@ router.beforeEach((to, from, next) => {
     if (to.meta.noValidatePrivilege) {
       next();
     }
-
+    // if (to.path === '/401') {
+    //   next();
+    // }
     // 如果是超管，直接放行
     if (store.state.user.userLoginInfo.isSuperMan) {
       next();
     }
-
-    // 去掉/之后第一个字母
-    // let key = to.path.substr(1, 1);
-    // let pathArray = storeSelf.state.user.privilegeRouterPathMap.get(key);
-    // if (!(pathArray && pathArray.indexOf(to.path) >= 0)) {
-    //   next({
-    //     name: 'Error401'
-    //   });
-    // } else {
-    //   next();
-    // }
     let junglerole = localStorage.getItem('userRouterPrivilege');
-    console.log('to=============', to.meta);
+    console.log(to.meta.roles, to.meta.roles.some(role => {
+      return junglerole.includes(role);
+    }));
     if (
-      to.meta.roles.some(role => {
-        // console.log(storeSelf.state.user.privilegeMenuKeyList);
+      to.meta.roles && to.meta.roles.some(role => {
         return junglerole.includes(role);
       })
     ) {

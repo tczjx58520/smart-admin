@@ -12,7 +12,7 @@ export const home = [
       hideInMenu: true,
       noValidatePrivilege: true,
       icon: 'icon iconfont iconxitongshezhi',
-      roles: ['10-11-4']
+      roles: ['1-10-4']
     },
     children: [
       {
@@ -22,7 +22,7 @@ export const home = [
           title: '首页',
           noValidatePrivilege: true,
           noKeepAlive: true,
-          roles: ['10-11-4']
+          roles: ['1-10-4']
         },
         component: () => import('@/views/home')
       }

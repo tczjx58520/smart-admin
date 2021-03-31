@@ -7,7 +7,7 @@ export const PersonalSetting = [
     meta: {
       title: '个人设置',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-105-4', '101-106-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const PersonalSetting = [
         name: 'definedGroup',
         meta: {
           title: '自定义群组',
-          roles: ['1-3-4']
+          roles: ['101-105-4']
         },
         component: () => import('@/views/personalOffice/personalSetting/definedGroup')
       },
@@ -24,7 +24,7 @@ export const PersonalSetting = [
         name: 'passwordManage',
         meta: {
           title: '密码管理',
-          roles: ['1-3-4']
+          roles: ['101-106-4']
         },
         component: () => import('@/views/personalOffice/personalSetting/passwordManage')
       }

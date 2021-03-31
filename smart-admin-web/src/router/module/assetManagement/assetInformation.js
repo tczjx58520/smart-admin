@@ -7,7 +7,7 @@ export const assetInformation = [
     meta: {
       title: '资产信息',
       icon: 'ios-paper-outline',
-      roles: ['10-11-4']
+      roles: ['85-92-4', '85-93-4']
     },
     children: [
       //  assetDetail
@@ -16,7 +16,7 @@ export const assetInformation = [
         name: 'assetManage',
         meta: {
           title: '资产管理',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-92-4']
         },
         component: () => import('@/views/assetManagement/assetManage/assetManage.vue')
       },
@@ -25,7 +25,7 @@ export const assetInformation = [
         name: 'assetDetail',
         meta: {
           title: '资产明细',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['85-92-4'],
           hideInMenu: true,
           noKeepAlive: true
         },
@@ -36,7 +36,7 @@ export const assetInformation = [
         name: 'assetDetailDetailed',
         meta: {
           title: '资产明细详情',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['85-92-4'],
           hideInMenu: true,
           noKeepAlive: true
         },
@@ -47,7 +47,7 @@ export const assetInformation = [
         name: 'assetHistory',
         meta: {
           title: '历史记录',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['85-93-4']
         },
         component: () => import('@/views/assetManagement/assetHistory/assetHistory.vue')
       }

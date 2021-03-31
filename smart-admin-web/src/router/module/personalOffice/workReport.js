@@ -7,7 +7,7 @@ export const WorkReport = [
     meta: {
       title: '工作汇报',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-107-4', '101-108-4', '101-109-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const WorkReport = [
         name: 'dayReport',
         meta: {
           title: '日报',
-          roles: ['1-3-4']
+          roles: ['101-107-4']
         },
         component: () => import('@/views/personalOffice/workReport/dayReport')
       },
@@ -24,7 +24,7 @@ export const WorkReport = [
         name: 'weekReport',
         meta: {
           title: '周报',
-          roles: ['1-3-4']
+          roles: ['101-108-4']
         },
         component: () => import('@/views/personalOffice/workReport/weekReport')
       },
@@ -33,7 +33,7 @@ export const WorkReport = [
         name: 'monthReport',
         meta: {
           title: '月报',
-          roles: ['1-3-4']
+          roles: ['101-109-4']
         },
         component: () => import('@/views/personalOffice/workReport/monthReport')
       }

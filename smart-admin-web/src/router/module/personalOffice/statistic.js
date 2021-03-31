@@ -7,7 +7,7 @@ export const Statistic = [
     meta: {
       title: '统计',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-117-4', '101-118-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const Statistic = [
         name: 'taskStatistic',
         meta: {
           title: '任务统计',
-          roles: ['1-3-4']
+          roles: ['101-117-4']
         },
         component: () => import('@/views/personalOffice/statistics/taskStatistic')
       },
@@ -24,7 +24,7 @@ export const Statistic = [
         name: 'workReportStatistic',
         meta: {
           title: '工作汇报统计',
-          roles: ['1-3-4']
+          roles: ['101-118-4']
         },
         component: () => import('@/views/personalOffice/statistics/workReportStatistic')
       }

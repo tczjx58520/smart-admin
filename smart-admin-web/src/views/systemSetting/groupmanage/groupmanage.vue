@@ -6,8 +6,8 @@
             <Card class="warp-card" dis-hover>
               <div class="buttom_group">
                 <Button type="default" icon="md-refresh" style="margin-left:15px;" @click="refresh">{{ $t('Reflash') }}</Button>
-                <Button type="warning" v-privilege="['1-6-1']" icon="md-add" style="margin-left:15px;" @click="AddGroup">{{ $t('Create') }}</Button>
-                <Button type="error" v-privilege="['1-6-3']" icon="md-close" style="margin-left:15px;" @click="delGroup">{{ $t('Delete') }}</Button>
+                <Button type="warning" v-privilege="['1-8-1']" icon="md-add" style="margin-left:15px;" @click="AddGroup">{{ $t('Create') }}</Button>
+                <Button type="error" v-privilege="['1-8-3']" icon="md-close" style="margin-left:15px;" @click="delGroup">{{ $t('Delete') }}</Button>
               </div>
               <Table border ref="selection_group" max-height="400" highlight-row :columns="groupColumns" :loading="grouploading" :data="group" @on-current-change="show_member" @on-selection-change="getGroup"></Table>
             </Card>
@@ -15,8 +15,8 @@
         <div style="width:60%;height:calc(80vh)">
             <Card class="warp-card" dis-hover>
               <div class="buttom_group">
-                <Button type="warning" v-privilege="['1-6-5']" icon="md-add" style="margin-left:15px;" @click="Addmemeber">{{ $t('Create') }}</Button>
-                <Button type="error" v-privilege="['1-6-6']" icon="md-close" style="margin-left:15px;" @click="delMember">{{ $t('Delete') }}</Button>
+                <Button type="warning" v-privilege="['1-8-5']" icon="md-add" style="margin-left:15px;" @click="Addmemeber">{{ $t('Create') }}</Button>
+                <Button type="error" v-privilege="['1-8-6']" icon="md-close" style="margin-left:15px;" @click="delMember">{{ $t('Delete') }}</Button>
               </div>
                 <Table border ref="selection" :columns="memberColumns" height="400" :data="memberlist" @on-selection-change="getMember"></Table>
             </Card>

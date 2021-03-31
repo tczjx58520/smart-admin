@@ -14,7 +14,7 @@ export const assetManagement = [
       title: '资产管理',
       topMenu: true,
       icon: 'icon iconfont iconjiekouwendang',
-      roles: ['10-16-4', '10-11-4', '10-12-4', '10-19-4', '10-17-4', '10-18-4', '10-15-4', '10-19-4', '10-20-4', '10-21-4', '10-22-4']
+      roles: ['85-86-4', '85-87-4', '85-88-4', '85-89-4', '85-90-4', '85-91-4', '85-92-4', '85-93-4']
     },
     children: [
       ...basicSettings,

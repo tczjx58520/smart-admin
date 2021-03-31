@@ -25,12 +25,11 @@
         </div>
         <div style="margin-right: 15px">
           <Button
-            v-privilege="['1-5-1']"
+            v-privilege="['1-4-1']"
             icon="md-add"
             type="warning"
             @click="newPosition"
-            >{{ $t("Create") }}</Button
-          >
+            >{{ $t("Create") }}</Button>
         </div>
         <!--<div style="margin-right: 15px"><Button icon="md-close" type="error" @click="deletePost">{{$t('Delete')}}</Button> </div>-->
       </div>
@@ -148,7 +147,7 @@ export default {
   data () {
     const validatePass = (rule, value, callback) => {
       console.log('验证消息=============', value);
-      if (value.length &&  value.length !== 0) {
+      if (value.length && value.length !== 0) {
         callback();
       } else {
         callback(new Error('请选择分类'));
@@ -219,7 +218,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-5-2']
+                      value: ['1-4-2']
                     }
                   ],
                   on: {
@@ -231,7 +230,7 @@ export default {
                         levelId: params.row.levelId,
                         operatId: this.$store.state.user.userLoginInfo.userId
                       };
-                      this.updateItem.levelId = this.updateItem.levelId.split(',').map(Number)
+                      this.updateItem.levelId = this.updateItem.levelId.split(',').map(Number);
                       console.log(this.updateItem);
                       this.isShowEditModal = true;
                     }
@@ -252,7 +251,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-5-3']
+                      value: ['1-4-3']
                     }
                   ],
                   on: {
@@ -352,7 +351,7 @@ export default {
       });
     },
     Edit (row) {
-      if (this.$judge(['1-5-2'])) {
+      if (this.$judge(['1-4-2'])) {
         this.updateItem = {
           postId: row.id,
           postName: row.postName,
@@ -459,7 +458,7 @@ export default {
     },
     // 更新岗位
     async updatePosition () {
-      this.updateItem.levelId = this.updateItem.levelId.join(',')
+      this.updateItem.levelId = this.updateItem.levelId.join(',');
       try {
         let result = await positionApi.updatePost(this.updateItem);
         this.$Message.success('修改成功');
@@ -514,7 +513,7 @@ export default {
     },
     // 添加岗位 - 异步
     async addPosition () {
-      this.saveItem.levelId = this.saveItem.levelId.join(',')
+      this.saveItem.levelId = this.saveItem.levelId.join(',');
       try {
         let result = await positionApi.addPost(this.saveItem);
         this.$Message.success('添加成功');

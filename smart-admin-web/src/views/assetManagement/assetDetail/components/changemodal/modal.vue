@@ -62,7 +62,7 @@
             </Col>
             <Col span="12">
               <FormItem :label="$t('baoguanzuzhi')" style="width: 100%;height:60px">
-                <span>{{ addformbase.organizationName }}</span>
+                <span>{{ addformbase.storageLocation }}</span>
               </FormItem>
             </Col>
             <Col span="12">

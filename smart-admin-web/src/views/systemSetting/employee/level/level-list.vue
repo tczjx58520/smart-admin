@@ -25,7 +25,7 @@
         </div>
         <div style="margin-right: 15px">
           <Button
-            v-privilege="['1-8-1']"
+            v-privilege="['1-2-1']"
             icon="md-add"
             type="warning"
             @click="newPosition"
@@ -205,7 +205,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-8-2']
+                      value: ['1-2-2']
                     }
                   ],
                   on: {
@@ -232,7 +232,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-8-3']
+                      value: ['1-2-3']
                     }
                   ],
                   style: {

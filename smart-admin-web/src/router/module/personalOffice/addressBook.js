@@ -7,7 +7,7 @@ export const AddressBook = [
     meta: {
       title: '通讯录',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-102-4', '101-103-4', '101-104-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const AddressBook = [
         name: 'myAddressBook',
         meta: {
           title: '我的通讯录',
-          roles: ['1-3-4']
+          roles: ['101-102-4']
         },
         component: () => import('@/views/personalOffice/mailList/myAddressBook')
       },
@@ -24,7 +24,7 @@ export const AddressBook = [
         name: 'internalAddressBook',
         meta: {
           title: '内部通讯录',
-          roles: ['1-3-4']
+          roles: ['101-103-4']
         },
         component: () => import('@/views/personalOffice/mailList/internalAddressBook')
       },
@@ -33,10 +33,10 @@ export const AddressBook = [
         name: 'publicAddressBook',
         meta: {
           title: '公共通讯录',
-          roles: ['1-3-4']
+          roles: ['101-104-4']
         },
         component: () => import('@/views/personalOffice/mailList/publicAddressBook')
-      },
+      }
     ]
   }
 ];

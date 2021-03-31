@@ -11,7 +11,7 @@
             </div>
             <div style="margin-right: 15px;margin-top: 10px">
               <Button
-                v-privilege="['1-2-3']"
+                v-privilege="['1-5-3']"
                 icon="md-close"
                 type="error"
                 @click="deletetree"
@@ -26,7 +26,7 @@
           <div style="display:flex; align-items: center">
             <div style="margin-right: 15px;margin-top: 10px">
               <Button
-                v-privilege="['1-2-1']"
+                v-privilege="['1-5-1']"
                 icon="md-add"
                 type="primary"
                 @click="handleSave"

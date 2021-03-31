@@ -7,7 +7,7 @@ export const PlanManagement = [
     meta: {
       title: '计划管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-110-4', '101-111-4', '101-112-4', '101-113-4', '101-114-4', '101-115-4']
     },
     children: [
       {
@@ -15,7 +15,7 @@ export const PlanManagement = [
         name: 'personalPlan',
         meta: {
           title: '个人计划',
-          roles: ['1-3-4']
+          roles: ['101-110-4']
         },
         component: () => import('@/views/personalOffice/planManagement/personalPlan')
       },
@@ -25,7 +25,7 @@ export const PlanManagement = [
         name: 'viewPlan',
         meta: {
           title: '查看计划',
-          roles: ['1-3-4'],
+          roles: ['101-110-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personalOffice/planManagement/viewPlan')
@@ -35,7 +35,7 @@ export const PlanManagement = [
         name: 'organizePlan',
         meta: {
           title: '组织计划',
-          roles: ['1-3-4']
+          roles: ['101-111-4']
         },
         component: () => import('@/views/personalOffice/planManagement/organizePlan')
       },
@@ -44,7 +44,7 @@ export const PlanManagement = [
         name: 'workSummary',
         meta: {
           title: '工作总结',
-          roles: ['1-3-4']
+          roles: ['101-112-4']
         },
         component: () => import('@/views/personalOffice/planManagement/workSummary')
       },
@@ -53,7 +53,7 @@ export const PlanManagement = [
         name: 'workreport',
         meta: {
           title: '工作汇报',
-          roles: ['1-3-4']
+          roles: ['101-113-4']
         },
         component: () => import('@/views/personalOffice/planManagement/workReport')
       },
@@ -62,7 +62,7 @@ export const PlanManagement = [
         name: 'reviewPlan',
         meta: {
           title: '评阅计划',
-          roles: ['1-3-4']
+          roles: ['101-114-4']
         },
         component: () => import('@/views/personalOffice/planManagement/reviewPlan')
       },
@@ -71,7 +71,7 @@ export const PlanManagement = [
         name: 'sharedPlan',
         meta: {
           title: '共享的计划',
-          roles: ['1-3-4']
+          roles: ['101-115-4']
         },
         component: () => import('@/views/personalOffice/planManagement/sharedPlan')
       }

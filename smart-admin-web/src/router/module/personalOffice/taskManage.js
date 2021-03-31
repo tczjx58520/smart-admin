@@ -7,7 +7,7 @@ export const TaskManage = [
     meta: {
       title: '任务管理',
       icon: 'ios-paper-outline',
-      roles: ['1-3-4']
+      roles: ['101-116-4']
     },
     children: [
       // {
@@ -24,7 +24,7 @@ export const TaskManage = [
         name: 'taskList',
         meta: {
           title: '任务列表',
-          roles: ['1-3-4']
+          roles: ['101-116-4']
         },
         component: () => import('@/views/personalOffice/taskManagement/taskList')
       },
@@ -33,7 +33,7 @@ export const TaskManage = [
         name: 'taskDetail1',
         meta: {
           title: '任务详情',
-          roles: ['1-3-4'],
+          roles: ['101-116-4'],
           hideInMenu: true
         },
         component: () => import('@/views/personalOffice/taskManagement/taskDetail')

@@ -306,15 +306,24 @@ export default {
       }
     };
     const validatePass3 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please enter'));
+      console.log('value=====', value);
+      if (!(value && value.length)) {
+        callback(new Error('The parentClassifyId cannot be empty'));
+      } else {
+        callback();
+      }
+    };
+    const validatePass5 = (rule, value, callback) => {
+      console.log('value=====', value);
+      if (!(value)) {
+        callback(new Error('The storageId cannot be empty'));
       } else {
         callback();
       }
     };
     const validatePass4 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please enter'));
+      if (!value) {
+        callback(new Error('The amount cannot be empty'));
       } else {
         callback();
       }
@@ -356,7 +365,8 @@ export default {
           {
             required: true,
             message: 'The amount cannot be empty',
-            trigger: 'blur'
+            validator: validatePass4,
+            trigger: 'change'
           }
         ],
         speciation: [
@@ -417,7 +427,7 @@ export default {
         ],
         remarks: [
           {
-            required: true,
+            required: false,
             message: 'The remarks cannot be empty',
             trigger: 'blur'
           }
@@ -425,15 +435,15 @@ export default {
         parentClassifyId: [
           {
             required: true,
-            message: 'The parentClassifyId cannot be empty',
-            trigger: 'blur'
+            validator: validatePass3,
+            trigger: 'change'
           }
         ],
         storageId: [
           {
             required: true,
-            message: 'The storageId cannot be empty',
-            trigger: 'blur'
+            validator: validatePass5,
+            trigger: 'change'
           }
         ]
       },
@@ -484,14 +494,13 @@ export default {
     }
   },
   methods: {
-    changeCascader (val) {
-      console.log(1113333333, val);
-      console.log(this.childData);
-      this.childData.forEach(element => {
-        if (element.value === val[1]) {
-          console.log(111111);
-          this.addformbase.assetNum = element.classifyNo;
-        }
+    changeCascader (value, selectedData) {
+      console.log(this.childData, value, selectedData);
+      const selectID = value[value.length - 1];
+      selectedData.map(item => {
+        if (item.value === selectID) {
+          this.addformbase.assetNum = item.classifyNo;
+        };
       });
     },
     selectDate (val) {
@@ -707,6 +716,7 @@ export default {
           };
         });
         this.childData = data;
+        console.log('this.childData======', this.childData);
         item.children = data;
         callback();
       });
