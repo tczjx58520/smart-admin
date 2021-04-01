@@ -2,7 +2,7 @@
   <div>
     <Card class="warp-card" dis-hover style="height: calc(80vh - 75px)">
     <Tabs :animated="false" v-model="flag">
-        <TabPane v-privilege="['10-21-4']" label="薪酬统计" name="tab1">
+        <TabPane v-privilege="['10-23-4']" label="薪酬统计" name="tab1">
             <div style="margin-bottom:20px;">
               <Button style="margin-right:15px;" @click="resetGong" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
               <DatePicker type="year" v-model="Gongsearchform.year" format="yyyy" split-panels placeholder="Select date" style="width: 200px;margin-right:15px;" @on-change="showmytime"></DatePicker>
@@ -14,7 +14,7 @@
             :total="GongpageTotal" @on-change="GongchangePage" @on-page-size-change="GongchangePageSize" show-elevator show-sizer
             show-total style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
-        <TabPane v-privilege="['10-22-4']" label="薪酬统计图" name="tab2">
+        <TabPane v-privilege="['10-23-4']" label="薪酬统计图" name="tab2">
             <div>
               <DatePicker type="year" v-model="charform.year" format="yyyy" split-panels placeholder="Select date" style="width: 200px;margin-right:15px;" @on-change="showmytime2"></DatePicker>
               <Select v-model="charform.type" style="width:200px;margin-right:15px;">

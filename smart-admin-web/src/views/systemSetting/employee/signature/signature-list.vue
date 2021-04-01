@@ -18,7 +18,7 @@
       <!-- Form 搜索按钮区 start -->
 <div style="display: flex;align-items: center;margin-bottom: 15px">
   <div style="margin-right: 15px"  @click="getlist"><Button>{{$t('Reflash')}}</Button> </div>
-  <div style="margin-right: 15px"><Button icon="md-add" v-privilege="['1-23-1']" type="warning" @click="newPosition">{{$t('Create')}}</Button> </div>
+  <div style="margin-right: 15px"><Button icon="md-add" v-privilege="['1-10-1']" type="warning" @click="newPosition">{{$t('Create')}}</Button> </div>
 <!--<div style="margin-right: 15px"><Button icon="md-close" type="error" @click="deletePost">{{$t('Delete')}}</Button> </div>-->
 </div>
       <!-- Form 搜索按钮区 end -->
@@ -233,7 +233,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-23-2']
+                    value: ['1-10-2']
                   }
                 ],
                 on: {
@@ -257,7 +257,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-23-3']
+                    value: ['1-10-3']
                   }
                 ],
                 style: {
@@ -332,7 +332,7 @@ export default {
   activated () {},
   methods: {
     Edit (row) {
-      if (this.$judge(['1-23-2'])) {
+      if (this.$judge(['1-10-2'])) {
         this.updateItem = {
           signatureId: row.id,
           signatureName: row.signatureName,

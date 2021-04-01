@@ -14,14 +14,14 @@
             >
             <Button
               style="margin-right: 15px"
-              v-privilege="['1-4-1']"
+              v-privilege="['31-35-1']"
               @click="creatResult"
               icon="md-add"
               >{{ $t("cj") }}</Button
             >
             <Button
               style="margin-right: 15px"
-              v-privilege="['1-4-1']"
+              v-privilege="['31-35-1']"
               @click="delResult"
               >{{ $t("sc") }}</Button
             >
@@ -279,6 +279,12 @@ export default {
                   style: {
                     marginRight: '5px'
                   },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['31-35-2']
+                    }
+                  ],
                   on: {
                     click: () => {
                       this.handler_EditRule(params.row);
@@ -595,7 +601,7 @@ export default {
         };
         await entrust.delentrustedResult(data).then(res => {
           console.log(res);
-          this.getList2()
+          this.getList2();
         });
       });
       this.$Message.success('删除成功');

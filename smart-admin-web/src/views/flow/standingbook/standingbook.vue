@@ -303,12 +303,12 @@ export default {
                   style: {
                     marginRight: '5px'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['1-4-2']
-                    }
-                  ],
+                  // directives: [
+                  //   {
+                  //     name: 'privilege',
+                  //     value: ['1-4-2']
+                  //   }
+                  // ],
                   on: {
                     click: () => {
                       this.handler_list(params.row);
@@ -331,7 +331,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['31-38-27']
                     }
                   ],
                   on: {
@@ -356,7 +356,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['31-38-29']
                     }
                   ],
                   on: {
@@ -381,7 +381,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['31-38-30']
                     }
                   ],
                   on: {
@@ -406,7 +406,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['31-38-31']
                     }
                   ],
                   on: {
@@ -450,7 +450,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['31-38-3']
                     }
                   ],
                   on: {

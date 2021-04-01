@@ -55,7 +55,7 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button @click="refresh" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
-                    <Button @click="created" v-privilege="['10-19-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('salaryEntry_view.newSalaryEntry') }}</Button>
+                    <Button @click="created" v-privilege="['19-21-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('salaryEntry_view.newSalaryEntry') }}</Button>
                 </div>
                   <Tables
                     :columns="columns"

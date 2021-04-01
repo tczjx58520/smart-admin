@@ -43,7 +43,7 @@
           >{{ $t("Reflash") }}</Button
         >
         <Button
-          v-privilege="['10-16-1']"
+          v-privilege="['1-11-1']"
           style="margin-right: 15px"
           @click="created"
           icon="md-add"
@@ -171,7 +171,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-16-2']
+                      value: ['1-11-2']
                     }
                   ],
                   on: {
@@ -195,7 +195,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-16-2']
+                      value: ['1-11-2']
                     }
                   ],
                   on: {
@@ -216,7 +216,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-16-2']
+                      value: ['1-11-2']
                     }
                   ],
                   on: {
@@ -283,17 +283,17 @@ export default {
   },
   methods: {
     Edit (row) {
-      if (this.$judge(['1-4-2'])) {
+      if (this.$judge(['1-11-2'])) {
         this.editinfo = row;
         this.visiable_edit = true;
-        this.isedit = true
+        this.isedit = true;
       } else {
         console.log('needroles');
       }
     },
-    Copy(row) {
-      if (this.$judge(['1-4-2'])) {
-        this.isedit = false
+    Copy (row) {
+      if (this.$judge(['1-11-2'])) {
+        this.isedit = false;
         this.editinfo = row;
         this.visiable_edit = true;
       } else {

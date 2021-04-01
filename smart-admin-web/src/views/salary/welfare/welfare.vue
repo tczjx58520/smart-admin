@@ -4,8 +4,8 @@
     <Card class="warp-card" dis-hover style="height: calc(100vh)">
       <div style="margin-bottom:20px;">
         <Button style="margin-right:15px;" @click="reset" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-        <Button v-privilege="['10-16-1']" style="margin-right:15px;" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-        <Button v-privilege="['10-16-3']" style="margin-right:15px;" @click="clear" icon="md-close" type="error">{{ $t('Delete') }}</Button>
+        <Button v-privilege="['19-25-1']" style="margin-right:15px;" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+        <Button v-privilege="['19-25-3']" style="margin-right:15px;" @click="clear" icon="md-close" type="error">{{ $t('Delete') }}</Button>
       </div>
       <Table :columns="columns" :data="data" :loading="loading" max-heigth="calc(80vh)" @on-selection-change="selectwelfare" @on-row-dblclick="Edit"></Table>
       <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -93,7 +93,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['10-16-2']
+                    value: ['19-25-2']
                   }
                 ],
                 on: {

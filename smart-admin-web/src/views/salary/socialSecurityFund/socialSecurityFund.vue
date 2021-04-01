@@ -2,22 +2,22 @@
   <div>
     <Card class="warp-card" dis-hover style="height: calc(100vh - 75px)">
     <Tabs :animated="false">
-        <TabPane v-privilege="['10-12-4']" label="公积金">
+        <TabPane v-privilege="['19-24-4']" label="公积金">
             <div style="margin-bottom:20px;">
               <Button style="margin-right:15px;" @click="resetGong" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-              <Button v-privilege="['10-12-1']" style="margin-right:15px;" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-              <Button v-privilege="['10-12-3']" style="margin-right:15px;" @click="clearGong" icon="md-close" type="error">{{ $t('Delete') }}</Button>
+              <Button v-privilege="['19-24-1']" style="margin-right:15px;" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+              <Button v-privilege="['19-24-3']" style="margin-right:15px;" @click="clearGong" icon="md-close" type="error">{{ $t('Delete') }}</Button>
             </div>
             <Table :columns="Gongcolumns" :data="Gongdata" :loading="Gongloading" @on-selection-change="selectGong"></Table>
             <Page :current="Gongsearchform.pageNum" :page-size="Gongsearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
             :total="GongpageTotal" @on-change="GongchangePage" @on-page-size-change="GongchangePageSize" show-elevator show-sizer
             show-total style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
-        <TabPane v-privilege="['10-11-4']" label="社保">
+        <TabPane v-privilege="['19-24-4']" label="社保">
             <div style="margin-bottom:20px;">
                 <Button style="margin-right:15px;" @click="resetShe" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                <Button v-privilege="['10-11-1']" style="margin-right:15px;" @click="addShe" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                <Button v-privilege="['10-11-3']" style="margin-right:15px;" @click="clearShe" icon="md-close" type="error">{{ $t('Delete') }}</Button>
+                <Button v-privilege="['19-24-1']" style="margin-right:15px;" @click="addShe" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+                <Button v-privilege="['19-24-3']" style="margin-right:15px;" @click="clearShe" icon="md-close" type="error">{{ $t('Delete') }}</Button>
             </div>
             <Table :columns="Shecolumns" :data="Shedata" :loading="Sheloading" @on-selection-change="selectShe"></Table>
             <Page :current="Shesearchform.pageNum" :page-size="Shesearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"

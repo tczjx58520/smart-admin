@@ -28,7 +28,7 @@
             <div style="flex:1;">{{ $t("jjgz") }}</div>
             <div style="flex:1;text-align:right;">
               <ButtonGroup>
-                <Button type="text" @click="addrule()">
+                <Button type="text" v-privilege="['19-30-1']" @click="addrule()">
                   <Icon type="md-add-circle"></Icon>
                   {{ $t("tj") }}
                 </Button>
@@ -42,7 +42,7 @@
             <div style="flex:1;">{{ $t("jsgz") }}</div>
             <div style="flex:1;text-align:right;">
               <ButtonGroup>
-                <Button type="text" @click="addformula()">
+                <Button type="text" v-privilege="['19-30-1']" @click="addformula()">
                   <Icon type="md-add-circle"></Icon>
                   {{ $t("tj") }}
                 </Button>

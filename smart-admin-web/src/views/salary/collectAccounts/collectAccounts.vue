@@ -3,8 +3,8 @@
     <Card class="warp-card" dis-hover style="height: calc(100vh - 150px)">
       <div style="margin-bottom:20px;">
         <Button style="margin-right:15px;" @click="resetGong" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-        <Button style="margin-right:15px;" v-privilege="['10-15-1']" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-        <Button style="margin-right:15px;" v-privilege="['10-15-3']" @click="clearGong" icon="md-close" type="error">{{ $t('Delete') }}</Button>
+        <Button style="margin-right:15px;" v-privilege="['19-27-1']" @click="addGong" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+        <Button style="margin-right:15px;" v-privilege="['19-27-3']" @click="clearGong" icon="md-close" type="error">{{ $t('Delete') }}</Button>
       </div>
       <Table max-height="500px" :columns="Gongcolumns" :data="Gongdata" :loading="Gongloading" @on-selection-change="selectGong" @on-row-dblclick="Edit"></Table>
       <Page :current="Gongsearchform.pageNum" :page-size="Gongsearchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -130,7 +130,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['10-15-2']
+                    value: ['19-27-2']
                   }
                 ],
                 on: {

@@ -37,7 +37,7 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button @click="refresh" icon="md-refresh" type="default" style="margin-right:15px;">{{ $t('Reflash') }}</Button>
-                    <Button @click="created" v-privilege="['10-19-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('processDesign_view.newProcess') }}</Button>
+                    <Button @click="created" v-privilege="['31-41-1']" icon="md-add" type="warning" style="margin-right:15px;">{{ $t('processDesign_view.newProcess') }}</Button>
                 </div>
                   <Tables
                     :columns="columns"
@@ -177,12 +177,12 @@ export default {
                   type: 'info',
                   size: 'small'
                 },
-                directives: [
-                  {
-                    name: 'privilege',
-                    value: ['1-5-2']
-                  }
-                ],
+                // directives: [
+                //   {
+                //     name: 'privilege',
+                //     value: ['1-5-2']
+                //   }
+                // ],
                 on: {
                   click: () => {
                     // console.log('params=====', params);
@@ -199,7 +199,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-5-2']
+                    value: ['31-41-2']
                   }
                 ],
                 on: {
@@ -219,7 +219,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-5-2']
+                    value: ['31-41-9']
                   }
                 ],
                 on: {
@@ -241,7 +241,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-5-3']
+                    value: ['31-41-3']
                   }
                 ],
                 on: {

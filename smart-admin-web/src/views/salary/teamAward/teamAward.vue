@@ -29,7 +29,7 @@
               <div style="flex:1;">{{ item.label }}</div>
               <div style="flex:1;text-align:right;">
                 <ButtonGroup>
-                  <Button type="text" @click="addrule(item.data,item.value)">
+                  <Button type="text" v-privilege="['19-28-1']" @click="addrule(item.data,item.value)">
                     <Icon type="md-add-circle"></Icon>
                     {{ $t("tj") }}
                   </Button>

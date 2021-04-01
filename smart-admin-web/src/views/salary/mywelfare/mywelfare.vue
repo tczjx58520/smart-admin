@@ -4,7 +4,7 @@
           dis-hover
           style="height: calc(100vh - 75px)">
       <Tabs :animated="false">
-        <TabPane v-privilege="['10-18-4']"
+        <TabPane v-privilege="['19-20-4']"
                  label="我的薪酬">
           <div style="margin-bottom:20px;">
             <Button style="margin-right:15px;"
@@ -39,7 +39,7 @@
                 show-total
                 style="margin:24px 0;text-align:right;"></Page>
         </TabPane>
-        <TabPane v-privilege="['10-17-4']"
+        <TabPane v-privilege="['19-20-4']"
                  label="我的福利">
           <div style="margin-bottom:20px;">
             <Button style="margin-right:15px;"

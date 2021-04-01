@@ -194,7 +194,7 @@ export default {
           title: this.$t('fqall'),
           width: 200,
           render: (h, params) => {
-            const mydate = params.row.createDate || params.row.sendDate
+            const mydate = params.row.createDate || params.row.sendDate;
             let DateStr = utils.getDate(new Date(mydate), 'YMDHMS');
             return h('div', [
               h(
@@ -293,12 +293,12 @@ export default {
                   style: {
                     marginRight: '5px'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['1-4-2']
-                    }
-                  ],
+                  // directives: [
+                  //   {
+                  //     name: 'privilege',
+                  //     value: ['31-33-2']
+                  //   }
+                  // ],
                   on: {
                     click: () => {
                       this.View_list(params.row);
@@ -334,11 +334,11 @@ export default {
     this.getbaseclassification();
   },
   methods: {
-    changeList() {
+    changeList () {
       if (this.searchform.flag === 2) {
-        this.searchToDoList()
+        this.searchToDoList();
       } else {
-        this.searchSignCounter()
+        this.searchSignCounter();
       }
     },
     setTime (val, type) {
@@ -426,11 +426,11 @@ export default {
     },
     updateStat_view (state) {
       this.visiable_view = state;
-      this.changeList()
+      this.changeList();
     },
     updateStat_handler (state) {
       this.visiable_handler = state;
-      this.changeList()
+      this.changeList();
     },
     clear () {
       console.log('清楚');
@@ -442,7 +442,7 @@ export default {
         empId: this.$store.state.user.userLoginInfo.userId,
         stat: 1
       };
-      this.changeList()
+      this.changeList();
     },
     // 查询用户登录日志
     async getUserLoginLogPage () {
@@ -461,18 +461,18 @@ export default {
     // 翻页
     changePage (pageNum) {
       this.searchform.pageNum = pageNum;
-      this.changeList()
+      this.changeList();
     },
     // 改变一页展示数
     changePageSize (pageSize) {
       this.searchform.pageNum = 1;
       this.searchform.pageSize = pageSize;
-      this.changeList()
+      this.changeList();
     },
     // 搜索
     search () {
       this.searchform.pageNum = 1;
-      this.changeList()
+      this.changeList();
     },
     // 重置
     reset () {

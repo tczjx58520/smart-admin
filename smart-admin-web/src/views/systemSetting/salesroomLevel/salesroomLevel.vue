@@ -43,7 +43,7 @@
           >{{ $t("Reflash") }}</Button
         >
         <Button
-          v-privilege="['10-16-1']"
+          v-privilege="['1-12-1']"
           style="margin-right: 15px"
           @click="created"
           icon="md-add"
@@ -147,7 +147,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-16-2']
+                      value: ['1-12-2']
                     }
                   ],
                   on: {
@@ -168,7 +168,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-16-2']
+                      value: ['1-12-2']
                     }
                   ],
                   on: {

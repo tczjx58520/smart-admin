@@ -58,6 +58,7 @@
           <Col span="1">
           <FormItem>
             <Button type="primary"
+                    v-privilege="['19-29-1']"
                     @click="handleSubmit()">{{
                 $t("tj")
               }}</Button>

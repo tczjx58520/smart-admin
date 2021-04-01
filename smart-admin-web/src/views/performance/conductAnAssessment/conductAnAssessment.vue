@@ -190,6 +190,12 @@ export default {
                   style: {
                     marginRight: '5px'
                   },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['13-14-2']
+                    }
+                  ],
                   on: {
                     click: () => {
                       this.Stop(params.row);
@@ -209,7 +215,6 @@ export default {
                 }, this.$t('lurushijiwanchengshu'))
               ]);
             }
-            console.log();
           }
         }
       ],
