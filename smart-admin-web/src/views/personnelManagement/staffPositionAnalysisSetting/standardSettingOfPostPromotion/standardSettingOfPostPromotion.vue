@@ -49,7 +49,7 @@
       </div>
       <div class="button-warp">
         <div class="button-group">
-          <Button type="primary" @click="handlerSave()"> 保存 </Button>
+          <Button type="primary" v-privilege="['59-80-2']" @click="handlerSave()"> 保存 </Button>
           <!-- <Button @click="$router.go(-1)">
             取消
           </Button> -->
@@ -59,70 +59,70 @@
   </div>
 </template>
 <script>
-import { personnelAnalysis } from "@/api/personnelAnalysis";
+import { personnelAnalysis } from '@/api/personnelAnalysis';
 export default {
-  name: "teamAward",
+  name: 'teamAward',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       addformbase: {
         createId: this.$store.state.user.userLoginInfo.userId,
-        operatId: this.$store.state.user.userLoginInfo.userId,
+        operatId: this.$store.state.user.userLoginInfo.userId
       },
       itemJson: {
         compareType: 1,
         standard: 0,
-        type: 1,
+        type: 1
       },
       itemJson2: {
         compareType: 2,
         standard: 0,
-        type: 2,
+        type: 2
       },
-      isedit: false,
+      isedit: false
     };
   },
   computed: {},
   watch: {},
   filters: {},
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     this.getList();
   },
   methods: {
-    getList() {
+    getList () {
       personnelAnalysis.querypostTaskRule().then((res) => {
         if (res.data.content.length > 0) {
           this.isedit = true;
-          this.addformbase = Object.assign({},res.data.content[0])
-          this.itemJson.standard = this.addformbase.postUpDownRules[0].standard
-          this.itemJson2.standard = this.addformbase.postUpDownRules[1].standard
+          this.addformbase = Object.assign({}, res.data.content[0]);
+          this.itemJson.standard = this.addformbase.postUpDownRules[0].standard;
+          this.itemJson2.standard = this.addformbase.postUpDownRules[1].standard;
         } else {
           this.isedit = false;
         }
       });
     },
-    handlerSave() {
+    handlerSave () {
       this.addformbase.detailJson = JSON.stringify([
         this.itemJson,
-        this.itemJson2,
+        this.itemJson2
       ]);
       if (this.isedit) {
         personnelAnalysis.updatepostTaskRule(this.addformbase).then((res) => {
-          this.$Message.success("success!");
+          this.$Message.success('success!');
           this.getList();
           console.log(res);
         });
       } else {
         personnelAnalysis.addpostTaskRule(this.addformbase).then((res) => {
-          this.$Message.success("success!");
+          this.$Message.success('success!');
           this.getList();
           console.log(res);
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

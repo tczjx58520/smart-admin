@@ -21,6 +21,7 @@
                       slot="action">
               <Button type="error"
                       size="small"
+                      v-privilege="['59-64-46']"
                       @click="qiandao(row)">{{$t('qiandao')}}</Button>
             </template>
           </Table>

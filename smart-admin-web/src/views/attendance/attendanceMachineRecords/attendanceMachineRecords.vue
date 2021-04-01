@@ -56,18 +56,18 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
 // import firstFrom from './components/firstFrom'
 
 export default {
-  name: "punchTheClock",
+  name: 'punchTheClock',
   components: {
     Tables,
-    organization,
+    organization
   },
-  data() {
+  data () {
     return {
       year: '',
       organizationName: '',
@@ -78,49 +78,49 @@ export default {
       firstLoading: false,
       firstColumns: [
         {
-          type: "selection",
+          type: 'selection',
           width: 50,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("kqgl.kaoqingjiId"),
-          key: "attendanceMachineId",
+          title: this.$t('kqgl.kaoqingjiId'),
+          key: 'attendanceMachineId'
         },
         {
-          title: this.$t("kqgl.kaoqinzheid"),
-          key: "employeeId",
+          title: this.$t('kqgl.kaoqinzheid'),
+          key: 'employeeId'
         },
         {
-          title: this.$t("kqgl.xingming"),
-          key: "createPersonName",
+          title: this.$t('kqgl.xingming'),
+          key: 'createPersonName'
         },
         {
-          title: this.$t("kqgl.dakashijian"),
-          key: "punchTime",
-        },
+          title: this.$t('kqgl.dakashijian'),
+          key: 'punchTime'
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    organizationData(val) {
-      console.log(val)
+    organizationData (val) {
+      console.log(val);
     },
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    Edit(row) {
+    Edit (row) {
       this.editData = row;
       this.modalstat = true;
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findAttendacneMachineRecord(this.searchParm);
@@ -135,16 +135,16 @@ export default {
       }
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.firstTable.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

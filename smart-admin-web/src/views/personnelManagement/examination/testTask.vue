@@ -8,7 +8,7 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['59-72-1']"
                 @click="addGong"
                 icon="md-add"
                 type="warning">{{ $t('Release') }}</Button>

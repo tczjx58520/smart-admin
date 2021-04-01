@@ -24,7 +24,7 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" type="warning">{{ $t('gwddsq') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-64-44']" @click="created" type="warning">{{ $t('gwddsq') }}</Button>
                 </div>
                 <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
                 <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -208,10 +208,10 @@ export default {
       };
       this.getempInductionList();
     },
-    created() {
+    created () {
       // this.visiable = true;
       // this.copyfile = null;
-      this.$router.push({path: '/processDo/flowStart'})
+      this.$router.push({ path: '/processDo/flowStart' });
     },
     del () {
       console.log('del');

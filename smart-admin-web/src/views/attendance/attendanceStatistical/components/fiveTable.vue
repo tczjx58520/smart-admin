@@ -73,121 +73,121 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
-import selectEmp from "@/components/selectEmp";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
+import selectEmp from '@/components/selectEmp';
 
 export default {
-  name: "firstTable",
+  name: 'firstTable',
   components: {
     Tables,
     organization,
-    selectEmp,
+    selectEmp
   },
-  data() {
+  data () {
     return {
-      createPersonName: "",
-      organizationName: "",
+      createPersonName: '',
+      organizationName: '',
       firstLoading: false,
       firstTable: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       fistTotal: 0,
       firstColumns: [
         {
-          title: this.$t("OrganizationName"),
-          key: "organizationName",
+          title: this.$t('OrganizationName'),
+          key: 'organizationName'
         },
         {
-          title: this.$t("usermanage_view.name"),
-          key: "createPersonName",
+          title: this.$t('usermanage_view.name'),
+          key: 'createPersonName'
         },
         {
-          title: this.$t("kqgl.quanqintianshu"),
-          key: "allDays",
+          title: this.$t('kqgl.quanqintianshu'),
+          key: 'allDays'
         },
         {
-          title: this.$t("kqgl.zongchuqintianshu"),
-          key: "realDays",
+          title: this.$t('kqgl.zongchuqintianshu'),
+          key: 'realDays'
         },
         {
-          title: this.$t("kqgl.kuanggong"),
-          key: "noWork",
+          title: this.$t('kqgl.kuanggong'),
+          key: 'noWork'
         },
         {
-          title: this.$t("kqgl.chidao"),
-          key: "lateDays",
+          title: this.$t('kqgl.chidao'),
+          key: 'lateDays'
         },
         {
-          title: this.$t("kqgl.zoatui"),
-          key: "earlyDays",
+          title: this.$t('kqgl.zoatui'),
+          key: 'earlyDays'
         },
         {
-          title: this.$t("kqgl.shagnbanweidengji"),
-          key: "noPunchForWorkDays",
+          title: this.$t('kqgl.shagnbanweidengji'),
+          key: 'noPunchForWorkDays'
         },
         {
-          title: this.$t("kqgl.xiabanweidengji"),
-          key: "noPunchForLeaveWorkDays",
+          title: this.$t('kqgl.xiabanweidengji'),
+          key: 'noPunchForLeaveWorkDays'
         },
         {
-          title: this.$t("kqgl.waichu"),
-          key: "outSide",
+          title: this.$t('kqgl.waichu'),
+          key: 'outSide'
         },
         {
-          title: this.$t("kqgl.chuchai"),
-          key: "bussinessOntrip",
+          title: this.$t('kqgl.chuchai'),
+          key: 'bussinessOntrip'
         },
         {
-          title: this.$t("kqgl.qignjiatianshu"),
-          key: "vocation",
+          title: this.$t('kqgl.qignjiatianshu'),
+          key: 'vocation'
         },
         {
-          title: this.$t("kqgl.jiaban"),
-          key: "workTime",
-        },
+          title: this.$t('kqgl.jiaban'),
+          key: 'workTime'
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
-      empSata: false,
+      modalState: '',
+      empSata: false
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    chooseDate(val) {
+    chooseDate (val) {
       this.firstTable.date = val;
     },
-    selectData(val) {
+    selectData (val) {
       // console.log('val', val)
       this.firstTable.organizationId = val.id;
       this.createPersonName = val.personName;
     },
-    chooseEmp() {
+    chooseEmp () {
       this.empSata = true;
     },
-    organizationData(val) {
+    organizationData (val) {
       this.organizationName = val.title;
       this.firstTable.organizationId = val.id;
     },
-    selectOrg() {
+    selectOrg () {
       this.modalstat = true;
     },
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findpunchRecord(this.firstTable);
         this.firstLoading = false;
-        console.log(result)
+        console.log(result);
         this.firstData = result.data.list.list;
         this.fistTotal = result.data.list.total;
       } catch (e) {
@@ -197,27 +197,27 @@ export default {
       }
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.firstTable.pageNum = pageNum;
       this.getFirstTableData();
     },
     // 改变一页展示数
-    firstChangePageSize(pageSize) {
+    firstChangePageSize (pageSize) {
       this.firstTable.pageNum = 1;
       this.firstTable.pageSize = pageSize;
       this.getFirstTableData();
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.firstTable.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

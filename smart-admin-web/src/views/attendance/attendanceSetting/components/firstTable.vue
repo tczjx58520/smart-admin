@@ -14,6 +14,7 @@
           @click="newFirstForm"
           icon="md-add"
           type="warning"
+          v-privilege="['42-54-1']"
           >{{ $t("Create") }}</Button
         >
         <Button
@@ -21,6 +22,7 @@
           @click="clearFirstTable"
           icon="md-close"
           type="error"
+          v-privilege="['42-54-3']"
           >{{ $t("Delete") }}</Button
         >
       </div>
@@ -141,6 +143,13 @@ export default {
                     type: 'info',
                     size: 'small'
                   },
+
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['42-54-2']
+                    }
+                  ],
                   on: {
                     click: () => {
                       this.Edit(params.row);

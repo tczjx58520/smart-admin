@@ -8,7 +8,7 @@
         style="margin-right: 15px"
         >{{ $t("Reflash") }}</Button
       >
-      <Button type="warning" @click="handleAdd">{{
+      <Button type="warning" @click="handleAdd" v-privilege="['42-47-1']">{{
         $t("leaveRegister")
       }}</Button>
     </div>
@@ -103,10 +103,10 @@ export default {
               { value: 9, label: this.$t('sangjia') },
               { value: 10, label: this.$t('nianxiujia') },
               { value: 11, label: this.$t('qita') }
-            ]
-            const label = map[params.row.type - 1].label
-            return h("span", label);
-          },
+            ];
+            const label = map[params.row.type - 1].label;
+            return h('span', label);
+          }
         },
         {
           title: this.$t('kqgl.qingjiashiyou'),

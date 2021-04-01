@@ -5,12 +5,12 @@
               @click="getList(0)"
               icon="md-refresh"
               type="default">{{ $t("Reflash") }}</Button>
-      <Button v-privilege="['10-16-1']"
+      <Button v-privilege="['85-89-1']"
               style="margin-right: 15px"
               @click="created"
               icon="md-add"
               type="warning">{{ $t("Create") }}</Button>
-      <Button v-privilege="['10-16-3']"
+      <Button v-privilege="['85-89-3']"
               style="margin-right: 15px"
               @click="clear"
               icon="md-close"

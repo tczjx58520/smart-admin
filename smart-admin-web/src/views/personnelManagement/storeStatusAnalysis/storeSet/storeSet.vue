@@ -193,6 +193,12 @@ export default {
                     type: 'primary',
                     size: 'small'
                   },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['59-82-2']
+                    }
+                  ],
                   style: {
                     marginRight: '5px'
                   },
@@ -214,7 +220,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['1-4-2']
+                      value: ['59-82-3']
                     }
                   ],
                   on: {

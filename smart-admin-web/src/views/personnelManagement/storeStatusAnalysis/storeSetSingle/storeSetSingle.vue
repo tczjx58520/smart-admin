@@ -24,8 +24,8 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-81-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-81-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
                 </div>
                 <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
                 <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -90,7 +90,7 @@ export default {
         },
         {
           title: this.$t('ms'),
-          key: 'desc1',
+          key: 'desc1'
         },
         {
           title: this.$t('action'),
@@ -104,6 +104,12 @@ export default {
                   type: 'primary',
                   size: 'small'
                 },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['59-81-2']
+                  }
+                ],
                 style: {
                   marginRight: '5px'
                 },
@@ -121,7 +127,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-4-2']
+                    value: ['59-81-3']
                   }
                 ],
                 on: {
@@ -192,7 +198,7 @@ export default {
       repoTaskItem.getTaskItem(this.searchform).then(res => {
         this.loading = false;
         this.indicatorlist = res.data.content.list;
-        this.pageTotal = res.data.content.totalCount
+        this.pageTotal = res.data.content.totalCount;
       });
     },
     rowClick (data, index) { // data 该行数据 ，index该行索引
@@ -207,9 +213,9 @@ export default {
       console.log(row);
       const itemNameId = row.id;
       const data = {
-        id : row.id,
+        id: row.id,
         operatId: this.$store.state.user.userLoginInfo.userId
-      }
+      };
       repoTaskItem.delTaskItem(data).then(res => {
         this.$Message.success(this.$t('sccg'));
         this.getindicatorlist();

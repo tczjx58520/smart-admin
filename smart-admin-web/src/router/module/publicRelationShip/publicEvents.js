@@ -7,7 +7,7 @@ export const publicEvents = [
     meta: {
       title: '公共事件',
       icon: 'ios-paper-outline',
-      roles: ['10-11-4']
+      roles: ['94-95-4']
     },
     children: [
       //  assetDetail
@@ -16,7 +16,7 @@ export const publicEvents = [
         name: 'publicEventsList',
         meta: {
           title: '公共事件列表',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['94-95-4']
         },
         component: () => import('@/views/publicRelationShip/publicEventsList/publicEventsList.vue')
       },
@@ -25,7 +25,7 @@ export const publicEvents = [
         name: 'publicEventsDetail',
         meta: {
           title: '公共事件详情',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['94-95-4'],
           hideInMenu: true,
           noKeepAlive: true
         },
@@ -36,7 +36,7 @@ export const publicEvents = [
         name: 'followPublicEvents',
         meta: {
           title: '公共事件跟进',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['94-95-4'],
           hideInMenu: true,
           noKeepAlive: true
         },

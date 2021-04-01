@@ -224,7 +224,7 @@ export default {
                     on: {
                       click: () => {
                       // this.Edit(params.row);
-                        this.$router.push({path: '/processDo/flowStart'})
+                        this.$router.push({ path: '/processDo/flowStart' });
                       }
                     }
                   },
@@ -294,7 +294,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path: '/processDo/flowStart'})
+                      this.$router.push({ path: '/processDo/flowStart' });
                     }
                   }
                 },
@@ -430,10 +430,10 @@ export default {
       };
       this.getempInductionList2();
     },
-    created() {
+    created () {
       // this.visiable = true;
       // this.copyfile = null;
-      this.$router.push({path: '/processDo/flowStart'})
+      this.$router.push({ path: '/processDo/flowStart' });
     },
     del () {
       console.log('del');

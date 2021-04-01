@@ -48,19 +48,24 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-102-1']"
                 @click="addAddressBook"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
+                v-privilege="['101-102-2']"
                 @click="updateAddressBook"
                 type="error">{{ $t('update1') }}</Button>
         <Button style="margin-right:15px;"
+                v-privilege="['101-102-3']"
+
                 @click="deleteMore"
                 type="error">{{ $t('Delete') }}</Button>
         <Button style="margin-right:15px;"
+                v-privilege="['101-102-50']"
                 @click="deleteMore"
                 type="info">{{ $t('daochu') }}</Button>
         <Button style="margin-right:15px;"
+                v-privilege="['101-102-37']"
                 @click="deleteMore"
                 type="success">{{ $t('Import') }}</Button>
       </div>

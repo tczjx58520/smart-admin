@@ -134,7 +134,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-18-7']
+                      value: ['19-20-4']
                     }
                   ],
                   on: {
@@ -154,7 +154,7 @@ export default {
                   directives: [
                     {
                       name: 'privilege',
-                      value: ['10-18-7']
+                      value: ['19-120-4']
                     }
                   ],
                   on: {

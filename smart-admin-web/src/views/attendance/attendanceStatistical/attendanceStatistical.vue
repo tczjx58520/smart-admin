@@ -13,25 +13,25 @@
 </template>
 
 <script>
-import firstTable from "./components/firstTable";
-import secondTable from "./components/secondTable";
-import thirdTable from "./components/thirdTable";
-import fourTable from "./components/fourTable";
-import fiveTable from "./components/fiveTable";
+import firstTable from './components/firstTable';
+import secondTable from './components/secondTable';
+import thirdTable from './components/thirdTable';
+import fourTable from './components/fourTable';
+import fiveTable from './components/fiveTable';
 
 export default {
-  name: "attendanceStatistical",
+  name: 'attendanceStatistical',
   components: {
     firstTable,
     secondTable,
     thirdTable,
     fourTable,
-    fiveTable,
+    fiveTable
   },
-  data() {
+  data () {
     return {};
   },
-  mounted() {},
-  methods: {},
+  mounted () {},
+  methods: {}
 };
 </script>

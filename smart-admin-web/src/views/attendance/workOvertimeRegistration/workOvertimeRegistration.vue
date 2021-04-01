@@ -8,7 +8,7 @@
         style="margin-right: 15px"
         >{{ $t("Reflash") }}</Button
       >
-      <Button type="warning" @click="handleAdd">{{
+      <Button type="warning" @click="handleAdd" v-privilege="['42-45-1']">{{
         $t("kqgl.jiabandengji")
       }}</Button>
     </div>
@@ -32,19 +32,19 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
-import firstFrom from "./components/firstFrom";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
+import firstFrom from './components/firstFrom';
 
 export default {
-  name: "workOvertimeRegistration",
+  name: 'workOvertimeRegistration',
   components: {
     Tables,
     organization,
-    firstFrom,
+    firstFrom
   },
-  data() {
+  data () {
     return {
       editData: {},
       fistTotal: 0,
@@ -52,66 +52,66 @@ export default {
         employeeId: this.$store.state.user.userLoginInfo.userId,
         // employeeId: 2,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
 
       firstLoading: false,
       firstColumns: [
         {
-          title: this.$t("kqgl.shenqingshijian"),
-          key: "applyTime",
+          title: this.$t('kqgl.shenqingshijian'),
+          key: 'applyTime'
         },
         {
-          title: this.$t("kqgl.kaishishijian"),
-          key: "startTime",
+          title: this.$t('kqgl.kaishishijian'),
+          key: 'startTime'
         },
         {
-          title: this.$t("kqgl.jieshushijian"),
-          key: "endTime",
+          title: this.$t('kqgl.jieshushijian'),
+          key: 'endTime'
         },
         {
-          title: this.$t("kqgl.jiabanleixing"),
-          key: "type",
+          title: this.$t('kqgl.jiabanleixing'),
+          key: 'type',
           render: (h, params) => {
             if (params.row.type === 0) {
-              return h("span", this.$t("kqgl.gzrjiab"));
+              return h('span', this.$t('kqgl.gzrjiab'));
             } else if (params.row.type === 1) {
-              return h("span", this.$t("kqgl.shuangxiuriji"));
+              return h('span', this.$t('kqgl.shuangxiuriji'));
             } else if (params.row.type === 2) {
-              return h("span", this.$t("kqgl.fdjrjaiba"));
+              return h('span', this.$t('kqgl.fdjrjaiba'));
             }
-          },
+          }
         },
         {
-          title: this.$t("kqgl.jiabanshijian"),
-          key: "totalTime",
+          title: this.$t('kqgl.jiabanshijian'),
+          key: 'totalTime'
         },
         {
-          title: this.$t("kqgl.jiabanshiyou"),
-          key: "reason",
-        },
+          title: this.$t('kqgl.jiabanshiyou'),
+          key: 'reason'
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    handleAdd() {
+    handleAdd () {
       // this.modalstat = true;
       this.$router.push({
-          name: 'flowStart'
-        });
+        name: 'flowStart'
+      });
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findWorkOvertime(this.seachParms);
@@ -126,12 +126,12 @@ export default {
       }
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.seachParms.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       // this.modalstat = true;
       // this.$router.push({
@@ -139,11 +139,11 @@ export default {
       //   });
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.seachParms.pageNum = pageNum;
       this.getFirstTableData();
-    },
-  },
+    }
+  }
 };
 </script>
 
