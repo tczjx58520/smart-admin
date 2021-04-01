@@ -24,8 +24,8 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-79-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-79-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
                 </div>
                 <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
                 <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -90,7 +90,7 @@ export default {
         },
         {
           title: this.$t('ms'),
-          key: 'desc',
+          key: 'desc'
         },
         {
           title: this.$t('action'),
@@ -104,6 +104,12 @@ export default {
                   type: 'primary',
                   size: 'small'
                 },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['59-79-2']
+                  }
+                ],
                 style: {
                   marginRight: '5px'
                 },
@@ -121,7 +127,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-4-2']
+                    value: ['59-79-3']
                   }
                 ],
                 on: {

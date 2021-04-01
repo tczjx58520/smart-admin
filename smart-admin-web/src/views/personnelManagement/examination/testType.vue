@@ -8,12 +8,12 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['59-73-1']"
                 @click="addGong"
                 icon="md-add"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-3']"
+                v-privilege="['59-73-3']"
                 @click="deleteMore"
                 icon="md-close"
                 type="error">{{ $t('Delete') }}</Button>
@@ -92,6 +92,7 @@
         <ButtonGroup>
           <Button type="primary"
                   size="large"
+                v-privilege="['59-73-2']"
                   @click="ok_edit">{{ $t("Save") }}</Button>
           <Button type="error"
                   size="large"
@@ -175,6 +176,12 @@ export default {
                   type: 'error',
                   size: 'small'
                 },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['59-73-3']
+                  }
+                ],
                 on: {
                   click: () => {
                     this.remove(params.row.id);

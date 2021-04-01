@@ -49,11 +49,11 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-113-1']"
                 @click="addPlan"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-113-3']"
                 @click="deleteMore"
                 type="error">{{ $t('delete') }}</Button>
       </div>
@@ -72,6 +72,7 @@
                   @click="show(row)">查看</Button>
           <Button type="error"
                   size="small"
+                v-privilege="['101-113-2']"
                   v-if="row.planStatus===1"
                   @click="update(row)">修改</Button>
         </template>

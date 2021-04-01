@@ -8,7 +8,7 @@
         style="margin-right: 15px"
         >{{ $t("Reflash") }}</Button
       >
-      <Button type="warning" @click="handleAdd">{{ $t("fillClock") }}</Button>
+      <Button type="warning" @click="handleAdd" v-privilege="['42-49-1']">{{ $t("fillClock") }}</Button>
     </div>
     <Tables
       :value="firstData"

@@ -25,6 +25,7 @@
         </Form>
         <Button style="position:absolute;left:50%;"
                 type="primary"
+                v-privilege="['101-106-2']"
                 @click="save">保存</Button>
       </div>
     </Card>

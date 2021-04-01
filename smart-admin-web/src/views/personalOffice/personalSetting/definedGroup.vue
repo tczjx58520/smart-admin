@@ -8,12 +8,12 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-105-1']"
                 @click="addAddressBook"
                 icon="md-add"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-3']"
+                v-privilege="['101-105-3']"
                 @click="deleteMore"
                 icon="md-close"
                 type="error">{{ $t('Delete') }}</Button>
@@ -53,6 +53,7 @@
         <ButtonGroup>
           <Button type="primary"
                   size="large"
+                v-privilege="['101-105-2']"
                   @click="ok">{{ $t("Save") }}</Button>
           <Button type="error"
                   size="large"

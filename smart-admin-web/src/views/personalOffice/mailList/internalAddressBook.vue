@@ -49,7 +49,7 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-103-37']"
                 icon="md-add"
                 type="warning">{{ $t('Import') }}</Button>
       </div>

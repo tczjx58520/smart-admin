@@ -10,10 +10,12 @@
         <Button style="margin-right:15px;"
                 @click="addGong"
                 icon="md-add"
+                v-privilege="['59-69-1']"
                 type="warning">{{ $t('Create') }}</Button>
         <Button style="margin-right:15px;"
                 @click="deleteMore"
                 icon="md-close"
+                v-privilege="['59-69-3']"
                 type="error">{{ $t('Delete') }}</Button>
       </div>
     </Card>
@@ -232,6 +234,7 @@
         <ButtonGroup>
           <Button type="primary"
                   size="large"
+                v-privilege="['59-69-2']"
                   @click="ok_edit">{{ $t("Save") }}</Button>
           <Button type="error"
                   size="large"
@@ -535,6 +538,12 @@ export default {
                   type: 'error',
                   size: 'small'
                 },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['59-69-3']
+                  }
+                ],
                 style: {
                   marginRight: '5px',
                   display: params.row.status !== 0 ? 'none' : 'inline-block'
@@ -550,6 +559,12 @@ export default {
                   type: 'info',
                   size: 'small'
                 },
+                directives: [
+                  {
+                    name: 'privilege',
+                    value: ['59-69-31']
+                  }
+                ],
                 style: {
                   marginRight: '5px',
                   display: params.row.status !== 0 ? 'none' : 'inline-block'

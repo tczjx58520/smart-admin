@@ -8,7 +8,7 @@
         style="margin-right: 15px"
         >{{ $t("Reflash") }}</Button
       >
-      <Button type="warning" @click="handleAdd">{{
+      <Button type="warning" @click="handleAdd" v-privilege="['42-46-1']">{{
         $t("kqgl.chucaidengji")
       }}</Button>
     </div>
@@ -32,19 +32,19 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import Tables from "@/components/tables";
-import organization from "@/components/organization";
-import firstFrom from "./components/firstFrom";
+import { attendance } from '@/api/attendance';
+import Tables from '@/components/tables';
+import organization from '@/components/organization';
+import firstFrom from './components/firstFrom';
 
 export default {
-  name: "punchTheClock",
+  name: 'punchTheClock',
   components: {
     Tables,
     organization,
-    firstFrom,
+    firstFrom
   },
-  data() {
+  data () {
     return {
       editData: {},
       fistTotal: 0,
@@ -52,57 +52,57 @@ export default {
         // employeeId: this.$store.state.user.userLoginInfo.userId,
         employeeId: 2,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
 
       firstLoading: false,
       firstColumns: [
         {
-          title: this.$t("kqgl.shenqingshijian"),
-          key: "applyTime",
+          title: this.$t('kqgl.shenqingshijian'),
+          key: 'applyTime'
         },
         {
-          title: this.$t("kqgl.kaishishijian"),
-          key: "startTime",
+          title: this.$t('kqgl.kaishishijian'),
+          key: 'startTime'
         },
         {
-          title: this.$t("kqgl.jieshushijian"),
-          key: "endTime",
+          title: this.$t('kqgl.jieshushijian'),
+          key: 'endTime'
         },
         {
-          title: this.$t("kqgl.chucaishijian"),
-          key: "totalTime",
+          title: this.$t('kqgl.chucaishijian'),
+          key: 'totalTime'
         },
         {
-          title: this.$t("kqgl.chucaididian"),
-          key: "address",
+          title: this.$t('kqgl.chucaididian'),
+          key: 'address'
         },
         {
-          title: this.$t("kqgl.chucaishiyou"),
-          key: "reason",
-        },
+          title: this.$t('kqgl.chucaishiyou'),
+          key: 'reason'
+        }
       ],
       firstData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getFirstTableData();
   },
   methods: {
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getFirstTableData();
       }
     },
-    handleAdd() {
+    handleAdd () {
       // this.modalstat = true;
       this.$router.push({
-          name: 'flowStart'
-        });
+        name: 'flowStart'
+      });
     },
-    async getFirstTableData() {
+    async getFirstTableData () {
       try {
         this.firstLoading = true;
         let result = await attendance.findBusniessOnTrip(this.seachParms);
@@ -117,21 +117,21 @@ export default {
       }
     },
     // 重置
-    resetFirstTable() {
+    resetFirstTable () {
       this.seachParms.pageNum = 1;
       this.getFirstTableData();
     },
-    newFirstForm() {
-      this.modalState = "新建";
+    newFirstForm () {
+      this.modalState = '新建';
       // this.firstLoading = true;
       this.modalstat = true;
     },
     // 翻页
-    firstChangePage(pageNum) {
+    firstChangePage (pageNum) {
       this.seachParms.pageNum = pageNum;
       this.getFirstTableData();
-    },
-  },
+    }
+  }
 };
 </script>
 

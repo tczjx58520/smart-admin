@@ -10,7 +10,7 @@
           >{{ $t("Reflash") }}</Button
         >
         <Button
-          v-privilege="['10-16-1']"
+          v-privilege="['85-88-1']"
           style="margin-right: 15px"
           @click="created"
           icon="md-add"
@@ -40,6 +40,7 @@
           <div v-if="editIndex === index">
             <Button
               style="margin-right: 16px"
+              v-privilege="['85-88-2']"
               type="info"
               @click="handleSave(row, index)"
               >保存</Button
@@ -47,10 +48,10 @@
             <Button type="error" @click="handleCancle(row)">取消</Button>
           </div>
           <div v-else>
-            <Button style="margin-right: 16px" @click="handleEdit(row, index)"
+            <Button style="margin-right: 16px" v-privilege="['85-88-2']"  @click="handleEdit(row, index)"
               >修改</Button
             >
-            <Button @click="handleDelete(row, index)">删除</Button>
+            <Button v-privilege="['85-88-3']"  @click="handleDelete(row, index)">删除</Button>
           </div>
         </template>
       </Table>

@@ -123,6 +123,12 @@ export default {
                     type: 'primary',
                     size: 'small'
                   },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['59-74-7']
+                    }
+                  ],
                   style: {
                     marginRight: '5px'
                   },

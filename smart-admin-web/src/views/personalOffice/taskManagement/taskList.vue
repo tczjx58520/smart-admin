@@ -34,15 +34,15 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-116-52']"
                 @click="arrangementTask"
                 type="warning">{{ $t('arrangementTask') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-116-3']"
                 @click="deleteMore"
                 type="primary">{{ $t('delete') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-116-50']"
                 @click="daochu"
                 type="success">{{ $t('daochu') }}</Button>
       </div>
@@ -57,30 +57,38 @@
                   slot="action">
           <Button type="primary"
                   size="small"
+                v-privilege="['101-116-4']"
                   style="margin-right: 5px"
                   @click="see(row)">查看</Button>
           <Button type="error"
                   size="small"
+                v-privilege="['101-116-2']"
                   v-if="row.status===0"
                   style="margin-right: 5px"
                   @click="update(row)">修改</Button>
           <Button type="error"
                   size="small"
+                v-privilege="['101-116-51']"
                   style="margin-right: 5px"
                   v-if="row.status===0"
                   @click="revoke(row)">撤销</Button>
           <Button type="error"
                   size="small"
+                v-privilege="['101-116-49']"
                   style="margin-right: 5px"
                   v-if="row.status===1"
                   @click="over(row)">结束</Button>
           <Button type="error"
                   size="small"
+                v-privilege="['101-116-29']"
+
                   style="margin-right: 5px"
                   v-if="row.status===1"
                   @click="supervise(row)">督办</Button>
           <Button type="error"
                   v-if="row.status===0"
+                v-privilege="['101-116-3']"
+
                   size="small"
                   @click="deleteTask(row)">删除</Button>
         </template>

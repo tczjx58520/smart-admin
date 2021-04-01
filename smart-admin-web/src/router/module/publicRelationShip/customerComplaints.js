@@ -7,7 +7,7 @@ export const customerComplaints = [
     meta: {
       title: '客户投诉',
       icon: 'ios-paper-outline',
-      roles: ['10-11-4']
+      roles: ['94-99-4']
     },
     children: [
       //  assetDetail
@@ -16,7 +16,7 @@ export const customerComplaints = [
         name: 'customerComplaintsList',
         meta: {
           title: '客户投诉列表',
-          roles: ['10-11-4', '10-12-4']
+          roles: ['94-99-4', '94-99-1']
         },
         component: () => import('@/views/publicRelationShip/customerComplaints/customerComplaintsList.vue')
       },
@@ -25,7 +25,7 @@ export const customerComplaints = [
         name: 'customerComplaintsDetail',
         meta: {
           title: '客户投诉详情',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['94-99-4'],
           hideInMenu: true,
           noKeepAlive: true
         },
@@ -36,7 +36,7 @@ export const customerComplaints = [
         name: 'followCustomerComplaints',
         meta: {
           title: '客户投诉跟进',
-          roles: ['10-11-4', '10-12-4'],
+          roles: ['94-99-4'],
           hideInMenu: true,
           noKeepAlive: true
         },

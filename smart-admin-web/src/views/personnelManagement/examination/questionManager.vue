@@ -41,6 +41,8 @@
 
               <span style="color:#ebebeb;">|</span>
               <Button type="text"
+                v-privilege="['59-70-2']"
+
                       @click="Edit_form(item)">{{
                 $t("Edit")
               }}</Button>
@@ -75,6 +77,8 @@
         <ButtonGroup>
           <Button type="primary"
                   size="large"
+                v-privilege="['59-70-2']"
+
                   :loading="modal_loading_new"
                   @click="ok">{{ $t("Save") }}</Button>
           <Button type="error"
@@ -113,6 +117,8 @@
         <ButtonGroup>
           <Button type="primary"
                   size="large"
+                v-privilege="['59-70-2']"
+
                   :loading="modal_loading"
                   @click="ok_edit">{{ $t("Save") }}</Button>
           <Button type="error"

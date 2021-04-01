@@ -22,7 +22,7 @@
           <Button icon="ios-cloud-upload-outline">{{ $t("Tjwj") }}</Button>
         </Upload>
         <Button
-          v-privilege="['10-12-1']"
+          v-privilege="['94-95-48']"
           v-if="addformbase.status === 0 "
           style="margin-right: 15px"
           @click="handleProcess"
@@ -31,7 +31,7 @@
           >{{ $t("Process") }}</Button
         >
         <Button
-          v-privilege="['10-12-1']"
+          v-privilege="['94-95-2']"
           v-if="addformbase.status === 0 "
           style="margin-right: 15px"
           @click="endEvent"
@@ -40,7 +40,7 @@
           >{{ $t("Ending") }}</Button
         >
         <Button
-          v-privilege="['10-12-3']"
+          v-privilege="['94-95-3']"
           style="margin-right: 15px"
           icon="md-close"
           type="error"
@@ -49,7 +49,7 @@
         >
       </div>
       <Tabs :animated="false">
-        <TabPane v-privilege="['10-12-4']" :label="$t('BaseData')">
+        <TabPane v-privilege="['94-95-4']" :label="$t('BaseData')">
           <Form
           ref="form"
           :model="addformbase"
@@ -91,14 +91,14 @@
           </Row>
         </Form>
         </TabPane>
-        <TabPane v-privilege="['10-11-4']" :label="$t('gengjingjilu')">
+        <TabPane v-privilege="['94-95-4']" :label="$t('gengjingjilu')">
           <Table
             :columns="processColumns"
             :data="processData"
             :loading="Sheloading"
           ></Table>
         </TabPane>
-        <TabPane v-privilege="['10-11-4']" :label="$t('wendangqu')">
+        <TabPane v-privilege="['94-95-4']" :label="$t('wendangqu')">
           <Table
             :columns="documentColumns"
             :data="documentData"

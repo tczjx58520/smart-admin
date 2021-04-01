@@ -65,13 +65,13 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
+import { attendance } from '@/api/attendance';
 export default {
-  name: "thirdFrom",
-  data() {
+  name: 'thirdFrom',
+  data () {
     const validatePass = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("Please enter"));
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
@@ -79,23 +79,23 @@ export default {
     return {
       loading: false,
       fromBaseData: {
-        status: 0,
+        status: 0
       },
       ruleValidate: {
         annualBase: [
-          { required: true, validator: validatePass, trigger: "blur" },
+          { required: true, validator: validatePass, trigger: 'blur' }
         ],
         annualTop: [
-          { required: true, validator: validatePass, trigger: "blur" },
-        ],
-      },
+          { required: true, validator: validatePass, trigger: 'blur' }
+        ]
+      }
     };
   },
-  mounted() {
+  mounted () {
     this.getFromData();
   },
   methods: {
-    async getFromData() {
+    async getFromData () {
       try {
         let result = await attendance.findAnnualSet();
         console.log(result);
@@ -106,7 +106,7 @@ export default {
         console.log(e);
       }
     },
-    async handleSave() {
+    async handleSave () {
       this.loading = true;
       try {
         let result = await attendance.modifyAnnualSet(this.fromBaseData);
@@ -119,8 +119,8 @@ export default {
         console.log(e);
         this.loading = false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

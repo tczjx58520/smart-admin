@@ -17,7 +17,7 @@ export const publicRelationShip = [
       title: '公共关系',
       topMenu: true,
       icon: 'icon iconfont iconjiekouwendang',
-      roles: ['10-16-4', '10-11-4', '10-12-4', '10-19-4', '10-17-4', '10-18-4', '10-15-4', '10-19-4', '10-20-4', '10-21-4', '10-22-4']
+      roles: ['94-95-4', '94-96-4', '94-97-4', '94-98-4', '94-99-4', '94-100-4']
     },
     children: [
       ...publicEvents,

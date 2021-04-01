@@ -24,7 +24,7 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" type="warning">{{ $t('zzsq') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-63-43']" @click="created" type="warning">{{ $t('zzsq') }}</Button>
                 </div>
                 <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
                 <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -97,7 +97,7 @@ export default {
           key: 'onDate',
           render: (h, params) => {
             if (!params.row.onDate) {
-              return h('span', 'N/A')
+              return h('span', 'N/A');
             }
             const mydate = new Date(params.row.onDate);
             return h('span', utils.getDate(mydate, 'YMDHMS'));
@@ -206,8 +206,8 @@ export default {
       };
       this.getempInductionList();
     },
-    created() {
-      this.$router.push({path: '/processDo/flowStart'})
+    created () {
+      this.$router.push({ path: '/processDo/flowStart' });
     },
     del () {
       console.log('del');

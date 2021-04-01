@@ -44,7 +44,7 @@
                 @click="refresh"
                 type="default">{{ $t('Reflash') }}</Button>
         <Button style="margin-right:15px;"
-                v-privilege="['10-15-1']"
+                v-privilege="['101-104-50']"
                 @click="exportTable"
                 icon="md-add"
                 type="warning">{{ $t('daochu') }}</Button>

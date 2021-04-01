@@ -8,10 +8,12 @@
       <Button style="margin-right: 15px"
               @click="handleAdd"
               icon="md-add"
+              v-privilege="['42-58-1']"
               type="warning">{{ $t("Create") }}</Button>
       <Button style="margin-right: 15px"
               @click="clearFirstTable"
               icon="md-close"
+              v-privilege="['42-58-3']"
               type="error">{{ $t("Delete") }}</Button>
     </div>
     <Tables :value="firstData"
@@ -93,6 +95,12 @@ export default {
                     type: 'info',
                     size: 'small'
                   },
+                  directives: [
+                    {
+                      name: 'privilege',
+                      value: ['42-58-3']
+                    }
+                  ],
                   on: {
                     click: () => {
                       this.Edit(params.row);

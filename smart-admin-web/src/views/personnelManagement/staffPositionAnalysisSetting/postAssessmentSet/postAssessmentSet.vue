@@ -24,8 +24,8 @@
             <Card class="warp-card" dis-hover>
                 <div style="margin-bottom:20px;">
                     <Button style="margin-right:15px;" @click="refresh" icon="md-refresh" type="default">{{ $t('Reflash') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
-                    <Button style="margin-right:15px;" v-privilege="['1-4-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-78-1']" @click="created" icon="md-add" type="warning">{{ $t('Create') }}</Button>
+                    <Button style="margin-right:15px;" v-privilege="['59-78-3']" @click="del" icon="md-trash" type="error">{{ $t('Delete') }}</Button>
                 </div>
                 <Table border ref="selection" :columns="columns4" :data="indicatorlist" max-height="calc(70vh)" @on-selection-change="getmoreaction" @on-row-click="rowClick" :loading="loading" @on-row-dblclick="Edit"></Table>
                 <Page :current="searchform.pageNum" :page-size="searchform.pageSize" :page-size-opts="[10, 20, 30, 50, 100]"
@@ -96,7 +96,7 @@ export default {
         },
         {
           title: this.$t('role_view.description'),
-          key: 'postName',
+          key: 'postName'
         },
         {
           title: this.$t('CreatePerson'),
@@ -105,10 +105,10 @@ export default {
         {
           title: this.$t('CreateTime'),
           key: 'createDate',
-          render: (h,params) => {
-            const date = new Date(Number(params.row.createDate))
+          render: (h, params) => {
+            const date = new Date(Number(params.row.createDate));
             const mydate = utils.getDate(date, 'YMDHM');
-            return h ('span',mydate)
+            return h('span', mydate);
           }
         },
         {
@@ -126,7 +126,7 @@ export default {
                 directives: [
                   {
                     name: 'privilege',
-                    value: ['1-4-2']
+                    value: ['59-78-2']
                   }
                 ],
                 on: {

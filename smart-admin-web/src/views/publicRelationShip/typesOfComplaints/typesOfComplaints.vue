@@ -10,7 +10,7 @@
           >{{ $t("Reflash") }}</Button
         >
         <Button
-          v-privilege="['10-16-1']"
+          v-privilege="['94-97-1']"
           style="margin-right: 15px"
           @click="created"
           icon="md-add"
@@ -18,7 +18,7 @@
           >{{ $t("Create") }}</Button
         >
         <Button
-          v-privilege="['10-16-3']"
+          v-privilege="['94-97-3']"
           style="margin-right: 15px"
           @click="clear"
           icon="md-close"

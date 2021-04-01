@@ -12,23 +12,23 @@
 </template>
 
 <script>
-import firstTable from "./components/firstTable";
-import secondTable from "./components/secondTable";
-import thirdTable from "./components/thirdTable";
-import fourFrom from "./components/fourFrom";
+import firstTable from './components/firstTable';
+import secondTable from './components/secondTable';
+import thirdTable from './components/thirdTable';
+import fourFrom from './components/fourFrom';
 
 export default {
-  name: "attendanceSetting",
+  name: 'attendanceSetting',
   components: {
     firstTable,
     secondTable,
     thirdTable,
-    fourFrom,
+    fourFrom
   },
-  data() {
+  data () {
     return {};
   },
-  mounted() {},
-  methods: {},
+  mounted () {},
+  methods: {}
 };
 </script>
