@@ -171,12 +171,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 1 || params.row.assetStatus === 2 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Edit(params.row);
@@ -196,12 +190,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 1 || params.row.assetStatus === 2 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Copy(params.row, 1);
@@ -221,12 +209,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 0 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Copy(params.row, 2);
@@ -246,12 +228,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 1 || params.row.assetStatus === 2 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Copy(params.row, 3);
@@ -271,12 +247,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 0 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Copy(params.row, 4);
@@ -296,12 +266,6 @@ export default {
                     marginRight: '5px',
                     display: params.row.assetStatus === 0 ? 'inline-block' : 'none'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.Copy(params.row, 5);
@@ -320,12 +284,6 @@ export default {
                   style: {
                     marginRight: '5px'
                   },
-                  directives: [
-                    {
-                      name: 'privilege',
-                      value: ['10-16-2']
-                    }
-                  ],
                   on: {
                     click: () => {
                       this.viewDetail(params.row);

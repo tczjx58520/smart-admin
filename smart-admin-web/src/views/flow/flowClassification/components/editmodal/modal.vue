@@ -210,13 +210,13 @@ export default {
       this.addformbase = Object.assign({}, this.editinfo);
       this.addformbase.startOrganizeName = this.addformbase.startOrganizes && this.addformbase.startOrganizes.map(item => { return item.organizeName; }).join(',');
       this.addformbase.startPostName = this.addformbase.startPosts && this.addformbase.startPosts.map(item => { return item.postName; }).join(',');
-      this.addformbase.startEmpName = this.addformbase.startEmpVos && this.addformbase.startEmpVos.map(item => { return item.empName; }).join(',');
+      this.addformbase.startEmpName = this.addformbase.startEmployeeVos && this.addformbase.startEmployeeVos.map(item => { return item.empName; }).join(',');
       this.addformbase.forbidOrganizeName = this.addformbase.forbidOrganizes && this.addformbase.forbidOrganizes.map(item => { return item.organizeName; }).join(',');
       this.addformbase.forbidPostName = this.addformbase.forbidPosts && this.addformbase.forbidPosts.map(item => { return item.postName; }).join(',');
-      this.addformbase.forbidEmpName = this.addformbase.forbidEmpVos && this.addformbase.forbidEmpVos.map(item => { return item.empName; }).join(',');
+      this.addformbase.forbidEmpName = this.addformbase.forbidEmployeeVos && this.addformbase.forbidEmployeeVos.map(item => { return item.empName; }).join(',');
       this.addformbase.queryOrganizeName = this.addformbase.queryOrganizes && this.addformbase.queryOrganizes.map(item => { return item.organizeName; }).join(',');
       this.addformbase.queryPostName = this.addformbase.queryPosts && this.addformbase.queryPosts.map(item => { return item.postName; }).join(',');
-      this.addformbase.queryEmpName = this.addformbase.queryEmpVos && this.addformbase.queryEmpVos.map(item => { return item.empName; }).join(',');
+      this.addformbase.queryEmpName = this.addformbase.queryEmployeeVos && this.addformbase.queryEmployeeVos.map(item => { return item.empName; }).join(',');
       this.addformbase.manageOrganizeName = this.addformbase.manageOrganizes && this.addformbase.manageOrganizes.map(item => { return item.organizeName; }).join(',');
       this.addformbase.managePostName = this.addformbase.managePosts && this.addformbase.managePosts.map(item => { return item.postName; }).join(',');
       this.addformbase.manageEmpName = this.addformbase.manageEmployeeVos && this.addformbase.manageEmployeeVos.map(item => { return item.empName; }).join(',');

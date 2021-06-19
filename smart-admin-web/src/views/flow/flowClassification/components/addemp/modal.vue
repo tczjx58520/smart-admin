@@ -177,6 +177,7 @@ export default {
   watch: {
     modalstat () {
       this.mymoadlStat = this.modalstat;
+      this.formValidate.serviceIdNameList = []; // 员工修改防止出现上次选择的名字
       if (this.memberId) {
         console.log('this.memberId=====', this.memberId);
         this.formValidate.serviceIdList = this.memberId.split(',').map(Number);
