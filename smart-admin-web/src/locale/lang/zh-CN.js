@@ -1493,6 +1493,8 @@ export default {
     szdycdksj: '设置第一次打卡时间 (时间单位： 分钟)',
     sbqyxdjsj: '上班前允许登记时间',
     sbhyxdjsj: '上班后允许登记时间',
+    xbqyxdjsj: '下班前允许登记时间',
+    xbhyxdjsj: '下班后允许登记时间',
     szdecdksj: '设置第二次打卡时间 (时间单位： 分钟)',
     szdccdksj: '设置第三次打卡时间(时间单位：分钟)',
     szdsddksj: '设置第四次打卡时间(时间单位：分钟',
@@ -1657,5 +1659,6 @@ export default {
     xuanzepaibanyuefen: '选择排班月份',
     nianfenshoushuo: '年份搜索',
     zhuzumingm: '组织名'
-  }
+  },
+  qxzyxgbc: '请选择要修改的班次'
 };

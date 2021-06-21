@@ -145,43 +145,43 @@
   </Modal>
 </template>
 <script>
-import $ from "jquery";
-import selectEmp from "@/components/selectEmp";
-import organization from "@/components/organization";
-import selectInMap from "./selectInMap";
-import moreOrganizationTree from "@/components/moreOrganizationTree";
-import moreSelectEmp from "@/components/moreSelectEmp";
+import $ from 'jquery';
+import selectEmp from '@/components/selectEmp';
+import organization from '@/components/organization';
+import selectInMap from './selectInMap';
+import moreOrganizationTree from '@/components/moreOrganizationTree';
+import moreSelectEmp from '@/components/moreSelectEmp';
 
-import { attendance } from "@/api/attendance";
+import { attendance } from '@/api/attendance';
 export default {
-  name: "firstFrom",
+  name: 'firstFrom',
   components: {
     selectEmp,
     organization,
     selectInMap,
     moreOrganizationTree,
-    moreSelectEmp,
+    moreSelectEmp
   },
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
     editData: {
       type: Object,
-      default: null,
+      default: null
     },
     modalState: {
       type: String,
-      default: null,
-    },
+      default: null
+    }
   },
-  created() {},
-  mounted() {},
-  data() {
+  created () {},
+  mounted () {},
+  data () {
     const validatePass = (rule, value, callback) => {
       if (!this.fromBaseData.longitude) {
-        callback(new Error("Please enter"));
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
@@ -192,14 +192,14 @@ export default {
       moreOrganizationTreeVisible2: false,
       textareaOrgIds2: [],
       textareaEmpIds2: [],
-      textareaData4: "",
-      textareaData3: "",
+      textareaData4: '',
+      textareaData3: '',
       //
       textareaOrgIds: [],
       textareaEmpIds: [],
       moreSelectEmpVisible: false,
-      textareaData2: "",
-      textareaData: "",
+      textareaData2: '',
+      textareaData: '',
       moreOrganizationTreeVisible: false,
       mapStat: false,
       orgStat: false,
@@ -210,53 +210,53 @@ export default {
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
       fromBaseData: {
-        addressName: "",
-        textareaData1: "",
-        textareaData2: "",
+        addressName: '',
+        textareaData1: '',
+        textareaData2: ''
       },
       ruleValidate: {
         addressName: [
           {
             required: true,
-            message: "The addressName cannot be empty",
-            trigger: "blur",
-          },
+            message: 'The addressName cannot be empty',
+            trigger: 'blur'
+          }
         ],
         longitude: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         latitude: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         radius: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         textareaData1: [
           {
             required: true,
-            message: "The textareaData1 cannot be empty",
-            trigger: "blur",
-          },
+            message: 'The textareaData1 cannot be empty',
+            trigger: 'blur'
+          }
         ],
         textareaData2: [
           {
             required: true,
-            message: "The textareaData2 cannot be empty",
-            trigger: "blur",
-          },
-        ],
-      },
+            message: 'The textareaData2 cannot be empty',
+            trigger: 'blur'
+          }
+        ]
+      }
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       console.log(
-        "this.$store.state.user.userLoginInfo",
+        'this.$store.state.user.userLoginInfo',
         this.$store.state.user.userLoginInfo
       );
     },
-    editData() {
+    editData () {
       this.fromBaseData.addressName = this.editData.addressName;
       this.fromBaseData.id = this.editData.id;
       this.fromBaseData.latitude = this.editData.latitude;
@@ -278,24 +278,24 @@ export default {
         .map((item) => {
           return item.organizationName;
         })
-        .join(",");
+        .join(',');
       this.textareaData2 = firstTextDataEmp1
         .map((item) => {
           return item.employeeName;
         })
-        .join(",");
+        .join(',');
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
+        this.textareaData + '             ' + this.textareaData2;
       this.textareaEmpIds = firstTextDataEmp1.map((item) => {
         return {
           employeeId: item.employeeId,
-          status: item.status,
+          status: item.status
         };
       });
       this.textareaOrgIds = firstTextDataOrg1.map((item) => {
         return {
           organizationId: item.organizationId,
-          status: item.status,
+          status: item.status
         };
       });
 
@@ -315,144 +315,144 @@ export default {
         .map((item) => {
           return item.organizationName;
         })
-        .join(",");
+        .join(',');
       this.textareaData4 = firstTextDataEmp2
         .map((item) => {
           return item.employeeName;
         })
-        .join(",");
+        .join(',');
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
+        this.textareaData3 + '             ' + this.textareaData4;
       this.textareaEmpIds2 = firstTextDataEmp2.map((item) => {
         return {
           employeeId: item.employeeId,
-          status: item.status,
+          status: item.status
         };
       });
       this.textareaOrgIds2 = firstTextDataOrg2.map((item) => {
         return {
           organizationId: item.organizationId,
-          status: item.status,
+          status: item.status
         };
       });
     },
-    modalState() {
+    modalState () {
       this.componetState = this.modalState;
-    },
+    }
   },
   methods: {
-    clearTextArea2() {
-      this.textareaData4 = "";
-      this.textareaData3 = "";
-      this.fromBaseData.textareaData2 = "";
+    clearTextArea2 () {
+      this.textareaData4 = '';
+      this.textareaData3 = '';
+      this.fromBaseData.textareaData2 = '';
       this.textareaEmpIds2 = [];
       this.textareaOrgIds2 = [];
     },
-    getEmpData2(val) {
+    getEmpData2 (val) {
       console.log(val);
-      this.fromBaseData.textareaData2 = "";
+      this.fromBaseData.textareaData2 = '';
       this.textareaEmpIds2 = [];
       this.textareaData4 = val.names;
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
-      const empIds = val.empIds.split(",");
+        this.textareaData3 + '             ' + this.textareaData4;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds2 = empIds.map((item) => {
         return {
           employeeId: Number(item),
-          status: 1,
+          status: 1
         };
       });
-      console.log("this.fromBaseData", this.fromBaseData);
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp2() {
+    chooseMoreEmp2 () {
       this.moreSelectEmpVisible2 = true;
     },
-    moreOrganizationData2(val) {
-      this.fromBaseData.textareaData2 = "";
+    moreOrganizationData2 (val) {
+      this.fromBaseData.textareaData2 = '';
       this.textareaOrgIds2 = [];
       this.textareaData3 = val.organizationOaName;
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
+        this.textareaData3 + '             ' + this.textareaData4;
       this.textareaOrgIds2 = val.organizationOa.map((item) => {
         return {
           organizationId: Number(item),
-          status: 1,
+          status: 1
         };
       });
     },
-    chooseOrganization2() {
+    chooseOrganization2 () {
       this.moreOrganizationTreeVisible2 = true;
     },
 
     //
-    clearTextArea() {
-      this.textareaData = "";
-      this.textareaData2 = "";
-      this.fromBaseData.textareaData1 = "";
+    clearTextArea () {
+      this.textareaData = '';
+      this.textareaData2 = '';
+      this.fromBaseData.textareaData1 = '';
       this.textareaEmpIds = [];
       this.textareaOrgIds = [];
     },
-    getEmpData(val) {
+    getEmpData (val) {
       console.log(val);
-      this.fromBaseData.textareaData1 = "";
+      this.fromBaseData.textareaData1 = '';
       this.textareaEmpIds = [];
       this.textareaData2 = val.names;
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
-      const empIds = val.empIds.split(",");
+        this.textareaData + '             ' + this.textareaData2;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds = empIds.map((item) => {
         return {
           employeeId: Number(item),
-          status: 0,
+          status: 0
         };
       });
-      console.log("this.fromBaseData", this.fromBaseData);
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp() {
+    chooseMoreEmp () {
       this.moreSelectEmpVisible = true;
     },
-    moreOrganizationData(val) {
-      this.fromBaseData.textareaData1 = "";
+    moreOrganizationData (val) {
+      this.fromBaseData.textareaData1 = '';
       this.textareaOrgIds = [];
       this.textareaData = val.organizationOaName;
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
+        this.textareaData + '             ' + this.textareaData2;
       this.textareaOrgIds = val.organizationOa.map((item) => {
         return {
           organizationId: Number(item),
-          status: 0,
+          status: 0
         };
       });
     },
-    chooseOrganization() {
+    chooseOrganization () {
       this.moreOrganizationTreeVisible = true;
     },
-    getMapData(val) {
+    getMapData (val) {
       console.log(val);
       this.fromBaseData.longitude = val.lang;
       this.fromBaseData.latitude = val.lat;
     },
-    selectLong() {
+    selectLong () {
       this.mapStat = true;
     },
-    chooseOrg() {
+    chooseOrg () {
       this.orgStat = true;
     },
-    getOrgData(val) {
+    getOrgData (val) {
       //   console.log(val)
       this.fromBaseData.organazationId = val.id;
       this.organazationName = val.title;
     },
-    changeStartTime(val) {
+    changeStartTime (val) {
       this.fromBaseData.startTime = val;
       this.countTotalTime();
     },
-    changeEndTime(val) {
+    changeEndTime (val) {
       this.fromBaseData.endTime = val;
 
       this.countTotalTime();
     },
-    countTotalTime() {
+    countTotalTime () {
       if (this.fromBaseData.endTime && this.fromBaseData.startTime) {
         let hours1 = Number(this.fromBaseData.startTime.substring(0, 2));
         let hours2 = Number(this.fromBaseData.endTime.substring(0, 2));
@@ -466,40 +466,40 @@ export default {
         this.fromBaseData.totalTime = diffHours + diffminutes / 60;
       }
     },
-    selectData(val) {
-      console.log("val", val);
+    selectData (val) {
+      console.log('val', val);
       this.fromBaseData.employeeId = val.id;
       this.employeeName = val.personName;
     },
-    chooseEmp() {
+    chooseEmp () {
       this.empSata = true;
     },
-    cancel() {
+    cancel () {
       this.mymoadlStat = false;
       this.modal_loading = false;
       this.reset();
-      this.$emit("update:modalstat", false);
+      this.$emit('update:modalstat', false);
     },
-    reset() {
+    reset () {
       this.fromBaseData = {
-        addressName: "",
-        textareaData1: "",
-        textareaData2: "",
+        addressName: '',
+        textareaData1: '',
+        textareaData2: ''
       };
-      this.textareaData4 = "";
-      this.textareaData3 = "";
-      this.fromBaseData.textareaData2 = "";
+      this.textareaData4 = '';
+      this.textareaData3 = '';
+      this.fromBaseData.textareaData2 = '';
       this.textareaEmpIds2 = [];
       this.textareaOrgIds2 = [];
 
-      this.textareaData = "";
-      this.textareaData2 = "";
-      this.fromBaseData.textareaData1 = "";
+      this.textareaData = '';
+      this.textareaData2 = '';
+      this.fromBaseData.textareaData1 = '';
       this.textareaEmpIds = [];
       this.textareaOrgIds = [];
-      this.$refs["form"].resetFields();
+      this.$refs['form'].resetFields();
     },
-    handsave() {
+    handsave () {
       this.modal_loading = true;
       console.log(this.fromBaseData);
       this.fromBaseData.attendanceAddressForOrganization = this.textareaOrgIds.concat(
@@ -508,13 +508,12 @@ export default {
       this.fromBaseData.attendaceAddressForEmpolyee = this.textareaEmpIds.concat(
         this.textareaEmpIds2
       );
-      this.fromBaseData.radius = Number(this.fromBaseData.radius)
-      this.fromBaseData.latitude = Number(this.fromBaseData.latitude)
-      this.fromBaseData.longitude = Number(this.fromBaseData.longitude)
+      this.fromBaseData.radius = Number(this.fromBaseData.radius);
+      this.fromBaseData.latitude = Number(this.fromBaseData.latitude);
+      this.fromBaseData.longitude = Number(this.fromBaseData.longitude);
 
-
-      if (this.componetState === "修改") {
-        this.$refs["form"].validate((valid) => {
+      if (this.componetState === '修改') {
+        this.$refs['form'].validate((valid) => {
           if (valid) {
             attendance
               .modifyApplyObjectForMobile(this.fromBaseData)
@@ -522,8 +521,8 @@ export default {
                 if (res.ret === 200) {
                   this.$Message.success(res.msg);
                   this.mymoadlStat = false;
-                  this.$emit("update:modalstat", false);
-                  this.$emit("restList", true);
+                  this.$emit('update:modalstat', false);
+                  this.$emit('restList', true);
                   this.reset();
                 }
                 this.modal_loading = false;
@@ -531,18 +530,18 @@ export default {
           } else {
             this.modal_loading = false;
 
-            this.$Message.error("Fail!");
+            this.$Message.error('Fail!');
           }
         });
       } else {
-        this.$refs["form"].validate((valid) => {
+        this.$refs['form'].validate((valid) => {
           if (valid) {
             attendance.addAddressForMobile(this.fromBaseData).then((res) => {
               if (res.ret === 200) {
                 this.$Message.success(res.msg);
                 this.mymoadlStat = false;
-                this.$emit("update:modalstat", false);
-                this.$emit("restList", true);
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
                 this.reset();
               }
               this.modal_loading = false;
@@ -550,12 +549,12 @@ export default {
           } else {
             this.modal_loading = false;
 
-            this.$Message.error("Fail!");
+            this.$Message.error('Fail!');
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -107,6 +107,7 @@ export default {
     };
   },
   mounted () {
+    this.year = new Date();
     this.getFirstTableData();
   },
   methods: {

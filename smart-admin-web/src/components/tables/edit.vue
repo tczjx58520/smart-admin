@@ -6,15 +6,14 @@
     </div>
     <div v-else class="tables-editting-con">
       <Input v-show="editType === 'input'" :value="value" @input="handleInput" class="tables-edit-input"/>
-      
+
       <DatePicker v-show="editType === 'date'" :value="value" type="date" placeholder="Select date" class="tables-edit-input" @input="handleInput"/>
-      
+
       <TimePicker v-show="editType === 'time'" type="time" :value="value"  class="tables-edit-input" @input="handleInput"  confirm/>
-      
       <Select v-show="editType === 'select'" v-model="selectId" label-in-value  class="tables-edit-input" @on-change="handSelectChange">
         <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.shiftName }}</Option>
     </Select>
-    
+
     <Select v-show="editType === 'nomalselect'" v-model="value"  class="tables-edit-input" @on-change="getSelectData">
         <Option v-for="item in selectData" :value="item.id" :key="item.id">{{ item.name }}</Option>
     </Select>
@@ -29,16 +28,16 @@
 </template>
 
 <script>
-var that = this
+let that = this;
 export default {
   name: 'TablesEdit',
   filters: {
-    valueFilter(val) {
+    valueFilter (val) {
       const data = {
         0: '是',
         1: '否'
-      }
-      return data[val]
+      };
+      return data[val];
     }
   },
   props: {
@@ -49,7 +48,7 @@ export default {
     },
     // 当前编辑的下拉框值
     selectId: {
-       type: [String, Number],
+      type: [String, Number],
       require: false
     },
     // 当前编辑的单元格id
@@ -72,11 +71,11 @@ export default {
       type: String,
       require: true
     },
-    //下拉组件数据
+    // 下拉组件数据
     selectData: {
       type: Array,
       require: true
-    },
+    }
   },
   computed: {
     // 判断是否处于编辑状态
@@ -84,34 +83,33 @@ export default {
       // console.log('editType', this.editType)
       return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`;
     },
-    editingdata() {
+    editingdata () {
       // console.log(this.params)
-    return this.params
-    },
+      return this.params;
+    }
   },
   methods: {
-    testClick(val) {
-      // console.log(this.params)
-      this.params.click = !this.params.click
+    testClick (val) {
+      console.log('clickName', this.params);
+      this.params.click = !this.params.click;
     },
-    getSelectData(val) {
+    getSelectData (val) {
       // console.log(val)
       this.$emit('getnomalselect', val);
     },
-    handSelectChange(val) {
-      console.log(val, val)
+    handSelectChange (val) {
+      console.log(val, val);
       this.$emit('input', val.label);
-      this.$emit('select', val.value)
+      this.$emit('select', val.value);
     },
     handleInput (val) {
-      console.log('val', val)
       this.$emit('input', val);
     },
     startEdit () {
       this.$emit('on-start-edit', this.params);
     },
     saveEdit () {
-      // console.log('this.params', this.params)
+      console.log('this.params', this.params);
       this.$emit('on-save-edit', this.params);
     },
     canceltEdit () {

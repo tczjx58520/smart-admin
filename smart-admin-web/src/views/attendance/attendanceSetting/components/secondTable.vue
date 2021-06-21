@@ -53,121 +53,121 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import secondForm from "./secondFrom";
+import { attendance } from '@/api/attendance';
+import secondForm from './secondFrom';
 
 export default {
-  name: "SecondTable",
+  name: 'SecondTable',
   components: {
-    secondForm,
+    secondForm
   },
-  data() {
+  data () {
     return {
-      selectData: "",
+      selectData: '',
       editData: null,
       secondLoading: false,
       SecondTable: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       fistTotal: 0,
       secondColumns: [
         {
-          type: "selection",
+          type: 'selection',
           width: 50,
-          align: "center",
+          align: 'center'
         },
         {
-          title: this.$t("kqgl.bzmc"),
-          key: "shiftSystemName",
+          title: this.$t('kqgl.bzmc'),
+          key: 'shiftSystemName'
         },
         {
-          title: this.$t("kqgl.xqy"),
-          key: "mondayName",
+          title: this.$t('kqgl.xqy'),
+          key: 'mondayName'
         },
         {
-          title: this.$t("kqgl.xqe"),
-          key: "tuesdayName",
+          title: this.$t('kqgl.xqe'),
+          key: 'tuesdayName'
         },
         {
-          title: this.$t("kqgl.xqs"),
-          key: "wednesdayName",
+          title: this.$t('kqgl.xqs'),
+          key: 'wednesdayName'
         },
         {
-          title: this.$t("kqgl.xqsi"),
-          key: "thursdayName",
+          title: this.$t('kqgl.xqsi'),
+          key: 'thursdayName'
         },
         {
-          title: this.$t("kqgl.xqw"),
-          key: "fridayName",
+          title: this.$t('kqgl.xqw'),
+          key: 'fridayName'
         },
         {
-          title: this.$t("kqgl.xql"),
-          key: "saturdayName",
+          title: this.$t('kqgl.xql'),
+          key: 'saturdayName'
         },
         {
-          title: this.$t("kqgl.xqr"),
-          key: "sundayName",
+          title: this.$t('kqgl.xqr'),
+          key: 'sundayName'
         },
         {
-          title: this.$t("usermanage_view.action"),
-          key: "action",
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
           width: 200,
-          align: "center",
+          align: 'center',
           render: (h, params) => {
-            return h("div", [
+            return h('div', [
               h(
-                "Button",
+                'Button',
                 {
                   props: {
-                    type: "info",
-                    size: "small",
+                    type: 'info',
+                    size: 'small'
                   },
                   on: {
                     click: () => {
                       this.Edit(params.row);
-                    },
-                  },
+                    }
+                  }
                 },
-                this.$t("Edit")
-              ),
+                this.$t('Edit')
+              )
             ]);
-          },
-        },
+          }
+        }
       ],
       secondData: [],
       modalstat: false,
-      modalState: "",
+      modalState: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getSecondTableData();
   },
   methods: {
-    restList(val) {
+    restList (val) {
       if (val) {
         this.getSecondTableData();
       }
     },
-    Edit(row) {
+    Edit (row) {
       // if (this.$judge(['1-4-2'])) {
       //   this.editinfo = row;
       //   this.visiable_edit = true;
       // } else {
       //   console.log('needroles');
       // }
-      this.modalState = "修改";
+      this.modalState = '修改';
       this.editData = Object.assign({}, row);
       // this.secondLoading = true;
       this.modalstat = true;
     },
-    selectsecond(selection) {
+    selectsecond (selection) {
       this.selectData = selection;
     },
-    clearSecondTable() {
+    clearSecondTable () {
       let sendParms = {
         ids: [],
-        createId: this.$store.state.user.userLoginInfo.userId,
+        createId: this.$store.state.user.userLoginInfo.userId
       };
       for (const i in this.selectData) {
         sendParms.ids.push(this.selectData[i].id);
@@ -183,7 +183,7 @@ export default {
         }
       });
     },
-    async getSecondTableData() {
+    async getSecondTableData () {
       try {
         this.secondLoading = true;
         let result = await attendance.findAllShiftSystemInfo(this.SecondTable);
@@ -198,26 +198,26 @@ export default {
       }
     },
     // 翻页
-    secondChangePage(pageNum) {
+    secondChangePage (pageNum) {
       this.SecondTable.pageNum = pageNum;
       this.getSecondTableData();
     },
     // 改变一页展示数
-    secondChangePageSize(pageSize) {
+    secondChangePageSize (pageSize) {
       this.SecondTable.pageNum = 1;
       this.SecondTable.pageSize = pageSize;
       this.getSecondTableData();
     },
     // 重置
-    resetSecondTable() {
+    resetSecondTable () {
       this.SecondTable.pageNum = 1;
       this.getSecondTableData();
     },
-    newsecondForm() {
-      this.modalState = "新建";
+    newsecondForm () {
+      this.modalState = '新建';
       // this.secondLoading = true;
       this.modalstat = true;
-    },
-  },
+    }
+  }
 };
 </script>

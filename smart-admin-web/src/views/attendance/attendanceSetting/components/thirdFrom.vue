@@ -13,7 +13,7 @@
                 <Form ref="form" :model="fromBaseData" label-position="right" :label-width="100" :rules="ruleValidate">
                     <FormItem :label="$t('OrganizationName')" prop="selectTextData">
                         <Input type="textarea" :rows="4"  v-model="selectTextData" style="width: 34%" @click.native="chooseOrganzation"/>
-                    <moreOrganizationTree :modalstat.sync='moreOrganizationTreeVisible' @moreOrganizationData ='moreOrganizationData'/>
+                        <moreOrganizationTree :modalstat.sync='moreOrganizationTreeVisible' @moreOrganizationData ='moreOrganizationData'/>
 
                     </FormItem>
                     <FormItem :label="$t('kqgl.bz')" prop="shiftSystemId">
@@ -117,6 +117,7 @@ export default {
       console.log('this.editData', this.editData);
       this.fromBaseData = this.editData;
       this.fromBaseData.createId = this.$store.state.user.userLoginInfo.userId;
+      this.selectTextData = this.editData.organizationName;
     }
   },
   methods: {

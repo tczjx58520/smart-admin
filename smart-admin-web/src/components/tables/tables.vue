@@ -236,7 +236,7 @@ export default {
     suportEdit (item, index) {
       // console.log('item',item)
       item.render = (h, params) => {
-        // console.log('params', params)
+        console.log('paramsceshiceshi', params);
         // console.log('selectData', params.column.selectData)
         // console.log('this.insideTableData[params.index][params.column.key]', this.insideTableData[params.index][params.column.key])
         let selectId;

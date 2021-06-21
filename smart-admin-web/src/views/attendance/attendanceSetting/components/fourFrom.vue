@@ -82,8 +82,9 @@
           :label-width="140"
           style="padding-top: 20px; padding-left: 1%"
         >
-          <FormItem :label="$t('kqgl.sbqyxdjsj')">
+          <FormItem :label="$t('kqgl.xbqyxdjsj')">
             <InputNumber
+              :disabled="isSelected"
               :max="100000"
               v-model="fromBaseData.timeBeforeSecondStartWork"
               :min="0"
@@ -91,8 +92,9 @@
             ></InputNumber>
           </FormItem>
 
-          <FormItem :label="$t('kqgl.sbhyxdjsj')">
+          <FormItem :label="$t('kqgl.xbhyxdjsj')">
             <InputNumber
+              :disabled="isSelected"
               :max="100000"
               v-model="fromBaseData.timeAfterSecondStartWork"
               :min="0"
@@ -130,6 +132,7 @@
         >
           <FormItem :label="$t('kqgl.sbqyxdjsj')">
             <InputNumber
+              :disabled="isSelected"
               :max="100000"
               v-model="fromBaseData.timeBeforeThirdStartWork"
               :min="0"
@@ -139,6 +142,7 @@
 
           <FormItem :label="$t('kqgl.sbhyxdjsj')">
             <InputNumber
+              :disabled="isSelected"
               :max="100000"
               v-model="fromBaseData.timeAfterThirdStartWork"
               :min="0"
@@ -174,7 +178,7 @@
           :label-width="140"
           style="padding-top: 20px; padding-left: 1%"
         >
-          <FormItem :label="$t('kqgl.sbqyxdjsj')">
+          <FormItem :label="$t('kqgl.xbqyxdjsj')">
             <InputNumber
               :max="100000"
               v-model="fromBaseData.timeBeforeForthStartWork"
@@ -183,7 +187,7 @@
             ></InputNumber>
           </FormItem>
 
-          <FormItem :label="$t('kqgl.sbhyxdjsj')">
+          <FormItem :label="$t('kqgl.xbhyxdjsj')">
             <InputNumber
               :max="100000"
               v-model="fromBaseData.timeAfterForthStartWork"
@@ -393,49 +397,49 @@
 </template>
 
 <script>
-import { attendance } from "@/api/attendance";
-import moreOrganizationTree from "@/components/moreOrganizationTree";
-import moreSelectEmp from "@/components/moreSelectEmp";
+import { attendance } from '@/api/attendance';
+import moreOrganizationTree from '@/components/moreOrganizationTree';
+import moreSelectEmp from '@/components/moreSelectEmp';
 
 export default {
-  name: "firstTable",
+  name: 'firstTable',
   components: {
     moreOrganizationTree,
-    moreSelectEmp,
+    moreSelectEmp
   },
-  data() {
+  data () {
     return {
       automaticPunch: '',
       workEarlyType: [],
-      textareaData5: "",
+      textareaData5: '',
       moreSelectEmpVisible3: false,
       editformData: {},
       moreSelectEmpVisible2: false,
       moreOrganizationTreeVisible2: false,
       textareaOrgIds2: [],
       textareaEmpIds2: [],
-      textareaData4: "",
-      textareaData3: "",
+      textareaData4: '',
+      textareaData3: '',
       //
       textareaOrgIds: [],
       textareaEmpIds: [],
       moreSelectEmpVisible: false,
-      textareaData2: "",
-      textareaData: "",
+      textareaData2: '',
+      textareaData: '',
       moreOrganizationTreeVisible: false,
       chooseList: [
         {
-          label: "YES",
-          value: 0,
+          label: 'YES',
+          value: 0
         },
         {
-          label: "NO",
-          value: 1,
-        },
+          label: 'NO',
+          value: 1
+        }
       ],
       fromBaseData: {
-        textareaData1: "",
-        textareaData2: "",
+        textareaData1: '',
+        textareaData2: '',
         workEarlyType: 0,
         timeBeforeThirdStartWork: 0,
         timeBeforeSecondStartWork: 0,
@@ -444,34 +448,43 @@ export default {
         timeAfterThirdStartWork: 0,
         timeAfterSecondStartWork: 0,
         timeAfterForthStartWork: 0,
-        timeAfterFirstStartWork: 0,
+        timeAfterFirstStartWork: 0
       },
       ruleValidate: [],
+      isSelected: false
     };
   },
-  mounted() {
+  mounted () {
     this.getDataList();
   },
   methods: {
-    handleWorkEarlyType(val) {
-      console.log('val', val)
-      this.fromBaseData.workEarlyType = val
+    handleWorkEarlyType (val) {
+      console.log('val', val);
+      this.fromBaseData.workEarlyType = val;
     },
-    handleChange(val) {
-      if(val) {
-        this.fromBaseData.automaticPunch = 1
+    handleChange (val) {
+      if (val) {
+        this.fromBaseData.automaticPunch = 1;
+        this.isSelected = true;
+        this.fromBaseData.timeBeforeSecondStartWork = 0;
+        this.fromBaseData.timeBeforeThirdStartWork = 0;
       } else {
-        this.fromBaseData.automaticPunch = 0
+        this.fromBaseData.automaticPunch = 0;
+        this.isSelected = false;
       }
     },
-    async getDataList() {
+    async getDataList () {
       const result = await attendance.findAttendanceSet();
-      console.log("result", result);
+      console.log('result', result);
+      if (result.ret === 100) {
+        // this.$Message.warning('请添加考勤设置');
+        return;
+      }
       this.fromBaseData = result.data;
-      if(result.data.automaticPunch === 1) {
-      this.automaticPunch = true
+      if (result.data.automaticPunch === 1) {
+        this.automaticPunch = true;
       } else {
-      this.automaticPunch = false
+        this.automaticPunch = false;
       }
       this.fromBaseData.timeBeforeThirdStartWork = Number(
         result.data.timeBeforeThirdStartWork
@@ -511,26 +524,26 @@ export default {
         .map((item) => {
           return item.organizationName;
         })
-        .join(",");
+        .join(',');
       this.textareaData2 = firstTextDataEmp1
         .map((item) => {
           return item.createPersonName;
         })
-        .join(",");
+        .join(',');
 
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
+        this.textareaData + '             ' + this.textareaData2;
 
       this.textareaEmpIds = firstTextDataEmp1.map((item) => {
         return {
           employeeId: item.employeeId,
-          status: item.status,
+          status: item.status
         };
       });
       this.textareaOrgIds = firstTextDataOrg1.map((item) => {
         return {
           organizationId: item.organizationId,
-          status: item.status,
+          status: item.status
         };
       });
 
@@ -552,24 +565,24 @@ export default {
         .map((item) => {
           return item.organizationName;
         })
-        .join(",");
+        .join(',');
       this.textareaData4 = firstTextDataEmp2
         .map((item) => {
           return item.createPersonName;
         })
-        .join(",");
+        .join(',');
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
+        this.textareaData3 + '             ' + this.textareaData4;
       this.textareaEmpIds2 = firstTextDataEmp2.map((item) => {
         return {
           employeeId: item.employeeId,
-          status: item.status,
+          status: item.status
         };
       });
       this.textareaOrgIds2 = firstTextDataOrg2.map((item) => {
         return {
           organizationId: item.organizationId,
-          status: item.status,
+          status: item.status
         };
       });
 
@@ -579,31 +592,31 @@ export default {
         .map((item) => {
           return item.createPersonName;
         })
-        .join(",");
+        .join(',');
 
       this.fromBaseData.employeeIdForNoPunch = this.fromBaseData.employeeIdForNoPunch.map(
         (item) => {
           return {
-            employeeId: item.employeeId,
+            employeeId: item.employeeId
           };
         }
       );
 
       this.fromBaseData.id = result.data.id;
     },
-    selectWorkType(val) {
-      console.log('this.workEarlyType', this.workEarlyType)
-      console.log("val", val);
+    selectWorkType (val) {
+      console.log('this.workEarlyType', this.workEarlyType);
+      console.log('val', val);
       if (val.length !== 0) {
-        this.fromBaseData.automaticPunch = val[1];  
+        this.fromBaseData.automaticPunch = val[1];
       }
     },
-    newFirstForm() {
-      console.log("this.fromBaseData", this.fromBaseData);
-      console.log("this.textareaEmpIds", this.textareaEmpIds);
-      console.log("this.textareaEmpIds2", this.textareaEmpIds2);
-      console.log("this.textareaOrgIds", this.textareaOrgIds);
-      console.log("this.textareaOrgIds2", this.textareaOrgIds2);
+    newFirstForm () {
+      console.log('this.fromBaseData', this.fromBaseData);
+      console.log('this.textareaEmpIds', this.textareaEmpIds);
+      console.log('this.textareaEmpIds2', this.textareaEmpIds2);
+      console.log('this.textareaOrgIds', this.textareaOrgIds);
+      console.log('this.textareaOrgIds2', this.textareaOrgIds2);
       this.fromBaseData.employeeIdForFlex = this.textareaEmpIds.concat(
         this.textareaEmpIds2
       );
@@ -618,105 +631,105 @@ export default {
         this.modal_loading = false;
       });
     },
-    getEmpData3(val) {
+    getEmpData3 (val) {
       this.textareaData5 = val.names;
-      const empIds = val.empIds.split(",");
+      const empIds = val.empIds.split(',');
       this.fromBaseData.employeeIdForNoPunch = empIds.map((item) => {
         return {
-          employeeId: Number(item),
+          employeeId: Number(item)
         };
       });
     },
-    choosePunchEmp() {
+    choosePunchEmp () {
       this.moreSelectEmpVisible3 = true;
     },
-    clearTextArea2() {
-      this.textareaData4 = "";
-      this.textareaData3 = "";
-      this.fromBaseData.textareaData2 = "";
+    clearTextArea2 () {
+      this.textareaData4 = '';
+      this.textareaData3 = '';
+      this.fromBaseData.textareaData2 = '';
       this.textareaEmpIds2 = [];
       this.textareaOrgIds2 = [];
     },
-    getEmpData2(val) {
+    getEmpData2 (val) {
       console.log(val);
-      this.fromBaseData.textareaData2 = "";
+      this.fromBaseData.textareaData2 = '';
       this.textareaEmpIds2 = [];
       this.textareaData4 = val.names;
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
-      const empIds = val.empIds.split(",");
+        this.textareaData3 + '             ' + this.textareaData4;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds2 = empIds.map((item) => {
         return {
           employeeId: Number(item),
-          status: 1,
+          status: 1
         };
       });
-      console.log("this.fromBaseData", this.fromBaseData);
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp2() {
+    chooseMoreEmp2 () {
       this.moreSelectEmpVisible2 = true;
     },
-    moreOrganizationData2(val) {
-      this.fromBaseData.textareaData2 = "";
+    moreOrganizationData2 (val) {
+      this.fromBaseData.textareaData2 = '';
       this.textareaOrgIds2 = [];
       this.textareaData3 = val.organizationOaName;
       this.fromBaseData.textareaData2 =
-        this.textareaData3 + "             " + this.textareaData4;
+        this.textareaData3 + '             ' + this.textareaData4;
       this.textareaOrgIds2 = val.organizationOa.map((item) => {
         return {
           organizationId: item,
-          status: 1,
+          status: 1
         };
       });
     },
-    chooseOrganization2() {
+    chooseOrganization2 () {
       this.moreOrganizationTreeVisible2 = true;
     },
 
     //
-    clearTextArea() {
-      this.textareaData = "";
-      this.textareaData2 = "";
-      this.fromBaseData.textareaData1 = "";
+    clearTextArea () {
+      this.textareaData = '';
+      this.textareaData2 = '';
+      this.fromBaseData.textareaData1 = '';
       this.textareaEmpIds = [];
       this.textareaOrgIds = [];
     },
-    getEmpData(val) {
+    getEmpData (val) {
       console.log(val);
-      this.fromBaseData.textareaData1 = "";
+      this.fromBaseData.textareaData1 = '';
       this.textareaEmpIds = [];
       this.textareaData2 = val.names;
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
-      const empIds = val.empIds.split(",");
+        this.textareaData + '             ' + this.textareaData2;
+      const empIds = val.empIds.split(',');
       this.textareaEmpIds = empIds.map((item) => {
         return {
           employeeId: Number(item),
-          status: 0,
+          status: 0
         };
       });
-      console.log("this.fromBaseData", this.fromBaseData);
+      console.log('this.fromBaseData', this.fromBaseData);
     },
-    chooseMoreEmp() {
+    chooseMoreEmp () {
       this.moreSelectEmpVisible = true;
     },
-    moreOrganizationData(val) {
-      this.fromBaseData.textareaData1 = "";
+    moreOrganizationData (val) {
+      this.fromBaseData.textareaData1 = '';
       this.textareaOrgIds = [];
       this.textareaData = val.organizationOaName;
       this.fromBaseData.textareaData1 =
-        this.textareaData + "             " + this.textareaData2;
+        this.textareaData + '             ' + this.textareaData2;
       this.textareaOrgIds = val.organizationOa.map((item) => {
         return {
           organizationId: item,
-          status: 0,
+          status: 0
         };
       });
     },
-    chooseOrganization() {
+    chooseOrganization () {
       this.moreOrganizationTreeVisible = true;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

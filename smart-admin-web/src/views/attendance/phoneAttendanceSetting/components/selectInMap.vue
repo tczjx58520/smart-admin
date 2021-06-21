@@ -42,69 +42,69 @@
 </template>
 
 <script>
-var map;
-var lngdata;
-var latdata;
+let map;
+let lngdata;
+let latdata;
 export default {
-  name: "selectInMap",
+  name: 'selectInMap',
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
     editData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  data() {
+  data () {
     return {
       mymoadlStat: this.modalstat,
 
       fromBaseData2: {
-        lang: "",
-        lat: "",
+        lang: '',
+        lat: ''
       },
-      center: { lng: 122.3843288, lat: 11.4574355 },
+      center: { lng: 122.3843288, lat: 11.4574355 }
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       this.mapBuild();
-    },
+    }
   },
   methods: {
-    cancel() {
+    cancel () {
       this.mymoadlStat = false;
-      this.$emit("update:modalstat", false);
+      this.$emit('update:modalstat', false);
     },
-    handsave() {
+    handsave () {
       this.mymoadlStat = false;
-      this.$emit("update:modalstat", false);
-      this.$emit("mapdata", this.fromBaseData2);
+      this.$emit('update:modalstat', false);
+      this.$emit('mapdata', this.fromBaseData2);
     },
     //  地图实例
-    mapBuild() {
+    mapBuild () {
       // 创建地图实例，zoom是缩放比例
-      const map = new google.maps.Map(document.getElementById("map_canvas"), {
+      const map = new google.maps.Map(document.getElementById('map_canvas'), {
         zoom: 6,
         center: this.center,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       });
       // 这里因为需要很多标记，所以遍历了this.markers（后端给的数据）来循环创建标记
-      var marker;
+      let marker;
       let that = this;
       // 点击信息窗口显示
       // google.maps.event.addListener(marker, 'click', function(e) { iw.open(map, marker) })
-      google.maps.event.addListener(map, "click", function (e) {
+      google.maps.event.addListener(map, 'click', function (e) {
         if (marker) {
-          var latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+          let latlng = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
           marker.setPosition(latlng);
         } else {
           marker = new google.maps.Marker({
             position: { lat: e.latLng.lat(), lng: e.latLng.lng() },
-            map: map,
+            map: map
           });
         }
         lngdata = e.latLng.lng();
@@ -112,7 +112,7 @@ export default {
         that.fromBaseData2.lang = lngdata;
         that.fromBaseData2.lat = latdata;
       });
-    },
-  },
+    }
+  }
 };
 </script>

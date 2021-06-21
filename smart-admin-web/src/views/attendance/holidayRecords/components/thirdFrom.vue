@@ -70,6 +70,7 @@ export default {
   name: 'thirdFrom',
   data () {
     const validatePass = (rule, value, callback) => {
+      console.log('value=======', value);
       if (!value) {
         callback(new Error('Please enter'));
       } else {
@@ -79,6 +80,8 @@ export default {
     return {
       loading: false,
       fromBaseData: {
+        annualBase: 1,
+        annualTop: 2,
         status: 0
       },
       ruleValidate: {

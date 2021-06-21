@@ -140,7 +140,7 @@ export default {
   methods: {
     getNowMonth () {
       let curDate = new Date();
-      this.searchform.month = curDate.getMonth() + 1;
+      this.searchform.month = curDate.getMonth() + 1 > 10 ? String(curDate.getMonth() + 1) : '0' + (curDate.getMonth() + 1);
       this.nowMonth = this.searchform.month;
     },
     getMonth (val) {
@@ -162,7 +162,12 @@ export default {
       //       day: item.substring(8, 10)
       //   }
       // })
-
+      if (this.moreEditData.length === 0) {
+        this.$Message.warning(this.$t('qxzyxgbc'));
+        console.log(this.model1);
+        this.model1 = '';
+        return false;
+      }
       let parmsarr = [];
       for (let i in this.moreEditData) {
         let newobj = {};

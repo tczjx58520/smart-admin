@@ -39,7 +39,7 @@
           :label-width="100"
           :rules="ruleValidate"
         >
-          <FormItem :label="$t('kqgl.bcmc')" prop="shiftSystemName">
+          <FormItem :label="$t('kqgl.bzmc')" prop="shiftSystemName">
             <Input v-model="fromBaseData.shiftSystemName" style="width: 34%" />
           </FormItem>
           <FormItem :label="$t('kqgl.xqy')" prop="monday">
@@ -132,100 +132,100 @@
   </Modal>
 </template>
 <script>
-import $ from "jquery";
-import { attendance } from "@/api/attendance";
+import $ from 'jquery';
+import { attendance } from '@/api/attendance';
 export default {
-  name: "secondFrom",
+  name: 'secondFrom',
   components: {},
   props: {
     modalstat: {
       type: Boolean,
-      default: false,
+      default: false
     },
     modalState: {
       type: String,
-      default: null,
+      default: null
     },
     editData: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  created() {},
-  mounted() {},
-  data() {
+  created () {},
+  mounted () {},
+  data () {
     const validatePass = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("Please enter"));
+        callback(new Error('Please enter'));
       } else {
         callback();
       }
     };
     return {
       selectData: [],
-      formTitle: "",
+      formTitle: '',
       modal_loading: false,
       mymoadlStat: this.modalstat,
       componetState: this.modalState,
       fromBaseData: {
-        createId: this.$store.state.user.userLoginInfo.userId,
+        createId: this.$store.state.user.userLoginInfo.userId
       },
       ruleValidate: {
         shiftSystemName: [
           {
             required: true,
-            message: "The shiftName cannot be empty",
-            trigger: "blur",
-          },
+            message: 'The shiftName cannot be empty',
+            trigger: 'blur'
+          }
         ],
         monday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         tuesday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         thursday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         wednesday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         friday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         saturday: [
-          { required: true, validator: validatePass, trigger: "change" },
+          { required: true, validator: validatePass, trigger: 'change' }
         ],
         sunday: [
-          { required: true, validator: validatePass, trigger: "change" },
-        ],
-      },
+          { required: true, validator: validatePass, trigger: 'change' }
+        ]
+      }
     };
   },
   watch: {
-    modalstat() {
+    modalstat () {
       this.mymoadlStat = this.modalstat;
       this.getSelectData();
     },
-    modalState() {
+    modalState () {
       this.componetState = this.modalState;
-      if (this.componetState === "新建") {
-        this.formTitle = this.$t("kqgl.xjbz");
-      } else if (this.componetState === "修改") {
-        this.formTitle = this.$t("kqgl.xgbz");
+      if (this.componetState === '新建') {
+        this.formTitle = this.$t('kqgl.xjbz');
+      } else if (this.componetState === '修改') {
+        this.formTitle = this.$t('kqgl.xgbz');
       }
     },
-    editData() {
-      console.log("this.editData", this.editData);
+    editData () {
+      console.log('this.editData', this.editData);
       this.fromBaseData = this.editData;
       this.fromBaseData.createId = this.$store.state.user.userLoginInfo.userId;
-    },
+    }
   },
   methods: {
-    async getSelectData() {
+    async getSelectData () {
       const parms = {
         pageNum: 1,
-        pageSize: 99999999,
+        pageSize: 99999999
       };
       try {
         let result = await attendance.findAllShiftInfo(parms);
@@ -234,47 +234,47 @@ export default {
         console.error(e);
       }
     },
-    handleClick(e) {
+    handleClick (e) {
       console.log(e);
       if (e) {
         this.open = !this.open;
       }
       // this.open = !this.open;
     },
-    handleChange(time) {
+    handleChange (time) {
       // this.value3 = time;
     },
-    handleClear() {
+    handleClear () {
       this.open = false;
     },
-    handleOk() {
+    handleOk () {
       this.open = false;
     },
-    cancel() {
+    cancel () {
       this.mymoadlStat = false;
       this.modal_loading = false;
       this.reset();
-      this.$emit("update:modalstat", false);
+      this.$emit('update:modalstat', false);
     },
-    reset() {
+    reset () {
       this.fromBaseData = {
-        createId: this.$store.state.user.userLoginInfo.userId,
+        createId: this.$store.state.user.userLoginInfo.userId
       };
-      this.$refs["form"].resetFields();
+      this.$refs['form'].resetFields();
     },
-    handsave() {
+    handsave () {
       this.modal_loading = true;
-      if (this.componetState === "新建") {
+      if (this.componetState === '新建') {
         console.log(this.fromBaseData);
         const parmJson = JSON.stringify(this.fromBaseData);
-        this.$refs["form"].validate((valid) => {
+        this.$refs['form'].validate((valid) => {
           if (valid) {
             attendance.addShiftSystem(parmJson).then((res) => {
               if (res.ret === 200) {
                 this.$Message.success(res.msg);
                 this.mymoadlStat = false;
-                this.$emit("update:modalstat", false);
-                this.$emit("restList", true);
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
                 this.reset();
               }
               this.modal_loading = false;
@@ -282,20 +282,20 @@ export default {
           } else {
             this.modal_loading = false;
 
-            this.$Message.error("Fail!");
+            this.$Message.error('Fail!');
           }
         });
-      } else if (this.componetState === "修改") {
+      } else if (this.componetState === '修改') {
         console.log(this.fromBaseData);
         const parmJson = JSON.stringify(this.fromBaseData);
-        this.$refs["form"].validate((valid) => {
+        this.$refs['form'].validate((valid) => {
           if (valid) {
             attendance.modifyShiftSystem(this.fromBaseData).then((res) => {
               if (res.ret === 200) {
                 this.$Message.success(res.msg);
                 this.mymoadlStat = false;
-                this.$emit("update:modalstat", false);
-                this.$emit("restList", true);
+                this.$emit('update:modalstat', false);
+                this.$emit('restList', true);
                 this.reset();
               }
               this.modal_loading = false;
@@ -303,12 +303,12 @@ export default {
           } else {
             this.modal_loading = false;
 
-            this.$Message.error("Fail!");
+            this.$Message.error('Fail!');
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -47,6 +47,31 @@ export default {
         {
           title: this.$t('kqgl.bz'),
           key: 'shiftSystemName'
+        },
+        {
+          title: this.$t('usermanage_view.action'),
+          key: 'action',
+          width: 200,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h(
+                'Button',
+                {
+                  props: {
+                    type: 'info',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      this.Edit(params.row);
+                    }
+                  }
+                },
+                this.$t('Edit')
+              )
+            ]);
+          }
         }
       ],
       ThirdData: [],
@@ -84,7 +109,7 @@ export default {
         createId: this.$store.state.user.userLoginInfo.userId
       };
       for (const i in this.selectData) {
-       sendParms.ids.push(this.selectData[i].organizationId)
+        sendParms.ids.push(this.selectData[i].organizationId);
       }
 
       console.log(sendParms);
